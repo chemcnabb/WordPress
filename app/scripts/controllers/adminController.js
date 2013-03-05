@@ -1,6 +1,10 @@
-'use strict';
+function adminController ($scope, configService) {
+	$scope.config = configService;
+	$scope.name = 'admin';
 
-angular.module('azureticketsApp').controller('adminController',
-	[ '$scope', function ($scope) {
-	  $scope.name = 'admin';
-	} ]);
+	$scope.init = function () {
+		
+	}
+}
+
+adminController.$inject = [ '$scope', 'configService' ];

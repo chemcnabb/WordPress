@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: AzureTickets2
+ Plugin Name: AzureTickets2
 Plugin URI: http://www.AzureTickets.com
 Description: AzureTickets is a Free Event Ticketing Platform designed to work with WordPress, the world's most popular Content Management System.
 Version: 0.7
@@ -38,7 +38,28 @@ function ats2_add_shortcode(){
 function ats2_load_constant(){
 	?>
 <!-- common head -->
-<?php        
+<script
+	type="text/javascript"
+	src="<?php echo plugins_url('/',__FILE__) ?>components/responsiveiframe/dist/jquery.responsiveiframe.min.js"></script>
+<script type="text/javascript">
+<!--
+jQuery(function(){
+	jQuery('iframe.atContainer').responsiveIframe({ xdomain: '*'});
+});
+//-->
+</script>
+<style type="text/css">
+iframe.atContainer {
+	width: 100%;
+	padding: 0px;
+	margin: 0;
+	border: none;
+	display: block;
+	height: 0px;
+	overflow: hidden
+}
+</style>
+<?php
 }
 
 //load script in client
@@ -64,6 +85,9 @@ function ats2_admin_openmenu(){
 	}
 	?>
 <!-- admin panel -->
+<iframe
+	class="atContainer"
+	src="<?php echo plugins_url('/',__FILE__)?>index.html#/admin"></iframe>
 <?php
 }
 
@@ -81,6 +105,9 @@ function ats2_filter_content($atts){
   ob_start();
   ?>
 <!-- front panel -->
+<iframe
+	class="atContainer"
+	src="<?php echo plugins_url('/',__FILE__)?>index.html#/front" />
 <?php
 return ob_get_contents();
 }

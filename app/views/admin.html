@@ -1,3 +1,20 @@
-<div class="hero-unit">
-
+<div class="atPanel" ng-controller="adminController" ng-init="init()">
+	<div class="navbar">
+		<div class="navbar-inner">
+			<a class="brand" href="#/admin">{{config.appName}}</a>
+			<ul class="nav">
+				<li><a href="#/admin">{{
+						'Common.Text_DashboardMenu_Dashboard' | t }}</a></li>
+				<li><a href="#/admin/store">{{ 'Common.Text_Store' | t }}</a></li>
+				<li><a href="#/admin/venue">{{
+						'Common.Text_VenueMenu_Venue' | t }}</a></li>
+				<li><a href="#/admin/event">{{
+						'Common.Text_EventMenu_Events' | t }}</a></li>
+				<li><a href="#/admin/scanner">{{
+						'Common.Text_ScannerMenu_Scanner' | t }}</a></li>
+				<li><a href="#/admin/order">{{
+						'Common.Text_OrdersMenu_Orders' | t }}</a></li>
+			</ul>
+		</div>
+	</div>
 </div>

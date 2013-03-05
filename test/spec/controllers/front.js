@@ -1,15 +1,15 @@
 'use strict';
 
-describe('Controller: adminController', function () {
+describe('Controller: frontController', function () {
 	// load the controller's module
 	beforeEach(module('azureTicketsApp'));
 
-	var adminController, scope;
+	var frontController, scope;
 
 	// Initialize the controller and a mock scope
 	beforeEach(inject(function ($controller) {
 		scope = {};
-		adminController = $controller('adminController', {
+		frontController = $controller('frontController', {
 			$scope : scope
 		});
 	}));
