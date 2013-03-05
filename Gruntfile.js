@@ -1,232 +1,226 @@
 'use strict';
 var lrSnippet = require('grunt-contrib-livereload/lib/utils').livereloadSnippet;
 var mountFolder = function (connect, dir) {
-  return connect.static(require('path').resolve(dir));
+	return connect.static(require('path').resolve(dir));
 };
 
 module.exports = function (grunt) {
-  // load all grunt tasks
-  require('matchdep').filterDev('grunt-*').concat(['gruntacular']).forEach(grunt.loadNpmTasks);
+	// load all grunt tasks
+	require('matchdep').filterDev('grunt-*').concat([ 'gruntacular' ]).forEach(
+			grunt.loadNpmTasks);
 
-  // configurable paths
-  var yeomanConfig = {
-    app: 'app',
-    dist: 'dist',
-    name:null
-  };
-console.log(require('./component.json'))
-  try {
-    yeomanConfig.app = require('./component.json').appPath || yeomanConfig.app;
-    yeomanConfig.name = require('./component.json').name || yeomanConfig.name;
-  } catch (e) {}
+	// configurable paths & app variables
+	var atConfig = {};
+	try {
+		atConfig.app = require('./package.json').path.app || null;
+		atConfig.dist = require('./package.json').path.dist || null;
+		atConfig.test = require('./package.json').path.test || null;
+		atConfig.scripts = require('./package.json').path.js || null;
+		atConfig.styles = require('./package.json').path.styles || null;
+		atConfig.config = require('./package.json').path.config || null;
+		atConfig.name = require('./package.json').name || null;
+		atConfig.urlApi = require('./package.json').url.api || null;
+	} catch (e) {
+		throw new Error(e).stack;
+	}
 
-  grunt.initConfig({
-    yeoman: yeomanConfig,
-    watch: {
-      less: {
-        files: ['<%= yeoman.app %>/styles/{,*/}*.{less}'],
-        tasks: ['less']
-      },
-      livereload: {
-        files: [
-          '<%= yeoman.app %>/{,*/}*.html',
-          '{.tmp,<%= yeoman.app %>}/styles/{,*/}*.css',
-          '{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js',
-          '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg}'
-        ],
-        tasks: ['livereload']
-      }
-    },
-    connect: {
-      livereload: {
-        options: {
-          port: 9000,
-          // Change this to '0.0.0.0' to access the server from outside.
-          hostname: 'localhost',
-          middleware: function (connect) {
-            return [
-              lrSnippet,
-              mountFolder(connect, '.tmp'),
-              mountFolder(connect, yeomanConfig.dist)
-            ];
-          }
-        }
-      },
-      test: {
-        options: {
-          port: 9000,
-          middleware: function (connect) {
-            return [
-              mountFolder(connect, '.tmp'),
-              mountFolder(connect, 'test')
-            ];
-          }
-        }
-      }
-    },
-    less:{
-        css:{
-            options: {
-              paths: ['<%= yeoman.app %>/styles/less/']
-            },
-            files: {
-              '<%= yeoman.dist %>/styles/main.css': '<%= yeoman.app %>/styles/less/main.less'
-            }
-        }
-    },
-    open: {
-      server: {
-        url: 'http://localhost:<%= connect.livereload.options.port %>'
-      }
-    },
-    clean: {
-      dist: ['.tmp', '<%= yeoman.dist %>/*'],
-      server: '.tmp'
-    },
-    jshint: {
-      options: {
-        jshintrc: '.jshintrc'
-      },
-      all: [
-        //'Gruntfile.js',
-        '<%= yeoman.app %>/scripts/{,*/}*.js'
-      ]
-    },
-    testacular: {
-      unit: {
-        configFile: 'config/testacular.conf.js',
-        singleRun: true
-      }
-    },
-    concat: {
-      dist: {
-        files: {
-          '<%= yeoman.dist %>/scripts/main.js': [
-            '.tmp/scripts/*.js',
-            '<%= yeoman.app %>/scripts/*.js',
-            '<%= yeoman.app %>/scripts/{,*/}*.js'
-          ]
-        }
-      }
-    },
-    useminPrepare: {
-      html: '<%= yeoman.app %>/index.html',
-      options: {
-        dest: '<%= yeoman.dist %>'
-      }
-    },
-    usemin: {
-      html: ['<%= yeoman.dist %>/{,*/}*.html'],
-      css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
-      options: {
-        dirs: ['<%= yeoman.dist %>']
-      }
-    },
-    cssmin: {
-      dist: {
-        files: {
-          '<%= yeoman.dist %>/styles/main.css': [
-            '.tmp/styles/{,*/}*.css',
-            '<%= yeoman.dist %>/styles/{,*/}*.css'
-          ]
-        }
-      }
-    },
-    htmlmin: {
-      dist: {
-        options: {
-          /*removeCommentsFromCDATA: true,
-          // https://github.com/yeoman/grunt-usemin/issues/44
-          //collapseWhitespace: true,
-          collapseBooleanAttributes: true,
-          removeAttributeQuotes: true,
-          removeRedundantAttributes: true,
-          useShortDoctype: true,
-          removeEmptyAttributes: true,
-          removeOptionalTags: true*/
-        },
-        files: [{
-          expand: true,
-          cwd: '<%= yeoman.app %>',
-          src: ['*.html', 'views/*.html'],
-          dest: '<%= yeoman.dist %>'
-        }]
-      }
-    },
-    cdnify: {
-      dist: {
-        html: ['<%= yeoman.dist %>/*.html']
-      }
-    },
-    ngmin: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= yeoman.dist %>/scripts',
-          src: '*.js',
-          dest: '<%= yeoman.dist %>/scripts'
-        }]
-      }
-    },
-    uglify: {
-      dist: {
-        files: {
-          '<%= yeoman.dist %>/scripts/main.js': [
-            '<%= yeoman.dist %>/scripts/main.js'
-          ],
-        }
-      }
-    },
-    copy: {
-      dist: {
-        files: [{
-          expand: true,
-          dot: true,
-          cwd: '<%= yeoman.app %>',
-          dest: '<%= yeoman.dist %>',
-          src: [
-            '*.{ico,txt}',
-            'components/**/*'
-          ]
-        }]
-      }
-    }
-  });
+	grunt
+			.initConfig({
+				at : atConfig,
+				watch : {
+					less : {
+						files : [ '<%= at.app %>/styles/{,*/}*.{less}' ],
+						tasks : [ 'less' ]
+					},
+					livereload : {
+						files : [
+								'<%= at.app %>/{,*/}*.html',
+								'{.tmp,<%= at.app %>}/' + atConfig.styles
+										+ '/{,*/}*.css',
+								'{.tmp,<%= at.app %>}/' + atConfig.scripts
+										+ '/{,*/}*.js',
+								'<%= at.app %>/images/{,*/}*.{png,jpg,jpeg}' ],
+						tasks : [ 'livereload' ]
+					}
+				},
+				connect : {
+					livereload : {
+						options : {
+							port : 9001,
+							// Change this to '0.0.0.0' to access the server
+							// from outside.
+							hostname : 'localhost',
+							middleware : function (connect) {
+								return [ lrSnippet,
+										mountFolder(connect, '.tmp'),
+										mountFolder(connect, atConfig.dist) ];
+							}
+						}
+					},
+					test : {
+						options : {
+							port : 9001,
+							middleware : function (connect) {
+								return [ mountFolder(connect, '.tmp'),
+										mountFolder(connect, atConfig.test) ];
+							}
+						}
+					}
+				},
+				less : {
+					css : {
+						options : {
+							paths : [ '<%= at.app %>/' + atConfig.styles
+									+ '/less/' ]
+						},
+						files : {
+							'<%= at.dist %>/styles/main.css' : '<%= at.app %>/'
+									+ atConfig.styles + '/less/main.less'
+						}
+					}
+				},
+				open : {
+					server : {
+						url : 'http://localhost:<%= connect.livereload.options.port %>'
+					}
+				},
+				clean : {
+					dist : [ '.tmp', '<%= at.dist %>/*' ],
+					server : '.tmp'
+				},
+				jshint : {
+					options : {
+						jshintrc : '.jshintrc'
+					},
+					all : [
+					// 'Gruntfile.js',
+					'<%= at.app %>/' + atConfig.scripts + '/{,*/}*.js' ]
+				},
+				testacular : {
+					unit : {
+						configFile : atConfig.config + '/testacular.conf.js',
+						singleRun : true
+					}
+				},
+				concat : {
+					dist : {
+						files : {
+							'<%= at.dist %>/scripts/main.js' : [
+									'.tmp/' + atConfig.scripts + '/*.js',
+									'<%= at.app %>/' + atConfig.scripts
+											+ '/*.js',
+									'<%= at.app %>/' + atConfig.scripts
+											+ '/{,*/}*.js' ]
+						}
+					}
+				},
+				useminPrepare : {
+					html : '<%= at.app %>/index.html',
+					options : {
+						dest : '<%= at.dist %>'
+					}
+				},
+				usemin : {
+					html : [ '<%= at.dist %>/{,*/}*.html' ],
+					css : [ '<%= at.dist %>/styles/{,*/}*.css' ],
+					options : {
+						dirs : [ '<%= at.dist %>' ]
+					}
+				},
+				cssmin : {
+					dist : {
+						files : {
+							'<%= at.dist %>/styles/main.css' : [
+									'.tmp/' + atConfig.styles + '/{,*/}*.css',
+									'<%= at.dist %>/styles/{,*/}*.css' ]
+						}
+					}
+				},
+				htmlmin : {
+					dist : {
+						options : {
+						/*
+						 * removeCommentsFromCDATA: true, //
+						 * https://github.com/at/grunt-usemin/issues/44
+						 * //collapseWhitespace: true,
+						 * collapseBooleanAttributes: true,
+						 * removeAttributeQuotes: true,
+						 * removeRedundantAttributes: true, useShortDoctype:
+						 * true, removeEmptyAttributes: true,
+						 * removeOptionalTags: true
+						 */
+						},
+						files : [ {
+							expand : true,
+							cwd : '<%= at.app %>',
+							src : [ '*.html', 'views/*.html' ],
+							dest : '<%= at.dist %>'
+						} ]
+					}
+				},
+				cdnify : {
+					dist : {
+						html : [ '<%= at.dist %>/*.html' ]
+					}
+				},
+				ngmin : {
+					dist : {
+						files : [ {
+							expand : true,
+							cwd : '<%= at.dist %>/' + atConfig.scripts,
+							src : '*.js',
+							dest : '<%= at.dist %>/' + atConfig.scripts
+						} ]
+					}
+				},
+				uglify : {
+					dist : {
+						files : {
+							'<%= at.dist %>/scripts/main.js' : [ '<%= at.dist %>/'
+									+ atConfig.scripts + '/main.js' ],
+						}
+					}
+				},
+				copy : {
+					dist : {
+						files : [ {
+							expand : true,
+							dot : true,
+							cwd : '<%= at.app %>',
+							dest : '<%= at.dist %>',
+							src : [ '*.{ico,txt,php}', 'components/**/*' ]
+						} ]
+					}
+				},
+				compress : {
+					wordpress : {
+						options : {
+							archive : '<%= at.dist %>/wp-azuretickets.zip'
+						},
+						files : [ {
+							expand : true,
+							cwd : '<%= at.dist %>/',
+							src : [ '**' ]
+						} ]
+					}
+				}
+			});
 
-  grunt.renameTask('regarde', 'watch');
-  // remove when mincss task is renamed
-  grunt.renameTask('mincss', 'cssmin');
+	grunt.renameTask('regarde', 'watch');
+	// remove when mincss task is renamed
+	grunt.renameTask('mincss', 'cssmin');
 
-  grunt.registerTask('server', [
-    'clean:server',
-    'livereload-start',
-    'connect:livereload',
-    'open',
-    'watch'
-  ]);
+	grunt.registerTask('server', [ 'clean:server', 'livereload-start',
+			'connect:livereload', 'open', 'watch' ]);
 
-  grunt.registerTask('test', [
-    'clean:server',
-    'less',
-    'connect:test',
-    'testacular'
-  ]);
+	grunt.registerTask('test', [ 'clean:server', 'less', 'connect:test',
+			'testacular' ]);
 
-  grunt.registerTask('build', [
-    'clean:dist',
-    'jshint',
-    'test',
-    'less',
-    'useminPrepare',
-    'cssmin',
-    'htmlmin',
-    'concat',
-    'copy',
-    'cdnify',
-    'usemin',
-    'ngmin',
-    'uglify'
-  ]);
+	grunt.registerTask('build', [ 'clean:dist', /* 'jshint', */
+	'less', 'test', 'useminPrepare', 'cssmin', 'htmlmin', 'concat', 'copy',
+			'cdnify', 'usemin', 'ngmin', 'uglify' ]);
 
-  grunt.registerTask('default', ['build']);
+	grunt.registerTask('wp', [ 'build', 'compress:wordpress' ]);
+
+	grunt.registerTask('default', [ 'build' ]);
 };

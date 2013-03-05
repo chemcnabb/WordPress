@@ -4,16 +4,11 @@
 basePath = '';
 
 // list of files / patterns to load in the browser
-files = [
-  JASMINE,
-  JASMINE_ADAPTER,
-  '../app/components/angular/angular.js',
-  '../app/components/angular-mocks/angular-mocks.js',
-  '../app/components/angular-resource/angular-resource.js',
-  '../app/scripts/*.js',
-  '../app/scripts/**/*.js',
-  '../test/spec/**/*.js'
-];
+files = [ JASMINE, JASMINE_ADAPTER, '../app/components/angular/angular.js',
+		'../app/components/angular-mocks/angular-mocks.js',
+		'../app/components/angular-resource/angular-resource.js',
+		'../app/scripts/*.js', '../app/scripts/**/*.js',
+		'../test/spec/**/*.js' ];
 
 // list of files to exclude
 exclude = [];
@@ -32,7 +27,8 @@ runnerPort = 9100;
 colors = true;
 
 // level of logging
-// possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
+// possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO ||
+// LOG_DEBUG
 logLevel = LOG_INFO;
 
 // enable / disable watching file and executing tests whenever any file changes
@@ -45,7 +41,7 @@ autoWatch = false;
 // - Opera
 // - Safari
 // - PhantomJS
-browsers = ['Chrome'];
+browsers = [ 'Chrome' ];
 
 // Continuous Integration mode
 // if true, it capture browsers, run tests and exit

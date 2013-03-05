@@ -1,5 +1,16 @@
 {
   "name": "AzureTickets",
+  "path" : {
+	"app" : "app",
+	"dist" : "dist",
+	"test" : "test",
+	"config" : "config",
+	"js" : "scripts",
+	"styles" : "styles"
+  },
+  "url" : {
+  	"api" : "http://api.azuretickets.com"
+  },
   "version": "1.0.0",
   "dependencies": {},
   "devDependencies": {
@@ -14,6 +25,7 @@
     "grunt-contrib-clean": "0.4.0rc6",
     "grunt-contrib-htmlmin": "0.1.1rc7",
     "grunt-contrib-livereload": "0.1.0rc8",
+    "grunt-contrib-compress": "*",
     "grunt-bower-hooks": "~0.2.0",
     "grunt-usemin": "~0.1.7",
     "grunt-regarde": "~0.1.1",

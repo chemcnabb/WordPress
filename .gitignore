@@ -1,5 +1,7 @@
 node_modules
 nbproject
+.project
+.settings
 dist
 .tmp
 .sass-cache
