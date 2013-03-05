@@ -4,7 +4,7 @@ AzureTickets
 
 
 # For Developers
-<br />
+
 ## Requirements
 
 You must have the following packages intalled:
