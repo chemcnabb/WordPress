@@ -13,7 +13,7 @@ You must have the following packages intalled:
 * grunt [http://gruntjs.com/]
 * bower [https://github.com/twitter/bower/]
 
-### Build
+## Build
 
 Once you checkout this repository, you should be able to do
 
