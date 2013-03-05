@@ -104,6 +104,10 @@ module.exports = function (grunt) {
 				},
 				concat : {
 					dist : {
+						options : {
+							stripBanners : true,
+							process : true
+						},
 						files : {
 							'<%= at.dist %>/scripts/main.js' : [
 									'.tmp/' + atConfig.scripts + '/*.js',
@@ -139,16 +143,11 @@ module.exports = function (grunt) {
 				htmlmin : {
 					dist : {
 						options : {
-						/*
-						 * removeCommentsFromCDATA: true, //
-						 * https://github.com/at/grunt-usemin/issues/44
-						 * //collapseWhitespace: true,
-						 * collapseBooleanAttributes: true,
-						 * removeAttributeQuotes: true,
-						 * removeRedundantAttributes: true, useShortDoctype:
-						 * true, removeEmptyAttributes: true,
-						 * removeOptionalTags: true
-						 */
+							collapseWhitespace : false,
+							removeComments : false,
+							collapseBooleanAttributes : true,
+							removeRedundantAttributes : true,
+							useShortDoctype : true
 						},
 						files : [ {
 							expand : true,

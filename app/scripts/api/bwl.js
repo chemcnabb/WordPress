@@ -17,7 +17,7 @@ Date.prototype.getGMTOffset = function () {
 // Main BWL Namespace
 var BWL = {
     // Global variables
-    Server: "http://api.azuretickets.com",
+    Server: "<%= at.urlApi %>",
     Store: null,
     StoreKey: null,
     Profile: null,

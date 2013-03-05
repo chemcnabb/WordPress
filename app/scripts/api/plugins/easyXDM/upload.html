@@ -1,0 +1,195 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>Upload Tool</title>
+    <link rel="stylesheet" href="../plupload/jquery.plupload.queue/css/jquery.plupload.queue.css" type="text/css" media="screen" />
+    <!-- TODO Replace with a single loader script that gets all files in one request -->
+    <script type="text/javascript" src="../jquery/1.7.2.min.js"></script>
+    <script type="text/javascript" src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
+    <script type="text/javascript" src="../plupload/plupload.js"></script>
+    <script type="text/javascript" src="../plupload/plupload.html5.js"></script>
+    <script type="text/javascript" src="../plupload/plupload.silverlight.js"></script>
+    <script type="text/javascript" src="../plupload/plupload.flash.js"></script>
+    <script type="text/javascript" src="../plupload/plupload.gears.js"></script>
+    <script type="text/javascript" src="../plupload/plupload.browserplus.js"></script>
+    <script type="text/javascript" src="../plupload/jquery.plupload.queue/jquery.plupload.queue.js"></script>
+    <script type="text/javascript" src="../easyXDM/min.js"></script>
+    <script type="text/javascript">
+        ATs.Plugins.easyXDM.DomHelper.requiresJSON("../json2/min.js");
+    </script>
+    <script type="text/javascript">
+
+        var Model = {
+            APIResponse: function () {
+                this.Code = null;
+                this.DiagnosticsMatrix = null;
+                this.ExecutionSeconds = 0;
+                this.Message = null;
+                this.Object = null;
+                this.ServerDateTime = null;
+                this.Type = 'APIResponse';
+            }
+        }
+
+        var caller = new easyXDM.Rpc({
+            local: "../name.html",
+            swf: "../easyxdm.swf"
+        }, {
+            remote: {
+                uploadSuccess: {},
+                uploadError: {}
+            },
+            local: {
+                startUploader: function (storeKey, uploadType) {
+                    return StartUploader(storeKey, uploadType);
+                }
+            }
+        });
+
+        // uploadType = image, video, audio, file
+        function StartUploader(storeKey, uploadType) {
+
+            if (storeKey == undefined || storeKey.length == 0) {
+                var errorMsg = 'your storeKey is not found';
+                ATs.$('#uploader').html(errorMsg);
+                caller.uploadError(errorMsg);
+                return;
+            }
+
+            var maxUploadSize = 0;
+            var chunkSize = 0;
+            var fileTypesName = null;
+            var fileTypes = null;
+            var runtimes = '';
+
+            switch (uploadType) {
+                case 'image':
+                    maxUploadSize = 10;
+                    fileTypesName = "Image files";
+                    fileTypes = "jpg,gif,png";
+                    break;
+                case 'audio':
+                    maxUploadSize = 100;
+                    chunkSize = 256;
+                    fileTypesName = "Audio files";
+                    fileTypes = "flac,mp3,oga,ogg,wav,wma";
+                    break;
+                case 'video':
+                    maxUploadSize = 1000;
+                    chunkSize = 256;
+                    fileTypesName = "Video files";
+                    fileTypes = "avi,flv,mov,mp4,mpeg,mpg,ogg,ogv,webm,wmv";
+                    break;
+                case 'file':
+                    maxUploadSize = 1000;
+                    chunkSize = 256;
+                    fileTypesName = "Files";
+                    fileTypes = "*";
+                    break;
+                default:
+                    caller.uploadError("Invalid upload type");
+                    return;
+                    break;
+            }
+
+            var browser = navigator.userAgent.toLowerCase();
+            if (browser.indexOf('msie') > -1) {
+                // IE, Silverlight is best
+                runtimes = 'silverlight,flash,html5';
+            } else if (browser.indexOf('firefox') > -1) {
+                    // Firefox, HTML5 is best
+                runtimes = 'html5,flash,silverlight';
+            } else if (browser.indexOf('chrome') > -1) {
+                    // Chrome, HTML5 is best
+                runtimes = 'html5,flash,silverlight';
+            } else if (browser.indexOf('safari') > -1) {
+                    // Safari, Flash is best
+                runtimes = 'flash,silverlight,html5';
+            } else if (browser.indexOf('opera') > -1) {
+                    // Safari, Flash is best
+                runtimes = 'flash,silverlight,html5';
+            } else {
+                // all others, use Flash first
+                runtimes = 'flash,silverlight,html5';
+            }
+
+            //var url = "/upload/" + storeKey + "/" + uploadType + "?atstoken=" + atsToken;
+            var url = "/upload/" + storeKey + "/" + uploadType;
+
+            ATs.$("#uploader").pluploadQueue({
+                // General settings
+                runtimes: runtimes,
+                url: url,
+                max_file_size: maxUploadSize + 'mb',
+                multipart: true,
+                chunk_size: chunkSize + 'kb',
+                // Specify what files to browse for
+                filters: [{ title: fileTypesName, extensions: fileTypes }],
+                // Flash settings
+                flash_swf_url: '../plupload/plupload.flash.swf',
+                // Silverlight settings
+                silverlight_xap_url: '../plupload/plupload.silverlight.xap',
+                // Post init events, bound after the internal events
+                init: {
+                    Refresh: function (up) {
+                        // Called when upload shim is moved
+                    },
+                    StateChanged: function (up) {
+                        // Called when the state of the queue is changed
+                    },
+                    UploadComplete: function (up, files) {
+                        // called when all files are done
+                        caller.uploadSuccess(files);
+                    },
+                    QueueChanged: function (up) {
+                        // Called when the files in queue are changed by adding/removing files
+                    },
+                    UploadProgress: function (up, file) {
+                        // Called while a file is being uploaded
+                    },
+                    FilesAdded: function (up, files) {
+                        // Called when files are added to queue
+                        plupload.each(files, function (file) {
+                            // do nothing
+                        });
+                    },
+                    FilesRemoved: function (up, files) {
+                        // Called when files where removed from queue
+                        plupload.each(files, function (file) {
+                            // do nothing
+                        });
+                    },
+                    FileUploaded: function (up, file, info) {
+                        var resp = ATs.Plugins.json2.parse(info.response);
+
+                        if (resp.Message != "OK") {
+                            caller.uploadError('Server Error: ' + resp.Message);
+                            file.status = plupload.FAILED;
+                            file.percent = 0;
+                            up.stop();
+                        }
+                    },
+                    ChunkUploaded: function (up, file, info) {
+                        // Called when a file chunk has finished uploading
+                    },
+                    Error: function (up, args) {
+                        // Called when a error has occured
+                        caller.uploadError('Tool Error: ' + args.dump());
+                    }
+                }
+            });
+
+            return true;
+        };
+    </script>
+</head>
+<body>
+    <form id="submit-form" method="post" action="" enctype="multipart/form-data">
+    <div id="uploader">
+        Please wait, loading... if you continue to see this message for several seconds, your browser might not support HTML5, Flash, SilverLight, Gears or BrowserPlus.
+    </div>
+    <input type="submit" value="submit" style="visibility: hidden" />
+    </form>
+</body>
+</html>
