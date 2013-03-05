@@ -2,6 +2,9 @@ AzureTickets
 ===========================================
 <br />
 
+
+# For Developers
+<br />
 ## Requirements
 
 You must have the following packages intalled:
@@ -23,6 +26,5 @@ Afterwards, use the *grunt* command to build or execute the tasks available for 
 
 * Use `grunt build` to generate the distribution package, which will reside in *./dist*
 * Use `grunt test` to execute the tests located in *./test*. This command makes use of *testacular* [http://testacular.github.com/]
-* Use `grunt wp` in order to generate a *WordPress* plugin in *./dist/wp-azuretickets.zip*.
-                                                  * 
-                                                  * 
+* Use `grunt wp` in order to generate a *WordPress* plugin package in *./dist/wp-azuretickets.zip*.
+
