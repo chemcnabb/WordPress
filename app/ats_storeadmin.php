@@ -55,7 +55,7 @@ iframe.atContainer {
 	margin: 0;
 	border: none;
 	display: block;
-	height: 0px;
+	min-height: 450px;
 	overflow: hidden
 }
 </style>
