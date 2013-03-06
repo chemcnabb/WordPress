@@ -39,7 +39,7 @@ module.exports = function (grunt) {
 						'{.tmp,<%= at.app %>}/' + atConfig.scripts
 								+ '/{,*/}*.js',
 						'<%= at.app %>/images/{,*/}*.{png,jpg,jpeg}' ],
-				tasks : [ 'livereload' ]
+				tasks : [ 'concat', 'htmlmin', 'livereload' ]
 			}
 		},
 		connect : {
@@ -210,8 +210,8 @@ module.exports = function (grunt) {
 			'testacular' ]);
 
 	grunt.registerTask('build', [ 'clean:dist', /* 'jshint', */
-	'less', 'test', 'useminPrepare', 'cssmin', 'htmlmin', 'concat', 'copy',
-			'cdnify', 'usemin', 'ngmin', 'uglify' ]);
+	'test', 'useminPrepare', 'cssmin', 'htmlmin', 'concat', 'copy', 'cdnify',
+			'usemin', 'ngmin', 'uglify' ]);
 
 	grunt.registerTask('wp', [ 'build', 'compress:wordpress' ]);
 
