@@ -139,7 +139,8 @@ azureTicketsApp
 									}
 
 									// set proper element definition
-									if (/^String/g.test(fieldType)) {
+									if (/^(?:String|Double|Char|Text)/g
+											.test(fieldType)) {
 										_attr.type = !isPass ? 'text'
 												: 'password',
 												_el = jQuery('<input ' + _req
@@ -147,10 +148,23 @@ azureTicketsApp
 										if (_label !== null)
 											_label.addClass('pull-left');
 
-									}
-									if (/^Boolean/g.test(fieldType)) {
+									} else if (/^Int/g.test(fieldType)) {
+										_attr.type = 'number',
+												_el = jQuery('<input ' + _req
+														+ '/>');
+										if (_label !== null)
+											_label.addClass('pull-left');
+
+									} else if (/^Boolean/g.test(fieldType)) {
 										_attr.type = 'checkbox',
 												_el = jQuery('<input />');
+										if (_label !== null)
+											_label.addClass('pull-right');
+									} else if (/^Date|Time/g.test(fieldType)) {
+										_attr.type = 'text',
+												_el = jQuery('<input />');
+										_el.attr('ui-date', true);
+
 										if (_label !== null)
 											_label.addClass('pull-right');
 									}
@@ -159,8 +173,18 @@ azureTicketsApp
 									for (p in $attrs) {
 										if (angular.isString($attrs[p])
 												&& [ 'ngModel', 'ngRequired' ]
-														.indexOf(p) === -1)
-											_el.attr(p, $attrs[p]);
+														.indexOf(p) === -1) {
+											p = p.replace(
+													/^([a-z]+)([A-Z]+)(\w+)$/g,
+													'$1-$2$3').toLowerCase();
+
+											_el
+													.attr(
+															p,
+															angular
+																	.isDefined($attrs[p]) ? $attrs[p]
+																	: '');
+										}
 									}
 									for (p in _attr) {
 										_el.attr(p, _attr[p]);

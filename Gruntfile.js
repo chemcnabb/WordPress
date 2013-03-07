@@ -137,7 +137,7 @@ module.exports = function (grunt) {
 						files : {
 							'<%= at.dist %>/styles/main.css' : [
 									'.tmp/' + atConfig.styles + '/{,*/}*.css',
-									'<%= at.dist %>/styles/{,*/}*.css' ]
+									'<%= at.dist %>/styles/**/*.css' ]
 						}
 					}
 				},
