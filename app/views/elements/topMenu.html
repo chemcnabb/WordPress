@@ -13,8 +13,10 @@
 					'Common.Text_OrdersMenu_Orders' | t }}</a></li>
 		</ul>
 		<div class="pull-right">
-			<a href="#/admin" ng-click="logoff()" ng-show="AccountProfile.Key || false"
-				class="btn">{{ 'Login.labelLogOff' | t }}</a>
+			<a href="#/auth/logoff" ng-show="AccountProfile.Key || false"
+				class="btn">{{ 'Login.labelLogOff' | t }}</a> <a href="#/admin"
+				ng-hide="AccountProfile.Key || false" class="btn">{{
+				'Login.labelLogin' | t }}</a>
 		</div>
 	</div>
 </div>

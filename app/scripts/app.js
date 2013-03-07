@@ -7,10 +7,17 @@ azureTicketsApp.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/admin', {
         templateUrl : 'views/admin.html',
         controller : adminController
-    }).when('/admin/logoff', {
+    }).when('/auth/logoff', {
         controller : adminController,
         templateUrl : 'views/admin.html',
-        resolve : adminController.logoff
+        resolve : {
+            logoff : ['authService', function (authService) {
+                authService.logoffAsync(function () {
+                    authService.setProfile(null);
+                    location.href = '/#/admin';
+                });
+            }]
+        }
     }).when('/front', {
         templateUrl : 'views/front.html',
         controller : frontController
@@ -73,6 +80,10 @@ azureTicketsApp.factory('authService', function () {
         },
         loadAuthProviders : function (cbk) {
             BWL.Services.oAuthService.ListAuthProvidersAsync(cbk);
+        },
+        isLogged : function () {
+            return _profile !== null && angular.isDefined(_profile.Key)
+                    && _profile.Key !== null
         }
     }
 });

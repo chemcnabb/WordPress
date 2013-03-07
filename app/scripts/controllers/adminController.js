@@ -62,20 +62,6 @@ function adminController ($scope, configService, authService, permService) {
             });
         }
     }
-
-    $scope.logoff = function () {
-        authService.logoffAsync(function (_logoff) {
-            if (_logoff) {
-                $scope.AccountProfile = angular
-                        .copy(BWL.Model['AccountProfile']);
-                $scope.loginErr = null;
-                authService.setProfile(null);
-            }
-
-            if (!$scope.$$phase)
-                $scope.$apply()
-        })
-    }
 }
 
 adminController.$inject = ['$scope', 'configService', 'authService',
