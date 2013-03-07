@@ -18,7 +18,8 @@ azureTicketsApp.config([ '$routeProvider', function ($routeProvider) {
 // services
 azureTicketsApp.factory('configService', function () {
 	return {
-		appName : '<%= at.name %>'
+		appName : '<%= at.name %>',
+		clientKey : 'b31e42d6-9205-417d-a2d9-366abc7d5046'
 	}
 });
 
@@ -47,6 +48,14 @@ azureTicketsApp.factory('authService', function () {
 					BWL.oAuth.LogonAsync(provider, cbk, errCbk);
 				}
 			}, errCbk)
+		},
+		logonAsync : function (account, cbk, errCbk) {
+			try {
+				BWL.Services.SystemProfileService.LogonAsync(account, cbk,
+						errCbk);
+			} catch (err) {
+				errCbk(err)
+			}
 		},
 		logoffAsync : function (cbk) {
 			BWL.Services.SystemProfileService.LogoffAsync(cbk);

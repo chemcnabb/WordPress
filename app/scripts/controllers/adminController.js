@@ -1,21 +1,20 @@
 function adminController ($scope, configService, authService) {
 	$scope.config = configService, $scope.authProviders = [];
 	$scope.name = 'admin';
-	$scope.profile = null;
-	
+	$scope.loginErr, $scope.profile = null;
+
 	// models
-	$scope.MembershipProfile = angular.copy(BWL.Model['MembershipProfile']);
+	$scope.AccountProfile = angular.copy(BWL.Model['AccountProfile']);
 
 	$scope.init = function () {
-		authService.loadProfileAsync('b31e42d6-9205-417d-a2d9-366abc7d5046',
-				function () {
-					$scope.profile = authService.getProfile();
+		authService.loadProfileAsync(configService.clientKey, function () {
+			$scope.profile = authService.getProfile();
 
-					if (!$scope.$$phase)
-						$scope.$apply()
-				}, function (err) {
+			if (!$scope.$$phase)
+				$scope.$apply()
+		}, function (err) {
 
-				});
+		});
 	}
 
 	$scope.loadAuthProviders = function () {
@@ -36,18 +35,37 @@ function adminController ($scope, configService, authService) {
 				if (!$scope.$$phase)
 					$scope.$apply()
 			}, function (err) {
-				console.log(err)
+				$scope.loginErr = err;
+
+				if (!$scope.$$phase)
+					$scope.$apply()
 			});
 		} else {
 			// login by membership
-			console.log($scope.MembershipProfile)
+			authService.logonAsync({
+				Email : $scope.AccountProfile.Email,
+				PasswordHash : BWL.oAuth
+						.HashPassword($scope.AccountProfile.PasswordHash)
+			}, function () {
+				$scope.profile = authService.getProfile();
+
+				if (!$scope.$$phase)
+					$scope.$apply()
+			}, function (err) {
+				$scope.loginErr = err;
+
+				if (!$scope.$$phase)
+					$scope.$apply()
+			});
 		}
 	}
 
 	$scope.logoff = function () {
 		authService.logoffAsync(function (_logoff) {
-			if (_logoff)
+			if (_logoff) {
 				$scope.profile = null;
+				$scope.loginErr = null;
+			}
 
 			if (!$scope.$$phase)
 				$scope.$apply()

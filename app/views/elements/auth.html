@@ -1,23 +1,26 @@
 <div ng-hide="profile || false" class="clearfix">
+	<div class="alert alert-error" ng-show="loginErr || false">{{loginErr}}</div>
 	<h4>{{ 'Login.Page_Title' | t }}</h4>
 	<!-- provider login -->
 	<div class="row-fluid" ng-init="loadAuthProviders()">
 		<div class="span6">
 			<p>{{ 'Login.Page_Desc' | t }}</p>
-			<a ng-repeat="provider in authProviders" class="btn"
-				ng-click="login(provider)">{{ provider }}</a>
+			<div class="btn-group">
+				<a ng-repeat="provider in authProviders" class="btn btn-small"
+					ng-click="login(provider)">{{ provider }}</a>
+			</div>
 		</div>
 		<div class="span6">
 			<!-- membership login -->
 			<p>{{ 'Login.labelMyAccount' | t }}</p>
-			<form name="atMembershipProfile" ng-submit="login()">
+			<form name="atAccountProfile" ng-submit="login()">
 				<dl>
 					<dd>
-						<atfield class="input-xlarge" ng-model="MembershipProfile.Email" />
+						<atfield class="input-xlarge" ng-model="AccountProfile.Email" />
 					</dd>
 					<dd>
 						<atfield class="input-xlarge"
-							ng-model="MembershipProfile.PasswordHash" />
+							ng-model="AccountProfile.PasswordHash" />
 					</dd>
 					<dd>
 						<button type="submit" class="btn btn-primary clear">{{

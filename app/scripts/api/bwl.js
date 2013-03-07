@@ -403,7 +403,7 @@ BWL.Membership = {
 		membership.Email = email;
 		membership.PasswordHash = BWL.oAuth.HashPassword(password);
 
-		BWL.Services.MembershipService.LoginAsync(BWL.StoreKey, membership,
+		BWL.Services.MembershipService.LogonAsync(BWL.StoreKey, membership,
 				successCallback, errorCallback);
 	},
 
