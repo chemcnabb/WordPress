@@ -1,4 +1,5 @@
-function storeController ($scope, configService, authService, storeService) {
+function storeController ($scope, configService, authService, permService,
+        storeService) {
     $scope.config = configService, $scope.name = 'store';
 
     /**
@@ -22,4 +23,4 @@ function storeController ($scope, configService, authService, storeService) {
 }
 
 storeController.$inject = ['$scope', 'configService', 'authService',
-        'storeService'];
+        'permService', 'storeService'];

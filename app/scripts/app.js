@@ -6,15 +6,19 @@ var azureTicketsApp = angular.module('azureTicketsApp', ['ui']);
 azureTicketsApp.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/admin', {
         templateUrl : 'views/admin.html',
-        controller : 'adminController'
+        controller : adminController
+    }).when('/admin/logoff', {
+        controller : adminController,
+        templateUrl : 'views/admin.html',
+        resolve : adminController.logoff
     }).when('/front', {
         templateUrl : 'views/front.html',
-        controller : 'frontController'
+        controller : frontController
     }).otherwise({
         redirectTo : '/'
     }).when('/admin/store', {
         templateUrl : 'views/store.html',
-        controller : 'storeController'
+        controller : storeController
     });
 }]);
 
@@ -70,6 +74,13 @@ azureTicketsApp.factory('authService', function () {
         loadAuthProviders : function (cbk) {
             BWL.Services.oAuthService.ListAuthProvidersAsync(cbk);
         }
+    }
+});
+
+// permission service
+azureTicketsApp.factory('permService', function () {
+    return {
+
     }
 });
 

@@ -1,4 +1,4 @@
-function adminController ($scope, configService, authService) {
+function adminController ($scope, configService, authService, permService) {
     $scope.config = configService, $scope.authProviders = [],
             $scope.name = 'admin', $scope.loginErr = null;
 
@@ -78,4 +78,5 @@ function adminController ($scope, configService, authService) {
     }
 }
 
-adminController.$inject = ['$scope', 'configService', 'authService'];
+adminController.$inject = ['$scope', 'configService', 'authService',
+        'permService'];
