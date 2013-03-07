@@ -167,6 +167,20 @@ azureTicketsApp
 
 										if (_label !== null)
 											_label.addClass('pull-right');
+									} else if (/^.*Enum(?=\b).*$/g
+											.test(fieldType)) {
+										_el = jQuery('<select />');
+										var _enum = BWL.ModelEnum[fieldType
+												.replace(/^(.*Enum)(?=\b).*$/g,
+														'$1')];
+										for ( var e in _enum) {
+											_el
+													.append(jQuery(
+															'<option value="'
+																	+ _enum[e]
+																	+ '" />')
+															.text(e));
+										}
 									}
 
 									// define new element attributes
