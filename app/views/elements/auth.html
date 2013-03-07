@@ -1,0 +1,30 @@
+<div ng-hide="profile || false" class="clearfix">
+	<h4>{{ 'Login.Page_Title' | t }}</h4>
+	<!-- provider login -->
+	<div class="row-fluid" ng-init="loadAuthProviders()">
+		<div class="span6">
+			<p>{{ 'Login.Page_Desc' | t }}</p>
+			<a ng-repeat="provider in authProviders" class="btn"
+				ng-click="login(provider)">{{ provider }}</a>
+		</div>
+		<div class="span6">
+			<!-- membership login -->
+			<p>{{ 'Login.labelMyAccount' | t }}</p>
+			<form name="atMembershipProfile" ng-submit="login()">
+				<dl>
+					<dd>
+						<atfield class="input-xlarge" ng-model="MembershipProfile.Email" />
+					</dd>
+					<dd>
+						<atfield class="input-xlarge"
+							ng-model="MembershipProfile.PasswordHash" />
+					</dd>
+					<dd>
+						<button type="submit" class="btn btn-primary clear">{{
+							'Login.labelLogin' | t }}</button>
+					</dd>
+				</dl>
+			</form>
+		</div>
+	</div>
+</div>

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "dependencies": {
     "angular": "~1.0.5",
+    "angular-ui": "~0.4.0",
     "jquery": "~1.9.1",
     "responsiveiframe": "*",
     "bootstrap":"~2.3.1",

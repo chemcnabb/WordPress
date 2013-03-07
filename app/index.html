@@ -18,19 +18,22 @@
       <script src="components/es5-shim/es5-shim.js"></script>
       <script src="components/json3/lib/json3.min.js"></script>
     <![endif]-->
-
+<!--[if lte IE 8]>
+    <script src="components/angular-ui/build/angular-ui-ieshiv.min.js"></script>
+<![endif]-->
 <script src="components/easyXDM/easyXDM.min.js"></script>
 <script src="components/jquery/jquery.js"></script>
 <script
+	src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js"></script>
+<script
 	src="components/responsiveiframe/dist/jquery.responsiveiframe.min.js"></script>
 <script src="components/angular/angular.js"></script>
+<script src="components/angular-ui/build/angular-ui.min.js"></script>
 <script src="components/angular-resource/angular-resource.js"></script>
 <script src="components/angular-cookies/angular-cookies.js"></script>
 <script src="components/angular-sanitize/angular-sanitize.js"></script>
-
-<!-- build:js(<%= at.dist %>) scripts/main.js -->
 <script src="scripts/main.js"></script>
-<!-- endbuild -->
+
 <script type="text/javascript">
 	var ri = responsiveIframe();
 	ri.allowResponsiveEmbedding();

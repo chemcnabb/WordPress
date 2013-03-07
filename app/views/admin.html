@@ -1,34 +1,7 @@
 <div class="atPanel" ng-controller="adminController" ng-init="init()"
 	ng-cloak>
 	<!-- top menu -->
-	<div class="navbar">
-		<div class="navbar-inner">
-			<a class="brand" href="#/admin">{{config.appName}}</a>
-			<ul class="nav" ng-show="profile || false">
-				<li><a href="#/admin/store">{{ 'Common.Text_Store' | t }}</a></li>
-				<li><a href="#/admin/venue">{{
-						'Common.Text_VenueMenu_Venue' | t }}</a></li>
-				<li><a href="#/admin/event">{{
-						'Common.Text_EventMenu_Events' | t }}</a></li>
-				<li><a href="#/admin/scanner">{{
-						'Common.Text_ScannerMenu_Scanner' | t }}</a></li>
-				<li><a href="#/admin/order">{{
-						'Common.Text_OrdersMenu_Orders' | t }}</a></li>
-			</ul>
-			<div class="pull-right">
-				<a href="#/admin" ng-click="logoff()" ng-show="profile || false"
-					class="btn">{{ 'Login.labelLogOff' | t }}</a>
-			</div>
-		</div>
-	</div>
+	<div ng-include src="'/views/elements/topMenu.html'"></div>
 	<!-- auth panel -->
-	<div ng-hide="profile || false" class="clearfix">
-		<h4>{{ 'Login.Page_Title' | t }}</h4>
-		<p>{{ 'Login.Page_Desc' | t }}</p>
-		<div class="row-fluid" ng-init="loadAuthProviders()">
-			<div ng-repeat="provider in authProviders" class="span1">
-				<a class="btn" ng-click="login(provider)">{{ provider }}</a>
-			</div>
-		</div>
-	</div>
+	<div ng-include src="'/views/elements/auth.html'"></div>
 </div>
