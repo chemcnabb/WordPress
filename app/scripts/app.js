@@ -49,58 +49,87 @@ azureTicketsApp.factory('configService', function () {
 });
 
 // authentication service
-azureTicketsApp.factory('authService', function () {
-    var _clientKey = null;
+azureTicketsApp
+        .factory(
+                'authService',
+                [
+                        'configService',
+                        function (configService) {
+                            var _clientKey = null;
 
-    return {
-        loadProfileAsync : function (clientKey, cbk, errCbk) {
-            BWL.ClientKey = clientKey;
-            _clientKey = clientKey;
-            BWL.oAuth.LoadProfileAsync(cbk, errCbk);
-        },
-        logonByProviderAsync : function (provider, cbk, errCbk) {
-            BWL.oAuth.Init(_clientKey);
-            BWL.Services.SystemProfileService.GetProfileAsync(5, function (
-                    profile) {
-                if (profile.DomainProfileId !== 0) {
-                    cbk();
-                } else {
-                    BWL.oAuth.LogonAsync(provider, cbk, errCbk);
-                }
-            }, errCbk)
-        },
-        logonAsync : function (account, cbk, errCbk) {
-            try {
-                BWL.Services.SystemProfileService.LogonAsync(account, cbk,
-                        errCbk);
-            } catch (err) {
-                errCbk(err)
-            }
-        },
-        logoffAsync : function (cbk) {
-            BWL.Services.SystemProfileService.LogoffAsync(cbk);
-        },
-        getDomainProfile : function () {
-            return BWL.Profile || angular.copy(BWL.Model['DomainProfile']);
-        },
-        setDomainProfile : function (profile) {
-            BWL.Profile = null;
-        },
-        getAccountProfile : function () {
-            return (BWL.Profile !== null ? BWL.Profile.AccountProfile
-                    : BWL.Profile)
-                    || angular.copy(BWL.Model['AccountProfile']);
-        },
-        loadAuthProviders : function (cbk) {
-            BWL.Services.oAuthService.ListAuthProvidersAsync(cbk);
-        },
-        isAccountProfileLogged : function () {
-            return (this.getDomainProfile() !== null
-                    && angular.isDefined(this.getDomainProfile().Key) && this
-                    .getDomainProfile().Key !== null)
-        }
-    }
-});
+                            return {
+                                authenticate : function (cbk, errCbk) {
+                                    if (!this.isDomainProfileReady()) {
+                                        this.loadProfileAsync(
+                                                configService.clientKey, cbk,
+                                                errCbk);
+                                    } else {
+                                        cbk();
+                                    }
+                                },
+                                loadProfileAsync : function (clientKey, cbk,
+                                        errCbk) {
+                                    BWL.ClientKey = clientKey;
+                                    _clientKey = clientKey;
+                                    BWL.oAuth.LoadProfileAsync(cbk, errCbk);
+                                },
+                                logonByProviderAsync : function (provider, cbk,
+                                        errCbk) {
+                                    BWL.oAuth.Init(_clientKey);
+                                    BWL.Services.SystemProfileService
+                                            .GetProfileAsync(
+                                                    5,
+                                                    function (profile) {
+                                                        if (profile.DomainProfileId !== 0) {
+                                                            cbk();
+                                                        } else {
+                                                            BWL.oAuth
+                                                                    .LogonAsync(
+                                                                            provider,
+                                                                            cbk,
+                                                                            errCbk);
+                                                        }
+                                                    }, errCbk)
+                                },
+                                logonAsync : function (account, cbk, errCbk) {
+                                    try {
+                                        BWL.Services.SystemProfileService
+                                                .LogonAsync(account, cbk,
+                                                        errCbk);
+                                    } catch (err) {
+                                        errCbk(err)
+                                    }
+                                },
+                                logoffAsync : function (cbk) {
+                                    BWL.Services.SystemProfileService
+                                            .LogoffAsync(cbk);
+                                },
+                                getDomainProfile : function () {
+                                    return BWL.Profile
+                                            || angular
+                                                    .copy(BWL.Model['DomainProfile']);
+                                },
+                                setDomainProfile : function (profile) {
+                                    BWL.Profile = null;
+                                },
+                                getAccountProfile : function () {
+                                    return (BWL.Profile !== null ? BWL.Profile.AccountProfile
+                                            : BWL.Profile)
+                                            || angular
+                                                    .copy(BWL.Model['AccountProfile']);
+                                },
+                                loadAuthProviders : function (cbk, errCbk) {console.log(cbk)
+                                    BWL.Services.oAuthService
+                                            .ListAuthProvidersAsync(cbk, errCbk);
+                                },
+                                isDomainProfileReady : function () {
+                                    return (this.getDomainProfile() !== null
+                                            && angular.isDefined(this
+                                                    .getDomainProfile().Key) && this
+                                            .getDomainProfile().Key !== null)
+                                }
+                            }
+                        }]);
 
 // permission service
 azureTicketsApp.factory('permService', [

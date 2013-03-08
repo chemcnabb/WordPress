@@ -3,18 +3,20 @@
 describe('Controller: adminController', function () {
     var adminController, $scope = null;
 
-    // load the controller's module
-    beforeEach(module('azureTicketsApp'));
-
     // initialize
-    beforeEach(inject(function ($rootScope, $controller, authService) {
-        $scope = $rootScope.$new();
+    beforeEach(function () {
+        module('azureTicketsApp');
 
-        adminController = $controller('adminController', {
-            $scope : $scope,
-            authService : authService
+        inject(function ($rootScope, $controller, authService, configService) {
+            $scope = $rootScope.$new();
+
+            adminController = $controller('adminController', {
+                $scope : $scope,
+                authService : authService,
+                configService : configService
+            });
         });
-    }));
+    });
 
     it('should initialize properly', function () {
         expect($scope.config).toBeDefined();

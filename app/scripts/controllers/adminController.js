@@ -12,8 +12,7 @@ function adminController ($scope, configService, authService, permService) {
 
     $scope.init = function () {
         $scope.loginErr = null;
-
-        authService.loadProfileAsync(configService.clientKey, function () {
+        authService.authenticate(function () {
             $scope.DomainProfile = authService.getDomainProfile();
 
             if (!$scope.$$phase)
@@ -29,6 +28,8 @@ function adminController ($scope, configService, authService, permService) {
 
             if (!$scope.$$phase)
                 $scope.$apply()
+        }, function (err) {
+
         })
     }
 
