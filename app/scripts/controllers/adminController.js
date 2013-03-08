@@ -8,8 +8,11 @@ function adminController ($scope, configService, authService, permService) {
      * @todo inject models, using array of strings maybe.
      */
     $scope.DomainProfile = authService.getDomainProfile();
+    $scope.AccountProfile = authService.getAccountProfile();
 
     $scope.init = function () {
+        $scope.loginErr = null;
+
         authService.loadProfileAsync(configService.clientKey, function () {
             $scope.DomainProfile = authService.getDomainProfile();
 

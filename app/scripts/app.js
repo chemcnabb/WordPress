@@ -3,49 +3,41 @@
 var azureTicketsApp = angular.module('azureTicketsApp', ['ui']);
 
 // routes
-azureTicketsApp
-        .config([
-                '$routeProvider',
-                function ($routeProvider) {
-                    $routeProvider
-                            .when('/admin', {
-                                templateUrl : 'views/admin.html',
-                                controller : adminController
-                            })
-                            .when(
-                                    '/auth/logoff',
-                                    {
-                                        controller : adminController,
-                                        templateUrl : 'views/admin.html',
-                                        resolve : {
-                                            logoff : [
-                                                    'authService',
-                                                    '$rootScope',
-                                                    '$location',
-                                                    function (authService,
-                                                            $rootScope,
-                                                            $location) {
-                                                        authService
-                                                                .logoffAsync(function () {
-                                                                    authService
-                                                                            .setDomainProfile(null);
-                                                                    $location
-                                                                            .path('/admin');
-                                                                    $rootScope
-                                                                            .$digest();
-                                                                });
-                                                    }]
-                                        }
-                                    }).when('/front', {
-                                templateUrl : 'views/front.html',
-                                controller : frontController
-                            }).otherwise({
-                                redirectTo : '/'
-                            }).when('/admin/store', {
-                                templateUrl : 'views/store.html',
-                                controller : storeController
-                            });
-                }]);
+azureTicketsApp.config([
+        '$routeProvider',
+        function ($routeProvider) {
+            $routeProvider.when('/admin', {
+                templateUrl : 'views/admin.html',
+                controller : adminController
+            }).when(
+                    '/auth/logoff',
+                    {
+                        controller : adminController,
+                        templateUrl : 'views/admin.html',
+                        resolve : {
+                            logoff : [
+                                    'authService',
+                                    '$rootScope',
+                                    '$location',
+                                    function (authService, $rootScope,
+                                            $location) {
+                                        authService.logoffAsync(function () {
+                                            authService.setDomainProfile(null);
+                                            $location.path('/admin');
+                                            $rootScope.$digest();
+                                        });
+                                    }]
+                        }
+                    }).when('/front', {
+                templateUrl : 'views/front.html',
+                controller : frontController
+            }).otherwise({
+                redirectTo : '/'
+            }).when('/admin/store', {
+                templateUrl : 'views/store.html',
+                controller : storeController
+            });
+        }]);
 
 // services
 azureTicketsApp.factory('configService', function () {
@@ -94,7 +86,8 @@ azureTicketsApp.factory('authService', function () {
             BWL.Profile = null;
         },
         getAccountProfile : function () {
-            return BWL.Profile.AccountProfile
+            return (BWL.Profile !== null ? BWL.Profile.AccountProfile
+                    : BWL.Profile)
                     || angular.copy(BWL.Model['AccountProfile']);
         },
         loadAuthProviders : function (cbk) {
