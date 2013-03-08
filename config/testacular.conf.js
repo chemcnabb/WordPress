@@ -8,7 +8,7 @@ files = [JASMINE, JASMINE_ADAPTER, '../app/components/angular/angular.js',
         '../app/components/angular-ui/build/angular-ui.js',
         '../app/components/angular-mocks/angular-mocks.js',
         '../app/components/angular-resource/angular-resource.js',
-        '../app/components/easyXDM/easyXDM.js', '../app/scripts/**/*.js',
+        '../app/components/easyXDM/easyXDM.js', '../dist/scripts/**/*.js',
         '../test/spec/**/*.js'];
 
 // list of files to exclude

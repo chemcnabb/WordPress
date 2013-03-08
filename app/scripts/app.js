@@ -118,7 +118,7 @@ azureTicketsApp
                                             || angular
                                                     .copy(BWL.Model['AccountProfile']);
                                 },
-                                loadAuthProviders : function (cbk, errCbk) {console.log(cbk)
+                                loadAuthProviders : function (cbk, errCbk) {
                                     BWL.Services.oAuthService
                                             .ListAuthProvidersAsync(cbk, errCbk);
                                 },

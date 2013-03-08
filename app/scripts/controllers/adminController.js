@@ -30,7 +30,7 @@ function adminController ($scope, configService, authService, permService) {
                 $scope.$apply()
         }, function (err) {
 
-        })
+        });
     }
 
     $scope.login = function (provider) {
