@@ -1,6 +1,6 @@
 function storeController ($scope, configService, authService, permService,
         storeService) {
-    $scope.config = configService, $scope.name = 'store';
+    $scope.config = configService, $scope.name = 'store', $scope.stores = [];
 
     /**
      * models in play here.
@@ -11,11 +11,19 @@ function storeController ($scope, configService, authService, permService,
     $scope.Store = storeService.getStore();
 
     $scope.init = function () {
-        storeService.listStoresAsync(1, function () {
-            $scope.Store = storeService.getStore();
+        storeService.listStoresAsync(2, function () {
+            $scope.stores = storeService.getStores();
 
-            if (!$scope.$$phase)
-                $scope.$apply()
+            // @todo Justin, is client able to set multiple stores?
+            // DomainProfile should have new boolean prop?
+            if (!configService.multipleStores) {
+                storeService.initStore($scope.stores[0].Key, function (store) {
+                    $scope.Store = store;
+
+                    if (!$scope.$$phase)
+                        $scope.$apply()
+                });
+            }
         }, function (err) {
 
         });

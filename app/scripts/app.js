@@ -43,7 +43,8 @@ azureTicketsApp.config([
 azureTicketsApp.factory('configService', function () {
     return {
         appName : '<%= at.name %>',
-        clientKey : 'b31e42d6-9205-417d-a2d9-366abc7d5046'
+        clientKey : 'b31e42d6-9205-417d-a2d9-366abc7d5046',
+        multipleStores : false
     }
 });
 
@@ -126,21 +127,32 @@ azureTicketsApp.factory('permService', [
 
 // store service
 azureTicketsApp.factory('storeService', function () {
-    var _store = null;
+    var _stores = null;
 
     return {
         listStoresAsync : function (levels, cbk, errCbk) {
-            BWL.Services.StoreService.ListStoresAsync(levels, function (store) {
-                if (angular.isDefined(store.Key))
-                    _store = store;
-                cbk();
-            }, errCbk);
+            BWL.Services.StoreService.ListStoresAsync(levels,
+                    function (stores) {
+                        _stores = stores;
+                        cbk();
+                    }, errCbk);
 
         },
-        getStore : function () {
-            return _store || BWL.Store || angular.copy(BWL.Model['Store']);
-            ;
+        getStores : function () {
+            return _stores;
         },
+        getStore : function () {
+            return BWL.Store || angular.copy(BWL.Model['Store']);
+        },
+        initStore : function (storeKey, cbk) {
+            BWL.Services.ModelService.ReadAsync(storeKey, "Store", storeKey,
+                    10, function (store) {
+                        BWL.Services.GeoService.ReadCurrencyAsync(
+                                store.Currency, function (currency) {
+                                    cbk(store);
+                                });
+                    });
+        }
     }
 });
 
