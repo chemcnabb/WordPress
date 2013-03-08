@@ -1,7 +1,7 @@
 <div class="navbar">
 	<div class="navbar-inner">
 		<a class="brand" href="#/admin">{{config.appName}}</a>
-		<ul class="nav" ng-show="AccountProfile.Key || false">
+		<ul class="nav" ng-show="DomainProfile.Key || false">
 			<li><a href="#/admin/store">{{ 'Common.Text_Store' | t }}</a></li>
 			<li><a href="#/admin/venue">{{ 'Common.Text_VenueMenu_Venue'
 					| t }}</a></li>
@@ -13,9 +13,9 @@
 					'Common.Text_OrdersMenu_Orders' | t }}</a></li>
 		</ul>
 		<div class="pull-right">
-			<a href="#/auth/logoff" ng-show="AccountProfile.Key || false"
+			<a href="#/auth/logoff" ng-show="DomainProfile.Key || false"
 				class="btn">{{ 'Login.labelLogOff' | t }}</a> <a href="#/admin"
-				ng-hide="AccountProfile.Key || false" class="btn">{{
+				ng-hide="DomainProfile.Key || false" class="btn">{{
 				'Login.labelLogin' | t }}</a>
 		</div>
 	</div>

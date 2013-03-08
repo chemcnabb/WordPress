@@ -7,11 +7,11 @@ function adminController ($scope, configService, authService, permService) {
      * 
      * @todo inject models, using array of strings maybe.
      */
-    $scope.AccountProfile = authService.getProfile();
+    $scope.DomainProfile = authService.getDomainProfile();
 
     $scope.init = function () {
         authService.loadProfileAsync(configService.clientKey, function () {
-            $scope.AccountProfile = authService.getProfile();
+            $scope.DomainProfile = authService.getDomainProfile();
 
             if (!$scope.$$phase)
                 $scope.$apply()
@@ -33,7 +33,7 @@ function adminController ($scope, configService, authService, permService) {
         if (angular.isDefined(provider) && angular.isString(provider)) {
             // login by provider
             authService.logonByProviderAsync(provider, function () {
-                $scope.AccountProfile = authService.getProfile();
+                $scope.DomainProfile = authService.getDomainProfile();
 
                 if (!$scope.$$phase)
                     $scope.$apply()
@@ -50,7 +50,7 @@ function adminController ($scope, configService, authService, permService) {
                 PasswordHash : BWL.oAuth
                         .HashPassword($scope.AccountProfile.PasswordHash)
             }, function () {
-                $scope.AccountProfile = authService.getProfile();
+                $scope.DomainProfile = authService.getDomainProfile();
 
                 if (!$scope.$$phase)
                     $scope.$apply()

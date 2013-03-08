@@ -3,31 +3,49 @@
 var azureTicketsApp = angular.module('azureTicketsApp', ['ui']);
 
 // routes
-azureTicketsApp.config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/admin', {
-        templateUrl : 'views/admin.html',
-        controller : adminController
-    }).when('/auth/logoff', {
-        controller : adminController,
-        templateUrl : 'views/admin.html',
-        resolve : {
-            logoff : ['authService', function (authService) {
-                authService.logoffAsync(function () {
-                    authService.setProfile(null);
-                    location.href = '/#/admin';
-                });
-            }]
-        }
-    }).when('/front', {
-        templateUrl : 'views/front.html',
-        controller : frontController
-    }).otherwise({
-        redirectTo : '/'
-    }).when('/admin/store', {
-        templateUrl : 'views/store.html',
-        controller : storeController
-    });
-}]);
+azureTicketsApp
+        .config([
+                '$routeProvider',
+                function ($routeProvider) {
+                    $routeProvider
+                            .when('/admin', {
+                                templateUrl : 'views/admin.html',
+                                controller : adminController
+                            })
+                            .when(
+                                    '/auth/logoff',
+                                    {
+                                        controller : adminController,
+                                        templateUrl : 'views/admin.html',
+                                        resolve : {
+                                            logoff : [
+                                                    'authService',
+                                                    '$rootScope',
+                                                    '$location',
+                                                    function (authService,
+                                                            $rootScope,
+                                                            $location) {
+                                                        authService
+                                                                .logoffAsync(function () {
+                                                                    authService
+                                                                            .setDomainProfile(null);
+                                                                    $location
+                                                                            .path('/admin');
+                                                                    $rootScope
+                                                                            .$digest();
+                                                                });
+                                                    }]
+                                        }
+                                    }).when('/front', {
+                                templateUrl : 'views/front.html',
+                                controller : frontController
+                            }).otherwise({
+                                redirectTo : '/'
+                            }).when('/admin/store', {
+                                templateUrl : 'views/store.html',
+                                controller : storeController
+                            });
+                }]);
 
 // services
 azureTicketsApp.factory('configService', function () {
@@ -39,7 +57,6 @@ azureTicketsApp.factory('configService', function () {
 
 // authentication service
 azureTicketsApp.factory('authService', function () {
-    var _profile = null;
     var _clientKey = null;
 
     return {
@@ -53,7 +70,6 @@ azureTicketsApp.factory('authService', function () {
             BWL.Services.SystemProfileService.GetProfileAsync(5, function (
                     profile) {
                 if (profile.DomainProfileId !== 0) {
-                    _profile = profile;
                     cbk();
                 } else {
                     BWL.oAuth.LogonAsync(provider, cbk, errCbk);
@@ -71,29 +87,49 @@ azureTicketsApp.factory('authService', function () {
         logoffAsync : function (cbk) {
             BWL.Services.SystemProfileService.LogoffAsync(cbk);
         },
-        getProfile : function () {
-            return _profile || BWL.Profile
-                    || angular.copy(BWL.Model['AccountProfile']);
+        getDomainProfile : function () {
+            return BWL.Profile || angular.copy(BWL.Model['DomainProfile']);
         },
-        setProfile : function (profile) {
-            _profile = null;
+        setDomainProfile : function (profile) {
+            BWL.Profile = null;
+        },
+        getAccountProfile : function () {
+            return BWL.Profile.AccountProfile
+                    || angular.copy(BWL.Model['AccountProfile']);
         },
         loadAuthProviders : function (cbk) {
             BWL.Services.oAuthService.ListAuthProvidersAsync(cbk);
         },
-        isLogged : function () {
-            return _profile !== null && angular.isDefined(_profile.Key)
-                    && _profile.Key !== null
+        isAccountProfileLogged : function () {
+            return (this.getDomainProfile() !== null
+                    && angular.isDefined(this.getDomainProfile().Key) && this
+                    .getDomainProfile().Key !== null)
         }
     }
 });
 
 // permission service
-azureTicketsApp.factory('permService', function () {
-    return {
+azureTicketsApp.factory('permService', [
+        'authService',
+        function (authService) {
+            return {
+                canRead : function (model) {
+                    if (angular.isDefined(model.Type)
+                            && angular.isDefined(BWL.ModelMeta[model.Type])) {
+                        var m = BWL.ModelMeta[model];
 
-    }
-});
+                        if (m.__perms.Read === 0)
+                            return true;
+
+                        var p = authService.getDomainProfile();
+
+                        return p.ProfileRole >= m.__perms.Read;
+                    }
+
+                    return false;
+                }
+            }
+        }]);
 
 // store service
 azureTicketsApp.factory('storeService', function () {

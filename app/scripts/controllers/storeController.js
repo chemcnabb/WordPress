@@ -7,7 +7,7 @@ function storeController ($scope, configService, authService, permService,
      * 
      * @todo inject models, using array of strings maybe.
      */
-    $scope.AccountProfile = authService.getProfile();
+    $scope.DomainProfile = authService.getDomainProfile();
     $scope.Store = storeService.getStore();
 
     $scope.init = function () {

@@ -1,20 +1,31 @@
 'use strict';
 
 describe('Controller: adminController', function () {
-	// load the controller's module
-	beforeEach(module('azureTicketsApp'));
+    var adminController, $scope = null;
 
-	var adminController, scope;
+    // load the controller's module
+    beforeEach(module('azureTicketsApp'));
 
-	// Initialize the controller and a mock scope
-	beforeEach(inject(function ($controller) {
-		scope = {};
-		adminController = $controller('adminController', {
-			$scope : scope
-		});
-	}));
+    // initialize
+    beforeEach(inject(function ($rootScope, $controller, authService) {
+        $scope = $rootScope.$new();
 
-	it('should initialize properly', function () {
-		expect(scope.config).toBeDefined();
-	});
+        adminController = $controller('adminController', {
+            $scope : $scope,
+            authService : authService
+        });
+    }));
+
+    it('should initialize properly', function () {
+        expect($scope.config).toBeDefined();
+        expect($scope.AccountProfile.Key).toBeNull();
+    });
+
+    it('should be able to retrieve auth providers', function () {
+        $scope.loadAuthProviders();
+
+        waitsFor(function () {
+            return $scope.authProviders.length > 0;
+        }, 'auth providers not retrieved', 6000);
+    });
 });
