@@ -124,6 +124,16 @@ azureTicketsApp
                                                         }
                                                     }, errCbk)
                                 },
+                                registerAsync : function (account, cbk, errCbk) {
+                                    try {
+                                        // request level 20 perms, this is for store owners perms
+                                        BWL.Services.SystemProfileService
+                                                .RegisterAsync(20, account, cbk,
+                                                        errCbk);
+                                    } catch (err) {
+                                        errCbk(err)
+                                    }
+                                },
                                 logonAsync : function (account, cbk, errCbk) {
                                     try {
                                         BWL.Services.SystemProfileService
@@ -145,12 +155,13 @@ azureTicketsApp
                                 setDomainProfile : function (profile) {
                                     BWL.Profile = null;
                                 },
-                                getAccountProfile : function () {
-                                    return (BWL.Profile !== null ? BWL.Profile.AccountProfile
-                                            : BWL.Profile)
-                                            || angular
-                                                    .copy(BWL.Model['AccountProfile']);
-                                },
+                                // AccountProfile is just a container for logon and register of Accounts
+                                //getAccountProfile : function () {
+                                //    return (BWL.Profile !== null ? BWL.Profile.AccountProfile
+                                //            : BWL.Profile)
+                                //            || angular
+                                //                    .copy(BWL.Model['AccountProfile']);
+                                //},
                                 loadAuthProviders : function (cbk, errCbk) {
                                     BWL.Services.oAuthService
                                             .ListAuthProvidersAsync(cbk, errCbk);

@@ -11,9 +11,9 @@ describe('Controller: adminController', function () {
             scope = $rootScope.$new();
 
             ctrl = $controller(adminController, {
-                $scope : scope,
-                authService : authService,
-                configService : configService
+                $scope: scope,
+                authService: authService,
+                configService: configService
             });
         });
     });
@@ -21,7 +21,8 @@ describe('Controller: adminController', function () {
     iit('should initialize properly', function () {
         expect(scope.config).toBeDefined();
         expect(scope.DomainProfile.Key).toBeNull();
-        expect(scope.AccountProfile.Key).toBeNull();
+        // JJHL: We don't handel accounts like this
+        //expect(scope.AccountProfile.Key).toBeNull();
     });
 
     iit('should be able to retrieve auth providers', function () {
@@ -32,9 +33,28 @@ describe('Controller: adminController', function () {
         }, 'auth providers not retrieved', 6000);
     });
 
+    iit('should be able register a test account', function () {
+        var email = "testaccount" + new Date().getTime() + "@azuretickets.com";
+        scope.tmpAccountRegister = { FullName:'Test Account', Email: email, Password: '121212', ConfirmPassword: '121212' }
+
+        scope.register();
+
+        // check for any validation errors, right now only check is password not matching
+        waitsFor(function () {
+            return scope.registerErr == null;
+        }, 'failed with error: ' + scope.registerErr, 500);
+
+        waitsFor(function () {
+            return scope.registerMsg !== null;
+        }, 'cannot register test account', 6000);
+
+        // @todo
+        // for more code coverage, we should be causing it to fail as a test and confirm it did fail
+        // for example registering the same account or passwords not matching
+    });
+
     iit('should be able to login using test account', function () {
-        scope.AccountProfile.Email = 'nfiglesias@gmail.com';
-        scope.AccountProfile.PasswordHash = '121212';
+        scope.tmpAccountLogin = { Email: 'nfiglesias@gmail.com', Password: '121212' }
 
         scope.login();
 
@@ -42,4 +62,5 @@ describe('Controller: adminController', function () {
             return scope.DomainProfile.Key !== null;
         }, 'cannot login using test account', 6000);
     });
+
 });

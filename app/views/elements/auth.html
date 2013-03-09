@@ -11,21 +11,55 @@
 			</div>
 		</div>
 		<div class="span6">
-			<!-- membership login -->
-			<p>{{ 'Login.labelMyAccount' | t }}</p>
-			<form name="atAccountProfile" ng-submit="login()">
+            			<!-- membership login -->
+			<p>{{ 'Login.labelDialogTitle' | t }}</p>
+			<form name="atAccountLogon">
 				<dl>
 					<dd>
-						<atfield ng-required="true" class="input-xlarge"
-							ng-model="AccountProfile.Email" />
+                        <label>{{ 'Login.labelEmail' | t }}</label>
+						<input type="text" ng-required="true" class="input-xlarge"
+							ng-model="tmpAccountLogin.Email" />
 					</dd>
 					<dd>
-						<atfield ng-required="true" class="input-xlarge"
-							ng-model="AccountProfile.PasswordHash" />
+                        <label>{{ 'Login.labelPassword' | t }}</label>
+						<input type="password" ng-required="true" class="input-xlarge"
+							ng-model="tmpAccountLogin.Password" />
 					</dd>
 					<dd>
-						<button type="submit" class="btn btn-primary clear">{{
+						<button type="submit" class="btn btn-primary clear" ng-click="login()">{{
 							'Login.labelLogin' | t }}</button>
+					</dd>
+				</dl>
+			</form>
+			<!-- membership register -->
+			<p>{{ 'Login.labelNewMemberRegister' | t }}</p>
+			<form name="atAccountRegister">
+				<dl>
+					<dd>
+                        <label>{{ 'Login.labelFullname' | t }}</label>
+						<input type="text" ng-required="true" class="input-xlarge"
+							ng-model="tmpAccountRegister.FullName" />
+					</dd>
+					<dd>
+                        <label>{{ 'Login.labelEmail' | t }}</label>
+						<input type="text" ng-required="true" class="input-xlarge"
+							ng-model="tmpAccountRegister.Email" />
+					</dd>
+					<dd>
+                        <label>{{ 'Login.labelPassword' | t }}</label>
+						<input type="password" ng-required="true" class="input-xlarge"
+							ng-model="tmpAccountRegister.Password" />
+					</dd>
+					<dd>
+                        <label>{{ 'Login.labelConfirmPassword' | t }}</label>
+						<input type="password" ng-required="true" class="input-xlarge"
+                            ng-model="tmpAccountRegister.ConfirmPassword" />
+					</dd>
+					<dd>
+                    	<div class="alert alert-success" ng-show="registerMsg || false">{{registerMsg}}</div>
+                    	<div class="alert alert-error" ng-show="registerErr || false">{{registerErr}}</div>
+						<button type="submit" class="btn btn-primary clear" ng-click="register()">{{
+							'Login.labelRegisterNow' | t }}</button>
 					</dd>
 				</dl>
 			</form>
