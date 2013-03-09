@@ -100,6 +100,10 @@ module.exports = function (grunt) {
                     unit : {
                         configFile : atConfig.config + '/testacular.conf.js',
                         singleRun : true
+                    },
+                    continuous : {
+                        configFile : atConfig.config + '/testacular.conf.js',
+                        autoWatch : true
                     }
                 },
                 concat : {

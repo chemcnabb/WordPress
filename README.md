@@ -21,6 +21,8 @@ Once you checkout this repository, you should be able to do
 npm install && bower install
 ``
 
+> There is an issue while installing *es5-shim* package in Windows, so if you get an error while running *bower*, comment out the line in *components.json* and install the package manually in *./components/es5-shim*. You can clone https://github.com/kriskowal/es5-shim.git
+
 The above command will load all required libraries and components from either *node* and *bower* repositories.
 Afterwards, use the *grunt* command to build or execute the tasks available for the build process.
 

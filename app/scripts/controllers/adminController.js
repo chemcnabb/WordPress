@@ -12,6 +12,9 @@ function adminController ($scope, configService, authService, permService) {
 
     $scope.init = function () {
         $scope.loginErr = null;
+
+        // @todo this should be done widely from a base controller before any
+        // other action
         authService.authenticate(function () {
             $scope.DomainProfile = authService.getDomainProfile();
 

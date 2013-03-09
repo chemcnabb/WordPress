@@ -23,9 +23,9 @@ describe('Controller: adminController', function () {
         expect(scope.DomainProfile.Key).toBeNull();
     });
 
-    it('should be able to retrieve auth providers', function () {
+    iit('should be able to retrieve auth providers', function () {
         scope.loadAuthProviders();
-
+        
         waitsFor(function () {
             return scope.authProviders.length > 0;
         }, 'auth providers not retrieved', 6000);
