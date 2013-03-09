@@ -222,8 +222,8 @@ module.exports = function (grunt) {
             'connect:test', 'testacular']);
 
     grunt.registerTask('build', ['clean:dist', /* 'jshint', */
-    'test', 'useminPrepare', 'cssmin', 'htmlmin', 'concat', 'copy', 'cdnify',
-            'usemin', 'ngmin', 'uglify']);
+    'test:unit', 'useminPrepare', 'cssmin', 'htmlmin', 'concat', 'copy',
+            'cdnify', 'usemin', 'ngmin', 'uglify']);
 
     grunt.registerTask('wp', ['build', 'compress:wordpress']);
 
