@@ -11,33 +11,30 @@ function storeController ($scope, configService, authService, permService,
     $scope.Store = storeService.getStore();
 
     $scope.init = function () {
-        var _init = function () {
-            storeService.listStoresAsync(2, function () {
+        authService.authenticate($scope, function () {
+            storeService.listStoresAsync(1, function (s) {
                 $scope.stores = storeService.getStores();
 
-                // @todo Justin, is client able to set multiple stores?
-                // DomainProfile should have new boolean prop?
-                if (!configService.multipleStores
-                        && $scope.stores[0].Key !== null) {
-                    storeService.initStore($scope.stores[0].Key, function (
-                            store) {
-                        $scope.Store = store;
+                if (storeService.hasStore()) {
+                    // @todo Justin, is client able to set multiple stores?
+                    // DomainProfile should have new boolean prop?
+                    if (!configService.multipleStores
+                            && $scope.stores[0].Key !== null) {
+                        storeService.initStore($scope.stores[0].Key, function (
+                                store) {
+                            $scope.Store = store;
 
-                        if (!$scope.$$phase)
-                            $scope.$apply()
-                    });
+                            if (!$scope.$$phase)
+                                $scope.$apply()
+                        });
+                    }
+                } else {
+                    // no store, proceed to create wizard
+
                 }
             }, function (err) {
 
             });
-        }
-
-        // checks whether profile has been initialized or have to manually do it
-        authService.authenticate(function () {
-            $scope.DomainProfile = authService.getDomainProfile();
-            _init();
-        }, function (err) {
-
         });
     }
 }

@@ -219,11 +219,13 @@ module.exports = function (grunt) {
             'connect:livereload', 'open', 'watch']);
 
     grunt.registerTask('test', ['clean:server', 'less', 'concat',
-            'connect:test', 'testacular']);
+            'connect:test', 'testacular:unit']);
+    grunt.registerTask('test:continuous', ['clean:server', 'less', 'concat',
+                                'connect:test', 'testacular:continuous']);
 
     grunt.registerTask('build', ['clean:dist', /* 'jshint', */
-    'test:unit', 'useminPrepare', 'cssmin', 'htmlmin', 'concat', 'copy',
-            'cdnify', 'usemin', 'ngmin', 'uglify']);
+    'test', 'useminPrepare', 'cssmin', 'htmlmin', 'concat', 'copy', 'cdnify',
+            'usemin', 'ngmin', 'uglify']);
 
     grunt.registerTask('wp', ['build', 'compress:wordpress']);
 

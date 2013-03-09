@@ -40,6 +40,8 @@ azureTicketsApp.config([
         }]);
 
 // services
+
+// config service
 azureTicketsApp.factory('configService', function () {
     return {
         appName : '<%= at.name %>',
@@ -58,13 +60,44 @@ azureTicketsApp
                             var _clientKey = null;
 
                             return {
-                                authenticate : function (cbk, errCbk) {
+                                /**
+                                 * Authenticate user
+                                 * 
+                                 * @param {object}
+                                 *            $scope We're authenticating on the
+                                 *            scope of a controller.
+                                 * @param {function}
+                                 *            cbk Executes on success.
+                                 * @param {function}
+                                 *            errCbk Executes on error.
+                                 * @returns
+                                 */
+                                authenticate : function ($scope, cbk, errCbk) {
+                                    var _this = this;
+
                                     if (!this.isDomainProfileReady()) {
-                                        this.loadProfileAsync(
-                                                configService.clientKey, cbk,
-                                                errCbk);
+                                        this
+                                                .loadProfileAsync(
+                                                        configService.clientKey,
+                                                        function () {
+                                                            $scope.DomainProfile = _this
+                                                                    .getDomainProfile();
+
+                                                            if (!$scope.$$phase)
+                                                                $scope.$apply()
+
+                                                            if (angular
+                                                                    .isFunction(cbk))
+                                                                cbk();
+                                                        },
+                                                        function (err) {
+                                                            if (angular
+                                                                    .isFunction(errCbk))
+                                                                errCbk(err);
+                                                        });
                                     } else {
-                                        cbk();
+                                        if (angular.isFunction(cbk))
+                                            cbk();
                                     }
                                 },
                                 loadProfileAsync : function (clientKey, cbk,
@@ -167,6 +200,10 @@ azureTicketsApp.factory('storeService', function () {
                     }, errCbk);
 
         },
+        hasStore : function () {
+            return _stores !== null && angular.isObject(_stores[0])
+                    && _stores[0].Key !== null
+        },
         getStores : function () {
             return _stores;
         },
@@ -214,8 +251,8 @@ azureTicketsApp.filter('t', [
 // directives
 
 /**
- * This directive will attach the field to a model applied to the rules defined
- * in modelsmeta.js .
+ * This directive will generate a HTML form field following type definition
+ * rules from modelsmeta.js.
  */
 azureTicketsApp
         .directive(

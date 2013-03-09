@@ -12,17 +12,7 @@ function adminController ($scope, configService, authService, permService) {
 
     $scope.init = function () {
         $scope.loginErr = null;
-
-        // @todo this should be done widely from a base controller before any
-        // other action
-        authService.authenticate(function () {
-            $scope.DomainProfile = authService.getDomainProfile();
-
-            if (!$scope.$$phase)
-                $scope.$apply()
-        }, function (err) {
-
-        });
+        authService.authenticate($scope);
     }
 
     $scope.loadAuthProviders = function () {
@@ -57,10 +47,7 @@ function adminController ($scope, configService, authService, permService) {
                 PasswordHash : BWL.oAuth
                         .HashPassword($scope.AccountProfile.PasswordHash)
             }, function () {
-                $scope.DomainProfile = authService.getDomainProfile();
-
-                if (!$scope.$$phase)
-                    $scope.$apply()
+                authService.authenticate($scope);
             }, function (err) {
                 $scope.loginErr = err;
 
