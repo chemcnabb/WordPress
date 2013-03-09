@@ -341,6 +341,9 @@ azureTicketsApp
                                     }
 
                                     // define new element attributes
+                                    for (p in _attr) {
+                                        _el.attr(p, _attr[p]);
+                                    }
                                     for (p in $attrs) {
                                         if (angular.isString($attrs[p])
                                                 && ['ngModel', 'ngRequired']
@@ -349,16 +352,14 @@ azureTicketsApp
                                                     /^([a-z]+)([A-Z]+)(\w+)$/g,
                                                     '$1-$2$3').toLowerCase();
 
-                                            _el
-                                                    .attr(
-                                                            p,
-                                                            angular
-                                                                    .isDefined($attrs[p]) ? $attrs[p]
-                                                                    : '');
+                                            var v = $scope.$eval($attrs[p]) !== 0 ? $scope
+                                                    .$eval($attrs[p])
+                                                    : $attrs[p]
+
+                                            _el.attr(p,
+                                                    angular.isDefined(v) ? v
+                                                            : '');
                                         }
-                                    }
-                                    for (p in _attr) {
-                                        _el.attr(p, _attr[p]);
                                     }
 
                                     // make new element available
