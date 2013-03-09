@@ -124,6 +124,17 @@ azureTicketsApp
                                                         }
                                                     }, errCbk)
                                 },
+                                registerAsync : function (account, cbk, errCbk) {
+                                    try {
+                                        // request level 20 perms, this is for
+                                        // store owners perms
+                                        BWL.Services.SystemProfileService
+                                                .RegisterAsync(20, account,
+                                                        cbk, errCbk);
+                                    } catch (err) {
+                                        errCbk(err)
+                                    }
+                                },
                                 logonAsync : function (account, cbk, errCbk) {
                                     try {
                                         BWL.Services.SystemProfileService
@@ -146,10 +157,22 @@ azureTicketsApp
                                     BWL.Profile = null;
                                 },
                                 getAccountProfile : function () {
-                                    return (BWL.Profile !== null ? BWL.Profile.AccountProfile
+                                    var o = (BWL.Profile !== null ? BWL.Profile.AccountProfile
                                             : BWL.Profile)
                                             || angular
                                                     .copy(BWL.Model['AccountProfile']);
+                                    // one exception where we modify modelsmeta
+                                    // to hold a tmp field
+                                    o.Password = angular.isDefined(o.Password) ? o.Password
+                                            : null;
+                                    o.ConfirmPassword = angular
+                                            .isDefined(o.ConfirmPassword) ? o.ConfirmPassword
+                                            : null;
+                                    BWL.ModelMeta.AccountProfile.Password = angular
+                                            .copy(BWL.ModelMeta.AccountProfile.PasswordHash);
+                                    BWL.ModelMeta.AccountProfile.ConfirmPassword = angular
+                                            .copy(BWL.ModelMeta.AccountProfile.Password);
+                                    return o;
                                 },
                                 loadAuthProviders : function (cbk, errCbk) {
                                     BWL.Services.oAuthService
@@ -264,12 +287,18 @@ azureTicketsApp
                                 restrict : 'E',
                                 scope : {
                                     atModel : '=ngModel',
-                                    atLabel : '=label'
+                                    atLabel : '=label',
+                                    atChange : '=ngChange'
                                 },
                                 link : function ($scope, $element, $attrs) {
                                     var m = $attrs.ngModel.split('.')[0];
                                     var f = $attrs.ngModel.split('.')[1];
-                                    var fieldType = BWL.ModelMeta[m][f];
+                                    var copyOf = angular
+                                            .isDefined($attrs.atCopy) ? BWL.ModelMeta[$attrs.atCopy]
+                                            : null
+                                    var fieldType = angular
+                                            .isDefined(BWL.ModelMeta[m]) ? BWL.ModelMeta[m][f]
+                                            : copyOf[f];
                                     var _el, _label = null;
                                     var _attr = {
                                         placeholder : f,
@@ -297,14 +326,8 @@ azureTicketsApp
                                                 : 'password',
                                                 _el = jQuery('<input ' + _req
                                                         + '/>');
-                                        if (_label !== null)
-                                            _label.addClass('pull-left');
-
                                     } else if (/^(?:Text)/g.test(fieldType)) {
                                         _el = jQuery('<textarea />');
-                                        if (_label !== null)
-                                            _label.addClass('pull-left');
-
                                     } else if (/^Int/g.test(fieldType)) {
                                         _attr.type = 'number',
                                                 _el = jQuery('<input ' + _req
@@ -321,9 +344,6 @@ azureTicketsApp
                                         _attr.type = 'text',
                                                 _el = jQuery('<input />');
                                         _el.attr('ui-date', true);
-
-                                        if (_label !== null)
-                                            _label.addClass('pull-right');
                                     } else if (/^.*Enum(?=\b).*$/g
                                             .test(fieldType)) {
                                         _el = jQuery('<select />');
@@ -346,17 +366,19 @@ azureTicketsApp
                                     }
                                     for (p in $attrs) {
                                         if (angular.isString($attrs[p])
-                                                && ['ngModel', 'ngRequired']
+                                                && ['ngModel', 'ngRequired',
+                                                        'ngChange',
+                                                        'uiValidate',
+                                                        'uiValidateWatch']
                                                         .indexOf(p) === -1) {
-                                            p = p.replace(
-                                                    /^([a-z]+)([A-Z]+)(\w+)$/g,
-                                                    '$1-$2$3').toLowerCase();
+                                            var pp = p.replace(/([A-Z]+)/g,
+                                                    '-$1').toLowerCase();
 
                                             var v = $scope.$eval($attrs[p]) !== 0 ? $scope
                                                     .$eval($attrs[p])
                                                     : $attrs[p]
 
-                                            _el.attr(p,
+                                            _el.attr(pp,
                                                     angular.isDefined(v) ? v
                                                             : '');
                                         }
@@ -364,12 +386,11 @@ azureTicketsApp
 
                                     // make new element available
                                     _el.attr('ng-model', 'atModel');
+                                    $element.append(_label).append(_el);
 
                                     if (_label !== null)
                                         $compile(_label)($scope);
                                     $compile(_el)($scope);
-
-                                    $element.append(_el).append(_label);
                                 }
                             }
                         }]);

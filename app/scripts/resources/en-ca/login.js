@@ -37,6 +37,7 @@ var LoginResources = {
     'labelFullname': 'Full Name',
     'labelUsername': 'User Name',
     'labelConfirmPassword': 'Confirm Password',
+    'labelConfirmPasswordFail': 'Passwords do not match',
     'labelReEnterPassword': 'Re-enter Password',
     'labelRegisterNow': 'Register Now',
     'Text_AccountUpdatedSuccessfully': 'Your Account information <br/>has been updated successfully',

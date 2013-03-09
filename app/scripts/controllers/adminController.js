@@ -1,6 +1,8 @@
 function adminController ($scope, configService, authService, permService) {
     $scope.config = configService, $scope.authProviders = [],
-            $scope.name = 'admin', $scope.loginErr = null;
+            $scope.name = 'admin', $scope.loginErr = null,
+            $scope.registerErr = null, $scope.registerOk = false,
+            $scope.passwdOk = false;
 
     /**
      * models in play here.
@@ -9,6 +11,7 @@ function adminController ($scope, configService, authService, permService) {
      */
     $scope.DomainProfile = authService.getDomainProfile();
     $scope.AccountProfile = authService.getAccountProfile();
+    $scope.RegisterAccountProfile = angular.copy($scope.AccountProfile);
 
     $scope.init = function () {
         $scope.loginErr = null;
@@ -41,11 +44,11 @@ function adminController ($scope, configService, authService, permService) {
                     $scope.$apply()
             });
         } else {
-            // login by membership
+            // login by account
             authService.logonAsync({
                 Email : $scope.AccountProfile.Email,
                 PasswordHash : BWL.oAuth
-                        .HashPassword($scope.AccountProfile.PasswordHash)
+                        .HashPassword($scope.AccountProfile.Password)
             }, function () {
                 authService.authenticate($scope);
             }, function (err) {
@@ -55,6 +58,32 @@ function adminController ($scope, configService, authService, permService) {
                     $scope.$apply()
             });
         }
+    }
+
+    $scope.register = function () {
+        // register account
+        if ($scope.passwdOk)
+            authService.registerAsync({
+                FullName : $scope.RegisterAccountProfile.FullName,
+                Email : $scope.RegisterAccountProfile.Email,
+                PasswordHash : BWL.oAuth
+                        .HashPassword($scope.RegisterAccountProfile.Password)
+            }, function () {
+                $scope.registerOk = true;
+
+                if (!$scope.$$phase)
+                    $scope.$apply()
+            }, function (err) {
+                $scope.registerErr = err;
+
+                if (!$scope.$$phase)
+                    $scope.$apply()
+            });
+
+    }
+
+    $scope.validatePasswords = function () {
+        $scope.passwdOk = $scope.RegisterAccountProfile.Password === $scope.RegisterAccountProfile.ConfirmPassword;
     }
 }
 

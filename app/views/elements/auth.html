@@ -12,20 +12,61 @@
 		</div>
 		<div class="span6">
 			<!-- membership login -->
-			<p>{{ 'Login.labelMyAccount' | t }}</p>
-			<form name="atAccountProfile" ng-submit="login()">
+			<p>{{ 'Login.labelDialogTitle' | t }}</p>
+			<form name="atAccountLogon" ng-submit="login()">
 				<dl>
 					<dd>
 						<atfield ng-required="true" class="input-xlarge"
-							ng-model="AccountProfile.Email" />
+							ng-model="AccountProfile.Email" label="'Login.labelEmail' | t" />
 					</dd>
 					<dd>
 						<atfield ng-required="true" class="input-xlarge"
-							ng-model="AccountProfile.PasswordHash" placeholder="'Login.labelPassword' | t" />
+							ng-model="AccountProfile.Password"
+							label="'Login.labelPassword' | t" />
 					</dd>
 					<dd>
 						<button type="submit" class="btn btn-primary clear">{{
 							'Login.labelLogin' | t }}</button>
+					</dd>
+				</dl>
+			</form>
+			<!-- membership register -->
+			<p>{{ 'Login.labelNewMemberRegister' | t }}</p>
+			<div class="alert alert-success" ng-show="registerOk">{{'Common.Text_RegisterMsg'
+				| t}}</div>
+			<div class="alert alert-error" ng-show="registerErr || false">{{registerErr}}</div>
+			<form name="atAccountRegister" ng-submit="register()">
+				<dl>
+					<dd>
+						<atfield ng-required="true" class="input-xlarge"
+							at-copy="AccountProfile"
+							ng-model="RegisterAccountProfile.FullName"
+							label="'Login.labelFullname' | t" />
+					</dd>
+					<dd>
+						<atfield ng-required="true" class="input-xlarge"
+							at-copy="AccountProfile" ng-model="RegisterAccountProfile.Email"
+							label="'Login.labelEmail' | t" />
+					</dd>
+					<dd>
+						<atfield ng-required="true" class="input-xlarge"
+							at-copy="AccountProfile"
+							ng-model="RegisterAccountProfile.Password"
+							label="'Login.labelPassword' | t" />
+					</dd>
+					<dd>
+						<div class="alert alert-error" ng-hide="passwdOk">{{
+							'Login.labelConfirmPasswordFail' | t}}</div>
+						<atfield ng-required="true" class="input-xlarge"
+							at-copy="AccountProfile"
+							ng-model="RegisterAccountProfile.ConfirmPassword"
+							label="'Login.labelConfirmPassword' | t"
+							ng-change="validatePasswords()" />
+					</dd>
+					<dd>
+						<button ng-disabled="!passwdOk" type="submit"
+							class="btn btn-primary clear">{{
+							'Login.labelRegisterNow' | t }}</button>
 					</dd>
 				</dl>
 			</form>
