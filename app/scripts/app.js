@@ -288,7 +288,9 @@ azureTicketsApp
                                 scope : {
                                     atModel : '=ngModel',
                                     atLabel : '=label',
-                                    atChange : '=ngChange'
+                                    atChange : '=ngChange',
+                                    atUiValidate : '=uiValidate',
+                                    atUiValidateWatch : '=uiValidateWatch',
                                 },
                                 link : function ($scope, $element, $attrs) {
                                     var m = $attrs.ngModel.split('.')[0];
@@ -387,6 +389,12 @@ azureTicketsApp
                                     // make new element available
                                     _el.attr('ng-model', 'atModel');
                                     $element.append(_label).append(_el);
+
+                                    if ($attrs.uiValidate)
+                                        _el.attr('ui-validate', 'atUiValidate');
+                                    if ($attrs.uiValidateWatch)
+                                        _el.attr('ui-validate-watch',
+                                                'atUiValidateWatch');
 
                                     if (_label !== null)
                                         $compile(_label)($scope);

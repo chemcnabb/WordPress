@@ -2,7 +2,7 @@ function adminController ($scope, configService, authService, permService) {
     $scope.config = configService, $scope.authProviders = [],
             $scope.name = 'admin', $scope.loginErr = null,
             $scope.registerErr = null, $scope.registerOk = false,
-            $scope.passwdOk = false;
+            $scope.passwdOk = true;
 
     /**
      * models in play here.

@@ -39,7 +39,7 @@ module.exports = function (grunt) {
                                 '{.tmp,<%= at.app %>}/' + atConfig.styles
                                         + '/{,*/}*.css',
                                 '{.tmp,<%= at.app %>}/' + atConfig.scripts
-                                        + '/{,*/}*.js',
+                                        + '/**/*.js',
                                 '<%= at.app %>/images/{,*/}*.{png,jpg,jpeg}'],
                         tasks : ['concat', 'htmlmin', 'livereload']
                     }
@@ -221,7 +221,7 @@ module.exports = function (grunt) {
     grunt.registerTask('test', ['clean:server', 'less', 'concat',
             'connect:test', 'testacular:unit']);
     grunt.registerTask('test:continuous', ['clean:server', 'less', 'concat',
-                                'connect:test', 'testacular:continuous']);
+            'connect:test', 'testacular:continuous']);
 
     grunt.registerTask('build', ['clean:dist', /* 'jshint', */
     'test', 'useminPrepare', 'cssmin', 'htmlmin', 'concat', 'copy', 'cdnify',
