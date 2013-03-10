@@ -46,7 +46,7 @@ describe('Controller: adminController', function () {
         // check for any validation errors, right now only check is password not
         // matching
         waitsFor(function () {
-            return scope.registerErr === null;
+            return scope.registerErr === null && scope.passwdOk;
         }, 'failed with error: ' + scope.registerErr, 500);
 
         waitsFor(function () {
