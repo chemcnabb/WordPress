@@ -1,30 +1,32 @@
 'use strict';
 
-describe('Controller: storeController', function () {
+describe('Controller: storeController', function() {
     var ctrl, scope = null;
 
     // initialize
-    beforeEach(function () {
+    beforeEach(function() {
         module('azureTicketsApp');
 
-        inject(function ($rootScope, $controller, authService, configService) {
+        inject(function($rootScope, $controller, authService, configService,
+                modelService) {
             scope = $rootScope.$new();
 
             ctrl = $controller(storeController, {
                 $scope : scope,
                 authService : authService,
-                configService : configService
+                configService : configService,
+                modelService : modelService
             });
         });
     });
 
-    iit('should initialize properly', function () {
+    iit('should initialize properly', function() {
         expect(scope.config).toBeDefined();
         expect(scope.DomainProfile.Key).not.toBeNull();
         expect(scope.Store.Key).toBeNull();
     });
 
-    iit('should be able to check store availability', function () {
+    iit('should be able to check store availability', function() {
 
     });
 });

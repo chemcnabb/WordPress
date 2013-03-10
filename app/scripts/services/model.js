@@ -16,7 +16,7 @@ azureTicketsApp.factory('modelService', function() {
             var o = {};
             var a = alias ? alias : modelName;
 
-            if (angular.isDefined(BWL[a])) {
+            if (angular.isDefined(BWL[a]) && BWL[a] !== null) {
                 o = BWL[a]
             } else if (angular.isDefined(BWL.Model[modelName])) {
                 o = angular.copy(BWL.Model[modelName]);

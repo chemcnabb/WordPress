@@ -1,38 +1,40 @@
 'use strict';
 
-describe('Controller: adminController', function () {
+describe('Controller: adminController', function() {
     var ctrl, scope = null;
 
     // initialize
-    beforeEach(function () {
+    beforeEach(function() {
         module('azureTicketsApp');
 
-        inject(function ($rootScope, $controller, authService, configService) {
+        inject(function($rootScope, $controller, authService, configService,
+                modelService) {
             scope = $rootScope.$new();
 
             ctrl = $controller(adminController, {
                 $scope : scope,
                 authService : authService,
-                configService : configService
+                configService : configService,
+                modelService : modelService
             });
         });
     });
 
-    iit('should initialize properly', function () {
+    iit('should initialize properly', function() {
         expect(scope.config).toBeDefined();
         expect(scope.DomainProfile.Key).toBeNull();
         expect(scope.AccountProfile.Key).toBeNull();
     });
 
-    iit('should be able to retrieve auth providers', function () {
+    iit('should be able to retrieve auth providers', function() {
         scope.loadAuthProviders();
 
-        waitsFor(function () {
+        waitsFor(function() {
             return scope.authProviders.length > 0;
         }, 'auth providers not retrieved', 6000);
     });
 
-    iit('should be able register a test account', function () {
+    iit('should be able register a test account', function() {
         var email = "testaccount" + new Date().getTime() + "@azuretickets.com";
         scope.RegisterAccountProfile = {
             FullName : 'Test Account',
@@ -45,11 +47,11 @@ describe('Controller: adminController', function () {
 
         // check for any validation errors, right now only check is password not
         // matching
-        waitsFor(function () {
+        waitsFor(function() {
             return scope.registerErr === null && scope.registerOk;
         }, 'failed with error: ' + scope.registerErr, 500);
 
-        waitsFor(function () {
+        waitsFor(function() {
             return scope.registerMsg !== null;
         }, 'cannot register test account', 6000);
 
@@ -59,7 +61,7 @@ describe('Controller: adminController', function () {
         // for example registering the same account or passwords not matching
     });
 
-    iit('should be able to login using test account', function () {
+    iit('should be able to login using test account', function() {
         scope.AccountProfile = {
             Email : 'nfiglesias@gmail.com',
             Password : '121212'
@@ -67,7 +69,7 @@ describe('Controller: adminController', function () {
 
         scope.login();
 
-        waitsFor(function () {
+        waitsFor(function() {
             return scope.DomainProfile.Key !== null;
         }, 'cannot login using test account', 6000);
     });
