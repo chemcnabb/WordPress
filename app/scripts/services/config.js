@@ -1,0 +1,8 @@
+// config service
+azureTicketsApp.factory('configService', function() {
+    return {
+        appName : '<%= at.name %>',
+        clientKey : 'b31e42d6-9205-417d-a2d9-366abc7d5046',
+        multipleStores : false
+    }
+});

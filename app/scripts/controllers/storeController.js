@@ -1,4 +1,4 @@
-function storeController ($scope, configService, authService, permService,
+function storeController($scope, configService, authService, permService,
         storeService) {
     $scope.config = configService, $scope.name = 'store', $scope.stores = [];
 
@@ -11,11 +11,11 @@ function storeController ($scope, configService, authService, permService,
     $scope.Store = storeService.getStore();
     $scope.Currency = null;
 
-    $scope.init = function () {
+    $scope.init = function() {
         authService.authenticate($scope).then(
-                function () {
+                function() {
                     storeService.listStoresAsync(1).then(
-                            function () {
+                            function() {
                                 $scope.stores = storeService.getStores();
 
                                 if (storeService.hasStore()) {
@@ -28,10 +28,10 @@ function storeController ($scope, configService, authService, permService,
                                             && $scope.stores[0].Key !== null) {
                                         storeService.initStore(
                                                 $scope.stores[0].Key).then(
-                                                function (store, currency) {
+                                                function(store, currency) {
                                                     $scope.Store = store;
                                                     $scope.Currency = currency;
-                                                }, function (err) {
+                                                }, function(err) {
 
                                                 });
                                     }
@@ -39,14 +39,15 @@ function storeController ($scope, configService, authService, permService,
                                     // no store, proceed to create wizard
 
                                 }
-                            }, function (err) {
+                            }, function(err) {
 
                             });
-                }, function (err) {
+                }, function(err) {
 
                 });
     }
 }
 
-storeController.$inject = ['$scope', 'configService', 'authService',
-        'permService', 'storeService'];
+storeController.$inject = [
+        '$scope', 'configService', 'authService', 'permService', 'storeService'
+];
