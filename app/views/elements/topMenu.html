@@ -2,17 +2,15 @@
 	<div class="navbar-inner">
 		<a class="brand" href="#/admin">{{config.appName}}</a>
 		<ul class="nav" ng-show="DomainProfile.Key || false">
-			<li ui-route="#/admin/store" ng-class="{active: $uiRoute}"><a
-				href="#/admin/store">{{ 'Common.Text_Store' | t }}</a></li>
-			<li ui-route="#/admin/venue" ng-class="{active: $uiRoute}"><a
-				href="#/admin/venue">{{ 'Common.Text_VenueMenu_Venue' | t }}</a></li>
-			<li ui-route="#/admin/event" ng-class="{active: $uiRoute}"><a
-				href="#/admin/event">{{ 'Common.Text_EventMenu_Events' | t }}</a></li>
-			<li ui-route="#/admin/scanner" ng-class="{active: $uiRoute}"><a
-				href="#/admin/scanner">{{ 'Common.Text_ScannerMenu_Scanner' | t
-					}}</a></li>
-			<li ui-route="#/admin/order" ng-class="{active: $uiRoute}"><a
-				href="#/admin/order">{{ 'Common.Text_OrdersMenu_Orders' | t }}</a></li>
+			<li><a href="#/admin/store">{{ 'Common.Text_Store' | t }}</a></li>
+			<li><a href="#/admin/venue">{{ 'Common.Text_VenueMenu_Venue'
+					| t }}</a></li>
+			<li><a href="#/admin/event">{{
+					'Common.Text_EventMenu_Events' | t }}</a></li>
+			<li><a href="#/admin/scanner">{{
+					'Common.Text_ScannerMenu_Scanner' | t }}</a></li>
+			<li><a href="#/admin/order">{{
+					'Common.Text_OrdersMenu_Orders' | t }}</a></li>
 		</ul>
 		<div class="pull-right">
 			<a href="#/auth/logoff" ng-show="DomainProfile.Key || false"

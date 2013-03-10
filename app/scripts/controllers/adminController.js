@@ -15,47 +15,38 @@ function adminController ($scope, configService, authService, permService) {
 
     $scope.init = function () {
         $scope.loginErr = null;
-        authService.authenticate($scope);
+        authService.authenticate($scope).then(null, function (err) {
+            $scope.loginErr = err;
+        });
     }
 
     $scope.loadAuthProviders = function () {
-        authService.loadAuthProviders(function (providers) {
+        authService.loadAuthProviders().then(function (providers) {
             $scope.authProviders = providers;
-
-            if (!$scope.$$phase)
-                $scope.$apply()
         }, function (err) {
-
+            $scope.loginErr = err;
         });
     }
 
     $scope.login = function (provider) {
         if (angular.isDefined(provider) && angular.isString(provider)) {
             // login by provider
-            authService.logonByProviderAsync(provider, function () {
+            authService.logonByProviderAsync(provider).then(function () {
                 $scope.DomainProfile = authService.getDomainProfile();
-
-                if (!$scope.$$phase)
-                    $scope.$apply()
             }, function (err) {
                 $scope.loginErr = err;
-
-                if (!$scope.$$phase)
-                    $scope.$apply()
             });
         } else {
             // login by account
-            authService.logonAsync({
-                Email : $scope.AccountProfile.Email,
-                PasswordHash : BWL.oAuth
-                        .HashPassword($scope.AccountProfile.Password)
-            }, function () {
+            authService.logonAsync(
+                    {
+                        Email : $scope.AccountProfile.Email,
+                        PasswordHash : BWL.oAuth
+                                .HashPassword($scope.AccountProfile.Password)
+                    }).then(function () {
                 authService.authenticate($scope);
             }, function (err) {
                 $scope.loginErr = err;
-
-                if (!$scope.$$phase)
-                    $scope.$apply()
             });
         }
     }
@@ -63,23 +54,18 @@ function adminController ($scope, configService, authService, permService) {
     $scope.register = function () {
         // register account
         if ($scope.passwdOk)
-            authService.registerAsync({
-                FullName : $scope.RegisterAccountProfile.FullName,
-                Email : $scope.RegisterAccountProfile.Email,
-                PasswordHash : BWL.oAuth
-                        .HashPassword($scope.RegisterAccountProfile.Password)
-            }, function () {
-                $scope.registerOk = true;
-
-                if (!$scope.$$phase)
-                    $scope.$apply()
-            }, function (err) {
-                $scope.registerErr = err;
-
-                if (!$scope.$$phase)
-                    $scope.$apply()
-            });
-
+            authService
+                    .registerAsync(
+                            {
+                                FullName : $scope.RegisterAccountProfile.FullName,
+                                Email : $scope.RegisterAccountProfile.Email,
+                                PasswordHash : BWL.oAuth
+                                        .HashPassword($scope.RegisterAccountProfile.Password)
+                            }).then(function () {
+                        $scope.registerOk = true;
+                    }, function (err) {
+                        $scope.registerErr = err;
+                    });
     }
 
     $scope.validatePasswords = function () {

@@ -9,33 +9,42 @@ function storeController ($scope, configService, authService, permService,
      */
     $scope.DomainProfile = authService.getDomainProfile();
     $scope.Store = storeService.getStore();
+    $scope.Currency = null;
 
     $scope.init = function () {
-        authService.authenticate($scope, function () {
-            storeService.listStoresAsync(1, function (s) {
-                $scope.stores = storeService.getStores();
+        authService.authenticate($scope).then(
+                function () {
+                    storeService.listStoresAsync(1).then(
+                            function (s) {
+                                $scope.stores = storeService.getStores();
 
-                if (storeService.hasStore()) {
-                    // @todo Justin, is client able to set multiple stores?
-                    // DomainProfile should have new boolean prop?
-                    if (!configService.multipleStores
-                            && $scope.stores[0].Key !== null) {
-                        storeService.initStore($scope.stores[0].Key, function (
-                                store) {
-                            $scope.Store = store;
+                                if (storeService.hasStore()) {
+                                    // @todo Justin, is client able to set
+                                    // multiple
+                                    // stores?
+                                    // DomainProfile should have new boolean
+                                    // prop?
+                                    if (!configService.multipleStores
+                                            && $scope.stores[0].Key !== null) {
+                                        storeService.initStore(
+                                                $scope.stores[0].Key).then(
+                                                function (store, currency) {
+                                                    $scope.Store = store;
+                                                    $scope.Currency = currency;
+                                                }, function (err) {
 
-                            if (!$scope.$$phase)
-                                $scope.$apply()
-                        });
-                    }
-                } else {
-                    // no store, proceed to create wizard
+                                                });
+                                    }
+                                } else {
+                                    // no store, proceed to create wizard
 
-                }
-            }, function (err) {
+                                }
+                            }, function (err) {
 
-            });
-        });
+                            });
+                }, function (err) {
+                    
+                });
     }
 }
 

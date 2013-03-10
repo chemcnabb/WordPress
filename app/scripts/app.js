@@ -3,41 +3,50 @@
 var azureTicketsApp = angular.module('azureTicketsApp', ['ui']);
 
 // routes
-azureTicketsApp.config([
-        '$routeProvider',
-        function ($routeProvider) {
-            $routeProvider.when('/admin', {
-                templateUrl : 'views/admin.html',
-                controller : adminController
-            }).when(
-                    '/auth/logoff',
-                    {
-                        controller : adminController,
-                        templateUrl : 'views/admin.html',
-                        resolve : {
-                            logoff : [
-                                    'authService',
-                                    '$rootScope',
-                                    '$location',
-                                    function (authService, $rootScope,
-                                            $location) {
-                                        authService.logoffAsync(function () {
-                                            authService.setDomainProfile(null);
-                                            $location.path('/admin');
-                                            $rootScope.$digest();
-                                        });
-                                    }]
-                        }
-                    }).when('/front', {
-                templateUrl : 'views/front.html',
-                controller : frontController
-            }).otherwise({
-                redirectTo : '/'
-            }).when('/admin/store', {
-                templateUrl : 'views/store.html',
-                controller : storeController
-            });
-        }]);
+azureTicketsApp
+        .config([
+                '$routeProvider',
+                function ($routeProvider) {
+                    $routeProvider
+                            .when('/admin', {
+                                templateUrl : 'views/admin.html',
+                                controller : adminController
+                            })
+                            .when(
+                                    '/auth/logoff',
+                                    {
+                                        controller : adminController,
+                                        templateUrl : 'views/admin.html',
+                                        resolve : {
+                                            logoff : [
+                                                    'authService',
+                                                    '$rootScope',
+                                                    '$location',
+                                                    function (authService,
+                                                            $rootScope,
+                                                            $location) {
+                                                        authService
+                                                                .logoffAsync()
+                                                                .then(
+                                                                        function () {
+                                                                            authService
+                                                                                    .setDomainProfile(null);
+                                                                            $location
+                                                                                    .path('/admin');
+
+                                                                        });
+                                                    }]
+                                        }
+                                    }).when('/front', {
+                                templateUrl : 'views/front.html',
+                                controller : frontController
+                            }).otherwise({
+                                redirectTo : '/'
+                            }).when('/admin/store', {
+                                templateUrl : 'views/store.html',
+                                controller : storeController
+                            });
+                }]);
 
 // services
 
@@ -56,7 +65,9 @@ azureTicketsApp
                 'authService',
                 [
                         'configService',
-                        function (configService) {
+                        '$q',
+                        '$rootScope',
+                        function (configService, $q, $rootScope) {
                             var _clientKey = null;
 
                             return {
@@ -72,13 +83,14 @@ azureTicketsApp
                                  *            errCbk Executes on error.
                                  * @returns
                                  */
-                                authenticate : function ($scope, cbk, errCbk) {
-                                    var _this = this;
+                                authenticate : function ($scope) {
+                                    var _this = this, def = $q.defer();
 
                                     if (!this.isDomainProfileReady()) {
                                         this
                                                 .loadProfileAsync(
-                                                        configService.clientKey,
+                                                        configService.clientKey)
+                                                .then(
                                                         function () {
                                                             $scope.DomainProfile = _this
                                                                     .getDomainProfile();
@@ -86,67 +98,123 @@ azureTicketsApp
                                                             if (!$scope.$$phase)
                                                                 $scope.$apply()
 
-                                                            if (angular
-                                                                    .isFunction(cbk))
-                                                                cbk();
+                                                            def.resolve();
                                                         },
                                                         function (err) {
-                                                            if (angular
-                                                                    .isFunction(errCbk))
-                                                                errCbk(err);
+                                                            $rootScope
+                                                                    .$apply(function () {
+                                                                        def
+                                                                                .reject(err)
+                                                                    })
                                                         });
                                     } else {
-                                        if (angular.isFunction(cbk))
-                                            cbk();
+                                        def.resolve();
                                     }
+
+                                    return def.promise;
                                 },
-                                loadProfileAsync : function (clientKey, cbk,
-                                        errCbk) {
+                                loadProfileAsync : function (clientKey) {
+                                    var def = $q.defer();
+
                                     BWL.ClientKey = clientKey;
                                     _clientKey = clientKey;
-                                    BWL.oAuth.LoadProfileAsync(cbk, errCbk);
+
+                                    BWL.oAuth.LoadProfileAsync(function () {
+                                        $rootScope.$apply(def.resolve)
+                                    }, function (err) {
+                                        $rootScope.$apply(function () {
+                                            def.reject(err)
+                                        })
+                                    });
+
+                                    return def.promise;
                                 },
-                                logonByProviderAsync : function (provider, cbk,
-                                        errCbk) {
+                                logonByProviderAsync : function (provider) {
+                                    var def = $q.defer();
+
                                     BWL.oAuth.Init(_clientKey);
                                     BWL.Services.SystemProfileService
                                             .GetProfileAsync(
                                                     5,
                                                     function (profile) {
                                                         if (profile.DomainProfileId !== 0) {
-                                                            cbk();
+                                                            $rootScope
+                                                                    .$apply(def.resolve);
                                                         } else {
                                                             BWL.oAuth
                                                                     .LogonAsync(
                                                                             provider,
-                                                                            cbk,
-                                                                            errCbk);
+                                                                            function () {
+                                                                                $rootScope
+                                                                                        .$apply(def.resolve);
+                                                                            },
+                                                                            function (
+                                                                                    err) {
+                                                                                $rootScope
+                                                                                        .$apply(function () {
+                                                                                            def
+                                                                                                    .reject(err)
+                                                                                        })
+                                                                            });
                                                         }
-                                                    }, errCbk)
+                                                    },
+                                                    function (err) {
+                                                        $rootScope
+                                                                .$apply(function () {
+                                                                    def
+                                                                            .reject(err)
+                                                                })
+                                                    })
+
+                                    return def.promise;
                                 },
-                                registerAsync : function (account, cbk, errCbk) {
-                                    try {
-                                        // request level 20 perms, this is for
-                                        // store owners perms
-                                        BWL.Services.SystemProfileService
-                                                .RegisterAsync(20, account,
-                                                        cbk, errCbk);
-                                    } catch (err) {
-                                        errCbk(err)
-                                    }
-                                },
-                                logonAsync : function (account, cbk, errCbk) {
-                                    try {
-                                        BWL.Services.SystemProfileService
-                                                .LogonAsync(account, cbk,
-                                                        errCbk);
-                                    } catch (err) {
-                                        errCbk(err)
-                                    }
-                                },
-                                logoffAsync : function (cbk) {
+                                registerAsync : function (account) {
+                                    var def = $q.defer();
+
+                                    // request level 20 perms, this is for
+                                    // store owners perms
                                     BWL.Services.SystemProfileService
-                                            .LogoffAsync(cbk);
+                                            .RegisterAsync(
+                                                    20,
+                                                    account,
+                                                    function () {
+                                                        $rootScope
+                                                                .$apply(def.resolve);
+                                                    },
+                                                    function (err) {
+                                                        $rootScope
+                                                                .$apply(function () {
+                                                                    def
+                                                                            .reject(err)
+                                                                })
+                                                    });
+
+                                    return def.promise;
+                                },
+                                logonAsync : function (account) {
+                                    var def = $q.defer();
+
+                                    BWL.Services.SystemProfileService
+                                            .LogonAsync(account, function () {
+                                                $rootScope.$apply(def.resolve);
+                                            }, function (err) {
+                                                $rootScope.$apply(function () {
+                                                    def.reject(err)
+                                                })
+                                            });
+
+                                    return def.promise;
+
+                                },
+                                logoffAsync : function () {
+                                    var def = $q.defer();
+
+                                    BWL.Services.SystemProfileService
+                                            .LogoffAsync(function () {
+                                                $rootScope.$apply(def.resolve);
+                                            });
+
+                                    return def.promise;
                                 },
                                 getDomainProfile : function () {
                                     return BWL.Profile
@@ -175,8 +243,21 @@ azureTicketsApp
                                     return o;
                                 },
                                 loadAuthProviders : function (cbk, errCbk) {
+                                    var def = $q.defer();
+
                                     BWL.Services.oAuthService
-                                            .ListAuthProvidersAsync(cbk, errCbk);
+                                            .ListAuthProvidersAsync(function (
+                                                    providers) {
+                                                $rootScope.$apply(function () {
+                                                    def.resolve(providers)
+                                                })
+                                            }, function (err) {
+                                                $rootScope.$apply(function () {
+                                                    def.reject(err)
+                                                })
+                                            });
+
+                                    return def.promise;
                                 },
                                 isDomainProfileReady : function () {
                                     return (this.getDomainProfile() !== null
@@ -211,39 +292,62 @@ azureTicketsApp.factory('permService', [
         }]);
 
 // store service
-azureTicketsApp.factory('storeService', function () {
-    var _stores = null;
+azureTicketsApp.factory('storeService', [
+        '$q',
+        '$rootScope',
+        function ($q, $rootScope) {
+            var _stores = null;
 
-    return {
-        listStoresAsync : function (levels, cbk, errCbk) {
-            BWL.Services.StoreService.ListStoresAsync(levels,
-                    function (stores) {
+            return {
+                listStoresAsync : function (levels) {
+                    var def = $q.defer();
+
+                    BWL.Services.StoreService.ListStoresAsync(levels, function (
+                            stores) {
                         _stores = stores;
-                        cbk();
-                    }, errCbk);
 
-        },
-        hasStore : function () {
-            return _stores !== null && angular.isObject(_stores[0])
-                    && _stores[0].Key !== null
-        },
-        getStores : function () {
-            return _stores;
-        },
-        getStore : function () {
-            return BWL.Store || angular.copy(BWL.Model['Store']);
-        },
-        initStore : function (storeKey, cbk) {
-            BWL.Services.ModelService.ReadAsync(storeKey, "Store", storeKey,
-                    10, function (store) {
-                        BWL.Services.GeoService.ReadCurrencyAsync(
-                                store.Currency, function (currency) {
-                                    cbk(store);
-                                });
+                        $rootScope.$apply(function () {
+                            def.resolve();
+                        });
+                    }, function (err) {
+                        $rootScope.$apply(function () {
+                            def.reject(err)
+                        })
                     });
-        }
-    }
-});
+
+                    return def.promise;
+                },
+                hasStore : function () {
+                    return _stores !== null && angular.isObject(_stores[0])
+                            && _stores[0].Key !== null
+                },
+                getStores : function () {
+                    return _stores;
+                },
+                getStore : function () {
+                    return BWL.Store || angular.copy(BWL.Model['Store']);
+                },
+                initStore : function (storeKey) {
+                    var def = $q.defer();
+
+                    BWL.Services.ModelService.ReadAsync(storeKey, "Store",
+                            storeKey, 10, function (store) {
+                                BWL.Services.GeoService.ReadCurrencyAsync(
+                                        store.Currency, function (currency) {
+                                            $rootScope.$apply(function () {
+                                                def.resolve(store, currency)
+                                            });
+                                        }, function (err) {
+                                            $rootScope.$apply(function () {
+                                                def.reject(err)
+                                            })
+                                        });
+                            });
+
+                    return def.promise;
+                }
+            }
+        }]);
 
 // filters
 azureTicketsApp.filter('t', [

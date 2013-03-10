@@ -52,7 +52,7 @@
 						<atfield ng-required="true" class="input-xlarge"
 							at-copy="AccountProfile"
 							ng-model="RegisterAccountProfile.Password"
-							label="'Login.labelPassword' | t" />
+							label="'Login.labelPassword' | t" ng-change="validatePasswords()" />
 					</dd>
 					<dd>
 						<div class="alert alert-error" ng-hide="passwdOk">{{
@@ -61,8 +61,12 @@
 							at-copy="AccountProfile"
 							ng-model="RegisterAccountProfile.ConfirmPassword"
 							label="'Login.labelConfirmPassword' | t"
-							ui-validate="'$value == RegisterAccountProfile.Password'"
-							ui-validate-watch="'RegisterAccountProfile.Password'" />
+							ng-change="validatePasswords()" />
+					</dd>
+					<dd>
+						<button ng-disabled="!passwdOk" type="submit"
+							class="btn btn-primary clear">{{
+							'Login.labelRegisterNow' | t }}</button>
 					</dd>
 				</dl>
 			</form>
