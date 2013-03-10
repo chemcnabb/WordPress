@@ -2,7 +2,8 @@
 azureTicketsApp.factory('storeService', [
         '$q',
         '$rootScope',
-        function($q, $rootScope) {
+        'modelService',
+        function($q, $rootScope, modelService) {
             var _stores = null;
 
             return {
@@ -32,7 +33,7 @@ azureTicketsApp.factory('storeService', [
                     return _stores;
                 },
                 getStore : function() {
-                    return BWL.Store || angular.copy(BWL.Model['Store']);
+                    return modelService.getInstanceOf('Store');
                 },
                 initStore : function(storeKey) {
                     var def = $q.defer();

@@ -6,7 +6,8 @@ azureTicketsApp
                         'configService',
                         '$q',
                         '$rootScope',
-                        function(configService, $q, $rootScope) {
+                        'modelService',
+                        function(configService, $q, $rootScope, modelService) {
                             var _clientKey = null;
 
                             return {
@@ -152,18 +153,18 @@ azureTicketsApp
                                     return def.promise;
                                 },
                                 getDomainProfile : function() {
-                                    return BWL.Profile
-                                            || angular
-                                                    .copy(BWL.Model['DomainProfile']);
+                                    return modelService.getInstanceOf(
+                                            'DomainProfile', null, 'Profile');
                                 },
                                 setDomainProfile : function(profile) {
                                     BWL.Profile = null;
                                 },
                                 getAccountProfile : function() {
-                                    var o = (BWL.Profile !== null ? BWL.Profile.AccountProfile
-                                            : BWL.Profile)
-                                            || angular
-                                                    .copy(BWL.Model['AccountProfile']);
+                                    var o = BWL.Profile !== null
+                                            && angular
+                                                    .isDefined(BWL.Profile.AccountProfile) ? BWL.Profile.AccountProfile
+                                            : modelService
+                                                    .getInstanceOf('AccountProfile');
                                     // one exception where we modify modelsmeta
                                     // to hold a tmp field
                                     o.Password = angular.isDefined(o.Password) ? o.Password

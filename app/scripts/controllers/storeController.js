@@ -1,5 +1,5 @@
 function storeController($scope, configService, authService, permService,
-        storeService) {
+        storeService, modelService) {
     $scope.config = configService, $scope.name = 'store', $scope.stores = [];
 
     /**
@@ -8,8 +8,8 @@ function storeController($scope, configService, authService, permService,
      * @todo inject models, using array of strings maybe.
      */
     $scope.DomainProfile = authService.getDomainProfile();
-    $scope.Store = storeService.getStore();
-    $scope.Currency = null;
+    $scope.Store = modelService.getInstanceOf('Store');
+    $scope.Currency = modelService.getInstanceOf('Currency');
 
     $scope.init = function() {
         authService.authenticate($scope).then(
@@ -49,5 +49,6 @@ function storeController($scope, configService, authService, permService,
 }
 
 storeController.$inject = [
-        '$scope', 'configService', 'authService', 'permService', 'storeService'
+        '$scope', 'configService', 'authService', 'permService',
+        'storeService', 'modelService'
 ];
