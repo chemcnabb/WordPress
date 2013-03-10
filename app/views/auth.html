@@ -33,7 +33,7 @@
 			<!-- membership register -->
 			<p>{{ 'Login.labelNewMemberRegister' | t }}</p>
 			<div class="alert alert-success" ng-show="registerOk">{{'Common.Text_RegisterMsg'
-				| t}}</div>
+				| t | format : RegisterAccountProfile.Email}}</div>
 			<div class="alert alert-error" ng-show="registerErr || false">{{registerErr}}</div>
 			<form name="atAccountRegister" ng-submit="register()">
 				<dl>

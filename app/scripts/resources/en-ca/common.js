@@ -115,7 +115,7 @@ var CommonResources = {
     Text_CartMessage: 'Drag items here to add to cart',
     Text_RequireLogin: 'In order to add items to the cart you must be logged in.',
     Text_LogOffMsg: 'You have been logged off',
-    Text_RegisterMsg: 'You have successfully created your account. Please check your email in order to verify your account.',
+    Text_RegisterMsg: 'You have successfully created your account. Please check your inbox for $0 in order to verify your account.',
     Text_VerifyAccountMsg: 'Please check your email to verified your account.',
     Text_CreateAccountFailedMsg: 'Unable to create account. Please try again.',
     Text_ResetPasswordMsg: 'Password reset request sent to email address.',

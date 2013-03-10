@@ -77,10 +77,6 @@ azureTicketsApp
                                  * @param {object}
                                  *            $scope We're authenticating on the
                                  *            scope of a controller.
-                                 * @param {function}
-                                 *            cbk Executes on success.
-                                 * @param {function}
-                                 *            errCbk Executes on error.
                                  * @returns
                                  */
                                 authenticate : function ($scope) {
@@ -101,7 +97,7 @@ azureTicketsApp
                                                             def.resolve();
                                                         },
                                                         function (err) {
-                                                            $rootScope
+                                                            $scope
                                                                     .$apply(function () {
                                                                         def
                                                                                 .reject(err)

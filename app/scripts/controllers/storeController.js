@@ -15,7 +15,7 @@ function storeController ($scope, configService, authService, permService,
         authService.authenticate($scope).then(
                 function () {
                     storeService.listStoresAsync(1).then(
-                            function (s) {
+                            function () {
                                 $scope.stores = storeService.getStores();
 
                                 if (storeService.hasStore()) {
@@ -43,7 +43,7 @@ function storeController ($scope, configService, authService, permService,
 
                             });
                 }, function (err) {
-                    
+
                 });
     }
 }
