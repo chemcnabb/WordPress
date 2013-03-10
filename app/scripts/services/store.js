@@ -53,6 +53,22 @@ azureTicketsApp.factory('storeService', [
                             });
 
                     return def.promise;
+                },
+                getCurrencies : function() {
+                    var def = $q.defer();
+
+                    BWL.Services.GeoService.ListCurrenciesAsync(function(
+                            currencies) {
+                        $rootScope.$apply(function() {
+                            def.resolve(currencies)
+                        });
+                    }, function(err) {
+                        $rootScope.$apply(function() {
+                            def.reject(err)
+                        })
+                    });
+
+                    return def.promise;
                 }
             }
         }

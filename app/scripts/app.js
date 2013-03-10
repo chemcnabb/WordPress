@@ -48,6 +48,18 @@ azureTicketsApp
                             }).when('/admin/store', {
                                 templateUrl : 'views/store.html',
                                 controller : storeController
+                            }).when('/admin/venue', {
+                                templateUrl : 'views/venue.html',
+                                controller : venueController
+                            }).when('/admin/event', {
+                                templateUrl : 'views/event.html',
+                                controller : eventController
+                            }).when('/admin/scanner', {
+                                templateUrl : 'views/event.html',
+                                controller : scannerController
+                            }).when('/admin/order', {
+                                templateUrl : 'views/order.html',
+                                controller : orderController
                             });
                 }
         ]);

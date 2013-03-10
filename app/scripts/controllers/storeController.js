@@ -1,6 +1,7 @@
 function storeController($scope, configService, authService, permService,
         storeService, modelService) {
-    $scope.config = configService, $scope.name = 'store', $scope.stores = [];
+    $scope.config = configService, $scope.name = 'store', $scope.stores = [],
+            $scope.currencies = [];
 
     /**
      * models in play here.
@@ -45,6 +46,13 @@ function storeController($scope, configService, authService, permService,
                 }, function(err) {
 
                 });
+
+        // populate currencies list
+        storeService.getCurrencies().then(function(currencies) {
+            $scope.currencies = currencies;
+        }, function(err) {
+
+        });
     }
 }
 
