@@ -1,7 +1,7 @@
 function storeController($scope, configService, authService, permService,
         storeService, modelService, errorService, geoService) {
     $scope.config = configService, $scope.name = 'store', $scope.stores = [],
-            $scope.currencies = [], $scope.countries = [],
+            $scope.currencies = [], $scope.countries = [], $scope.regions = [],
             $scope.timezones = [], $scope.wizard = {
                 currentStep : 0,
                 finished : false
@@ -71,6 +71,14 @@ function storeController($scope, configService, authService, permService,
     $scope.loadTimezonesByCountry = function(countryIso) {
         geoService.getTimezonesByCountry(countryIso).then(function(timezones) {
             $scope.timezones = timezones;
+        }, function(err) {
+            errorService.log(err)
+        });
+    }
+
+    $scope.loadRegionsByCountry = function(countryIso) {
+        geoService.getRegionsByCountry(countryIso).then(function(regions) {
+            $scope.regions = regions;
         }, function(err) {
             errorService.log(err)
         });

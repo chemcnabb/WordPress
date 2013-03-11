@@ -43,6 +43,22 @@ azureTicketsApp.factory('geoService', [
                             })
 
                     return def.promise;
+                },
+                getRegionsByCountry : function(countryIso) {
+                    var def = $q.defer();
+
+                    BWL.Services.GeoService.ListRegionsByCountryAsync(
+                            countryIso, function(regions) {
+                                $rootScope.$apply(function() {
+                                    def.resolve(regions)
+                                })
+                            }, function(err) {
+                                $rootScope.$apply(function() {
+                                    def.reject(err)
+                                })
+                            })
+
+                    return def.promise;
                 }
             }
         }

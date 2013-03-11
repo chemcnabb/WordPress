@@ -57,7 +57,7 @@
 						data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
 						ui-select2="{containerCssClass:'input-xlarge'}" ng-required="true"
 						ng-model="Store.Address.Country"
-						ng-change="loadTimezonesByCountry(Store.Address.Country)">
+						ng-change="loadTimezonesByCountry(Store.Address.Country);loadRegionsByCountry(Store.Address.Country)">
 						<option></option>
 						<option ng-selected="c.ISO == Store.Address.Country"
 							ng-repeat="c in countries" value="{{c.ISO}}">{{c.Name}}</option>
@@ -70,8 +70,8 @@
 						ui-select2="{containerCssClass:'input-xlarge'}" ng-required="true"
 						ng-model="Store.Address.Region">
 						<option></option>
-						<option ng-selected="c.ISO == Store.Address.Country"
-							ng-repeat="r in regions" value="{{r.Key}}">{{t.Name}}</option>
+						<option ng-selected="r.ISO == Store.Address.Region"
+							ng-repeat="r in regions" value="{{r.ISO}}">{{r.Name}}</option>
 					</select>
 				</dd>
 				<dd>
