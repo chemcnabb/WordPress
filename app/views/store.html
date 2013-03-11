@@ -2,8 +2,37 @@
 	ng-cloak>
 	<!-- top menu -->
 	<div ng-include src="'views/elements/topMenu.html'"></div>
+	<div ng-include src="'views/elements/error.html'"></div>
 	<!-- store info -->
-	<div class="row-fluid">
-	
+	<div class="row-fluid" ng-init="loadCurrencies()">
+		<blockquote>
+			<p>{{ 'Common.Text_RegistrationStep1' | t }}</p>
+		</blockquote>
+		<form name="atAccountLogon" ng-submit="update()">
+			<div ng-switch on="wizard.currentStep">
+				<dl ng-switch-when="step1">
+					<dd>
+						<atfield ng-required="true" class="input-xlarge"
+							ng-model="Store.Name" label="'Common.Text_StoreName' | t" />
+					</dd>
+					<dd>
+						<atfield class="input-xlarge" ng-model="Store.Description"
+							label="'Common.Text_Description' | t" rows="5" />
+					</dd>
+					<dd>
+						<button ng-click="wizard.currentStep = 'step2'"
+							class="btn btn-primary clear">{{ 'Common.Text_Next' | t
+							}}</button>
+					</dd>
+				</dl>
+				<dl ng-switch-when="step2">
+					<dd>
+						<button ng-click="wizard.currentStep = 'step3'"
+							class="btn btn-primary clear">{{ 'Common.Text_Next' | t
+							}}</button>
+					</dd>
+				</dl>
+			</div>
+		</form>
 	</div>
 </div>

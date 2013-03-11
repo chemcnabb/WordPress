@@ -1,5 +1,5 @@
 function adminController($scope, configService, authService, permService,
-        modelService) {
+        modelService, errorService) {
     $scope.config = configService, $scope.authProviders = [],
             $scope.name = 'admin', $scope.loginErr = null,
             $scope.registerErr = null, $scope.registerOk = false,
@@ -17,7 +17,7 @@ function adminController($scope, configService, authService, permService,
     $scope.init = function() {
         $scope.loginErr = null;
         authService.authenticate($scope).then(null, function(err) {
-            $scope.loginErr = err;
+            errorService.log(err)
         });
     }
 
@@ -25,7 +25,7 @@ function adminController($scope, configService, authService, permService,
         authService.loadAuthProviders().then(function(providers) {
             $scope.authProviders = providers;
         }, function(err) {
-            $scope.loginErr = err;
+            errorService.log(err);
         });
     }
 
@@ -54,18 +54,20 @@ function adminController($scope, configService, authService, permService,
 
     $scope.register = function() {
         // register account
-        if ($scope.passwdOk) authService
-                .registerAsync(
-                        {
-                            FullName : $scope.RegisterAccountProfile.FullName,
-                            Email : $scope.RegisterAccountProfile.Email,
-                            PasswordHash : BWL.oAuth
-                                    .HashPassword($scope.RegisterAccountProfile.Password)
-                        }).then(function() {
-                    $scope.registerOk = true;
-                }, function(err) {
-                    $scope.registerErr = err;
-                });
+        if ($scope.passwdOk) {
+            authService
+                    .registerAsync(
+                            {
+                                FullName : $scope.RegisterAccountProfile.FullName,
+                                Email : $scope.RegisterAccountProfile.Email,
+                                PasswordHash : BWL.oAuth
+                                        .HashPassword($scope.RegisterAccountProfile.Password)
+                            }).then(function() {
+                        $scope.registerOk = true;
+                    }, function(err) {
+                        $scope.registerErr = err;
+                    });
+        }
     }
 
     $scope.validatePasswords = function() {
@@ -74,5 +76,6 @@ function adminController($scope, configService, authService, permService,
 }
 
 adminController.$inject = [
-        '$scope', 'configService', 'authService', 'permService', 'modelService'
+        '$scope', 'configService', 'authService', 'permService',
+        'modelService', 'errorService'
 ];

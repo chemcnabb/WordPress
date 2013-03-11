@@ -55,7 +55,7 @@ azureTicketsApp
                                 templateUrl : 'views/event.html',
                                 controller : eventController
                             }).when('/admin/scanner', {
-                                templateUrl : 'views/event.html',
+                                templateUrl : 'views/scanner.html',
                                 controller : scannerController
                             }).when('/admin/order', {
                                 templateUrl : 'views/order.html',

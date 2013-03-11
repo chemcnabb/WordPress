@@ -73,6 +73,8 @@ var CommonResources = {
     Text_DigitalDownload: 'Digital Download',
     Error_System: 'There was a system error: "{0}", please refresh your browser and try again',
     Text_Store: 'Store',
+    Text_StoreName: 'Store\'s Name',
+    Text_Description: 'Description',
     Text_StoreMenu_StoreDetailBt: 'Store Details',
     Text_StoreMenu_Categories: 'Categories',
     Text_StoreMenu_CreateCate: 'Create Category',
