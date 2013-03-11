@@ -4,14 +4,15 @@
 	<div ng-include src="'views/elements/topMenu.html'"></div>
 	<div ng-include src="'views/elements/error.html'"></div>
 	<!-- store info -->
-	<div class="row-fluid" ng-init="loadCurrencies()">
+	<div class="row-fluid" ng-init="loadCurrencies(); loadCountries()">
 		<blockquote ng-show="wizard.currentStep>
 			0">
 			<p>{{ 'Common.Text_RegistrationStep1' | t }}</p>
 		</blockquote>
-		<p class="text-info" ng-show="wizard.currentStep > 0">{{
+		<p class="text-info"
+			ng-show="wizard.currentStep>
+			0 && !Store.Key || false">{{
 			'Common.Text_StoreCreate' | t }}</p>
-
 		<div id="serviceAgreement" class="modal hide fade">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
@@ -44,7 +45,7 @@
 				<dd>
 					<input type="submit" class="btn btn-primary clear"
 						value="{{
-							'Common.Text_Next' | t }}" />{{a}}
+							'Common.Text_Next' | t }}" />
 				</dd>
 			</dl>
 		</form>
@@ -52,17 +53,55 @@
 			ng-submit="wizard.currentStep = wizard.currentStep+1">
 			<dl class="clearfix">
 				<dd>
-					<label>{{'Common.Text_StoreCurrency' | t}}</label> <select
-						ng-required="true" class="input-xlarge" ng-model="Store.Currency"
-						ng-options="curr.ISO as curr.Name for curr in currencies"></select>
+					<label>{{'Address.LabelCountry' | t}}</label> <select
+						data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
+						ui-select2="{containerCssClass:'input-xlarge'}" ng-required="true"
+						ng-model="Store.Address.Country"
+						ng-change="loadTimezonesByCountry(Store.Address.Country)">
+						<option></option>
+						<option ng-selected="c.ISO == Store.Address.Country"
+							ng-repeat="c in countries" value="{{c.ISO}}">{{c.Name}}</option>
+					</select>
 				</dd>
-				<dt class="pull-left">
+				<dd ng-show="Store.Address && Store.Address.Country || false">
+					<label>{{'Address.LabelState' | t}} /
+						{{'Address.LabelProvince' | t}}</label> <select
+						data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
+						ui-select2="{containerCssClass:'input-xlarge'}" ng-required="true"
+						ng-model="Store.Address.Region">
+						<option></option>
+						<option ng-selected="c.ISO == Store.Address.Country"
+							ng-repeat="r in regions" value="{{r.Key}}">{{t.Name}}</option>
+					</select>
+				</dd>
+				<dd>
+					<label>{{'Common.Text_StoreCurrency' | t}}</label> <select
+						ui-select2="{containerCssClass:'input-xlarge'}" ng-required="true"
+						data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
+						ng-model="Store.Currency">
+						<option></option>
+						<option ng-selected="curr.ISO == Store.Currency"
+							ng-repeat="curr in currencies" value="{{curr.ISO}}">{{curr.Name}}</option>
+					</select>
+				</dd>
+				<dd ng-show="Store.Address && Store.Address.Country || false">
+					<label>{{'Address.LabelTimezone' | t}}</label> <select
+						data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
+						ui-select2="{containerCssClass:'input-xlarge'}" ng-required="true"
+						ng-model="Store.Address.Timezone">
+						<option></option>
+						<option ng-repeat="t in timezones" ng-value="t.Key">{{t.Name}}</option>
+					</select>
+				</dd>
+			</dl>
+			<dl>
+				<dd class="pull-left">
 					<input type="button" ng-show="wizard.currentStep>1"
 						ng-click="wizard.currentStep = wizard.currentStep-1"
 						class="btn btn-primary clear"
 						value="{{ 'Common.Text_Back' | t
 						}}" />
-				</dt>
+				</dd>
 				<dd class="pull-left">
 					<input type="submit" class="btn btn-primary clear"
 						value="{{
@@ -74,7 +113,7 @@
 			<dd>
 				<input type="button" ng-click="save()" class="btn btn-primary clear"
 					value="{{
-							'Common.Text_Create' | t }}" />{{a}}
+							'Common.Text_Create' | t }}" />
 			</dd>
 		</dl>
 	</div>

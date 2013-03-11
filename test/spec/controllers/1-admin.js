@@ -49,11 +49,11 @@ describe('Controller: adminController', function() {
         // matching
         waitsFor(function() {
             return scope.registerErr === null && scope.registerOk;
-        }, 'failed with error: ' + scope.registerErr, 500);
+        }, 'failed with error: ' + scope.registerErr, 5000);
 
         waitsFor(function() {
             return scope.registerMsg !== null;
-        }, 'cannot register test account', 6000);
+        }, 'cannot register test account', 5000);
 
         // @todo
         // for more code coverage, we should be causing it to fail as a test and
@@ -71,7 +71,7 @@ describe('Controller: adminController', function() {
 
         waitsFor(function() {
             return scope.DomainProfile.Key !== null;
-        }, 'cannot login using test account', 6000);
+        }, 'cannot login using test account', 5000);
     });
 
 });

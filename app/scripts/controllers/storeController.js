@@ -1,7 +1,8 @@
 function storeController($scope, configService, authService, permService,
-        storeService, modelService, errorService) {
+        storeService, modelService, errorService, geoService) {
     $scope.config = configService, $scope.name = 'store', $scope.stores = [],
-            $scope.currencies = [], $scope.wizard = {
+            $scope.currencies = [], $scope.countries = [],
+            $scope.timezones = [], $scope.wizard = {
                 currentStep : 0,
                 finished : false
             };
@@ -13,7 +14,6 @@ function storeController($scope, configService, authService, permService,
      */
     $scope.DomainProfile = authService.getDomainProfile();
     $scope.Store = modelService.getInstanceOf('Store');
-    $scope.Currency = modelService.getInstanceOf('Currency');
 
     $scope.init = function() {
         authService.authenticate($scope).then(
@@ -26,7 +26,7 @@ function storeController($scope, configService, authService, permService,
                                 // multiple
                                 // stores?
                                 // DomainProfile should have new boolean
-                                // prop?
+                                // prop which would define this?
                                 if (!configService.multipleStores
                                         && angular.isDefined($scope.stores[0])
                                         && $scope.stores[0].Key !== null) {
@@ -34,9 +34,10 @@ function storeController($scope, configService, authService, permService,
                                             .initStore($scope.stores[0].Key)
                                             .then(function(store, currency) {
                                                 $scope.Store = store;
-                                                $scope.Currency = currency;
-                                            }, function(err) {
 
+                                                $scope.wizard.currentStep = 1;
+                                            }, function(err) {
+                                                errorService.log(err)
                                             });
                                 } else {
                                     // create store
@@ -52,7 +53,6 @@ function storeController($scope, configService, authService, permService,
     }
 
     $scope.loadCurrencies = function() {
-        // populate currencies list
         storeService.getCurrencies().then(function(currencies) {
             $scope.currencies = currencies;
         }, function(err) {
@@ -60,8 +60,24 @@ function storeController($scope, configService, authService, permService,
         });
     }
 
+    $scope.loadCountries = function() {
+        geoService.getCountries().then(function(countries) {
+            $scope.countries = countries;
+        }, function(err) {
+            errorService.log(err)
+        });
+    }
+
+    $scope.loadTimezonesByCountry = function(countryIso) {
+        geoService.getTimezonesByCountry(countryIso).then(function(timezones) {
+            $scope.timezones = timezones;
+        }, function(err) {
+            errorService.log(err)
+        });
+    }
+
     $scope.save = function() {
-        console.log('a')
+        console.log($scope.Store)
         if ($scope.wizardOk) {
 
         }
@@ -70,5 +86,5 @@ function storeController($scope, configService, authService, permService,
 
 storeController.$inject = [
         '$scope', 'configService', 'authService', 'permService',
-        'storeService', 'modelService', 'errorService'
+        'storeService', 'modelService', 'errorService', 'geoService'
 ];
