@@ -42,8 +42,8 @@ azureTicketsApp
                                         _label = jQuery('<label />');
                                         _label.text('{{atLabel}}');
                                         if (angular
-                                                .isDefined($attrs.labelClass)) _label
-                                                .addClass($attrs.labelClass);
+                                                .isDefined($attrs.labelClass)){_label
+                                        .addClass($attrs.labelClass);}
                                     }
 
                                     // set proper element definition
@@ -59,14 +59,14 @@ azureTicketsApp
                                         _attr.type = 'number',
                                                 _el = jQuery('<input ' + _req
                                                         + '/>');
-                                        if (_label !== null) _label
-                                                .addClass('pull-left');
+                                        if (_label !== null){_label
+                                                .addClass('pull-left');}
 
                                     } else if (/^Boolean/g.test(fieldType)) {
                                         _attr.type = 'checkbox',
                                                 _el = jQuery('<input />');
-                                        if (_label !== null) _label
-                                                .addClass('pull-right');
+                                        if (_label !== null){_label
+                                                .addClass('pull-right');}
                                     } else if (/^Date|Time/g.test(fieldType)) {
                                         _attr.type = 'text',
                                                 _el = jQuery('<input />');
@@ -117,14 +117,14 @@ azureTicketsApp
                                     _el.attr('ng-model', 'atModel');
                                     $element.append(_label).append(_el);
 
-                                    if ($attrs.uiValidate) _el.attr(
-                                            'ui-validate', 'atUiValidate');
-                                    if ($attrs.uiValidateWatch) _el.attr(
+                                    if ($attrs.uiValidate){_el.attr(
+                                            'ui-validate', 'atUiValidate');}
+                                    if ($attrs.uiValidateWatch){_el.attr(
                                             'ui-validate-watch',
-                                            'atUiValidateWatch');
+                                            'atUiValidateWatch');}
 
-                                    if (_label !== null) $compile(_label)(
-                                            $scope);
+                                    if (_label !== null){$compile(_label)(
+                                            $scope);}
                                     $compile(_el)($scope);
                                 }
                             }

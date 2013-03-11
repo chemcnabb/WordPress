@@ -2,7 +2,7 @@ function storeController($scope, configService, authService, permService,
         storeService, modelService, errorService) {
     $scope.config = configService, $scope.name = 'store', $scope.stores = [],
             $scope.currencies = [], $scope.wizard = {
-                currentStep : 'step1',
+                currentStep : 0,
                 finished : false
             };
 
@@ -38,6 +38,9 @@ function storeController($scope, configService, authService, permService,
                                             }, function(err) {
 
                                             });
+                                } else {
+                                    // create store
+                                    $('#serviceAgreement').modal('show')
                                 }
 
                             }, function(err) {
@@ -57,7 +60,8 @@ function storeController($scope, configService, authService, permService,
         });
     }
 
-    $scope.update = function() {
+    $scope.save = function() {
+        console.log('a')
         if ($scope.wizardOk) {
 
         }
