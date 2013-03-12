@@ -17,35 +17,61 @@ function storeController($scope, configService, authService, permService,
     $scope.Store = modelService.getInstanceOf('Store');
 
     $scope.init = function() {
-        authService.authenticate($scope).then(
-                function() {
-                    storeService.listStoresAsync(1).then(
-                            function() {
-                                $scope.stores = storeService.getStores();
+        authService
+                .authenticate($scope)
+                .then(
+                        function() {
+                            var wideAccess = authService.isMember()
+                                    || authService.isExplicit()
+                                    || authService.isStoreOwner()
+                                    || authService.isEmployee()
+                                    || authService.isService()
+                                    || authService.isAdministrator();
 
-                                if (!configService.multipleStores
-                                        && angular.isDefined($scope.stores[0])
-                                        && $scope.stores[0].Key !== null) {
-                                    storeService
-                                            .initStore($scope.stores[0].Key)
-                                            .then(function(store, currency) {
-                                                $scope.Store = store;
-                                                $scope.wizard.currentStep = 1;
-                                            }, function(err) {
-                                                errorService.log(err)
-                                            });
-                                } else if (authService.isAuthenticated()) {
-                                    // create store
-                                    $('#serviceAgreement').modal('show')
-                                } else if (authService.isMember()) {
-                                    $scope.wizard.currentStep = 1;
-                                }
-                            }, function(err) {
-                                errorService.log(err)
-                            });
-                }, function(err) {
-                    errorService.log(err)
-                });
+                            if (wideAccess) {
+                                storeService
+                                        .listStoresAsync(1)
+                                        .then(
+                                                function() {
+                                                    $scope.stores = storeService
+                                                            .getStores();
+
+                                                    if (!configService.multipleStores
+                                                            && angular
+                                                                    .isDefined($scope.stores[0])
+                                                            && $scope.stores[0].Key !== null) {
+                                                        storeService
+                                                                .initStore(
+                                                                        $scope.stores[0].Key)
+                                                                .then(
+                                                                        function(
+                                                                                store,
+                                                                                currency) {
+                                                                            $scope.Store = store;
+                                                                            $scope.wizard.currentStep = 1;
+                                                                        },
+                                                                        function(
+                                                                                err) {
+                                                                            errorService
+                                                                                    .log(err)
+                                                                        });
+                                                    } else if (authService
+                                                            .isAuthenticated()) {
+                                                        // create store
+                                                        $('#serviceAgreement')
+                                                                .modal('show')
+                                                    } else {
+                                                        $scope.wizard.currentStep = 1;
+                                                    }
+                                                }, function(err) {
+                                                    errorService.log(err)
+                                                });
+                            } else {
+                                $scope.upgradeProfile();
+                            }
+                        }, function(err) {
+                            errorService.log(err)
+                        });
     }
 
     $scope.upgradeProfile = function() {

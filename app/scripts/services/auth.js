@@ -55,6 +55,27 @@ azureTicketsApp
                                 isMember : function() {
                                     return _domainProfile.ProfileRole === BWL.ModelEnum.DomainProfileRoleEnum.Member;
                                 },
+                                isPublic : function() {
+                                    return _domainProfile.ProfileRole === BWL.ModelEnum.DomainProfileRoleEnum.Public;
+                                },
+                                isExplicit : function() {
+                                    return _domainProfile.ProfileRole === BWL.ModelEnum.DomainProfileRoleEnum.Explicit;
+                                },
+                                isStoreOwner : function() {
+                                    return _domainProfile.ProfileRole === BWL.ModelEnum.DomainProfileRoleEnum.StoreOwner;
+                                },
+                                isEmployee : function() {
+                                    return _domainProfile.ProfileRole === BWL.ModelEnum.DomainProfileRoleEnum.Employee;
+                                },
+                                isService : function() {
+                                    return _domainProfile.ProfileRole === BWL.ModelEnum.DomainProfileRoleEnum.Service;
+                                },
+                                isAdministrator : function() {
+                                    return _domainProfile.ProfileRole === BWL.ModelEnum.DomainProfileRoleEnum.Administrator;
+                                },
+                                isNoAccess : function() {
+                                    return _domainProfile.ProfileRole === BWL.ModelEnum.DomainProfileRoleEnum.NoAccess;
+                                },
                                 upgradeProfile : function() {
                                     var def = $q.defer();
 
