@@ -2,10 +2,11 @@ function storeController($scope, configService, authService, permService,
         storeService, modelService, errorService, geoService) {
     $scope.config = configService, $scope.name = 'store', $scope.stores = [],
             $scope.currencies = [], $scope.countries = [], $scope.regions = [],
-            $scope.timezones = [], $scope.wizard = {
-                currentStep : 0,
-                finished : false
-            };
+            $scope.paymentProviders = []
+    $scope.timezones = [], $scope.wizard = {
+        currentStep : 0,
+        finished : false
+    };
 
     /**
      * models in play here.
@@ -22,11 +23,6 @@ function storeController($scope, configService, authService, permService,
                             function() {
                                 $scope.stores = storeService.getStores();
 
-                                // @todo Justin, is client able to set
-                                // multiple
-                                // stores?
-                                // DomainProfile should have new boolean
-                                // prop which would define this?
                                 if (!configService.multipleStores
                                         && angular.isDefined($scope.stores[0])
                                         && $scope.stores[0].Key !== null) {
@@ -34,22 +30,32 @@ function storeController($scope, configService, authService, permService,
                                             .initStore($scope.stores[0].Key)
                                             .then(function(store, currency) {
                                                 $scope.Store = store;
-
                                                 $scope.wizard.currentStep = 1;
                                             }, function(err) {
                                                 errorService.log(err)
                                             });
-                                } else {
+                                } else if (authService.isAuthenticated()) {
                                     // create store
                                     $('#serviceAgreement').modal('show')
+                                } else if (authService.isMember()) {
+                                    $scope.wizard.currentStep = 1;
                                 }
-
                             }, function(err) {
                                 errorService.log(err)
                             });
                 }, function(err) {
                     errorService.log(err)
                 });
+    }
+
+    $scope.upgradeProfile = function() {
+        authService.upgradeProfile().then(function() {
+            return authService.authenticate($scope);
+        }).then(function() {
+            $scope.wizard.currentStep = 1;
+        }, function(err) {
+            errorService.log(err)
+        });
     }
 
     $scope.loadCurrencies = function() {
@@ -69,19 +75,37 @@ function storeController($scope, configService, authService, permService,
     }
 
     $scope.loadTimezonesByCountry = function(countryIso) {
-        geoService.getTimezonesByCountry(countryIso).then(function(timezones) {
-            $scope.timezones = timezones;
-        }, function(err) {
-            errorService.log(err)
-        });
+        if (angular.isDefined(countryIso)) {
+            geoService.getTimezonesByCountry(countryIso).then(
+                    function(timezones) {
+                        $scope.timezones = timezones;
+                    }, function(err) {
+                        errorService.log(err)
+                    });
+        }
     }
 
     $scope.loadRegionsByCountry = function(countryIso) {
-        geoService.getRegionsByCountry(countryIso).then(function(regions) {
-            $scope.regions = regions;
-        }, function(err) {
-            errorService.log(err)
-        });
+        if (angular.isDefined(countryIso)) {
+            geoService.getRegionsByCountry(countryIso).then(function(regions) {
+                $scope.regions = regions;
+            }, function(err) {
+                errorService.log(err)
+            });
+        }
+
+    }
+
+    $scope.loadPaymentProvidersByCurrency = function(currency) {
+        if (angular.isDefined(currency)) {
+            storeService.getPaymentProvidersByCurrency(currency).then(
+                    function(paypros) {
+                        $scope.paymentProviders = paypros;
+                    }, function(err) {
+                        errorService.log(err)
+                    });
+        }
+
     }
 
     $scope.save = function() {

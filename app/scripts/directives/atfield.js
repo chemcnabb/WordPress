@@ -18,8 +18,10 @@ azureTicketsApp
                                     atUiValidateWatch : '=uiValidateWatch',
                                 },
                                 link : function($scope, $element, $attrs) {
-                                    var m = $attrs.ngModel.split('.')[0];
-                                    var f = $attrs.ngModel.split('.')[1];
+                                    var ss = $attrs.ngModel.split('.');
+                                    var m = ss.length === 3 ? ss[1] : ss[0];
+                                    var f = ss.length === 3 ? ss[ss.length - 1]
+                                            : ss[1];
                                     var copyOf = angular
                                             .isDefined($attrs.atCopy) ? BWL.ModelMeta[$attrs.atCopy]
                                             : null
@@ -42,8 +44,9 @@ azureTicketsApp
                                         _label = jQuery('<label />');
                                         _label.text('{{atLabel}}');
                                         if (angular
-                                                .isDefined($attrs.labelClass)){_label
-                                        .addClass($attrs.labelClass);}
+                                                .isDefined($attrs.labelClass)) {
+                                            _label.addClass($attrs.labelClass);
+                                        }
                                     }
 
                                     // set proper element definition
@@ -59,14 +62,16 @@ azureTicketsApp
                                         _attr.type = 'number',
                                                 _el = jQuery('<input ' + _req
                                                         + '/>');
-                                        if (_label !== null){_label
-                                                .addClass('pull-left');}
+                                        if (_label !== null) {
+                                            _label.addClass('pull-left');
+                                        }
 
                                     } else if (/^Boolean/g.test(fieldType)) {
                                         _attr.type = 'checkbox',
                                                 _el = jQuery('<input />');
-                                        if (_label !== null){_label
-                                                .addClass('pull-right');}
+                                        if (_label !== null) {
+                                            _label.addClass('pull-right');
+                                        }
                                     } else if (/^Date|Time/g.test(fieldType)) {
                                         _attr.type = 'text',
                                                 _el = jQuery('<input />');
@@ -117,14 +122,17 @@ azureTicketsApp
                                     _el.attr('ng-model', 'atModel');
                                     $element.append(_label).append(_el);
 
-                                    if ($attrs.uiValidate){_el.attr(
-                                            'ui-validate', 'atUiValidate');}
-                                    if ($attrs.uiValidateWatch){_el.attr(
-                                            'ui-validate-watch',
-                                            'atUiValidateWatch');}
+                                    if ($attrs.uiValidate) {
+                                        _el.attr('ui-validate', 'atUiValidate');
+                                    }
+                                    if ($attrs.uiValidateWatch) {
+                                        _el.attr('ui-validate-watch',
+                                                'atUiValidateWatch');
+                                    }
 
-                                    if (_label !== null){$compile(_label)(
-                                            $scope);}
+                                    if (_label !== null) {
+                                        $compile(_label)($scope);
+                                    }
                                     $compile(_el)($scope);
                                 }
                             }

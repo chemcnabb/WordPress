@@ -8,7 +8,7 @@ azureTicketsApp
                         '$rootScope',
                         'modelService',
                         function(configService, $q, $rootScope, modelService) {
-                            var _clientKey = null;
+                            var _clientKey = null, _domainProfile = null;
 
                             return {
                                 /**
@@ -31,9 +31,9 @@ azureTicketsApp
                                                             $scope.DomainProfile = _this
                                                                     .getDomainProfile();
 
-                                                            if (!$scope.$$phase) $scope
-                                                                    .$apply()
-
+                                                            if (!$scope.$$phase) {
+                                                                $scope.$apply()
+                                                            }
                                                             def.resolve();
                                                         },
                                                         function(err) {
@@ -46,6 +46,26 @@ azureTicketsApp
                                     } else {
                                         def.resolve();
                                     }
+
+                                    return def.promise;
+                                },
+                                isAuthenticated : function() {
+                                    return _domainProfile.ProfileRole === BWL.ModelEnum.DomainProfileRoleEnum.Authenticated;
+                                },
+                                isMember : function() {
+                                    return _domainProfile.ProfileRole === BWL.ModelEnum.DomainProfileRoleEnum.Member;
+                                },
+                                upgradeProfile : function() {
+                                    var def = $q.defer();
+
+                                    BWL.Services.SystemProfileService
+                                            .SignupAsync(function() {
+                                                $rootScope.$apply(def.resolve)
+                                            }, function(err) {
+                                                $rootScope.$apply(function() {
+                                                    def.reject(err)
+                                                })
+                                            });
 
                                     return def.promise;
                                 },
@@ -153,8 +173,10 @@ azureTicketsApp
                                     return def.promise;
                                 },
                                 getDomainProfile : function() {
-                                    return modelService.getInstanceOf(
-                                            'DomainProfile', null, 'Profile');
+                                    _domainProfile = modelService
+                                            .getInstanceOf('DomainProfile',
+                                                    null, 'Profile');
+                                    return _domainProfile;
                                 },
                                 setDomainProfile : function(profile) {
                                     BWL.Profile = null;
@@ -196,10 +218,10 @@ azureTicketsApp
                                     return def.promise;
                                 },
                                 isDomainProfileReady : function() {
-                                    return (this.getDomainProfile() !== null
+                                    return this.getDomainProfile() !== null
                                             && angular.isDefined(this
-                                                    .getDomainProfile().Key) && this
-                                            .getDomainProfile().Key !== null)
+                                                    .getDomainProfile().Key)
+                                            && this.getDomainProfile().Key !== null
                                 }
                             }
                         }

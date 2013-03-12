@@ -5,14 +5,25 @@
 	<div ng-include src="'views/elements/error.html'"></div>
 	<!-- store info -->
 	<div class="row-fluid" ng-init="loadCurrencies(); loadCountries()">
-		<blockquote ng-show="wizard.currentStep>
-			0">
-			<p>{{ 'Common.Text_RegistrationStep1' | t }}</p>
-		</blockquote>
-		<p class="text-info"
-			ng-show="wizard.currentStep>
-			0 && !Store.Key || false">{{
-			'Common.Text_StoreCreate' | t }}</p>
+		<p ng-show="wizard.currentStep>
+			0" class="lead">{{
+			'Common.Text_RegistrationStep1' | t }}</p>
+		<div ng-switch="wizard.currentStep">
+			<div ng-switch-when="1" ng-show="!Store.Key || false" class="alert">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				{{ 'Common.Text_StoreCreate' | t }}
+			</div>
+			<div class="alert alert-info" ng-switch-when="2">
+				<strong>{{ 'Common.Text_LocationInfo' | t }}</strong>
+			</div>
+			<div class="alert alert-info" ng-switch-when="3">
+				<strong>{{ 'Common.Text_StoreMenu_PaymentSettings' | t }}</strong>
+			</div>
+			<div class="alert alert-success" ng-switch-when="4">
+				<strong>{{ 'Common.Text_Congrats' | t }}</strong> {{
+				'Common.Text_WizardComplete' | t }}
+			</div>
+		</div>
 		<div id="serviceAgreement" class="modal hide fade">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
@@ -27,10 +38,11 @@
 			<div class="modal-footer">
 				<a href="#" data-dismiss="modal" class="btn">{{
 					'Common.Text_Cancel' | t }}</a> <a href="#" class="btn btn-info"
-					data-dismiss="modal" ng-click="wizard.currentStep = 1">{{
+					data-dismiss="modal" ng-click="upgradeProfile()">{{
 					'Common.Text_IAccept' | t }}</a>
 			</div>
 		</div>
+		<ng-form name="atStore" ng-submit="save()">
 		<form ng-show="wizard.currentStep == 1" name="atStore1"
 			ng-submit="wizard.currentStep = wizard.currentStep+1">
 			<dl class="clearfix">
@@ -63,6 +75,20 @@
 							ng-repeat="c in countries" value="{{c.ISO}}">{{c.Name}}</option>
 					</select>
 				</dd>
+				<dd>
+					<atfield ng-required="true" class="input-xlarge"
+						ng-model="Store.Address.AddressLine1"
+						label="'Address.LabelAddress1' | t" />
+				</dd>
+				<dd>
+					<atfield class="input-xlarge" ng-model="Store.Address.AddressLine2"
+						label="'Address.LabelAddress2' | t" />
+				</dd>
+				<dd>
+					<atfield ng-required class="input-small"
+						ng-model="Store.Address.PostalCode"
+						label="'Address.LabelPostalCode' | t" />
+				</dd>
 				<dd ng-show="Store.Address && Store.Address.Country || false">
 					<label>{{'Address.LabelState' | t}} /
 						{{'Address.LabelProvince' | t}}</label> <select
@@ -72,16 +98,6 @@
 						<option></option>
 						<option ng-selected="r.ISO == Store.Address.Region"
 							ng-repeat="r in regions" value="{{r.ISO}}">{{r.Name}}</option>
-					</select>
-				</dd>
-				<dd>
-					<label>{{'Common.Text_StoreCurrency' | t}}</label> <select
-						ui-select2="{containerCssClass:'input-xlarge'}" ng-required="true"
-						data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
-						ng-model="Store.Currency">
-						<option></option>
-						<option ng-selected="curr.ISO == Store.Currency"
-							ng-repeat="curr in currencies" value="{{curr.ISO}}">{{curr.Name}}</option>
 					</select>
 				</dd>
 				<dd ng-show="Store.Address && Store.Address.Country || false">
@@ -109,12 +125,57 @@
 				</dd>
 			</dl>
 		</form>
+		<form ng-show="wizard.currentStep == 3 && !wizard.finished"
+			name="atStore3"
+			ng-submit="wizard.currentStep = 4; wizard.finished = true">
+			<dl class="clearfix">
+				<dd>
+					<label>{{'Common.Text_StoreCurrency' | t}}</label> <select
+						ui-select2="{containerCssClass:'input-xlarge'}" ng-required="true"
+						data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
+						ng-model="Store.Currency"
+						ng-change="loadPaymentProvidersByCurrency(Store.Currency)">
+						<option></option>
+						<option ng-selected="curr.ISO == Store.Currency"
+							ng-repeat="curr in currencies" value="{{curr.ISO}}">{{curr.Name}}</option>
+					</select>
+				</dd>
+				<dd ng-show="Store.Currency || false">
+					<label>{{'Common.Text_StoreMenu_PaymentProvider' | t}}</label> <select
+						data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
+						ng-required="true" ng-model="Store.PaymentProviders" ng-options="p for p in paymentProviders">
+					</select>
+				</dd>
+			</dl>
+			<dl>
+				<dd class="pull-left">
+					<input type="button" ng-show="wizard.currentStep>1"
+						ng-click="wizard.currentStep = wizard.currentStep-1"
+						class="btn btn-primary clear"
+						value="{{ 'Common.Text_Back' | t
+						}}" />
+				</dd>
+				<dd class="pull-left">
+					<input type="submit" class="btn btn-primary clear"
+						value="{{
+							'Common.Text_Next' | t }}" />
+				</dd>
+			</dl>
+		</form>
 		<dl ui-if="wizard.finished" class="clearfix">
-			<dd>
-				<input type="button" ng-click="save()" class="btn btn-primary clear"
+			<dd class="pull-left">
+				<input type="button" ng-show="wizard.currentStep==4"
+					ng-click="wizard.currentStep = wizard.currentStep-1; wizard.finished = false"
+					class="btn btn-primary clear"
+					value="{{ 'Common.Text_Back' | t
+						}}" />
+			</dd>
+			<dd class="pull-left">
+				<input type="submit" class="btn btn-primary clear"
 					value="{{
-							'Common.Text_Create' | t }}" />
+							 'Common.Text_SaveSettings' | t }}" />
 			</dd>
 		</dl>
+		</ng-form>
 	</div>
 </div>
