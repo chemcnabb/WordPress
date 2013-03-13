@@ -4,7 +4,8 @@
 	<div ng-include src="'views/elements/topMenu.html'"></div>
 	<div ng-include src="'views/elements/error.html'"></div>
 	<!-- store info -->
-	<div class="row-fluid" ng-init="loadCurrencies(); loadCountries()">
+	<div ui-if="DomainProfile.Key || false" class="row-fluid"
+		ng-init="loadCurrencies(); loadCountries()">
 		<p ng-show="wizard.currentStep>
 			0" class="lead">{{
 			'Common.Text_RegistrationStep1' | t }}</p>
@@ -164,17 +165,12 @@
 			</dl>
 		</form>
 		<dl ui-if="wizard.finished" class="clearfix">
-			<dd class="pull-left">
+			<dd>
 				<input type="button" ng-show="wizard.currentStep==4"
 					ng-click="wizard.currentStep = wizard.currentStep-1; wizard.finished = false"
 					class="btn btn-primary clear"
 					value="{{ 'Common.Text_Back' | t
 						}}" />
-			</dd>
-			<dd class="pull-left">
-				<input type="submit" class="btn btn-primary clear"
-					value="{{
-							 'Common.Text_SaveSettings' | t }}" />
 			</dd>
 		</dl>
 		</ng-form>
