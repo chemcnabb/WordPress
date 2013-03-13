@@ -257,7 +257,7 @@ var CommonResources = {
     Text_StoreOwnerName : "I'm administrator",
     Text_Ask : 'Ask',
     Text_Congrats : 'Congratulations!',
-    Text_WizardComplete : 'You have succesfully completed this wizard. Now you can save your changes.',
+    Text_WizardComplete : 'You have succesfully completed this wizard. Your changes has been saved.',
     Text_Registration : "Registration",
     Text_DateOfBirth : "Date of birth",
     Text_Sex : "Sex",

@@ -143,7 +143,8 @@
 				<dd ng-show="Store.Currency || false">
 					<label>{{'Common.Text_StoreMenu_PaymentProvider' | t}}</label> <select
 						data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
-						ng-required="true" ng-model="Store.PaymentProviders" ng-options="p for p in paymentProviders">
+						ng-required="true" ng-model="Store.PaymentProviders"
+						ng-options="p for p in paymentProviders">
 					</select>
 				</dd>
 			</dl>
