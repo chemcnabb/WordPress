@@ -4,7 +4,8 @@ function storeController($scope, $q, configService, authService, permService,
       $scope.currencies = [], $scope.countries = [], $scope.regions = [],
       $scope.paymentProviders = [], $scope.timezones = [], $scope.wizard = {
         currentStep : 0,
-        finished : false
+        finished : false,
+        saved : false
       };
 
   /**
@@ -40,6 +41,7 @@ function storeController($scope, $q, configService, authService, permService,
                                 .then(
                                     function(store, currency) {
                                       $scope.Store = store;
+                                      $scope.Store.tmpPaymentProvider = $scope.Store.PaymentProviders[0].ProviderType;
                                       $scope.wizard.currentStep = 1;
 
                                       if ($scope.Store.Address
@@ -140,17 +142,21 @@ function storeController($scope, $q, configService, authService, permService,
    * $scope.Store.PaymentProviders
    */
   $scope.isPaymentProviderSelected = function(pType) {
-    $scope.Store.PaymentProviders.forEach(function(p) {
-      if (p.ProviderType === pType) {
-        return true;
-      }
-    });
-
+    if (angular.isDefined($scope.Store.PaymentProviders)
+        && $scope.Store.PaymentProviders !== null) {
+      $scope.Store.PaymentProviders.forEach(function(p) {
+        if (p.ProviderType === pType) {
+          return true;
+        }
+      });
+    }
     return false;
   }
 
   $scope.save = function() {
     if ($scope.wizard.finished) {
+      $scope.wizard.saved = false;
+
       if ($scope.Store.Key === null) {
         // create store
         var permaLink = top.location.hostname;
@@ -171,7 +177,16 @@ function storeController($scope, $q, configService, authService, permService,
             ],
             Address : $scope.Store.Address
           }).then(function(storeKey) {
+            $scope.Store.Key = storeKey;
+
             // attach payment providers
+            storeService.addPaymentProvider($scope.Store, {
+              ProviderType : $scope.Store.tmpPaymentProvider
+            }).then(function() {
+              $scope.wizard.saved = true; // used mainly in tests
+            }, function(err) {
+              errorService.log(err)
+            });
           }, function(err) {
             errorService.log(err)
           });
@@ -188,6 +203,7 @@ function storeController($scope, $q, configService, authService, permService,
                 ProviderType : store.tmpPaymentProvider
               }).then(function() {
                 $scope.Store = store;
+                $scope.wizard.saved = true; // used mainly in tests
               }, function(err) {
                 errorService.log(err)
               });

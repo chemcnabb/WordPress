@@ -145,7 +145,7 @@
 						data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
 						ng-required="true" ng-model="Store.tmpPaymentProvider">
 						<option></option>
-						<option ng-selected="isPaymentProviderSelected(p)"
+						<option ng-selected="Store.tmpPaymentProvider == p"
 							ng-repeat="p in paymentProviders" value="{{p}}">{{p}}</option>
 					</select>
 				</dd>
