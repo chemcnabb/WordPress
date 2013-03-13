@@ -2,11 +2,10 @@ function storeController($scope, $q, configService, authService, permService,
     storeService, modelService, errorService, geoService) {
   $scope.config = configService, $scope.name = 'store', $scope.stores = [],
       $scope.currencies = [], $scope.countries = [], $scope.regions = [],
-      $scope.paymentProviders = []
-  $scope.timezones = [], $scope.wizard = {
-    currentStep : 0,
-    finished : false
-  };
+      $scope.paymentProviders = [], $scope.timezones = [], $scope.wizard = {
+        currentStep : 0,
+        finished : false
+      };
 
   /**
    * models in play here.
@@ -134,47 +133,72 @@ function storeController($scope, $q, configService, authService, permService,
 
   }
 
+  /**
+   * The Payment Providers list returned by above method doesn't include
+   * PaymentProvider model (Key, etc), instead it does only return array of
+   * strings so we cannot match them against the selection contained in
+   * $scope.Store.PaymentProviders
+   */
+  $scope.isPaymentProviderSelected = function(pType) {
+    $scope.Store.PaymentProviders.forEach(function(p) {
+      if (p.ProviderType === pType) {
+        return true;
+      }
+    });
+
+    return false;
+  }
+
   $scope.save = function() {
     if ($scope.wizard.finished) {
       if ($scope.Store.Key === null) {
+        // create store
         var permaLink = top.location.hostname;
 
         // check URI
-        storeService.checkURIAvailability(permaLink).then(
-            function(uri) {
-              // go on and create
-              storeService.createStore({
-                Name : $scope.Store.Name,
-                Public : true,
-                HasMemberships : true,
-                HasWishlist : true,
-                Currency : $scope.Store.Currency
-              }).then(
-                  function(storeKey) {
-                    // attach URI
-                    storeService.addStoreURI(storeKey, uri).then(
-                        function() {
-                          debugger;
-                          geoService.createAddressForStore(storeKey,
-                              $scope.Store.Address).then(function() {
-                            debugger;
-                          }, function(err) {
-                            debugger;
-                            errorService.log(err)
-                          })
-                        }, function(err) {
-                          errorService.log(err)
-                        });
-                  }, function(err) {
-                    errorService.log(err)
-                  });
+        storeService.checkURIAvailability(permaLink).then(function(uri) {
+          // go on and create
+          storeService.createStore({
+            Name : $scope.Store.Name,
+            Public : true,
+            HasMemberships : true,
+            HasWishlist : true,
+            Currency : $scope.Store.Currency,
+            StoreURIs : [
+              {
+                URI : uri
+              }
+            ],
+            Address : $scope.Store.Address
+          }).then(function(storeKey) {
+            // attach payment providers
+          }, function(err) {
+            errorService.log(err)
+          });
+        }, function(err) {
+          errorService.log(err)
+        });
+      } else {
+        // update store
+        storeService.updateStore($scope.Store).then(function(store) {
+          geoService.updateAddress(store.Address).then(function(ret) {
+            // attach payment providers
+            storeService.removePaymentProvider(store, 0).then(function() {
+              storeService.addPaymentProvider(store, {
+                ProviderType : store.tmpPaymentProvider
+              }).then(function() {
+                $scope.Store = store;
+              }, function(err) {
+                errorService.log(err)
+              });
             }, function(err) {
               errorService.log(err)
             });
-      } else {
-        // update store
+          }, function(err) {
+            errorService.log(err)
+          });
+        });
       }
-
     }
   }
 }

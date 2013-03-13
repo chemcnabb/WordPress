@@ -68,15 +68,35 @@ azureTicketsApp.factory('geoService', [
                   BWL.Services.ModelService.AddAsync(storeKey, "Store",
                       storeKey, "Address", "Address", addressKey,
                       function(ret) {
-                        def.resolve(ret);
+                        $rootScope.$apply(function() {
+                          def.resolve(ret)
+                        })
                       }, function(err) {
-                        def.reject(err);
+                        $rootScope.$apply(function() {
+                          def.reject(err)
+                        })
                       });
                 }
               }, function(err) {
                 $rootScope.$apply(function() {
                   def.reject(err)
                 });
+              });
+
+          return def.promise;
+        },
+        updateAddress : function(address) {
+          var def = $q.defer();
+
+          BWL.Services.ModelService.UpdateAsync(address.Key, 'Address',
+              address.Key, address, function(ret) {
+                $rootScope.$apply(function() {
+                  def.resolve()
+                })
+              }, function(err) {
+                $rootScope.$apply(function() {
+                  def.reject(err)
+                })
               });
 
           return def.promise;

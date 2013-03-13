@@ -4,7 +4,8 @@ azureTicketsApp.factory('storeService', [
     '$rootScope',
     'modelService',
     'configService',
-    function($q, $rootScope, modelService, configService) {
+    'geoService',
+    function($q, $rootScope, modelService, configService, geoService) {
       var _stores = [], _lastAvailableURI = null;
 
       return {
@@ -77,24 +78,20 @@ azureTicketsApp.factory('storeService', [
                   // generate
                   // extra string
                   if (c < maxIt) {
-                    debugger
-                    _this.checkURIAvailability(h);
+                    _this.checkURIAvailability(h, c++);
                     return;
                   } else {
-                    def.reject(CommonResources.Error_System.replace(/\{\d+\}/g,
+                    def.reject(CommonResources.Error_System.replace(/\{0\}/g,
                         'maximum iteration achieved'));
                   }
                 } else {
                   // URI not found,
                   // proceed to
                   // creation
-                  debugger;
                   def.resolve(h);
                 }
               }, function(err) {
-                $rootScope.$apply(function() {
-                  def.reject(err)
-                })
+                def.reject(err)
               });
 
           return def.promise;
@@ -104,13 +101,10 @@ azureTicketsApp.factory('storeService', [
 
           BWL.Services.ModelService.CreateAsync(configService.container.store,
               this.getStore().Type, store, function(storeKey) {
-                debugger;
-
                 $rootScope.$apply(function() {
                   def.resolve(storeKey)
                 });
               }, function(err) {
-                debugger;
                 $rootScope.$apply(function() {
                   def.reject(err)
                 })
@@ -165,7 +159,6 @@ azureTicketsApp.factory('storeService', [
 
           return def.promise;
         },
-
         getCurrencies : function() {
           var def = $q.defer();
 
@@ -188,6 +181,61 @@ azureTicketsApp.factory('storeService', [
               function(paypros) {
                 $rootScope.$apply(function() {
                   def.resolve(paypros)
+                });
+              }, function(err) {
+                $rootScope.$apply(function() {
+                  def.reject(err)
+                })
+              });
+
+          return def.promise;
+        },
+        addPaymentProvider : function(store, p) {
+          var def = $q.defer();
+
+          BWL.Services.ModelService.AddAsync(store.Key, 'Store', store.Key,
+              'PaymentProviders', 'PaymentProvider', p, function(ret) {
+                $rootScope.$apply(function() {
+                  def.resolve(ret)
+                })
+              }, function(err) {
+                $rootScope.$apply(function() {
+                  def.reject(err)
+                })
+              });
+
+          return def.promise;
+        },
+        removePaymentProvider : function(store, ix) {
+          var def = $q.defer();
+
+          BWL.Services.ModelService.RemoveAsync(store.Key, 'Store', store.Key,
+              'PaymentProviders', 'PaymentProvider',
+              store.PaymentProviders[ix].Key, function(ret) {
+                $rootScope.$apply(function() {
+                  def.resolve(ret)
+                })
+              }, function(err) {
+                $rootScope.$apply(function() {
+                  def.reject(err)
+                })
+              });
+
+          return def.promise;
+        },
+        updateStore : function(store) {
+          var def = $q.defer(), tmpStore = angular.copy(store);
+          var _store = angular.copy(store);
+
+          delete tmpStore.Address;
+          delete tmpStore.StoreURIs;
+          delete tmpStore.PaymentProviders;
+          delete tmpStore.tmpPaymentProvider;
+
+          BWL.Services.ModelService.UpdateAsync(_store.Key, 'Store', store.Key,
+              tmpStore, function(ret) {
+                $rootScope.$apply(function() {
+                  def.resolve(_store)
                 });
               }, function(err) {
                 $rootScope.$apply(function() {
