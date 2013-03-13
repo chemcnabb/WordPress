@@ -232,8 +232,8 @@ azureTicketsApp.factory('storeService', [
           delete tmpStore.PaymentProviders;
           delete tmpStore.tmpPaymentProvider;
 
-          BWL.Services.ModelService.UpdateAsync(_store.Key, 'Store', store.Key,
-              tmpStore, function(ret) {
+          BWL.Services.ModelService.UpdateAsync(_store.Key, 'Store',
+              _store.Key, tmpStore, function(ret) {
                 $rootScope.$apply(function() {
                   def.resolve(_store)
                 });

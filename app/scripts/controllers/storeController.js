@@ -76,6 +76,19 @@ function storeController($scope, $q, configService, authService, permService,
             });
   }
 
+  $scope.initStore = function(storeKey) {
+    // reload full model
+    storeService
+        .initStore(storeKey)
+        .then(
+            function(store, currency) {
+              $scope.Store = store;
+              $scope.Store.tmpPaymentProvider = $scope.Store.PaymentProviders[0].ProviderType;
+            }, function(err) {
+              errorService.log(err)
+            });
+  }
+
   $scope.upgradeProfile = function() {
     authService.upgradeProfile().then(function() {
       return authService.authenticate($scope);
@@ -183,7 +196,10 @@ function storeController($scope, $q, configService, authService, permService,
             storeService.addPaymentProvider($scope.Store, {
               ProviderType : $scope.Store.tmpPaymentProvider
             }).then(function() {
-              $scope.wizard.saved = true; // used mainly in tests
+              $scope.wizard.saved = true;
+
+              // reload full model
+              $scope.initStore(store.Key);
             }, function(err) {
               errorService.log(err)
             });
@@ -202,8 +218,10 @@ function storeController($scope, $q, configService, authService, permService,
               storeService.addPaymentProvider(store, {
                 ProviderType : store.tmpPaymentProvider
               }).then(function() {
-                $scope.Store = store;
-                $scope.wizard.saved = true; // used mainly in tests
+                $scope.wizard.saved = true;
+
+                // reload full model
+                $scope.initStore(store.Key);
               }, function(err) {
                 errorService.log(err)
               });
