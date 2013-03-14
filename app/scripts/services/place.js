@@ -35,7 +35,7 @@ azureTicketsApp.factory('placeService', [
         createPlace : function(place) {
           var def = $q.defer();
 
-          BWL.Services.ModelService.CreateAsync(configService.container.place,
+          BWL.Services.ModelService.CreateAsync(configService.container.store,
               this.getPlace().Type, place, function(placeKey) {
                 $rootScope.$apply(function() {
                   def.resolve(placeKey)

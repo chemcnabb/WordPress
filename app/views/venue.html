@@ -4,5 +4,65 @@
 	<div ng-include src="'views/elements/topMenu.html'"></div>
 	<div ng-include src="'views/elements/error.html'"></div>
 	<!-- venue info -->
-	<span ng-bind="$eval('name') + 'a'"></span>
+	<div ui-if="DomainProfile.Key || false" class="row-fluid"
+		ng-init="loadCountries()">
+		<p class="lead pull-left">{{ 'Common.Text_VenueMenu_Venue' | t}}</p>
+		<div class="btn-group pull-right">
+			<button class="btn btn-info"
+				ng-click="wizard.open = true; wizard.currentStep = 1">{{
+				'Common.Text_Create' | t }}</button>
+		</div>
+		<div id="formVenue" class="modal form hide fade">
+			<div class="modal-header">
+				<button type="button" ng-click="wizard.open = false" class="close"
+					data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3>
+					<p class="text-info">{{ 'Common.Text_Venue' | t}}</p>
+				</h3>
+			</div>
+			<div class="modal-body">
+				<!-- messages -->
+				<div ng-switch="wizard.currentStep">
+					<div class="alert alert-info" ng-switch-when="2">
+						<strong>{{ 'Common.Text_LocationInfo' | t }}</strong>
+					</div>
+					<div class="alert alert-success" ng-switch-when="3">
+						<strong>{{ 'Common.Text_Congrats' | t }}</strong> {{
+						'Common.Text_WizardComplete' | t }}
+					</div>
+				</div>
+				<!-- form -->
+				<ng-form name="atVenue" ng-submit="save()">
+				<form ng-show="wizard.currentStep == 1" name="atVenue1"
+					ng-submit="wizard.currentStep = wizard.currentStep+1">
+					<dl class="clearfix">
+						<dd>
+							<atfield ng-required="true" class="input-xxlarge"
+								ng-model="Place.Name" label="'Common.Text_VenueName' | t" />
+						</dd>
+						<dd>
+							<atfield class="input-xxlarge" ng-model="Place.Description"
+								label="'Common.Text_Description' | t" rows="5" />
+						</dd>
+						<dd>
+							<input type="submit" class="btn btn-primary clear"
+								value="{{
+							'Common.Text_Next' | t }}" />
+						</dd>
+					</dl>
+				</form>
+				</ng-form>
+			</div>
+			<div class="modal-footer">
+				<a ng-click="wizard.open = false" data-dismiss="modal" class="btn">{{
+					'Common.Text_Cancel' | t }}</a> <a href="#" class="btn btn-info"
+					data-dismiss="modal" ng-click="save()">{{ 'Common.Text_Save' |
+					t }}</a>
+			</div>
+		</div>
+		<div class="clear row-fluid list">
+			<div ng-show="venues.length == 0" class="alert alert-info">{{
+				'Common.Text_VenueEmpty' | t }}</div>
+		</div>
+	</div>
 </div>
