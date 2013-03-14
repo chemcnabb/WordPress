@@ -2,7 +2,8 @@
 	ng-cloak>
 	<!-- top menu -->
 	<div ng-include src="'views/elements/topMenu.html'"></div>
-	<div ui-if="DomainProfile.Key || false" ng-include src="'views/elements/store/bcSettings.html'"></div>
+	<div ui-if="DomainProfile.Key || false" ng-include
+		src="'views/elements/store/bcSettings.html'"></div>
 	<div ng-include src="'views/elements/error.html'"></div>
 	<!-- store info -->
 	<div ui-if="DomainProfile.Key || false" class="row-fluid"
@@ -65,53 +66,8 @@
 		</form>
 		<form ng-show="wizard.currentStep == 2" name="atStore2"
 			ng-submit="wizard.currentStep = wizard.currentStep+1">
-			<dl class="clearfix">
-				<dd>
-					<label>{{'Address.LabelCountry' | t}}</label> <select
-						data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
-						ui-select2="{containerCssClass:'input-xlarge'}" ng-required="true"
-						ng-model="Store.Address.Country"
-						ng-change="loadTimezonesByCountry(Store.Address.Country);loadRegionsByCountry(Store.Address.Country)">
-						<option></option>
-						<option ng-selected="c.ISO == Store.Address.Country"
-							ng-repeat="c in countries" value="{{c.ISO}}">{{c.Name}}</option>
-					</select>
-				</dd>
-				<dd>
-					<atfield ng-required="true" class="input-xlarge"
-						ng-model="Store.Address.AddressLine1"
-						label="'Address.LabelAddress1' | t" />
-				</dd>
-				<dd>
-					<atfield class="input-xlarge" ng-model="Store.Address.AddressLine2"
-						label="'Address.LabelAddress2' | t" />
-				</dd>
-				<dd>
-					<atfield ng-required class="input-small"
-						ng-model="Store.Address.PostalCode"
-						label="'Address.LabelPostalCode' | t" />
-				</dd>
-				<dd ng-show="Store.Address && Store.Address.Country || false">
-					<label>{{'Address.LabelState' | t}} /
-						{{'Address.LabelProvince' | t}}</label> <select
-						data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
-						ui-select2="{containerCssClass:'input-xlarge'}" ng-required="true"
-						ng-model="Store.Address.Region">
-						<option></option>
-						<option ng-selected="r.ISO == Store.Address.Region"
-							ng-repeat="r in regions" value="{{r.ISO}}">{{r.Name}}</option>
-					</select>
-				</dd>
-				<dd ng-show="Store.Address && Store.Address.Country || false">
-					<label>{{'Address.LabelTimezone' | t}}</label> <select
-						data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
-						ui-select2="{containerCssClass:'input-xlarge'}" ng-required="true"
-						ng-model="Store.Address.Timezone">
-						<option></option>
-						<option ng-repeat="t in timezones" ng-value="t.Key">{{t.Name}}</option>
-					</select>
-				</dd>
-			</dl>
+			<div ng-include src="'views/elements/address/fields.html'"
+				onload="model='Store'"></div>
 			<dl>
 				<dd class="pull-left">
 					<a ng-show="wizard.currentStep>1"
@@ -126,8 +82,7 @@
 			</dl>
 		</form>
 		<form ng-show="wizard.currentStep == 3 && !wizard.saved"
-			name="atStore3"
-			ng-submit="wizard.finished = true">
+			name="atStore3" ng-submit="wizard.finished = true">
 			<dl class="clearfix">
 				<dd>
 					<label>{{'Common.Text_StoreCurrency' | t}}</label> <select

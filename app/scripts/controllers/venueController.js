@@ -1,22 +1,23 @@
 function venueController($scope, configService, authService, permService,
-        modelService) {
-    $scope.config = configService, $scope.name = 'venue';
+    modelService) {
+  $scope.config = configService, $scope.name = 'venue';
 
-    /**
-     * models in play here.
-     * 
-     * @todo inject models, using array of strings maybe.
-     */
-    $scope.DomainProfile = authService.getDomainProfile();
+  /**
+   * models in play here.
+   * 
+   * @todo inject models, using array of strings maybe.
+   */
+  $scope.DomainProfile = authService.getDomainProfile();
 
-    $scope.init = function() {
-        authService.authenticate($scope).then(function() {
-        }, function(err) {
+  $scope.init = function() {
+    authService.authenticate($scope).then(function() {
 
-        });
-    }
+    }, function(err) {
+      errorService.log(err)
+    });
+  }
 }
 
 venueController.$inject = [
-        '$scope', 'configService', 'authService', 'permService', 'modelService'
+    '$scope', 'configService', 'authService', 'permService', 'modelService'
 ];
