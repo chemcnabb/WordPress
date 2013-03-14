@@ -41,7 +41,9 @@ function storeController($scope, $q, configService, authService, permService,
                                 .then(
                                     function(store, currency) {
                                       $scope.Store = store;
-                                      $scope.Store.tmpPaymentProvider = $scope.Store.PaymentProviders[0].ProviderType;
+                                      $scope.Store.tmpPaymentProvider = angular
+                                          .isArray($scope.Store.PaymentProviders) ? $scope.Store.PaymentProviders[0].ProviderType
+                                          : null;
                                       $scope.wizard.currentStep = 1;
 
                                       if ($scope.Store.Address
@@ -179,6 +181,7 @@ function storeController($scope, $q, configService, authService, permService,
           // go on and create
           storeService.createStore({
             Name : $scope.Store.Name,
+            Description : $scope.Store.Description,
             Public : true,
             HasMemberships : true,
             HasWishlist : true,
