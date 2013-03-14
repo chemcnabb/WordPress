@@ -101,17 +101,9 @@ azureTicketsApp
                 logonByProviderAsync : function(provider) {
                   var def = $q.defer();
 
-                  Object.defineProperties(BWL.oAuth, {
-                    ClientKey : {
-                      value : _clientKey
-                    },
-                    PopupHeight : {
-                      value : configService.popupAuthHeight
-                    },
-                    PopupWidth : {
-                      value : configService.popupAuthWidth
-                    }
-                  });
+                  BWL.oAuth.ClientKey = _clientKey;
+                  BWL.oAuth.PopupHeight = configService.popupAuthHeight;
+                  BWL.oAuth.PopupWidth = configService.popupAuthWidth;
 
                   BWL.Services.SystemProfileService.GetProfileAsync(5,
                       function(profile) {
