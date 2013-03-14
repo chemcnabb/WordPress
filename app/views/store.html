@@ -2,6 +2,7 @@
 	ng-cloak>
 	<!-- top menu -->
 	<div ng-include src="'views/elements/topMenu.html'"></div>
+	<div ui-if="DomainProfile.Key || false" ng-include src="'views/elements/store/bcSettings.html'"></div>
 	<div ng-include src="'views/elements/error.html'"></div>
 	<!-- store info -->
 	<div ui-if="DomainProfile.Key || false" class="row-fluid"

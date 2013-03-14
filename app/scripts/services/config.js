@@ -8,7 +8,7 @@ azureTicketsApp.factory('configService', function() {
     popupAuthHeight : 500,
     // containers
     container : {
-      store : 'ATs'
+      store : '<%= at.name %>'
     }
   }
 });
