@@ -5,10 +5,11 @@
 	<div class="row-fluid" ng-init="loadAuthProviders()">
 		<div class="span6">
 			<p>{{ 'Login.Page_Desc' | t }}</p>
-			<div class="btn-group">
-				<a ng-repeat="provider in authProviders" class="btn btn-small"
-					ng-click="login(provider)">{{ provider }}</a>
-			</div>
+			<ul class="socialicons color">
+				<li ng-repeat="provider in authProviders"><a
+					ng-class="provider | lowercase" ng-click="login(provider)">{{
+						provider }}</a></li>
+			</ul>
 		</div>
 		<div class="span6">
 			<!-- membership login -->

@@ -32,7 +32,7 @@ module.exports = function(grunt) {
         watch : {
           less : {
             files : [
-              '<%= at.app %>/styles/{,*/}*.{less}'
+              '<%= at.app %>/styles/**/*.less'
             ],
             tasks : [
               'less'
@@ -187,8 +187,9 @@ module.exports = function(grunt) {
           dist : {
             files : {
               '<%= at.dist %>/styles/main.css' : [
-                  '.tmp/' + atConfig.styles + '/{,*/}*.css',
-                  '<%= at.dist %>/styles/**/*.css'
+                  '.tmp/' + atConfig.styles + '/**/*.css',
+                  '<%= at.dist %>/styles/**/*.css',
+                  '<%= at.app %>/styles/social.css'
               ]
             }
           }
@@ -252,7 +253,8 @@ module.exports = function(grunt) {
                 dest : '<%= at.dist %>',
                 src : [
                     '*.{ico,txt,php}',
-                    'components/**/*.{ico,txt,php,js,png,jpg,gif,css,less,json}'
+                    'components/**/*.{ico,txt,php,js,png,jpg,gif,css,less,json}',
+                    'assets/**/*.*'
                 ]
               }
             ]
