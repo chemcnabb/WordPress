@@ -68,7 +68,7 @@ azureTicketsApp.factory('storeService', [
 
           // check URI availability and regenerate if
           // exists
-          c = angular.isDefined(c) ? c++ : 0, maxIt = 20;
+          c = angular.isDefined(c) ? c : 0, maxIt = 20;
           h = c > 0 ? h + String.valueOf(c) : h;
 
           this.getStoreKeyByURI(h).then(

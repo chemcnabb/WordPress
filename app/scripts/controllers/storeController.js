@@ -218,6 +218,7 @@ function storeController($scope, $q, configService, authService, permService,
               storeService.addPaymentProvider(store, {
                 ProviderType : store.tmpPaymentProvider
               }).then(function() {
+                $scope.wizard.currentStep = 4;
                 $scope.wizard.saved = true;
 
                 // reload full model
