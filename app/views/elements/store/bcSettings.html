@@ -10,8 +10,9 @@
 	<li ng-class="{active: wizard.currentStep == 3}"><a
 		href="#/admin/store"
 		ng-click="wizard.currentStep = 3;wizard.finished = false;wizard.saved = false">{{
-			'Common.Text_CreateStore_Step3' | t }}</a> <span class="divider">/</span></li>
-	<li ng-class="{active: wizard.saved}"><a href="#/admin/store"
-		ng-click="wizard.finished = true">{{
+			'Common.Text_CreateStore_Step3' | t }}</a> <span ng-show="wizard.saved"
+		class="divider">/</span></li>
+	<li ng-show="wizard.saved" ng-class="{active: wizard.saved}"><a
+		href="#/admin/store" ng-click="wizard.finished = true">{{
 			'Common.Text_Finished' | t }}</a></li>
 </ul>
