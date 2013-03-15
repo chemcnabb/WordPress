@@ -16,7 +16,7 @@ azureTicketsApp
                   atChange : '=ngChange',
                   atUiValidate : '=uiValidate',
                   atUiValidateWatch : '=uiValidateWatch',
-                  atBlur : '=ngBlur',
+                  atBlur : '=ngBlur'
                 },
                 link : function($scope, $element, $attrs) {
                   var ss = $attrs.ngModel.split('.');
@@ -65,6 +65,10 @@ azureTicketsApp
                   } else if (/^Date|Time/g.test(fieldType)) {
                     _attr.type = 'text', _el = jQuery('<input ' + _req + '/>');
                     _el.attr('ui-date', true);
+
+                    if ($attrs.uiDateFormat) {
+                      _el.attr('ui-date-format', $attrs.uiDateFormat)
+                    }
                   } else if (/^.*Enum(?=\b).*$/g.test(fieldType)) {
                     _el = jQuery('<select />');
                     var _enum = BWL.ModelEnum[fieldType.replace(
@@ -83,7 +87,8 @@ azureTicketsApp
                     if (angular.isString($attrs[p])
                         && [
                             'ngModel', 'ngRequired', 'ngChange', 'uiValidate',
-                            'uiValidateWatch', 'ngBlur', 'uiEvent'
+                            'uiValidateWatch', 'ngBlur', 'uiEvent',
+                            'uiDateFormat'
                         ].indexOf(p) === -1) {
                       var pp = p.replace(/([A-Z]+)/g, '-$1').toLowerCase();
                       var v = $scope.$eval($attrs[p]) !== 0 ? $scope

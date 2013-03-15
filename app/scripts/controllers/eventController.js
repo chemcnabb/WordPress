@@ -76,6 +76,14 @@ function eventController($scope, $cookieStore, configService, authService,
     });
   }
 
+  $scope.deleteEvent = function(event) {
+    eventService.deleteEvent($scope.storeKey, event.Key).then(function() {
+      $scope.init();
+    }, function(err) {
+      errorService.log(err)
+    });
+  }
+
   $scope.save = function() {
     if ($scope.wizard.finished) {
       $scope.wizard.saved = false;

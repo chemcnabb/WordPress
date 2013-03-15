@@ -7,15 +7,16 @@ describe('Controller: adminController', function() {
   beforeEach(function() {
     module('azureTicketsApp');
 
-    inject(function($rootScope, $controller, authService, configService,
-        modelService) {
+    inject(function($rootScope, $controller, $cookieStore, authService,
+        configService, modelService) {
       scope = $rootScope.$new();
 
       ctrl = $controller(adminController, {
         $scope : scope,
         authService : authService,
         configService : configService,
-        modelService : modelService
+        modelService : modelService,
+        $cookieStore : $cookieStore
       });
     });
   });

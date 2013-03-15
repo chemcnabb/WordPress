@@ -58,22 +58,24 @@
 					<dl>
 						<dd class="pull-left">
 							<atfield ng-required="true" class="input-large"
-								ng-model="Event.StartTime" label="'Event.Text_EventStartAt' | t" />
+								ng-model="Event.StartTime" label="'Event.Text_EventStartAt' | t"
+								ui-date-format="'mm/dd/yy'" />
 						</dd>
 						<dd class="pull-left">
 							<atfield ng-required="true" class="input-large"
-								ng-model="Event.EndTime" label="'Event.Text_EventEndAt' | t" />
+								ng-model="Event.EndTime" label="'Event.Text_EventEndAt' | t"
+								ui-date-format="'mm/dd/yy'" />
 						</dd>
 						<dd class="clear"></dd>
 						<dd class="pull-left">
 							<atfield ng-required="true" class="input-large"
 								ng-model="Event.OnSaleDateTimeStart"
-								label="'Event.Text_SaleStartAt' | t" />
+								label="'Event.Text_SaleStartAt' | t" ui-date-format="'mm/dd/yy'" />
 						</dd>
 						<dd class="pull-left">
 							<atfield ng-required="true" class="input-large"
 								ng-model="Event.OnSaleDateTimeEnd"
-								label="'Event.Text_SaleEndAt' | t" />
+								label="'Event.Text_SaleEndAt' | t" ui-date-format="'mm/dd/yy'" />
 						</dd>
 						<dd class="clear"></dd>
 						<dd class="pull-left">
@@ -131,7 +133,8 @@
 						<div class="btn-group pull-right">
 							<button class="btn btn-mini btn-success" ng-click="update(event)">{{
 								'Common.Text_Update' | t }}</button>
-							<button ng-confirm="{{'Common.Text_RemoveProduct'|t}}"
+							<button ng-click="delete(event)"
+								ng-confirm="{{'Common.Text_RemoveProduct'|t}}"
 								class="btn btn-mini btn-danger">{{ 'Common.Text_Remove'
 								| t }}</button>
 						</div>

@@ -78,6 +78,22 @@ azureTicketsApp.factory('placeService', [
 
           return def.promise;
         },
+        deletePlace : function(storeKey, event) {
+          var def = $q.defer();
+
+          BWL.Services.ModelService.DeleteAsync(storeKey, this.getEvent().Type,
+              event.Key, function() {
+                $rootScope.$apply(function() {
+                  def.resolve()
+                });
+              }, function(err) {
+                $rootScope.$apply(function() {
+                  def.reject(err)
+                })
+              });
+
+          return def.promise;
+        },
         addPlaceAddress : function(placeKey, address) {
           var def = $q.defer(), _this = this;
 

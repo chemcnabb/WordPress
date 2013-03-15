@@ -135,6 +135,7 @@ function venueController($scope, $cookieStore, configService, authService,
       if ($scope.Place.Key === null) {
         // go on and create
         placeService.createPlace($scope.storeKey, {
+          Public : true,
           Name : $scope.Place.Name,
           Description : $scope.Place.Description,
           Address : $scope.Place.Address
