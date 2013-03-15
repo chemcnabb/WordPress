@@ -11,19 +11,28 @@
 		</select>
 	</dd>
 	<dd>
-		<atfield ng-required="true" class="input-xlarge"
+		<atfield ng-required="true" class="input-xxlarge"
 			ng-model="this[model].Address.AddressLine1"
 			label="'Address.LabelAddress1' | t" />
 	</dd>
 	<dd>
-		<atfield class="input-xlarge"
+		<atfield class="input-xxlarge"
 			ng-model="this[model].Address.AddressLine2"
 			label="'Address.LabelAddress2' | t" />
 	</dd>
-	<dd>
+	<dd class="pull-left">
 		<atfield ng-required class="input-small"
 			ng-model="this[model].Address.PostalCode"
 			label="'Address.LabelPostalCode' | t" />
+	</dd>
+	<dd class="pull-left" style="padding-top: 28px">
+		<a class="btn btn-mini"
+			ng-click="getCityByPostalCode(this[model].Address.Country, this[model].Address.PostalCode)"><i
+			class="icon-search"></i></a>
+	</dd>
+	<dd class="clear">
+		<atfield ng-required class="input-xlarge"
+			ng-model="this[model].Address.City" label="'Address.LabelCity' | t" />
 	</dd>
 	<dd
 		ng-show="this[model].Address && this[model].Address.Country || false">

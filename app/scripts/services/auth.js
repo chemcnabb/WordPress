@@ -69,6 +69,11 @@ azureTicketsApp
                 isNoAccess : function() {
                   return _domainProfile.ProfileRole === BWL.ModelEnum.DomainProfileRoleEnum.NoAccess;
                 },
+                hasStoreAccess : function() {
+                  return this.isMember() || this.isExplicit()
+                      || this.isStoreOwner() || this.isEmployee()
+                      || this.isService() || this.isAdministrator();
+                },
                 upgradeProfile : function() {
                   var def = $q.defer();
 

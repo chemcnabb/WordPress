@@ -9,10 +9,13 @@ azureTicketsApp.factory('storeService', [
       var _stores = [], _lastAvailableURI = null;
 
       return {
-        listStoresAsync : function(levels) {
+        listStoresAsync : function(storeKey, pages) {
           var def = $q.defer();
 
-          BWL.Services.StoreService.ListStoresAsync(levels, function(stores) {
+          if (storeKey !== null) {
+            def.resolve();
+          }
+          BWL.Services.StoreService.ListStoresAsync(pages, function(stores) {
             _stores = stores;
 
             $rootScope.$apply(function() {
@@ -116,7 +119,7 @@ azureTicketsApp.factory('storeService', [
           var def = $q.defer();
 
           BWL.Services.ModelService
-              .ReadAsync(storeKey, "Store", storeKey, 10,
+              .ReadAsync(configService.container.store, "Store", storeKey, 10,
                   function(store) {
                     if (!angular.isDefined(store.Address)
                         || store.Address === null) {
@@ -133,6 +136,10 @@ azureTicketsApp.factory('storeService', [
                             def.reject(err)
                           })
                         });
+                  }, function(err) {
+                    $rootScope.$apply(function() {
+                      def.reject(err)
+                    })
                   });
 
           return def.promise;
@@ -140,22 +147,24 @@ azureTicketsApp.factory('storeService', [
         addStoreURI : function(storeKey, uri) {
           var def = $q.defer(), _this = this;
 
-          BWL.Services.ModelService.CreateAsync(storeKey, "StoreURI", {
-            URI : uri
-          }, function(uriKey) {
-            BWL.Services.ModelService.AddAsync(storeKey, "Store", storeKey,
-                "StoreURIs", "StoreURI", uriKey, function(ret) {
-                  $rootScope.$apply(def.resolve)
-                }, function(err) {
-                  $rootScope.$apply(function() {
-                    def.reject(err)
-                  })
-                });
-          }, function(err) {
-            $rootScope.$apply(function() {
-              def.reject(err)
-            })
-          });
+          BWL.Services.ModelService.CreateAsync(configService.container.store,
+              "StoreURI", {
+                URI : uri
+              }, function(uriKey) {
+                BWL.Services.ModelService.AddAsync(
+                    configService.container.store, "Store", storeKey,
+                    "StoreURIs", "StoreURI", uriKey, function(ret) {
+                      $rootScope.$apply(def.resolve)
+                    }, function(err) {
+                      $rootScope.$apply(function() {
+                        def.reject(err)
+                      })
+                    });
+              }, function(err) {
+                $rootScope.$apply(function() {
+                  def.reject(err)
+                })
+              });
 
           return def.promise;
         },
@@ -232,8 +241,8 @@ azureTicketsApp.factory('storeService', [
           delete tmpStore.PaymentProviders;
           delete tmpStore.tmpPaymentProvider;
 
-          BWL.Services.ModelService.UpdateAsync(_store.Key, 'Store',
-              _store.Key, tmpStore, function(ret) {
+          BWL.Services.ModelService.UpdateAsync(configService.container.store,
+              'Store', _store.Key, tmpStore, function(ret) {
                 $rootScope.$apply(function() {
                   def.resolve(_store)
                 });

@@ -16,6 +16,7 @@ azureTicketsApp
                   atChange : '=ngChange',
                   atUiValidate : '=uiValidate',
                   atUiValidateWatch : '=uiValidateWatch',
+                  atBlur : '=ngBlur',
                 },
                 link : function($scope, $element, $attrs) {
                   var ss = $attrs.ngModel.split('.');
@@ -83,10 +84,9 @@ azureTicketsApp
                     if (angular.isString($attrs[p])
                         && [
                             'ngModel', 'ngRequired', 'ngChange', 'uiValidate',
-                            'uiValidateWatch'
+                            'uiValidateWatch', 'ngBlur', 'uiEvent'
                         ].indexOf(p) === -1) {
                       var pp = p.replace(/([A-Z]+)/g, '-$1').toLowerCase();
-
                       var v = $scope.$eval($attrs[p]) !== 0 ? $scope
                           .$eval($attrs[p]) : $attrs[p]
 
@@ -104,7 +104,12 @@ azureTicketsApp
                   if ($attrs.uiValidateWatch) {
                     _el.attr('ui-validate-watch', 'atUiValidateWatch');
                   }
-
+                  if ($attrs.ngBlur) {
+                    _el.attr('ng-blur', 'atBlur');
+                  }
+                  if ($attrs.uiEvent) {
+                    _el.attr('ui-event', 'atUiEvent');
+                  }
                   if (_label !== null) {
                     $compile(_label)($scope);
                   }

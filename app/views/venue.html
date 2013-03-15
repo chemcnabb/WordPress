@@ -10,7 +10,7 @@
 		<div class="btn-group pull-right">
 			<button class="btn btn-info"
 				ng-click="wizard.open = true; wizard.currentStep = 1">{{
-				'Common.Text_Create' | t }}</button>
+				'Common.Text_CreateVenue' | t }}</button>
 		</div>
 		<div id="formVenue" class="modal form hide fade">
 			<div class="modal-header">
@@ -51,14 +51,26 @@
 						</dd>
 					</dl>
 				</form>
+				<form ng-show="wizard.currentStep == 2" name="atVenue2"
+					ng-submit="wizard.finished = true">
+					<div ng-include src="'views/elements/address/fields.html'"
+						onload="model='Place'"></div>
+					<dl>
+						<dd class="pull-left">
+							<a ng-show="wizard.currentStep>1"
+								ng-click="wizard.currentStep = wizard.currentStep-1"
+								class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
+						</dd>
+						<dd class="pull-left">
+							<input type="submit" class="btn btn-primary clear"
+								value="{{
+		 							'Common.Text_Next' | t }}" />
+						</dd>
+					</dl>
+				</form>
 				</ng-form>
 			</div>
-			<div class="modal-footer">
-				<a ng-click="wizard.open = false" data-dismiss="modal" class="btn">{{
-					'Common.Text_Cancel' | t }}</a> <a href="#" class="btn btn-info"
-					data-dismiss="modal" ng-click="save()">{{ 'Common.Text_Save' |
-					t }}</a>
-			</div>
+			<div class="modal-footer"></div>
 		</div>
 		<div class="clear row-fluid list">
 			<div ng-show="venues.length == 0" class="alert alert-info">{{

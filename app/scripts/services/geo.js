@@ -59,11 +59,43 @@ azureTicketsApp.factory('geoService', [
 
           return def.promise;
         },
+        getCityByPostalCode : function(countryIso, postalCode) {
+          var def = $q.defer();
+
+          BWL.Services.GeoService.FindPostalCodeAsync(countryIso, postalCode,
+              function(city) {
+                $rootScope.$apply(function() {
+                  def.resolve(city)
+                })
+              }, function(err) {
+                $rootScope.$apply(function() {
+                  def.reject(err)
+                })
+              })
+
+          return def.promise;
+        },
+        getCitiesByRegion : function(countryIso, regionIso) {
+          var def = $q.defer();
+
+          BWL.Services.GeoService.ListCitiesByRegionAsync(countryIso,
+              regionIso, function(cities) {
+                $rootScope.$apply(function() {
+                  def.resolve(cities)
+                })
+              }, function(err) {
+                $rootScope.$apply(function() {
+                  def.reject(err)
+                })
+              })
+
+          return def.promise;
+        },
         createAddressForStore : function(storeKey, address) {
           var def = $q.defer();
 
-          BWL.Services.ModelService.CreateAsync(storeKey, "Address", address,
-              function(addressKey) {
+          BWL.Services.ModelService.CreateAsync(configService.container.store,
+              "Address", address, function(addressKey) {
                 if (addressKey) {
                   BWL.Services.ModelService.AddAsync(storeKey, "Store",
                       storeKey, "Address", "Address", addressKey,
@@ -88,8 +120,8 @@ azureTicketsApp.factory('geoService', [
         updateAddress : function(address) {
           var def = $q.defer();
 
-          BWL.Services.ModelService.UpdateAsync(address.Key, 'Address',
-              address.Key, address, function(ret) {
+          BWL.Services.ModelService.UpdateAsync(configService.container.store,
+              'Address', address.Key, address, function(ret) {
                 $rootScope.$apply(function() {
                   def.resolve()
                 })

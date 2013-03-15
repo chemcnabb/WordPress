@@ -1,5 +1,5 @@
-function storeController($scope, $q, configService, authService, permService,
-    storeService, modelService, errorService, geoService) {
+function storeController($scope, $cookieStore, configService, authService,
+    permService, storeService, modelService, errorService, geoService) {
   $scope.config = configService, $scope.name = 'store', $scope.stores = [],
       $scope.currencies = [], $scope.countries = [], $scope.regions = [],
       $scope.paymentProviders = [], $scope.timezones = [], $scope.wizard = {
@@ -17,29 +17,30 @@ function storeController($scope, $q, configService, authService, permService,
   $scope.Store = modelService.getInstanceOf('Store');
 
   $scope.init = function() {
+    var storeKey = $cookieStore.get('storeKey') || null;
+
     authService
         .authenticate($scope)
         .then(
             function() {
-              var storeAccess = authService.isMember()
-                  || authService.isExplicit() || authService.isStoreOwner()
-                  || authService.isEmployee() || authService.isService()
-                  || authService.isAdministrator();
-
-              if (storeAccess) {
+              if (authService.hasStoreAccess()) {
                 storeService
-                    .listStoresAsync(1)
+                    .listStoresAsync(storeKey, 1)
                     .then(
                         function() {
                           $scope.stores = storeService.getStores();
-
-                          if (!configService.multipleStores
+                          var storesLoaded = !configService.multipleStores
                               && angular.isDefined($scope.stores[0])
-                              && $scope.stores[0].Key !== null) {
+                              && $scope.stores[0].Key !== null;
+
+                          if (storesLoaded || storeKey !== null) {
                             storeService
-                                .initStore($scope.stores[0].Key)
+                                .initStore(
+                                    storesLoaded ? $scope.stores[0].Key
+                                        : storeKey)
                                 .then(
                                     function(store, currency) {
+                                      $cookieStore.put('storeKey', store.Key);
                                       $scope.Store = store;
                                       $scope.Store.tmpPaymentProvider = angular
                                           .isArray($scope.Store.PaymentProviders) ? $scope.Store.PaymentProviders[0].ProviderType
@@ -138,6 +139,22 @@ function storeController($scope, $q, configService, authService, permService,
 
   }
 
+  $scope.getCityByPostalCode = function(countryIso, postalCode) {
+    if (angular.isDefined(countryIso) && angular.isDefined(postalCode)
+        && postalCode !== null && postalCode.trim().length >= 3) {
+      geoService.getCityByPostalCode(countryIso, postalCode).then(
+          function(city) {
+            if (angular.isDefined(city.CityName)
+                && angular.isDefined(city.Region)) {
+              $scope.Store.Address.City = city.CityName;
+              $scope.Store.Address.Region = city.Region.ISO;
+            }
+          }, function(err) {
+            errorService.log(err)
+          });
+    }
+  }
+
   $scope.loadPaymentProvidersByCurrency = function(currency) {
     if (angular.isDefined(currency)) {
       storeService.getPaymentProvidersByCurrency(currency).then(
@@ -199,10 +216,11 @@ function storeController($scope, $q, configService, authService, permService,
             storeService.addPaymentProvider($scope.Store, {
               ProviderType : $scope.Store.tmpPaymentProvider
             }).then(function() {
+              $scope.wizard.currentStep = 4;
               $scope.wizard.saved = true;
 
               // reload full model
-              $scope.initStore(store.Key);
+              $scope.initStore(storeKey);
             }, function(err) {
               errorService.log(err)
             });
@@ -242,6 +260,6 @@ function storeController($scope, $q, configService, authService, permService,
 }
 
 storeController.$inject = [
-    '$scope', '$q', 'configService', 'authService', 'permService',
+    '$scope', '$cookieStore', 'configService', 'authService', 'permService',
     'storeService', 'modelService', 'errorService', 'geoService'
 ];

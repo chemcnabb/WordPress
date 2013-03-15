@@ -1,5 +1,5 @@
-function adminController($scope, configService, authService, permService,
-    modelService, errorService) {
+function adminController($scope, $location, configService, authService,
+    permService, modelService, errorService) {
   $scope.config = configService, $scope.authProviders = [],
       $scope.name = 'admin', $scope.loginErr = null, $scope.registerErr = null,
       $scope.registerOk = false, $scope.passwdOk = true;
@@ -72,6 +72,6 @@ function adminController($scope, configService, authService, permService,
 }
 
 adminController.$inject = [
-    '$scope', 'configService', 'authService', 'permService', 'modelService',
-    'errorService'
+    '$scope', '$location', 'configService', 'authService', 'permService',
+    'modelService', 'errorService'
 ];
