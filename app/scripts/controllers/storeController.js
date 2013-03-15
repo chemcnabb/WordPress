@@ -1,6 +1,7 @@
 function storeController($scope, $cookieStore, configService, authService,
     permService, storeService, modelService, errorService, geoService) {
-  $scope.config = configService, $scope.name = 'store', $scope.stores = [],
+  $scope.storeKey = $cookieStore.get('storeKey') || null,
+      $scope.config = configService, $scope.name = 'store', $scope.stores = [],
       $scope.currencies = [], $scope.countries = [], $scope.regions = [],
       $scope.paymentProviders = [], $scope.timezones = [], $scope.wizard = {
         currentStep : 0,
@@ -17,15 +18,13 @@ function storeController($scope, $cookieStore, configService, authService,
   $scope.Store = modelService.getInstanceOf('Store');
 
   $scope.init = function() {
-    var storeKey = $cookieStore.get('storeKey') || null;
-
     authService
         .authenticate($scope)
         .then(
             function() {
               if (authService.hasStoreAccess()) {
                 storeService
-                    .listStoresAsync(storeKey, 1)
+                    .listStoresAsync($scope.storeKey, 1)
                     .then(
                         function() {
                           $scope.stores = storeService.getStores();
@@ -33,11 +32,11 @@ function storeController($scope, $cookieStore, configService, authService,
                               && angular.isDefined($scope.stores[0])
                               && $scope.stores[0].Key !== null;
 
-                          if (storesLoaded || storeKey !== null) {
+                          if (storesLoaded || $scope.storeKey !== null) {
                             storeService
                                 .initStore(
                                     storesLoaded ? $scope.stores[0].Key
-                                        : storeKey)
+                                        : $scope.storeKey)
                                 .then(
                                     function(store, currency) {
                                       $cookieStore.put('storeKey', store.Key);

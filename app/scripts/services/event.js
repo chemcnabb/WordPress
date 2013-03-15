@@ -16,6 +16,8 @@ azureTicketsApp.factory('eventService', [
               function(events) {
                 if (angular.isArray(events)) {
                   _events = events;
+                } else {
+                  _events = [];
                 }
 
                 $rootScope.$apply(function() {
@@ -35,7 +37,7 @@ azureTicketsApp.factory('eventService', [
         getEvent : function() {
           return modelService.getInstanceOf('Event');
         },
-        initEvent : function(eventKey) {
+        initEvent : function(storeKey, eventKey) {
           var def = $q.defer();
 
           BWL.Services.ModelService
@@ -46,7 +48,7 @@ azureTicketsApp.factory('eventService', [
                       event.Address = modelService.getInstanceOf('Address');
                     }
                     $rootScope.$apply(function() {
-                      def.resolve(store)
+                      def.resolve(event)
                     });
                   }, function(err) {
                     $rootScope.$apply(function() {
@@ -60,7 +62,7 @@ azureTicketsApp.factory('eventService', [
 
           return def.promise;
         },
-        createEvent : function(event) {
+        createEvent : function(storeKey, event) {
           var def = $q.defer();
 
           BWL.Services.ModelService.CreateAsync(storeKey, this.getEvent().Type,

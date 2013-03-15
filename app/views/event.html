@@ -8,7 +8,7 @@
 		<p class="lead pull-left">{{ 'Common.Text_EventMenu_Events' | t}}</p>
 		<div class="btn-group pull-right">
 			<button class="btn btn-info"
-				ng-click="wizard.open = true; wizard.currentStep = 1">{{
+				ng-click="Event = modelService.getInstanceOf('Event'); wizard.open = true; wizard.currentStep = 1">{{
 				'Common.Text_EventMenu_CreateEvent' | t }}</button>
 		</div>
 		<div id="formEvent" class="modal form hide fade">
@@ -65,7 +65,8 @@
 						<dd class="pull-left">
 							<atfield ng-required="true" class="input-large"
 								ng-model="Event.OnSaleDateTimeStart"
-								label="'Event.Text_SaleStartAt' | t" />
+								label="'Event.Text_SaleStartAt' | t"
+								ui-date-format="'mm/dd/yyyy hh:MM TT'" />
 						</dd>
 						<dd class="pull-left">
 							<atfield ng-required="true" class="input-large"
@@ -92,6 +93,25 @@
 		<div class="clear row-fluid list">
 			<div ng-show="events.length == 0" class="alert alert-info">{{
 				'Event.Text_NoEvent_Msg' | t }}</div>
+			<!-- event list -->
+			<ul class="thumbnails" ng-show="events.length > 0">
+				<li ng-repeat="event in events" class="span3">
+					<div class="thumbnail">
+						<h3 class="pull-left">{{event.Name}}</h3>
+						<div class="btn-group pull-right">
+							<button class="btn btn-mini btn-success" ng-click="update(event)">{{
+								'Common.Text_Update' | t }}</button>
+							<button ng-confirm="{{'Common.Text_RemoveProduct'|t}}"
+								class="btn btn-mini btn-danger">{{ 'Common.Text_Remove'
+								| t }}</button>
+						</div>
+						<p class="text clear">{{event.Description}}</p>
+						<span class="label">Starts on {{ event.StartTime |
+							date:'MM/dd/yyyy @ h:mma' }}</span> <span class="label">Ends on
+							{{ event.EndTime | date:'MM/dd/yyyy @ h:mma' }}</span>
+					</div>
+				</li>
+			</ul>
 		</div>
 	</div>
 </div>

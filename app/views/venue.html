@@ -8,8 +8,7 @@
 		ng-init="loadCountries()">
 		<p class="lead pull-left">{{ 'Common.Text_VenueMenu_Venue' | t}}</p>
 		<div class="btn-group pull-right">
-			<button class="btn btn-info"
-				ng-click="wizard.open = true; wizard.currentStep = 1">{{
+			<button class="btn btn-info" ng-click="create()">{{
 				'Common.Text_CreateVenue' | t }}</button>
 		</div>
 		<div id="formVenue" class="modal form hide fade">
@@ -75,6 +74,24 @@
 		<div class="clear row-fluid list">
 			<div ng-show="venues.length == 0" class="alert alert-info">{{
 				'Common.Text_VenueEmpty' | t }}</div>
+			<!-- venue list -->
+			<ul class="thumbnails" ng-show="venues.length > 0">
+				<li ng-repeat="venue in venues" class="span3">
+					<div class="thumbnail">
+						<h3 class="pull-left">{{venue.Name}}</h3>
+						<div class="btn-group pull-right">
+							<button class="btn btn-mini btn-success" ng-click="update(venue)">{{
+								'Common.Text_Update' | t }}</button>
+							<button ng-confirm="{{'Common.Text_RemoveProduct'|t}}"
+								class="btn btn-mini btn-danger">{{ 'Common.Text_Remove'
+								| t }}</button>
+						</div>
+						<p class="text clear">{{venue.Description}}</p>
+						<span ng-show="venue.Address" class="label">{{
+							venue.Address | address }}</span>
+					</div>
+				</li>
+			</ul>
 		</div>
 	</div>
 </div>

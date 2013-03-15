@@ -36,6 +36,7 @@ var CommonResources = {
   Text_Edit : 'Edit',
   Text_Update : "Update",
   Text_Cancel : "Cancel",
+  Text_Remove : "Remove",
   Text_Search : 'Search',
   Text_Search_here : 'Search here.........',
   Text_IAccept : 'I Accept',

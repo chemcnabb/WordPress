@@ -29,17 +29,46 @@ function eventController($scope, $cookieStore, configService, authService,
   $scope.Event = modelService.getInstanceOf('Event');
 
   $scope.init = function() {
-    authService.authenticate($scope).then(function() {
-      if (authService.hasStoreAccess()) {
-        eventService.listEventsAsync($scope.storeKey, 0).then(function() {
-          $scope.events = eventService.getEvents();
+    authService.authenticate($scope).then(
+        function() {
+          if (authService.hasStoreAccess()) {
+            eventService.listEventsAsync($scope.storeKey, 0).then(
+                function() {
+                  $scope.events = eventService.getEvents();
+
+                  if ($scope.events.length > 0) {
+                    angular.forEach($scope.events, function(event, i) {
+                      eventService.initEvent($scope.storeKey, event.Key).then(
+                          function(event) {
+                            $scope.events[i] = event;
+                          })
+                    });
+                  }
+                }, function(err) {
+                  errorService.log(err)
+                });
+          }
         }, function(err) {
           errorService.log(err)
         });
-      }
-    }, function(err) {
-      errorService.log(err)
-    });
+  }
+
+  $scope.update = function(event) {
+    $scope.Event = event;
+    $scope.wizard.open = true;
+    $scope.wizard.saved = false;
+    $scope.wizard.currentStep = 1
+
+    // refresh address dropdowns
+    $scope.loadRegionsByCountry($scope.Event.Address.Country);
+    $scope.loadTimezonesByCountry($scope.Event.Address.Country);
+  }
+
+  $scope.create = function() {
+    $scope.Event = modelService.getInstanceOf('Event');
+    $scope.wizard.open = true;
+    $scope.wizard.saved = false;
+    $scope.wizard.currentStep = 1
   }
 
   $scope.save = function() {
@@ -48,31 +77,32 @@ function eventController($scope, $cookieStore, configService, authService,
 
       if ($scope.Event.Key === null) {
         // go on and create
-        eventService.createEvent({
+        eventService.createEvent($scope.storeKey, {
           Name : $scope.Event.Name,
-          Description : $scope.Event.Description,
-          Address : $scope.Event.Address
+          Description : $scope.Event.Description
         }).then(function(eventKey) {
           $scope.wizard.currentStep = 3;
           $scope.wizard.saved = true;
 
-          $scope.Event.Key = $scope.Event;
+          // reload list
+          $scope.init();
         }, function(err) {
           errorService.log(err)
         });
       } else {
         // update event
-        eventService.updateEvent($scope.Event).then(function(event) {
-          geoService.updateAddress(event.Address).then(function(ret) {
-            $scope.wizard.currentStep = 3;
-            $scope.wizard.saved = true;
+        eventService.updateEvent($scope.storeKey, $scope.Event).then(
+            function(event) {
+              geoService.updateAddress(event.Address).then(function(ret) {
+                $scope.wizard.currentStep = 3;
+                $scope.wizard.saved = true;
 
-            // reload full model
-            $scope.initEvent(event.Key);
-          }, function(err) {
-            errorService.log(err)
-          });
-        });
+                // reload list
+                $scope.init();
+              }, function(err) {
+                errorService.log(err)
+              });
+            });
       }
     }
   }

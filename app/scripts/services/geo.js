@@ -2,7 +2,8 @@
 azureTicketsApp.factory('geoService', [
     '$q',
     '$rootScope',
-    function($q, $rootScope) {
+    'configService',
+    function($q, $rootScope, configService) {
       var _countries = null;
 
       return {

@@ -16,6 +16,8 @@ azureTicketsApp.factory('placeService', [
               function(places) {
                 if (angular.isArray(places)) {
                   _places = places;
+                } else {
+                  _places = [];
                 }
 
                 $rootScope.$apply(function() {
@@ -46,7 +48,7 @@ azureTicketsApp.factory('placeService', [
                       place.Address = modelService.getInstanceOf('Address');
                     }
                     $rootScope.$apply(function() {
-                      def.resolve(store)
+                      def.resolve(place)
                     });
                   }, function(err) {
                     $rootScope.$apply(function() {

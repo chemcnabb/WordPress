@@ -64,7 +64,7 @@ azureTicketsApp
                       _label.addClass('pull-right');
                     }
                   } else if (/^Date|Time/g.test(fieldType)) {
-                    _attr.type = 'text', _el = jQuery('<input />');
+                    _attr.type = 'text', _el = jQuery('<input ' + _req + '/>');
                     _el.attr('ui-date', true);
                   } else if (/^.*Enum(?=\b).*$/g.test(fieldType)) {
                     _el = jQuery('<select />');

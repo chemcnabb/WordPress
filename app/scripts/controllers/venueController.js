@@ -29,17 +29,46 @@ function venueController($scope, $cookieStore, configService, authService,
   $scope.Place = modelService.getInstanceOf('Place');
 
   $scope.init = function() {
-    authService.authenticate($scope).then(function() {
-      if (authService.hasStoreAccess()) {
-        placeService.listPlacesAsync($scope.storeKey, 0).then(function() {
-          $scope.venues = placeService.getPlaces();
+    authService.authenticate($scope).then(
+        function() {
+          if (authService.hasStoreAccess()) {
+            placeService.listPlacesAsync($scope.storeKey, 0).then(
+                function() {
+                  $scope.venues = placeService.getPlaces();
+
+                  if ($scope.venues.length > 0) {
+                    angular.forEach($scope.venues, function(venue, i) {
+                      placeService.initPlace($scope.storeKey, venue.Key).then(
+                          function(place) {
+                            $scope.venues[i] = place;
+                          })
+                    });
+                  }
+                }, function(err) {
+                  errorService.log(err)
+                });
+          }
         }, function(err) {
           errorService.log(err)
         });
-      }
-    }, function(err) {
-      errorService.log(err)
-    });
+  }
+
+  $scope.update = function(venue) {
+    $scope.Place = venue;
+    $scope.wizard.open = true;
+    $scope.wizard.saved = false;
+    $scope.wizard.currentStep = 1
+
+    // refresh address dropdowns
+    $scope.loadRegionsByCountry($scope.Place.Address.Country);
+    $scope.loadTimezonesByCountry($scope.Place.Address.Country);
+  }
+
+  $scope.create = function() {
+    $scope.Place = modelService.getInstanceOf('Place');
+    $scope.wizard.open = true;
+    $scope.wizard.saved = false;
+    $scope.wizard.currentStep = 1
   }
 
   $scope.loadCountries = function() {
@@ -111,7 +140,8 @@ function venueController($scope, $cookieStore, configService, authService,
           $scope.wizard.currentStep = 3;
           $scope.wizard.saved = true;
 
-          $scope.Place.Key = $scope.Place;
+          // reload list
+          $scope.init();
         }, function(err) {
           errorService.log(err)
         });
@@ -123,8 +153,8 @@ function venueController($scope, $cookieStore, configService, authService,
                 $scope.wizard.currentStep = 3;
                 $scope.wizard.saved = true;
 
-                // reload full model
-                $scope.initPlace(place.Key);
+                // reload list
+                $scope.init();
               }, function(err) {
                 errorService.log(err)
               });
