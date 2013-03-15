@@ -47,6 +47,7 @@ azureTicketsApp.factory('eventService', [
                         || event.Address === null) {
                       event.Address = modelService.getInstanceOf('Address');
                     }
+
                     $rootScope.$apply(function() {
                       def.resolve(event)
                     });

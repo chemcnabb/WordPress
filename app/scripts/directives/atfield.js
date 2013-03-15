@@ -43,6 +43,9 @@ azureTicketsApp
                     if (angular.isDefined($attrs.labelClass)) {
                       _label.addClass($attrs.labelClass);
                     }
+                  } else {
+                    _label = jQuery('<label />');
+                    _label.text(f.replace(/([A-Z])/g, ' $1'));
                   }
 
                   // set proper element definition
@@ -54,10 +57,6 @@ azureTicketsApp
                   } else if (/^Int/g.test(fieldType)) {
                     _attr.type = 'number',
                         _el = jQuery('<input ' + _req + '/>');
-                    if (_label !== null) {
-                      _label.addClass('pull-left');
-                    }
-
                   } else if (/^Boolean/g.test(fieldType)) {
                     _attr.type = 'checkbox', _el = jQuery('<input />');
                     if (_label !== null) {

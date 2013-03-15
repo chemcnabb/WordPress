@@ -96,7 +96,7 @@ function eventController($scope, $cookieStore, configService, authService,
           OnSaleDateTimeStart : $scope.Event.OnSaleDateTimeStart,
           OnSaleDateTimeEnd : $scope.Event.OnSaleDateTimeEnd
         }).then(function(eventKey) {
-          $scope.wizard.currentStep = 3;
+          $scope.wizard.currentStep = 4;
           $scope.wizard.saved = true;
 
           // reload list
