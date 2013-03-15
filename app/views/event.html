@@ -117,7 +117,11 @@
 						<p class="text clear">{{event.Description}}</p>
 						<span class="label">Starts on {{ event.StartTime |
 							date:'MM/dd/yyyy @ h:mma' }}</span> <span class="label">Ends on
-							{{ event.EndTime | date:'MM/dd/yyyy @ h:mma' }}</span>
+							{{ event.EndTime | date:'MM/dd/yyyy @ h:mma' }}</span><br /> <span
+							class="label label-inverse">Sales Start on {{
+							event.OnSaleDateTimeStart | date:'MM/dd/yyyy @ h:mma' }}</span> <span
+							class="label label-inverse">Sales End on {{
+							event.OnSaleDateTimeEnd | date:'MM/dd/yyyy @ h:mma' }}</span>
 					</div>
 				</li>
 			</ul>
