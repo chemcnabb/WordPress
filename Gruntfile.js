@@ -298,8 +298,8 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('build', [
-      'clean:dist', /* 'jshint', */
-      /* 'test' */, 'useminPrepare', 'cssmin', 'htmlmin', 'concat', 'copy',
+      'clean:dist', 'less',/* 'jshint', */
+      /* 'test' , */'useminPrepare', 'cssmin', 'htmlmin', 'concat', 'copy',
       'cdnify', 'usemin', 'ngmin', 'uglify'
   ]);
 
