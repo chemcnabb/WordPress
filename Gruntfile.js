@@ -299,8 +299,8 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
       'clean:dist', /* 'jshint', */
-      'test', 'useminPrepare', 'cssmin', 'htmlmin', 'concat', 'copy', 'cdnify',
-      'usemin', 'ngmin', 'uglify'
+      /* 'test' */, 'useminPrepare', 'cssmin', 'htmlmin', 'concat', 'copy',
+      'cdnify', 'usemin', 'ngmin', 'uglify'
   ]);
 
   grunt.registerTask('_internal', [
