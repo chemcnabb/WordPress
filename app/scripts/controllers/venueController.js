@@ -57,6 +57,7 @@ function venueController($scope, $cookieStore, configService, authService,
     $scope.Place = venue;
     $scope.wizard.open = true;
     $scope.wizard.saved = false;
+    $scope.wizard.finished = false;
     $scope.wizard.currentStep = 1
 
     // refresh address dropdowns
@@ -68,6 +69,7 @@ function venueController($scope, $cookieStore, configService, authService,
     $scope.Place = modelService.getInstanceOf('Place');
     $scope.wizard.open = true;
     $scope.wizard.saved = false;
+    $scope.wizard.finished = false;
     $scope.wizard.currentStep = 1
   }
 

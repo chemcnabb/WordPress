@@ -1,9 +1,8 @@
 function eventController($scope, $cookieStore, configService, authService,
-    permService, modelService, eventService, errorService) {
+    permService, modelService, eventService, placeService, errorService) {
   $scope.storeKey = $cookieStore.get('storeKey') || null,
       $scope.config = configService, $scope.name = 'event', $scope.events = [],
-
-      $scope.wizard = {
+      $scope.venues = [], $scope.wizard = {
         open : false,
         currentStep : 0,
         finished : false,
@@ -57,18 +56,24 @@ function eventController($scope, $cookieStore, configService, authService,
     $scope.Event = event;
     $scope.wizard.open = true;
     $scope.wizard.saved = false;
+    $scope.wizard.finished = false;
     $scope.wizard.currentStep = 1
-
-    // refresh address dropdowns
-    $scope.loadRegionsByCountry($scope.Event.Address.Country);
-    $scope.loadTimezonesByCountry($scope.Event.Address.Country);
   }
 
   $scope.create = function() {
     $scope.Event = modelService.getInstanceOf('Event');
     $scope.wizard.open = true;
     $scope.wizard.saved = false;
-    $scope.wizard.currentStep = 1
+    $scope.wizard.finished = false;
+    $scope.wizard.currentStep = 1;
+  }
+
+  $scope.loadVenues = function() {
+    placeService.listPlacesAsync($scope.storeKey, 0).then(function(venues) {
+      $scope.venues = placeService.getPlaces();
+    }, function(err) {
+      errorService.log(err)
+    });
   }
 
   $scope.save = function() {
@@ -78,8 +83,18 @@ function eventController($scope, $cookieStore, configService, authService,
       if ($scope.Event.Key === null) {
         // go on and create
         eventService.createEvent($scope.storeKey, {
+          Public : true,
           Name : $scope.Event.Name,
-          Description : $scope.Event.Description
+          Description : $scope.Event.Description,
+          Places : $scope.Event.tmpVenues.filter(Boolean).map(function(v) {
+            return {
+              Key : v
+            }
+          }),
+          StartTime : $scope.Event.StartTime,
+          EndTime : $scope.Event.EndTime,
+          OnSaleDateTimeStart : $scope.Event.OnSaleDateTimeStart,
+          OnSaleDateTimeEnd : $scope.Event.OnSaleDateTimeEnd
         }).then(function(eventKey) {
           $scope.wizard.currentStep = 3;
           $scope.wizard.saved = true;
@@ -110,5 +125,5 @@ function eventController($scope, $cookieStore, configService, authService,
 
 eventController.$inject = [
     '$scope', '$cookieStore', 'configService', 'authService', 'permService',
-    'modelService', 'eventService', 'errorService'
+    'modelService', 'eventService', 'placeService', 'errorService'
 ];

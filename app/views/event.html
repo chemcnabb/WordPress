@@ -4,11 +4,11 @@
 	<div ng-include src="'views/elements/topMenu.html'"></div>
 	<div ng-include src="'views/elements/error.html'"></div>
 	<!-- event info -->
-	<div ui-if="DomainProfile.Key || false" class="row-fluid">
+	<div ui-if="DomainProfile.Key || false" class="row-fluid"
+		ng-init="loadVenues()">
 		<p class="lead pull-left">{{ 'Common.Text_EventMenu_Events' | t}}</p>
 		<div class="btn-group pull-right">
-			<button class="btn btn-info"
-				ng-click="Event = modelService.getInstanceOf('Event'); wizard.open = true; wizard.currentStep = 1">{{
+			<button class="btn btn-info" ng-click="create()">{{
 				'Common.Text_EventMenu_CreateEvent' | t }}</button>
 		</div>
 		<div id="formEvent" class="modal form hide fade">
@@ -53,6 +53,15 @@
 				<form ng-show="wizard.currentStep == 2" name="atEvent2"
 					ng-submit="wizard.finished = true">
 					<dl>
+						<dd>
+							<label>{{ 'Common.Text_Venue' | t}}</label> <select
+								data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
+								ui-select2="{containerCssClass:'input-xlarge'}"
+								ng-required="true" ng-model="Event.tmpVenues" ng-multiple="true">
+								<option></option>
+								<option ng-repeat="v in venues" value="{{v.Key}}">{{v.Name}}</option>
+							</select>
+						</dd>
 						<dd class="pull-left">
 							<atfield ng-required="true" class="input-large"
 								ng-model="Event.StartTime" label="'Event.Text_EventStartAt' | t" />
