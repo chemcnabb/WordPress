@@ -61,11 +61,9 @@ function storeController($scope, $cookieStore, configService, authService,
                                     }, function(err) {
                                       errorService.log(err)
                                     });
-                          } else if (authService.isAuthenticated()) {
+                          } else {
                             // create store
                             $('#serviceAgreement').modal('show')
-                          } else {
-                            $scope.wizard.currentStep = 1;
                           }
                         }, function(err) {
                           errorService.log(err)

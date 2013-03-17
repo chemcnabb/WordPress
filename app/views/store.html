@@ -2,8 +2,8 @@
 	ng-cloak>
 	<!-- top menu -->
 	<div ng-include src="'views/elements/topMenu.html'"></div>
-	<div ui-if="DomainProfile.Key || false" ng-include
-		src="'views/elements/store/bcSettings.html'"></div>
+	<div ui-if="DomainProfile.Key && wizard.currentStep > 0 || false"
+		ng-include src="'views/elements/store/bcSettings.html'"></div>
 	<div ng-include src="'views/elements/error.html'"></div>
 	<!-- store info -->
 	<div ui-if="DomainProfile.Key || false" class="row-fluid"
@@ -35,7 +35,7 @@
 					<p class="text-info">{{ 'Common.Text_Agreement' | t}}</p>
 				</h3>
 			</div>
-			<div class="modal-body">
+			<div class="modal-body" style="max-height: 500px">
 				<div ng-include src="'views/elements/agreement.html'"></div>
 			</div>
 			<div class="modal-footer">
