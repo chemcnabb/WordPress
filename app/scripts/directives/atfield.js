@@ -16,7 +16,8 @@ azureTicketsApp
                   atChange : '=ngChange',
                   atUiValidate : '=uiValidate',
                   atUiValidateWatch : '=uiValidateWatch',
-                  atBlur : '=ngBlur'
+                  atBlur : '=ngBlur',
+                  atPattern : '=ngPattern'
                 },
                 link : function($scope, $element, $attrs) {
                   var ss = $attrs.ngModel.split('.');
@@ -29,10 +30,10 @@ azureTicketsApp
                   var _el, _label = null;
                   var _attr = {
                     placeholder : f,
-                    name : m + '[' + f + ']',
-                    id : $attrs.ngModel
+                    name : m + '_' + f,
+                    id : $attrs.ngModel.replace(/\./g, '-')
                   };
-                  var isPass = /Password/g.test(f);
+                  var isPass = /Password/g.test(f), dateTimeScript = null;
                   var _req = angular.isDefined($attrs.ngRequired) ? 'ng-required="true"'
                       : '';
 
@@ -64,7 +65,9 @@ azureTicketsApp
                     }
                   } else if (/^Date|Time/g.test(fieldType)) {
                     _attr.type = 'text', _el = jQuery('<input ' + _req + '/>');
-                    _el.attr('ui-date', true);
+                    dateTimeScript = jQuery('<script type="text/javascript" />');
+                    dateTimeScript.text("jQuery(function(){jQuery('#"
+                        + _attr.id + "').datetimepicker();});");
 
                     if ($attrs.uiDateFormat) {
                       _el.attr('ui-date-format', $attrs.uiDateFormat)
@@ -88,7 +91,7 @@ azureTicketsApp
                         && [
                             'ngModel', 'ngRequired', 'ngChange', 'uiValidate',
                             'uiValidateWatch', 'ngBlur', 'uiEvent',
-                            'uiDateFormat'
+                            'uiDateFormat', 'ngPattern'
                         ].indexOf(p) === -1) {
                       var pp = p.replace(/([A-Z]+)/g, '-$1').toLowerCase();
                       var v = $scope.$eval($attrs[p]) !== 0 ? $scope
@@ -100,10 +103,12 @@ azureTicketsApp
 
                   // make new element available
                   _el.attr('ng-model', 'atModel');
-                  $element.append(_label).append(_el);
 
                   if ($attrs.uiValidate) {
                     _el.attr('ui-validate', 'atUiValidate');
+                  }
+                  if ($attrs.ngPattern) {
+                    _el.attr('ng-pattern', 'atPattern');
                   }
                   if ($attrs.uiValidateWatch) {
                     _el.attr('ui-validate-watch', 'atUiValidateWatch');
@@ -117,6 +122,13 @@ azureTicketsApp
                   if (_label !== null) {
                     $compile(_label)($scope);
                   }
+
+                  $element.append(_label).append(_el);
+
+                  if (dateTimeScript !== null) {
+                    $element.after(dateTimeScript);
+                  }
+
                   $compile(_el)($scope);
                 }
               }

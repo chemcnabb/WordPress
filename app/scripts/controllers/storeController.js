@@ -1,13 +1,11 @@
 function storeController($scope, $cookieStore, configService, authService,
-    permService, storeService, modelService, errorService, geoService) {
+    permService, storeService, modelService, errorService, geoService,
+    formService) {
   $scope.storeKey = $cookieStore.get('storeKey') || null,
       $scope.config = configService, $scope.name = 'store', $scope.stores = [],
       $scope.currencies = [], $scope.countries = [], $scope.regions = [],
-      $scope.paymentProviders = [], $scope.timezones = [], $scope.wizard = {
-        currentStep : 0,
-        finished : false,
-        saved : false
-      };
+      $scope.paymentProviders = [], $scope.timezones = [],
+      $scope.wizard = formService.getWizard($scope);
 
   /**
    * models in play here.
@@ -82,6 +80,7 @@ function storeController($scope, $cookieStore, configService, authService,
         .initStore(storeKey)
         .then(
             function(store, currency) {
+              $cookieStore.put('storeKey', store.Key);
               $scope.Store = store;
               $scope.Store.tmpPaymentProvider = $scope.Store.PaymentProviders[0].ProviderType;
             }, function(err) {
@@ -153,7 +152,7 @@ function storeController($scope, $cookieStore, configService, authService,
   }
 
   $scope.loadPaymentProvidersByCurrency = function(currency) {
-    if (angular.isDefined(currency)) {
+    if (angular.isDefined(currency) && currency !== '') {
       storeService.getPaymentProvidersByCurrency(currency).then(
           function(paypros) {
             $scope.paymentProviders = paypros;
@@ -213,7 +212,6 @@ function storeController($scope, $cookieStore, configService, authService,
             storeService.addPaymentProvider($scope.Store, {
               ProviderType : $scope.Store.tmpPaymentProvider
             }).then(function() {
-              $scope.wizard.currentStep = 4;
               $scope.wizard.saved = true;
 
               // reload full model
@@ -236,7 +234,6 @@ function storeController($scope, $cookieStore, configService, authService,
               storeService.addPaymentProvider(store, {
                 ProviderType : store.tmpPaymentProvider
               }).then(function() {
-                $scope.wizard.currentStep = 4;
                 $scope.wizard.saved = true;
 
                 // reload full model
@@ -258,5 +255,5 @@ function storeController($scope, $cookieStore, configService, authService,
 
 storeController.$inject = [
     '$scope', '$cookieStore', 'configService', 'authService', 'permService',
-    'storeService', 'modelService', 'errorService', 'geoService'
+    'storeService', 'modelService', 'errorService', 'geoService', 'formService'
 ];

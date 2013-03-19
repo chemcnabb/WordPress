@@ -13,7 +13,9 @@
     "select2" : "~3.3",
     "angular-resource": "~1.0.5",
     "angular-cookies": "~1.0.5",
-    "angular-sanitize": "~1.0.5"
+    "angular-sanitize": "~1.0.5",
+    "jquery-timepicker-addon" : "1.1.1",
+    "datejs" : "*"
   },
   "devDependencies": {
     "angular-mocks": "~1.0.5",

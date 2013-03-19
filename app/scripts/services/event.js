@@ -48,6 +48,26 @@ azureTicketsApp.factory('eventService', [
                       event.Address = modelService.getInstanceOf('Address');
                     }
 
+                    try {
+                      var st = new Date(event.StartTime);
+                      var et = new Date(event.EndTime);
+                      var sst = new Date(event.OnSaleDateTimeStart);
+                      var set = new Date(event.OnSaleDateTimeEnd);
+                      event.StartTime = st.getMonth() + '/' + st.getDay() + '/'
+                          + st.getFullYear() + ' ' + st.getHours() + ':'
+                          + st.getMinutes();
+                      event.EndTime = et.getMonth() + '/' + et.getDay() + '/'
+                          + et.getFullYear() + ' ' + et.getHours() + ':'
+                          + et.getMinutes();
+                      event.OnSaleDateTimeStart = sst.getMonth() + '/'
+                          + sst.getDay() + '/' + sst.getFullYear() + ' '
+                          + sst.getHours() + ':' + sst.getMinutes();
+                      event.OnSaleDateTimeEnd = set.getMonth() + '/'
+                          + set.getDay() + '/' + set.getFullYear() + ' '
+                          + set.getHours() + ':' + set.getMinutes();
+                    } catch (e) {
+                    }
+
                     $rootScope.$apply(function() {
                       def.resolve(event)
                     });

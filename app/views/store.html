@@ -47,11 +47,11 @@
 		</div>
 		<ng-form name="atStore" ng-submit="save()">
 		<form ng-show="wizard.currentStep == 1" name="atStore1"
-			ng-submit="wizard.currentStep = wizard.currentStep+1">
+			ng-submit="wizard.next('atStore1')">
 			<dl class="clearfix">
 				<dd>
-					<atfield ng-required="true" class="input-xlarge"
-						ng-model="Store.Name" label="'Common.Text_StoreName' | t" />
+					<atfield at-required class="input-xlarge" ng-model="Store.Name"
+						label="'Common.Text_StoreName' | t" />
 				</dd>
 				<dd>
 					<atfield class="input-xlarge" ng-model="Store.Description"
@@ -65,7 +65,7 @@
 			</dl>
 		</form>
 		<form ng-show="wizard.currentStep == 2" name="atStore2"
-			ng-submit="wizard.currentStep = wizard.currentStep+1">
+			ng-submit="wizard.next('atStore2')">
 			<div ng-include src="'views/elements/address/fields.html'"
 				onload="model='Store'"></div>
 			<dl>
@@ -82,11 +82,12 @@
 			</dl>
 		</form>
 		<form ng-show="wizard.currentStep == 3 && !wizard.saved"
-			name="atStore3" ng-submit="wizard.finished = true">
+			name="atStore3" ng-submit="wizard.next('atStore3', true)">
 			<dl class="clearfix">
 				<dd>
 					<label>{{'Common.Text_StoreCurrency' | t}}</label> <select
-						ui-select2="{containerCssClass:'input-xlarge'}" ng-required="true"
+						ui-select2="{containerCssClass:'input-xlarge'}" at-required
+						name="Store_Currency"
 						data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
 						ng-model="Store.Currency"
 						ng-change="loadPaymentProvidersByCurrency(Store.Currency)">
@@ -98,8 +99,8 @@
 				<dd ng-show="Store.Currency || false">
 					<label>{{'Common.Text_StoreMenu_PaymentProvider' | t}}</label> <select
 						type="text" ui-select2="{containerCssClass:'input-xlarge'}"
-						data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
-						ng-required="true" ng-model="Store.tmpPaymentProvider">
+						data-placeholder="{{ 'Common.Text_ChooseOption' | t}}" at-required
+						name="Store_PaymentProvider" ng-model="Store.tmpPaymentProvider">
 						<option></option>
 						<option ng-selected="Store.tmpPaymentProvider == p"
 							ng-repeat="p in paymentProviders" value="{{p}}">{{p}}</option>

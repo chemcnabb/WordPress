@@ -1,15 +1,10 @@
 function venueController($scope, $cookieStore, configService, authService,
-    permService, modelService, geoService, placeService, errorService) {
+    permService, modelService, geoService, placeService, errorService,
+    formService) {
   $scope.storeKey = $cookieStore.get('storeKey') || null,
       $scope.config = configService, $scope.name = 'venue', $scope.venues = [],
       $scope.countries = [], $scope.regions = [], $scope.timezones = [],
-      $scope.wizard = {
-        open : false,
-        currentStep : 0,
-        finished : false,
-        saved : false
-      };
-  ;
+      $scope.wizard = formService.getWizard($scope);
 
   $scope.$watch('wizard.open', function(v) {
     if (v) {
@@ -169,5 +164,5 @@ function venueController($scope, $cookieStore, configService, authService,
 
 venueController.$inject = [
     '$scope', '$cookieStore', 'configService', 'authService', 'permService',
-    'modelService', 'geoService', 'placeService', 'errorService'
+    'modelService', 'geoService', 'placeService', 'errorService', 'formService'
 ];

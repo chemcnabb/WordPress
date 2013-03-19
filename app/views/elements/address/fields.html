@@ -2,8 +2,8 @@
 	<dd>
 		<label>{{'Address.LabelCountry' | t}}</label> <select
 			data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
-			ui-select2="{containerCssClass:'input-xlarge'}" ng-required="true"
-			ng-model="this[model].Address.Country"
+			ui-select2="{containerCssClass:'input-xlarge'}" at-required
+			name="Address_Country" ng-model="this[model].Address.Country"
 			ng-change="loadTimezonesByCountry(this[model].Address.Country);loadRegionsByCountry(this[model].Address.Country)">
 			<option></option>
 			<option ng-selected="c.ISO == this[model].Address.Country"
@@ -11,7 +11,7 @@
 		</select>
 	</dd>
 	<dd>
-		<atfield ng-required="true" class="input-xxlarge"
+		<atfield at-required class="input-xxlarge"
 			ng-model="this[model].Address.AddressLine1"
 			label="'Address.LabelAddress1' | t" />
 	</dd>
@@ -21,7 +21,7 @@
 			label="'Address.LabelAddress2' | t" />
 	</dd>
 	<dd class="pull-left">
-		<atfield ng-required class="input-small"
+		<atfield at-required class="input-small"
 			ng-model="this[model].Address.PostalCode"
 			label="'Address.LabelPostalCode' | t" />
 	</dd>
@@ -31,7 +31,7 @@
 			class="icon-search"></i></a>
 	</dd>
 	<dd class="clear">
-		<atfield ng-required class="input-xlarge"
+		<atfield at-required class="input-xlarge"
 			ng-model="this[model].Address.City" label="'Address.LabelCity' | t" />
 	</dd>
 	<dd
@@ -39,8 +39,8 @@
 		<label>{{'Address.LabelState' | t}} /
 			{{'Address.LabelProvince' | t}}</label> <select
 			data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
-			ui-select2="{containerCssClass:'input-xlarge'}" ng-required="true"
-			ng-model="this[model].Address.Region">
+			ui-select2="{containerCssClass:'input-xlarge'}" at-required
+			name="Address_Region" ng-model="this[model].Address.Region">
 			<option></option>
 			<option ng-selected="r.ISO == this[model].Address.Region"
 				ng-repeat="r in regions" value="{{r.ISO}}">{{r.Name}}</option>
@@ -50,8 +50,8 @@
 		ng-show="this[model].Address && this[model].Address.Country || false">
 		<label>{{'Address.LabelTimezone' | t}}</label> <select
 			data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
-			ui-select2="{containerCssClass:'input-xlarge'}" ng-required="true"
-			ng-model="this[model].Address.Timezone">
+			ui-select2="{containerCssClass:'input-xlarge'}" at-required
+			name="Address_Timezone" ng-model="this[model].Address.Timezone">
 			<option></option>
 			<option ng-repeat="t in timezones" ng-value="t.Key">{{t.Name}}</option>
 		</select>

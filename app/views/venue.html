@@ -33,11 +33,11 @@
 				<!-- form -->
 				<ng-form name="atVenue" ng-submit="save()">
 				<form ng-show="wizard.currentStep == 1" name="atVenue1"
-					ng-submit="wizard.currentStep = wizard.currentStep+1">
+					ng-submit="wizard.next('atVenue1')">
 					<dl class="clearfix">
 						<dd>
-							<atfield ng-required="true" class="input-xxlarge"
-								ng-model="Place.Name" label="'Common.Text_VenueName' | t" />
+							<atfield at-required class="input-xxlarge" ng-model="Place.Name"
+								label="'Common.Text_VenueName' | t" />
 						</dd>
 						<dd>
 							<atfield class="input-xxlarge" ng-model="Place.Description"
@@ -51,7 +51,7 @@
 					</dl>
 				</form>
 				<form ng-show="wizard.currentStep == 2" name="atVenue2"
-					ng-submit="wizard.finished = true">
+					ng-submit="wizard.next('atVenue2', true)">
 					<div ng-include src="'views/elements/address/fields.html'"
 						onload="model='Place'"></div>
 					<dl>

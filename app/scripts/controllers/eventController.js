@@ -1,14 +1,9 @@
 function eventController($scope, $cookieStore, configService, authService,
-    permService, modelService, eventService, placeService, errorService) {
+    permService, modelService, eventService, placeService, geoService,
+    errorService, formService) {
   $scope.storeKey = $cookieStore.get('storeKey') || null,
       $scope.config = configService, $scope.name = 'event', $scope.events = [],
-      $scope.venues = [], $scope.wizard = {
-        open : false,
-        currentStep : 0,
-        finished : false,
-        saved : false
-      };
-  ;
+      $scope.venues = [], $scope.wizard = formService.getWizard($scope);
 
   $scope.$watch('wizard.open', function(v) {
     if (v) {
@@ -116,15 +111,13 @@ function eventController($scope, $cookieStore, configService, authService,
         // update event
         eventService.updateEvent($scope.storeKey, $scope.Event).then(
             function(event) {
-              geoService.updateAddress(event.Address).then(function(ret) {
-                $scope.wizard.currentStep = 3;
-                $scope.wizard.saved = true;
+              $scope.wizard.currentStep = 4;
+              $scope.wizard.saved = true;
 
-                // reload list
-                $scope.init();
-              }, function(err) {
-                errorService.log(err)
-              });
+              // reload list
+              $scope.init();
+            }, function(err) {
+              errorService.log(err)
             });
       }
     }
@@ -133,5 +126,6 @@ function eventController($scope, $cookieStore, configService, authService,
 
 eventController.$inject = [
     '$scope', '$cookieStore', 'configService', 'authService', 'permService',
-    'modelService', 'eventService', 'placeService', 'errorService'
+    'modelService', 'eventService', 'placeService', 'geoService',
+    'errorService', 'formService'
 ];

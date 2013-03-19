@@ -36,7 +36,7 @@
 				<!-- form -->
 				<ng-form name="atEvent" ng-submit="save()">
 				<form ng-show="wizard.currentStep == 1" name="atEvent1"
-					ng-submit="wizard.currentStep = wizard.currentStep+1">
+					ng-submit="wizard.next('atEvent1')">
 					<dl class="clearfix">
 						<dd>
 							<atfield ng-required="true" class="input-xxlarge"
@@ -54,28 +54,26 @@
 					</dl>
 				</form>
 				<form ng-show="wizard.currentStep == 2" name="atEvent2"
-					ng-submit="wizard.currentStep = wizard.currentStep+1">
+					ng-submit="wizard.next('atEvent2')">
 					<dl>
 						<dd class="pull-left">
 							<atfield ng-required="true" class="input-large"
-								ng-model="Event.StartTime" label="'Event.Text_EventStartAt' | t"
-								ui-date-format="'mm/dd/yy'" />
+								ng-model="Event.StartTime" label="'Event.Text_EventStartAt' | t" />
 						</dd>
 						<dd class="pull-left">
 							<atfield ng-required="true" class="input-large"
-								ng-model="Event.EndTime" label="'Event.Text_EventEndAt' | t"
-								ui-date-format="'mm/dd/yy'" />
+								ng-model="Event.EndTime" label="'Event.Text_EventEndAt' | t" />
 						</dd>
 						<dd class="clear"></dd>
 						<dd class="pull-left">
 							<atfield ng-required="true" class="input-large"
 								ng-model="Event.OnSaleDateTimeStart"
-								label="'Event.Text_SaleStartAt' | t" ui-date-format="'mm/dd/yy'" />
+								label="'Event.Text_SaleStartAt' | t" />
 						</dd>
 						<dd class="pull-left">
 							<atfield ng-required="true" class="input-large"
 								ng-model="Event.OnSaleDateTimeEnd"
-								label="'Event.Text_SaleEndAt' | t" ui-date-format="'mm/dd/yy'" />
+								label="'Event.Text_SaleEndAt' | t" />
 						</dd>
 						<dd class="clear"></dd>
 						<dd class="pull-left">
@@ -90,8 +88,8 @@
 						</dd>
 					</dl>
 				</form>
-				<form ng-show="wizard.currentStep == 3" name="atEvent1"
-					ng-submit="wizard.finished = true">
+				<form ng-show="wizard.currentStep == 3" name="atEvent3"
+					ng-submit="wizard.next('atEvent3', true)">
 					<dl class="clearfix">
 						<dd>
 							<label>{{ 'Common.Text_Venue' | t}}</label> <select
