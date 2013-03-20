@@ -64,9 +64,10 @@
 				</dd>
 			</dl>
 		</form>
-		<form ng-show="wizard.currentStep == 2" name="atStore2"
-			ng-submit="wizard.next('atStore2')">
-			<div ng-include src="'views/address.html'" onload="model='Store'"></div>
+		<form ui-if="Store.Address || false" ng-show="wizard.currentStep == 2"
+			name="atStore2" ng-submit="wizard.next('atStore2')">
+			<!-- location info -->
+			<div ng-include src="'views/address.html'" onload="modelName='Store'"></div>
 			<dl>
 				<dd class="pull-left">
 					<a ng-show="wizard.currentStep>1"

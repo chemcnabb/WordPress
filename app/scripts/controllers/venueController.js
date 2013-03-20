@@ -61,7 +61,9 @@ function venueController($scope, $cookieStore, configService, authService,
   }
 
   $scope.create = function() {
+    // initialize props
     $scope.Place = modelService.getInstanceOf('Place');
+    $scope.Place.Address = modelService.getInstanceOf('Address');
     $scope.wizard.open = true;
     $scope.wizard.saved = false;
     $scope.wizard.finished = false;

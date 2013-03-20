@@ -2,6 +2,10 @@ function addressController($scope, errorService, geoService) {
   $scope.countries = [], $scope.continents = [], $scope.regions = [],
       $scope.timezones = [];
 
+  $scope.$on('loadCountry', function(ev, address) {
+    $scope.loadCountry(address);
+  });
+
   $scope.loadContinents = function() {
     geoService.getContinents().then(function(continents) {
       $scope.continents = continents;

@@ -1,6 +1,6 @@
-function storeController($scope, $cookieStore, configService, authService,
-    permService, storeService, modelService, errorService, geoService,
-    formService) {
+function storeController($scope, $cookieStore, $timeout, configService,
+    authService, permService, storeService, modelService, errorService,
+    geoService, formService) {
   $scope.storeKey = $cookieStore.get('storeKey') || null,
       $scope.config = configService, $scope.name = 'store', $scope.stores = [],
       $scope.currencies = [], $scope.countries = [], $scope.continents = [],
@@ -46,12 +46,19 @@ function storeController($scope, $cookieStore, configService, authService,
 
                                       // $scope.loadContinents();
                                       //
-                                      // if ($scope.Store.Address
-                                      // && $scope.Store.Address.Country !==
-                                      // null) {
-                                      // $scope
-                                      // .loadCountry($scope.Store.Address);
-                                      // }
+                                      if ($scope.Store.Address
+                                          && $scope.Store.Address.Country !== null) {
+                                        // we've got a country, alert address
+                                        // widget. somehow we should delay this
+                                        // a bit
+                                        $timeout(function() {
+                                          $scope.$broadcast('loadCountry',
+                                              $scope.Store.Address);
+
+                                          $scope.$apply()
+                                        }, 500);
+                                      }
+
                                       if ($scope.Store.Currency
                                           && $scope.Store.Currency !== null) {
                                         $scope
@@ -62,7 +69,11 @@ function storeController($scope, $cookieStore, configService, authService,
                                     });
                           } else {
                             // create store
-                            $('#serviceAgreement').modal('show')
+                            $('#serviceAgreement').modal('show');
+
+                            // initialize props
+                            $scope.Store.Address = modelService
+                                .getInstanceOf('Address');
                           }
                         }, function(err) {
                           errorService.log(err)
@@ -329,6 +340,7 @@ function storeController($scope, $cookieStore, configService, authService,
 }
 
 storeController.$inject = [
-    '$scope', '$cookieStore', 'configService', 'authService', 'permService',
-    'storeService', 'modelService', 'errorService', 'geoService', 'formService'
+    '$scope', '$cookieStore', '$timeout', 'configService', 'authService',
+    'permService', 'storeService', 'modelService', 'errorService',
+    'geoService', 'formService'
 ];
