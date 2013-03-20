@@ -98,16 +98,13 @@ function storeController($scope, $cookieStore, $timeout, configService,
 
   $scope.initStore = function(storeKey) {
     // reload full model
-    storeService
-        .initStore(storeKey)
-        .then(
-            function(store, currency) {
-              $cookieStore.put('storeKey', store.Key);
-              $scope.Store = store;
-              $scope.Store.tmpPaymentProvider = $scope.Store.PaymentProviders[0].ProviderType;
-            }, function(err) {
-              errorService.log(err)
-            });
+    storeService.initStore(storeKey).then(function(store, currency) {
+      $cookieStore.put('storeKey', store.Key);
+      $scope.Store = store;
+      $scope.Store.tmpPaymentProvider = $scope.Store.PaymentProviders[0];
+    }, function(err) {
+      errorService.log(err)
+    });
   }
 
   $scope.upgradeProfile = function() {
