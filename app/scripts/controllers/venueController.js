@@ -74,18 +74,24 @@ function venueController($scope, $cookieStore, configService, authService,
       $scope.wizard.saved = false;
 
       if ($scope.Place.Key === null) {
-        // go on and create
+        // create place
+
+        // API claims not null properties
+        modelService.nonNull($scope.Place.Address);
+
         placeService.createPlace($scope.storeKey, {
           Public : true,
           Name : $scope.Place.Name,
           Description : $scope.Place.Description,
           Address : $scope.Place.Address
         }).then(function(placeKey) {
-          $scope.wizard.currentStep = 3;
-          $scope.wizard.saved = true;
+          if (angular.isString(placeKey)) {
+            $scope.wizard.currentStep = 3;
+            $scope.wizard.saved = true;
 
-          // reload list
-          $scope.init();
+            // reload list
+            $scope.init();
+          }
         }, function(err) {
           errorService.log(err)
         });

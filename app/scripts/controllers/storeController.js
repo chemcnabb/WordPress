@@ -170,19 +170,21 @@ function storeController($scope, $cookieStore, $timeout, configService,
             ],
             Address : $scope.Store.Address
           }).then(function(storeKey) {
-            $scope.Store.Key = storeKey;
+            if (angular.isString(storeKey)) {
+              $scope.Store.Key = storeKey;
 
-            // attach payment providers
-            storeService.addPaymentProvider($scope.Store, {
-              ProviderType : $scope.Store.tmpPaymentProvider
-            }).then(function() {
-              $scope.wizard.saved = true;
+              // attach payment providers
+              storeService.addPaymentProvider($scope.Store, {
+                ProviderType : $scope.Store.tmpPaymentProvider
+              }).then(function() {
+                $scope.wizard.saved = true;
 
-              // reload full model
-              $scope.initStore(storeKey);
-            }, function(err) {
-              errorService.log(err)
-            });
+                // reload full model
+                $scope.initStore(storeKey);
+              }, function(err) {
+                errorService.log(err)
+              });
+            }
           }, function(err) {
             errorService.log(err)
           });
