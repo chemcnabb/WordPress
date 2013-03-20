@@ -14,18 +14,19 @@ azureTicketsApp.factory('storeService', [
 
           if (storeKey !== null) {
             def.resolve();
-          }
-          BWL.Services.StoreService.ListStoresAsync(pages, function(stores) {
-            _stores = stores;
+          } else {
+            BWL.Services.StoreService.ListStoresAsync(pages, function(stores) {
+              _stores = stores;
 
-            $rootScope.$apply(function() {
-              def.resolve();
+              $rootScope.$apply(function() {
+                def.resolve();
+              });
+            }, function(err) {
+              $rootScope.$apply(function() {
+                def.reject(err)
+              })
             });
-          }, function(err) {
-            $rootScope.$apply(function() {
-              def.reject(err)
-            })
-          });
+          }
 
           return def.promise;
         },
