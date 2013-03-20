@@ -47,12 +47,13 @@ function storeController($scope, $cookieStore, $timeout, configService,
                                           && $scope.Store.Address.Country !== null) {
                                         // we've got a country, alert address
                                         // widget. somehow we should delay this
-                                        // a bit
+                                        // a bit in order to properly broadcast
+                                        // msg
                                         $timeout(function() {
-                                          $scope.$broadcast('loadCountry',
-                                              $scope.Store.Address);
-
-                                          $scope.$apply()
+                                          $scope.$apply(function() {
+                                            $scope.$broadcast('loadCountry',
+                                                $scope.Store.Address);
+                                          })
                                         }, 500);
                                       }
 
