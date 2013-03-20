@@ -17,94 +17,81 @@ function storeController($scope, $cookieStore, $timeout, configService,
       .getInstanceOf('PaymentProvider');
 
   $scope.init = function() {
-    authService
-        .authenticate($scope)
-        .then(
-            function() {
-              if (authService.hasStoreAccess()) {
-                storeService
-                    .listStoresAsync($scope.storeKey, 1)
-                    .then(
-                        function() {
-                          $scope.stores = storeService.getStores();
-                          var storesLoaded = !configService.multipleStores
-                              && angular.isDefined($scope.stores[0])
-                              && $scope.stores[0].Key !== null;
+    authService.authenticate($scope).then(function() {
+      if (authService.hasStoreAccess()) {
+        storeService.listStoresAsync($scope.storeKey, 1).then(function() {
+          $scope.initStore(null, true);
+        }, function(err) {
+          errorService.log(err)
+        });
+      } else {
+        // initialize props
+        $scope.Store.Address = modelService.getInstanceOf('Address');
 
-                          if (storesLoaded || $scope.storeKey !== null) {
-                            storeService
-                                .initStore(
-                                    storesLoaded ? $scope.stores[0].Key
-                                        : $scope.storeKey)
-                                .then(
-                                    function(store, currency) {
-                                      $cookieStore.put('storeKey', store.Key);
-                                      $scope.Store = store;
-                                      $scope.Store.tmpPaymentProvider = angular
-                                          .isArray($scope.Store.PaymentProviders) ? $scope.Store.PaymentProviders[0]
-                                          : null;
-                                      $scope.wizard.currentStep = 1;
-
-                                      if ($scope.Store.Address
-                                          && $scope.Store.Address.Country !== null) {
-                                        // we've got a country, alert address
-                                        // widget. somehow we should delay this
-                                        // a bit in order to properly broadcast
-                                        // msg
-                                        $timeout(function() {
-                                          $scope.$apply(function() {
-                                            $scope.$broadcast('loadCountry',
-                                                $scope.Store.Address);
-                                          })
-                                        }, 500);
-                                      }
-
-                                      if ($scope.Store.Currency
-                                          && $scope.Store.Currency !== null) {
-                                        $scope
-                                            .loadPaymentProvidersByCurrency($scope.Store.Currency);
-                                      }
-                                    }, function(err) {
-                                      errorService.log(err)
-                                    });
-                          } else {
-                            // show agreement
-                            $scope.wizard.currentStep = 0;
-                            jQuery('#serviceAgreement').modal('show');
-
-                            // initialize props
-                            $scope.Store.Address = modelService
-                                .getInstanceOf('Address');
-                          }
-                        }, function(err) {
-                          errorService.log(err)
-                        });
-              } else {
-                // initialize props
-                $scope.Store.Address = modelService.getInstanceOf('Address');
-
-                // show agreement
-                $timeout(function() {
-                  $scope.$apply(function() {
-                    $scope.wizard.currentStep = 0;
-                    jQuery('#serviceAgreement').modal('show');
-                  })
-                }, 500);
-              }
-            }, function(err) {
-              errorService.log(err)
-            });
-  }
-
-  $scope.initStore = function(storeKey) {
-    // reload full model
-    storeService.initStore(storeKey).then(function(store, currency) {
-      $cookieStore.put('storeKey', store.Key);
-      $scope.Store = store;
-      $scope.Store.tmpPaymentProvider = $scope.Store.PaymentProviders[0];
+        // show agreement
+        $timeout(function() {
+          $scope.$apply(function() {
+            $scope.wizard.currentStep = 0;
+            jQuery('#serviceAgreement').modal('show');
+          })
+        }, 500);
+      }
     }, function(err) {
       errorService.log(err)
     });
+  }
+
+  $scope.initStore = function(storeKey, resetWizard) {
+    // reload full model
+    $scope.stores = storeService.getStores();
+    var storesLoaded = !configService.multipleStores
+        && angular.isDefined($scope.stores[0]) && $scope.stores[0].Key !== null;
+
+    storeKey = angular.isDefined(storeKey) && storeKey !== null ? storeKey
+        : (storesLoaded ? $scope.stores[0].Key : $scope.storeKey)
+
+    if (storeKey !== null) {
+      storeService
+          .initStore(storeKey)
+          .then(
+              function(store, currency) {
+                $cookieStore.put('storeKey', store.Key);
+                $scope.Store = store;
+                $scope.Store.tmpPaymentProvider = angular
+                    .isArray($scope.Store.PaymentProviders) ? $scope.Store.PaymentProviders[0]
+                    : null;
+
+                if (resetWizard) {
+                  $scope.wizard.currentStep = 1;
+                }
+
+                if ($scope.Store.Address
+                    && $scope.Store.Address.Country !== null) {
+                  // we've got a country, alert address
+                  // widget. somehow we should delay this
+                  // a bit in order to properly broadcast
+                  // msg
+                  $timeout(function() {
+                    $scope.$apply(function() {
+                      $scope.$broadcast('loadCountry', $scope.Store.Address);
+                    })
+                  }, 500);
+                }
+
+                if ($scope.Store.Currency && $scope.Store.Currency !== null) {
+                  $scope.loadPaymentProvidersByCurrency($scope.Store.Currency);
+                }
+              }, function(err) {
+                errorService.log(err)
+              });
+    } else {
+      // show agreement
+      $scope.wizard.currentStep = 0;
+      jQuery('#serviceAgreement').modal('show');
+
+      // initialize props
+      $scope.Store.Address = modelService.getInstanceOf('Address');
+    }
   }
 
   $scope.upgradeProfile = function() {
