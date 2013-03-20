@@ -3,8 +3,8 @@ function storeController($scope, $cookieStore, configService, authService,
     formService) {
   $scope.storeKey = $cookieStore.get('storeKey') || null,
       $scope.config = configService, $scope.name = 'store', $scope.stores = [],
-      $scope.currencies = [], $scope.countries = [], $scope.regions = [],
-      $scope.paymentProviders = [], $scope.timezones = [],
+      $scope.currencies = [], $scope.countries = [], $scope.continents = [],
+      $scope.regions = [], $scope.paymentProviders = [], $scope.timezones = [],
       $scope.wizard = formService.getWizard($scope);
 
   /**
@@ -44,13 +44,14 @@ function storeController($scope, $cookieStore, configService, authService,
                                           : null;
                                       $scope.wizard.currentStep = 1;
 
-                                      if ($scope.Store.Address
-                                          && $scope.Store.Address.Country !== null) {
-                                        $scope
-                                            .loadRegionsByCountry($scope.Store.Address.Country);
-                                        $scope
-                                            .loadTimezonesByCountry($scope.Store.Address.Country);
-                                      }
+                                      // $scope.loadContinents();
+                                      //
+                                      // if ($scope.Store.Address
+                                      // && $scope.Store.Address.Country !==
+                                      // null) {
+                                      // $scope
+                                      // .loadCountry($scope.Store.Address);
+                                      // }
                                       if ($scope.Store.Currency
                                           && $scope.Store.Currency !== null) {
                                         $scope
@@ -105,51 +106,109 @@ function storeController($scope, $cookieStore, configService, authService,
       errorService.log(err)
     });
   }
-
-  $scope.loadCountries = function() {
-    geoService.getCountries().then(function(countries) {
-      $scope.countries = countries;
-    }, function(err) {
-      errorService.log(err)
-    });
-  }
-
-  $scope.loadTimezonesByCountry = function(countryIso) {
-    if (angular.isDefined(countryIso)) {
-      geoService.getTimezonesByCountry(countryIso).then(function(timezones) {
-        $scope.timezones = timezones;
-      }, function(err) {
-        errorService.log(err)
-      });
-    }
-  }
-
-  $scope.loadRegionsByCountry = function(countryIso) {
-    if (angular.isDefined(countryIso)) {
-      geoService.getRegionsByCountry(countryIso).then(function(regions) {
-        $scope.regions = regions;
-      }, function(err) {
-        errorService.log(err)
-      });
-    }
-
-  }
-
-  $scope.getCityByPostalCode = function(countryIso, postalCode) {
-    if (angular.isDefined(countryIso) && angular.isDefined(postalCode)
-        && postalCode !== null && postalCode.trim().length >= 3) {
-      geoService.getCityByPostalCode(countryIso, postalCode).then(
-          function(city) {
-            if (angular.isDefined(city.CityName)
-                && angular.isDefined(city.Region)) {
-              $scope.Store.Address.City = city.CityName;
-              $scope.Store.Address.Region = city.Region.ISO;
-            }
-          }, function(err) {
-            errorService.log(err)
-          });
-    }
-  }
+  //
+  // $scope.loadContinents = function() {
+  // geoService.getContinents().then(function(continents) {
+  // $scope.continents = continents;
+  // }, function(err) {
+  // errorService.log(err)
+  // });
+  // }
+  //
+  // $scope.loadCountriesByContinent = function(address, reset) {
+  // if (angular.isDefined(address.tmpContinentIso)) {
+  // var continentIso = address.tmpContinentIso;
+  //
+  // // reset lists
+  // $scope.countries = [];
+  // $scope.regions = [];
+  // $scope.timezones = [];
+  //
+  // // reset address
+  // if (reset) {
+  // $scope.Country = null;
+  // address.City = null, address.AddressLine1 = null,
+  // address.AddressLine2 = null, address.Timezone = null,
+  // address.Region = null, address.PostalCode = null;
+  // }
+  //
+  // geoService.getCountriesByContinent(continentIso).then(
+  // function(countries) {
+  // $scope.countries = countries;
+  // }, function(err) {
+  // errorService.log(err)
+  // });
+  // }
+  // }
+  //
+  // $scope.loadTimezonesByCountry = function(address) {
+  // if (angular.isDefined(address.Country)) {
+  // geoService.getTimezonesByCountry(address.Country).then(
+  // function(timezones) {
+  // $scope.timezones = timezones;
+  // }, function(err) {
+  // errorService.log(err)
+  // });
+  // }
+  // }
+  //
+  // $scope.loadCountry = function(address) {
+  // if (angular.isDefined(address.Country)) {
+  // geoService.loadCountry(address.Country).then(function(country) {
+  // $scope.Country = country;
+  // address.tmpContinentIso = country.ContinentISO;
+  //
+  // if (!country.HasPostalCodes) {
+  // $scope.loadRegionsByCountry(address)
+  // }
+  // if ($scope.countries.length === 0) {
+  // $scope.loadCountriesByContinent(address)
+  // }
+  // if ($scope.timezones.length === 0) {
+  // $scope.loadTimezonesByCountry(address)
+  // }
+  // }, function(err) {
+  // errorService.log(err)
+  // });
+  // }
+  // }
+  //
+  // $scope.loadRegionsByCountry = function(address) {
+  // if (angular.isDefined(address.Country)) {
+  // geoService.getRegionsByCountry(address.Country).then(function(regions) {
+  // $scope.regions = regions;
+  // }, function(err) {
+  // errorService.log(err)
+  // });
+  // }
+  // }
+  //
+  // $scope.getCityByPostalCode = function(address) {
+  // if (angular.isDefined(address.Country)
+  // && angular.isDefined(address.PostalCode) && address.PostalCode !== null
+  // && address.PostalCode.trim().length >= 3) {
+  // geoService.getCityByPostalCode(address.Country, address.PostalCode).then(
+  // function(city) {
+  // // lookup timezone
+  // geoService.getCityByName(city.CityName, city.RegionISO,
+  // city.CountryISO).then(
+  // function(city) {
+  // if (angular.isDefined(city.Name)
+  // && angular.isDefined(city.RegionISO)) {
+  // address.City = city.Name;
+  // address.Region = city.RegionISO;
+  // address.Timezone = city.TimezoneName;
+  // $scope.loadRegionsByCountry(address);
+  // $scope.loadTimezonesByCountry(address);
+  // }
+  // }, function(err) {
+  // errorService.log(err)
+  // });
+  // }, function(err) {
+  // errorService.log(err)
+  // });
+  // }
+  // }
 
   $scope.loadPaymentProvidersByCurrency = function(currency) {
     if (angular.isDefined(currency) && currency !== '') {
@@ -227,27 +286,43 @@ function storeController($scope, $cookieStore, configService, authService,
         });
       } else {
         // update store
-        storeService.updateStore($scope.Store).then(function(store) {
-          geoService.updateAddress(store.Address).then(function(ret) {
-            // attach payment providers
-            storeService.removePaymentProvider(store, 0).then(function() {
-              storeService.addPaymentProvider(store, {
-                ProviderType : store.tmpPaymentProvider
-              }).then(function() {
-                $scope.wizard.saved = true;
+        var _finishes = function(ret) {
+          // attach payment providers
+          storeService.removePaymentProvider($scope.Store, 0).then(function() {
+            storeService.addPaymentProvider($scope.Store, {
+              ProviderType : $scope.Store.tmpPaymentProvider
+            }).then(function() {
+              $scope.wizard.saved = true;
 
-                // reload full model
-                $scope.initStore(store.Key);
-              }, function(err) {
-                errorService.log(err)
-              });
+              // reload full model
+              $scope.initStore($scope.Store.Key);
             }, function(err) {
               errorService.log(err)
             });
           }, function(err) {
             errorService.log(err)
           });
-        });
+        }
+
+        // update store & address
+        if ($scope.Store.Address.Key !== null) {
+          storeService.updateStore($scope.Store).then(
+              function(store) {
+                geoService.updateAddress($scope.Store.Address).then(_finishes,
+                    function(err) {
+                      errorService.log(err)
+                    });
+              });
+        } else {
+          // update store & create address
+          storeService.updateStore($scope.Store).then(
+              function(store) {
+                geoService.createAddressForStore(store.Key,
+                    $scope.Store.Address).then(_finishes, function(err) {
+                  errorService.log(err)
+                });
+              });
+        }
       }
     }
   }

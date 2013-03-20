@@ -7,8 +7,6 @@ azureTicketsApp.directive('atRequired', [
         restrict : 'A',
         require : 'ngModel',
         link : function($scope, $element, $attrs, $ctrl) {
-          var f = jQuery($element).parents('form').first();
-
           $ctrl.$parsers.unshift(function(viewValue) {
             if (viewValue !== null && viewValue.trim() !== '') {
               $ctrl.$setValidity('required', true);

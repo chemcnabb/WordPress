@@ -3,21 +3,22 @@ azureTicketsApp.factory('geoService', [
     '$q',
     '$rootScope',
     'configService',
-    function($q, $rootScope, configService) {
-      var _countries = null;
+    'modelService',
+    function($q, $rootScope, configService, modelService) {
+      var _countries = null, _continents = null;
 
       return {
-        getCountries : function() {
+        getContinents : function() {
           var def = $q.defer();
 
-          if (_countries !== null) {
-            def.resolve(_countries)
+          if (_continents !== null) {
+            def.resolve(_continents)
           } else {
-            BWL.Services.GeoService.ListCountriesAsync(function(countries) {
-              _countries = countries;
+            BWL.Services.GeoService.ListContinentsAsync(function(continents) {
+              _continents = continents;
 
               $rootScope.$apply(function() {
-                def.resolve(countries)
+                def.resolve(continents)
               })
             }, function(err) {
               $rootScope.$apply(function() {
@@ -25,6 +26,56 @@ azureTicketsApp.factory('geoService', [
               })
             })
           }
+
+          return def.promise;
+        },
+        getCountriesByContinent : function(continentIso) {
+          var def = $q.defer();
+
+          BWL.Services.GeoService.ListCountriesByContinentAsync(continentIso,
+              function(countries) {
+                _countries = countries;
+
+                $rootScope.$apply(function() {
+                  def.resolve(countries)
+                })
+              }, function(err) {
+                $rootScope.$apply(function() {
+                  def.reject(err)
+                })
+              })
+
+          return def.promise;
+        },
+        getCityByName : function(name, regionIso, countryIso) {
+          var def = $q.defer();
+
+          BWL.Services.GeoService.FindCityAsync(name, countryIso, regionIso,
+              function(city) {
+                $rootScope.$apply(function() {
+                  def.resolve(city)
+                })
+              }, function(err) {
+                $rootScope.$apply(function() {
+                  def.reject(err)
+                })
+              })
+
+          return def.promise;
+        },
+        loadCountry : function(countryIso) {
+          var def = $q.defer();
+
+          BWL.Services.GeoService.FindCountryByISOAsync(countryIso, function(
+              country) {
+            $rootScope.$apply(function() {
+              def.resolve(country)
+            })
+          }, function(err) {
+            $rootScope.$apply(function() {
+              def.reject(err)
+            })
+          })
 
           return def.promise;
         },
@@ -95,6 +146,9 @@ azureTicketsApp.factory('geoService', [
         createAddressForStore : function(storeKey, address) {
           var def = $q.defer();
 
+          delete address.tmpContinentIso;
+          modelService.nonNull(address);
+
           BWL.Services.ModelService.CreateAsync(configService.container.store,
               "Address", address, function(addressKey) {
                 if (addressKey) {
@@ -120,6 +174,9 @@ azureTicketsApp.factory('geoService', [
         },
         updateAddress : function(address) {
           var def = $q.defer();
+
+          delete address.tmpContinentIso;
+          modelService.nonNull(address);
 
           BWL.Services.ModelService.UpdateAsync(configService.container.store,
               'Address', address.Key, address, function(ret) {

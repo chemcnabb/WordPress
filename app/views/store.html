@@ -7,7 +7,7 @@
 	<div ng-include src="'views/elements/error.html'"></div>
 	<!-- store info -->
 	<div ui-if="DomainProfile.Key || false" class="row-fluid"
-		ng-init="loadCurrencies(); loadCountries()">
+		ng-init="loadCurrencies()">
 		<p ng-show="wizard.currentStep>
 			0" class="lead">{{
 			'Common.Text_RegistrationStep1' | t }}</p>
@@ -66,8 +66,7 @@
 		</form>
 		<form ng-show="wizard.currentStep == 2" name="atStore2"
 			ng-submit="wizard.next('atStore2')">
-			<div ng-include src="'views/elements/address/fields.html'"
-				onload="model='Store'"></div>
+			<div ng-include src="'views/address.html'" onload="model='Store'"></div>
 			<dl>
 				<dd class="pull-left">
 					<a ng-show="wizard.currentStep>1"

@@ -32,6 +32,13 @@ azureTicketsApp.factory('modelService', [
           var def = $q.defer();
 
           return def.promise;
+        },
+        nonNull : function(model) {
+          for ( var p in model) {
+            if (model[p] === null) {
+              delete model[p];
+            }
+          }
         }
       }
     }

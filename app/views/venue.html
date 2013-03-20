@@ -4,8 +4,7 @@
 	<div ng-include src="'views/elements/topMenu.html'"></div>
 	<div ng-include src="'views/elements/error.html'"></div>
 	<!-- venue info -->
-	<div ui-if="DomainProfile.Key || false" class="row-fluid"
-		ng-init="loadCountries()">
+	<div ui-if="DomainProfile.Key || false" class="row-fluid">
 		<p class="lead pull-left">{{ 'Common.Text_VenueMenu_Venue' | t}}</p>
 		<div class="btn-group pull-right">
 			<button class="btn btn-info" ng-click="create()">{{
@@ -52,8 +51,7 @@
 				</form>
 				<form ng-show="wizard.currentStep == 2" name="atVenue2"
 					ng-submit="wizard.next('atVenue2', true)">
-					<div ng-include src="'views/elements/address/fields.html'"
-						onload="model='Place'"></div>
+					<div ng-include src="'views/address.html'" onload="model='Place'"></div>
 					<dl>
 						<dd class="pull-left">
 							<a ng-show="wizard.currentStep>1"

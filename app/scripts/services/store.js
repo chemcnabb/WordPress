@@ -218,17 +218,22 @@ azureTicketsApp.factory('storeService', [
         removePaymentProvider : function(store, ix) {
           var def = $q.defer();
 
-          BWL.Services.ModelService.RemoveAsync(store.Key, 'Store', store.Key,
-              'PaymentProviders', 'PaymentProvider',
-              store.PaymentProviders[ix].Key, function(ret) {
-                $rootScope.$apply(function() {
-                  def.resolve(ret)
-                })
-              }, function(err) {
-                $rootScope.$apply(function() {
-                  def.reject(err)
-                })
-              });
+          if (angular.isDefined(store.PaymentProviders)
+              && store.PaymentProviders !== null) {
+            BWL.Services.ModelService.RemoveAsync(store.Key, 'Store',
+                store.Key, 'PaymentProviders', 'PaymentProvider',
+                store.PaymentProviders[ix].Key, function(ret) {
+                  $rootScope.$apply(function() {
+                    def.resolve(ret)
+                  })
+                }, function(err) {
+                  $rootScope.$apply(function() {
+                    def.reject(err)
+                  })
+                });
+          } else {
+            def.resolve();
+          }
 
           return def.promise;
         },
