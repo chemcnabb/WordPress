@@ -66,7 +66,7 @@ function storeController($scope, $cookieStore, $timeout, configService,
                                       errorService.log(err)
                                     });
                           } else {
-                            // create store
+                            // show agreement
                             $('#serviceAgreement').modal('show');
 
                             // initialize props
@@ -77,7 +77,11 @@ function storeController($scope, $cookieStore, $timeout, configService,
                           errorService.log(err)
                         });
               } else {
-                $scope.upgradeProfile();
+                // initialize props
+                $scope.Store.Address = modelService.getInstanceOf('Address');
+
+                // show agreement
+                $('#serviceAgreement').modal('show');
               }
             }, function(err) {
               errorService.log(err)

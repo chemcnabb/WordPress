@@ -61,18 +61,4 @@ describe('Controller: adminController', function() {
     // confirm it did fail
     // for example registering the same account or passwords not matching
   });
-
-  iit('should be able to login using test account', function() {
-    scope.AccountProfile = {
-      Email : 'nfiglesias@gmail.com',
-      Password : '121212'
-    }
-
-    scope.login();
-
-    waitsFor(function() {
-      return scope.DomainProfile.Key !== null;
-    }, 'cannot login using test account', 5000);
-  });
-
 });
