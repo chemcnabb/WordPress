@@ -100,11 +100,27 @@
 					<label>{{'Common.Text_StoreMenu_PaymentProvider' | t}}</label> <select
 						type="text" ui-select2="{containerCssClass:'input-xlarge'}"
 						data-placeholder="{{ 'Common.Text_ChooseOption' | t}}" at-required
-						name="Store_PaymentProvider" ng-model="Store.tmpPaymentProvider">
+						name="Store_PaymentProvider"
+						ng-model="Store.tmpPaymentProvider.ProviderType"
+						ng-change="loadPaymentProviderInfo(Store.tmpPaymentProvider)">
 						<option></option>
-						<option ng-selected="Store.tmpPaymentProvider == p"
+						<option ng-selected="Store.tmpPaymentProvider.ProviderType == p"
 							ng-repeat="p in paymentProviders" value="{{p}}">{{p}}</option>
 					</select>
+				</dd>
+				<dd
+					ui-if="tmpPaymentProviderInfo && tmpPaymentProviderInfo.RequiresProviderId || false">
+					<atfield at-required class="input-xxlarge"
+						ng-model="Store.tmpPaymentProvider.ProviderId"
+						at-copy="PaymentProvider"
+						label="tmpPaymentProviderInfo.ProviderIdText" />
+				</dd>
+				<dd
+					ui-if="tmpPaymentProviderInfo && tmpPaymentProviderInfo.RequiresProviderToken || false">
+					<atfield class="input-xxlarge"
+						ng-model="Store.tmpPaymentProvider.ProviderToken"
+						at-copy="PaymentProvider"
+						label="tmpPaymentProviderInfo.ProviderTokenText" />
 				</dd>
 			</dl>
 			<dl>

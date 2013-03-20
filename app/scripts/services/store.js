@@ -120,23 +120,43 @@ azureTicketsApp.factory('storeService', [
           var def = $q.defer();
 
           BWL.Services.ModelService
-              .ReadAsync(configService.container.store, "Store", storeKey, 10,
+              .ReadAsync(configService.container.store, "Store", storeKey, 2,
                   function(store) {
                     if (!angular.isDefined(store.Address)
                         || store.Address === null) {
                       store.Address = modelService.getInstanceOf('Address');
                     }
 
-                    BWL.Services.GeoService.ReadCurrencyAsync(store.Currency,
-                        function(currency) {
-                          $rootScope.$apply(function() {
-                            def.resolve(store, currency)
+                    var _finishes = function() {
+                      BWL.Services.GeoService.ReadCurrencyAsync(store.Currency,
+                          function(currency) {
+                            $rootScope.$apply(function() {
+                              def.resolve(store, currency)
+                            });
+                          }, function(err) {
+                            $rootScope.$apply(function() {
+                              def.reject(err)
+                            })
                           });
-                        }, function(err) {
-                          $rootScope.$apply(function() {
-                            def.reject(err)
-                          })
-                        });
+                    }
+
+                    if (!angular.isArray(store.PaymentProviders)
+                        || store.PaymentProviders.length === 0) {
+                      _finishes();
+                    } else {
+                      // we handle only one PaymentProvider per Store
+                      BWL.Services.ModelService.ReadAsync(store.Key,
+                          'PaymentProvider', store.PaymentProviders[0].Key, 1,
+                          function(paymentProvider) {
+                            store.PaymentProviders[0] = paymentProvider;
+
+                            _finishes();
+                          }, function(err) {
+                            $rootScope.$apply(function() {
+                              def.reject(err)
+                            })
+                          });
+                    }
                   }, function(err) {
                     $rootScope.$apply(function() {
                       def.reject(err)
@@ -200,8 +220,27 @@ azureTicketsApp.factory('storeService', [
 
           return def.promise;
         },
+        getPaymentProviderInfo : function(providerType) {
+          var def = $q.defer();
+
+          BWL.Services.PaymentService.FindProviderInfoByTypeAsync(providerType,
+              function(info) {
+                $rootScope.$apply(function() {
+                  def.resolve(info);
+                });
+              }, function(err) {
+                $rootScope.$apply(function() {
+                  def.reject(err)
+                })
+              });
+
+          return def.promise;
+        },
         addPaymentProvider : function(store, p) {
           var def = $q.defer();
+
+          delete p.Type;
+          delete p.Key;
 
           BWL.Services.ModelService.AddAsync(store.Key, 'Store', store.Key,
               'PaymentProviders', 'PaymentProvider', p, function(ret) {

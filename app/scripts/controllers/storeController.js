@@ -13,6 +13,8 @@ function storeController($scope, $cookieStore, $timeout, configService,
    */
   $scope.DomainProfile = authService.getDomainProfile();
   $scope.Store = modelService.getInstanceOf('Store');
+  $scope.Store.tmpPaymentProvider = modelService
+      .getInstanceOf('PaymentProvider');
 
   $scope.init = function() {
     authService
@@ -39,7 +41,7 @@ function storeController($scope, $cookieStore, $timeout, configService,
                                       $cookieStore.put('storeKey', store.Key);
                                       $scope.Store = store;
                                       $scope.Store.tmpPaymentProvider = angular
-                                          .isArray($scope.Store.PaymentProviders) ? $scope.Store.PaymentProviders[0].ProviderType
+                                          .isArray($scope.Store.PaymentProviders) ? $scope.Store.PaymentProviders[0]
                                           : null;
                                       $scope.wizard.currentStep = 1;
 
@@ -131,6 +133,10 @@ function storeController($scope, $cookieStore, $timeout, configService,
       storeService.getPaymentProvidersByCurrency(currency).then(
           function(paypros) {
             $scope.paymentProviders = paypros;
+
+            if ($scope.Store.tmpPaymentProvider !== null) {
+              $scope.loadPaymentProviderInfo($scope.Store.tmpPaymentProvider);
+            }
           }, function(err) {
             errorService.log(err)
           });
@@ -155,6 +161,18 @@ function storeController($scope, $cookieStore, $timeout, configService,
     return false;
   }
 
+  $scope.loadPaymentProviderInfo = function(paymentProvider) {
+    if (angular.isDefined(paymentProvider)
+        && paymentProvider.ProviderType !== null) {
+      storeService.getPaymentProviderInfo(paymentProvider.ProviderType).then(
+          function(info) {
+            $scope.tmpPaymentProviderInfo = info;
+          }, function(err) {
+            errorService.log(err)
+          });
+    }
+  }
+
   $scope.save = function() {
     if ($scope.wizard.finished) {
       $scope.wizard.saved = false;
@@ -167,61 +185,66 @@ function storeController($scope, $cookieStore, $timeout, configService,
         modelService.nonNull($scope.Store.Address);
 
         // check URI
-        storeService.checkURIAvailability(permaLink).then(function(uri) {
-          // go on and create
-          storeService.createStore({
-            Name : $scope.Store.Name,
-            Description : $scope.Store.Description,
-            Public : true,
-            HasMemberships : true,
-            HasWishlist : true,
-            Currency : $scope.Store.Currency,
-            StoreURIs : [
-              {
-                URI : uri
-              }
-            ],
-            Address : $scope.Store.Address
-          }).then(function(storeKey) {
-            if (angular.isString(storeKey)) {
-              $scope.Store.Key = storeKey;
+        storeService.checkURIAvailability(permaLink).then(
+            function(uri) {
+              // go on and create
+              storeService.createStore({
+                Name : $scope.Store.Name,
+                Description : $scope.Store.Description,
+                Public : true,
+                HasMemberships : true,
+                HasWishlist : true,
+                Currency : $scope.Store.Currency,
+                StoreURIs : [
+                  {
+                    URI : uri
+                  }
+                ],
+                Address : $scope.Store.Address
+              }).then(
+                  function(storeKey) {
+                    if (angular.isString(storeKey)) {
+                      $scope.Store.Key = storeKey;
 
-              // attach payment providers
-              storeService.addPaymentProvider($scope.Store, {
-                ProviderType : $scope.Store.tmpPaymentProvider
-              }).then(function() {
-                $scope.wizard.saved = true;
+                      modelService.nonNull($scope.Store.tmpPaymentProvider);
 
-                // reload full model
-                $scope.initStore(storeKey);
-              }, function(err) {
-                errorService.log(err)
-              });
-            }
-          }, function(err) {
-            errorService.log(err)
-          });
-        }, function(err) {
-          errorService.log(err)
-        });
+                      // attach payment providers
+                      storeService.addPaymentProvider($scope.Store,
+                          $scope.Store.tmpPaymentProvider).then(function() {
+                        $scope.wizard.saved = true;
+
+                        // reload full model
+                        $scope.initStore(storeKey);
+                      }, function(err) {
+                        errorService.log(err)
+                      });
+                    }
+                  }, function(err) {
+                    errorService.log(err)
+                  });
+            }, function(err) {
+              errorService.log(err)
+            });
       } else {
         // update store
         var _finishes = function(ret) {
           // attach payment providers
-          storeService.removePaymentProvider($scope.Store, 0).then(function() {
-            storeService.addPaymentProvider($scope.Store, {
-              ProviderType : $scope.Store.tmpPaymentProvider
-            }).then(function() {
-              $scope.wizard.saved = true;
+          storeService.removePaymentProvider($scope.Store, 0).then(
+              function() {
+                modelService.nonNull($scope.Store.tmpPaymentProvider);
 
-              // reload full model
-              $scope.initStore($scope.Store.Key);
-            }, function(err) {
-              errorService.log(err)
-            });
-          }, function(err) {
-            errorService.log(err)
-          });
+                storeService.addPaymentProvider($scope.Store,
+                    $scope.Store.tmpPaymentProvider).then(function() {
+                  $scope.wizard.saved = true;
+
+                  // reload full model
+                  $scope.initStore($scope.Store.Key);
+                }, function(err) {
+                  errorService.log(err)
+                });
+              }, function(err) {
+                errorService.log(err)
+              });
         }
 
         // update store & address
