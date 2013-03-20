@@ -67,7 +67,8 @@ function storeController($scope, $cookieStore, $timeout, configService,
                                     });
                           } else {
                             // show agreement
-                            $('#serviceAgreement').modal('show');
+                            $scope.wizard.currentStep = 0;
+                            jQuery('#serviceAgreement').modal('show');
 
                             // initialize props
                             $scope.Store.Address = modelService
@@ -81,7 +82,12 @@ function storeController($scope, $cookieStore, $timeout, configService,
                 $scope.Store.Address = modelService.getInstanceOf('Address');
 
                 // show agreement
-                $('#serviceAgreement').modal('show');
+                $timeout(function() {
+                  $scope.$apply(function() {
+                    $scope.wizard.currentStep = 0;
+                    jQuery('#serviceAgreement').modal('show');
+                  })
+                }, 500);
               }
             }, function(err) {
               errorService.log(err)
@@ -156,6 +162,9 @@ function storeController($scope, $cookieStore, $timeout, configService,
       if ($scope.Store.Key === null) {
         // create store
         var permaLink = top.location.hostname;
+
+        // API claims not null properties
+        modelService.nonNull($scope.Store.Address);
 
         // check URI
         storeService.checkURIAvailability(permaLink).then(function(uri) {
