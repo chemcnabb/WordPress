@@ -33,5 +33,5 @@ Afterwards, use the *grunt* command to build or execute the tasks available for 
 * Use `grunt build` to generate the distribution package, which will reside in *./dist*
 * Use `grunt test` to execute the tests located in *./test*. This command makes use of *testacular* [http://testacular.github.com/]
 * Use `grunt wp` to generate a *WordPress* plugin package in *./dist/wp-azuretickets.zip*.
-* Use `grunt server` to start a local server on port 9100. [http://localhost:9001/#/admin]
+* Use `grunt server` to start a local server on port 9001. [http://localhost:9001/#/admin]
 
