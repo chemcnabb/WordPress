@@ -116,10 +116,10 @@ module.exports = function(grunt) {
         },
         open : {
           server : {
-            url : 'http://nico.localhost:<%= connect.livereload.options.port %>/#/admin'
+            url : 'http://localhost:<%= connect.livereload.options.port %>/#/admin'
           },
           serverStatic : {
-            url : 'http://nico.localhost:<%= connect.static.options.port %>/#/admin'
+            url : 'http://localhost:<%= connect.static.options.port %>/#/admin'
           }
         },
         clean : {
