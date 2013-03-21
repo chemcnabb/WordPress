@@ -266,7 +266,7 @@ var CommonResources = {
   Text_DateOfBirth : "Date of birth",
   Text_Sex : "Sex",
   Text_Email : "E-mail",
-  Text_CustomURI : "Define the URL address for your store",
+  Text_CustomURI : "URL Alias Name",
   Text_TipCustomURI : "Example: my-beautiful-store",
   Text_CustomURIUnavailable : "This URL has been taken",
   Text_ReEmail : "Re-enter E-mail",
