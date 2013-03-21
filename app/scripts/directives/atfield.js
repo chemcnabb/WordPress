@@ -15,7 +15,7 @@ azureTicketsApp
                   atLabel : '=label',
                   atTip : '=tip',
                   atChange : '=ngChange',
-                  atReadonly : '&ngReadonly',
+                  atReadonly : '=ngReadonly',
                   atUiValidate : '=uiValidate',
                   atUiValidateWatch : '=uiValidateWatch',
                   atBlur : '=ngBlur',

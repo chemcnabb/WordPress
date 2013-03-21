@@ -27,9 +27,10 @@ function storeController($scope, $cookieStore, $timeout, configService,
       if (isNew && angular.isDefined(uri) && uri !== null
           && uri.length > configService.typeahead.minLength) {
         var re = /[^\a-z\d\-\_]{1,}/gi;
-        var sug = $scope.Store.Name.replace(re, '-').toLowerCase();
+        var sug = $scope.Store.Name !== null ? $scope.Store.Name.replace(re,
+            '-').toLowerCase() : null;
 
-        if ($scope.suggestedURLs.indexOf(sug) === -1) {
+        if (sug !== null && $scope.suggestedURLs.indexOf(sug) === -1) {
           storeService.getURISuggestion(sug).then(function(_uri) {
             if ($scope.suggestedURLs.indexOf(_uri) === -1) {
               $scope.suggestedURLs.push(_uri);
