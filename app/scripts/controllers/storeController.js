@@ -31,7 +31,9 @@ function storeController($scope, $cookieStore, $timeout, configService,
 
         if ($scope.suggestedURLs.indexOf(sug) === -1) {
           storeService.getURISuggestion(sug).then(function(_uri) {
-            $scope.suggestedURLs.push(_uri);
+            if ($scope.suggestedURLs.indexOf(_uri) === -1) {
+              $scope.suggestedURLs.push(_uri);
+            }
           });
         }
 
