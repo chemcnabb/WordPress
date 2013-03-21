@@ -22,7 +22,7 @@ function storeController($scope, $cookieStore, $timeout, configService,
 
     // suggest URIs
     $scope.$watch('Store.URI', function(uri) {
-      var isNew = !($scope.Store.Key === null);
+      var isNew = ($scope.Store.Key === null);
 
       if (isNew && angular.isDefined(uri) && uri !== null
           && uri.length > configService.typeahead.minLength) {
