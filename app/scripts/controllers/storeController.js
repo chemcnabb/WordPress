@@ -20,6 +20,8 @@ function storeController($scope, $cookieStore, $timeout, configService,
     $scope.Store.URI = angular.isDefined($scope.Store.URI) ? $scope.Store.URI
         : null, $scope.URIAvailable = true;
 
+    // auto generate URI based on name
+    
     $scope.$watch('Store.URI', function(uri) {
       if ($scope.Store.Key === null && angular.isDefined(uri) && uri !== null
           && uri.length > configService.typeahead.minLength) {
