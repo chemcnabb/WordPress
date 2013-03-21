@@ -13,7 +13,9 @@ azureTicketsApp
                 scope : {
                   atModel : '=ngModel',
                   atLabel : '=label',
+                  atTip : '=tip',
                   atChange : '=ngChange',
+                  atReadonly : '&ngReadonly',
                   atUiValidate : '=uiValidate',
                   atUiValidateWatch : '=uiValidateWatch',
                   atBlur : '=ngBlur',
@@ -25,9 +27,10 @@ azureTicketsApp
                   var f = ss.length === 3 ? ss[ss.length - 1] : ss[1];
                   var copyOf = angular.isDefined($attrs.atCopy) ? BWL.ModelMeta[$attrs.atCopy]
                       : null
-                  var fieldType = angular.isDefined(BWL.ModelMeta[m]) ? BWL.ModelMeta[m][f]
+                  var fieldType = copyOf === null
+                      && angular.isDefined(BWL.ModelMeta[m]) ? BWL.ModelMeta[m][f]
                       : copyOf[f];
-                  var _el, _label = null;
+                  var _el, _label = null, _tip = null;
                   var _attr = {
                     placeholder : f,
                     name : m + '_' + f,
@@ -36,7 +39,12 @@ azureTicketsApp
                   var isPass = /Password/g.test(f), dateTimeScript = null;
                   var _req = angular.isDefined($attrs.ngRequired) ? 'ng-required="true"'
                       : '';
-
+                  // set tip if defined
+                  if (angular.isDefined($attrs.tip)) {
+                    _tip = jQuery('<small />');
+                    _tip.addClass('clear').addClass('muted');
+                    _tip.text('{{atTip}}');
+                  }
                   // set label if defined
                   if (angular.isDefined($attrs.label)) {
                     _label = jQuery('<label />');
@@ -116,14 +124,23 @@ azureTicketsApp
                   if ($attrs.ngBlur) {
                     _el.attr('ng-blur', 'atBlur');
                   }
+                  if ($attrs.ngChange) {
+                    _el.attr('ng-change', 'atChange');
+                  }
+                  if ($attrs.ngReadonly) {
+                    _el.attr('ng-readonly', 'atReadonly');
+                  }
                   if ($attrs.uiEvent) {
                     _el.attr('ui-event', 'atUiEvent');
                   }
                   if (_label !== null) {
                     $compile(_label)($scope);
                   }
+                  if (_tip !== null) {
+                    $compile(_tip)($scope);
+                  }
 
-                  $element.append(_label).append(_el);
+                  $element.append(_label).append(_tip).append(_el);
 
                   if (dateTimeScript !== null) {
                     $element.after(dateTimeScript);

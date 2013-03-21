@@ -17,6 +17,16 @@ function storeController($scope, $cookieStore, $timeout, configService,
       .getInstanceOf('PaymentProvider');
 
   $scope.init = function() {
+    $scope.Store.URI = angular.isDefined($scope.Store.URI) ? $scope.Store.URI
+        : null, $scope.URIAvailable = true;
+
+    $scope.$watch('Store.URI', function(uri) {
+      if ($scope.Store.Key === null && angular.isDefined(uri) && uri !== null
+          && uri.length > configService.typeahead.minLength) {
+        $scope.checkURIAvailability(uri);
+      }
+    })
+
     authService.authenticate($scope).then(function() {
       if (authService.hasStoreAccess()) {
         storeService.listStoresAsync($scope.storeKey, 1).then(function() {
@@ -48,7 +58,7 @@ function storeController($scope, $cookieStore, $timeout, configService,
         && angular.isDefined($scope.stores[0]) && $scope.stores[0].Key !== null;
 
     storeKey = angular.isDefined(storeKey) && storeKey !== null ? storeKey
-        : (storesLoaded ? $scope.stores[0].Key : $scope.storeKey)
+        : storesLoaded ? $scope.stores[0].Key : $scope.storeKey
 
     if (storeKey !== null) {
       storeService
@@ -128,10 +138,10 @@ function storeController($scope, $cookieStore, $timeout, configService,
   }
 
   /**
-   * The Payment Providers list returned by above method doesn't include
-   * PaymentProvider model (Key, etc), instead it does only return array of
-   * strings so we cannot match them against the selection contained in
-   * $scope.Store.PaymentProviders
+   * The Payment Providers list returned by
+   * $scope.loadPaymentProvidersByCurrency doesn't include PaymentProvider model
+   * (Key, etc), instead it does only return array of strings so we cannot match
+   * them against the selection contained in $scope.Store.PaymentProviders
    */
   $scope.isPaymentProviderSelected = function(pType) {
     if (angular.isDefined($scope.Store.PaymentProviders)
@@ -143,6 +153,18 @@ function storeController($scope, $cookieStore, $timeout, configService,
       });
     }
     return false;
+  }
+
+  $scope.checkURIAvailability = function(uri) {
+    if (angular.isDefined(uri)) {
+      storeService.getStoreKeyByURI(uri).then(
+          function(storeKey) {
+            $scope.URIAvailable = (angular.isString(storeKey) && storeKey
+                .trim() === '');
+          }, function(err) {
+            errorService.log(err)
+          });
+    }
   }
 
   $scope.loadPaymentProviderInfo = function(paymentProvider) {
@@ -163,52 +185,46 @@ function storeController($scope, $cookieStore, $timeout, configService,
 
       if ($scope.Store.Key === null) {
         // create store
-        var permaLink = top.location.hostname;
 
         // API claims not null properties
         modelService.nonNull($scope.Store.Address);
 
-        // check URI
-        storeService.checkURIAvailability(permaLink).then(
-            function(uri) {
-              // go on and create
-              storeService.createStore({
-                Name : $scope.Store.Name,
-                Description : $scope.Store.Description,
-                Public : true,
-                HasMemberships : true,
-                HasWishlist : true,
-                Currency : $scope.Store.Currency,
-                StoreURIs : [
-                  {
-                    URI : uri
-                  }
-                ],
-                Address : $scope.Store.Address
-              }).then(
-                  function(storeKey) {
-                    if (angular.isString(storeKey)) {
-                      $scope.Store.Key = storeKey;
+        // go on and create
+        storeService.createStore({
+          Name : $scope.Store.Name,
+          Description : $scope.Store.Description,
+          Public : true,
+          HasMemberships : true,
+          HasWishlist : true,
+          Currency : $scope.Store.Currency,
+          StoreURIs : [
+            {
+              URI : $scope.Store.URI
+            }
+          ],
+          Address : $scope.Store.Address
+        }).then(
+            function(storeKey) {
+              if (angular.isString(storeKey)) {
+                $scope.Store.Key = storeKey;
 
-                      modelService.nonNull($scope.Store.tmpPaymentProvider);
+                modelService.nonNull($scope.Store.tmpPaymentProvider);
 
-                      // attach payment providers
-                      storeService.addPaymentProvider($scope.Store,
-                          $scope.Store.tmpPaymentProvider).then(function() {
-                        $scope.wizard.saved = true;
+                // attach payment providers
+                storeService.addPaymentProvider($scope.Store,
+                    $scope.Store.tmpPaymentProvider).then(function() {
+                  $scope.wizard.saved = true;
 
-                        // reload full model
-                        $scope.initStore(storeKey);
-                      }, function(err) {
-                        errorService.log(err)
-                      });
-                    }
-                  }, function(err) {
-                    errorService.log(err)
-                  });
+                  // reload full model
+                  $scope.initStore(storeKey);
+                }, function(err) {
+                  errorService.log(err)
+                });
+              }
             }, function(err) {
               errorService.log(err)
             });
+
       } else {
         // update store
         var _finishes = function(ret) {

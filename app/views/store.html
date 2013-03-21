@@ -47,15 +47,25 @@
 		</div>
 		<ng-form name="atStore" ng-submit="save()">
 		<form ng-show="wizard.currentStep == 1" name="atStore1"
-			ng-submit="wizard.next('atStore1')">
+			ng-submit="URIAvailable && wizard.next('atStore1') || false">
 			<dl class="clearfix">
 				<dd>
 					<atfield at-required class="input-xlarge" ng-model="Store.Name"
-						label="'Common.Text_StoreName' | t" />
+						label="'Common.Text_StoreName' | t"></atfield>
+				</dd>
+				<dd>
+					<atfield ng-readonly="Store.Key || false" at-required
+						class="input-xlarge" ng-model="Store.URI" at-copy="CustomURI"
+						label="'Common.Text_CustomURI' | t"
+						tip="'Common.Text_TipCustomURI' | t"></atfield>
+					<i
+						ng-class="{'icon-ok': (!Store.Key && Store.URI.length > 0 && URIAvailable), 'icon-ban-circle': !URIAvailable}">
+					</i><span ui-if="!URIAvailable" class="label label-important">
+						{{'Common.Text_CustomURIUnavailable' | t}}</span>
 				</dd>
 				<dd>
 					<atfield class="input-xlarge" ng-model="Store.Description"
-						label="'Common.Text_Description' | t" rows="5" />
+						label="'Common.Text_Description' | t" rows="5"></atfield>
 				</dd>
 				<dd>
 					<input type="submit" class="btn btn-primary clear"
@@ -113,14 +123,14 @@
 					<atfield at-required class="input-xxlarge"
 						ng-model="Store.tmpPaymentProvider.ProviderId"
 						at-copy="PaymentProvider"
-						label="tmpPaymentProviderInfo.ProviderIdText" />
+						label="tmpPaymentProviderInfo.ProviderIdText"></atfield>
 				</dd>
 				<dd
 					ui-if="tmpPaymentProviderInfo && tmpPaymentProviderInfo.RequiresProviderToken || false">
 					<atfield class="input-xxlarge"
 						ng-model="Store.tmpPaymentProvider.ProviderToken"
 						at-copy="PaymentProvider"
-						label="tmpPaymentProviderInfo.ProviderTokenText" />
+						label="tmpPaymentProviderInfo.ProviderTokenText"></atfield>
 				</dd>
 			</dl>
 			<dl>

@@ -9,6 +9,9 @@ azureTicketsApp.factory('configService', function() {
     // containers
     container : {
       store : '<%= at.name %>'
+    },
+    typeahead : {
+      minLength : 3
     }
   }
 });
