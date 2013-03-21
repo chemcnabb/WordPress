@@ -4,7 +4,7 @@ function storeController($scope, $cookieStore, $timeout, configService,
   $scope.storeKey = $cookieStore.get('storeKey') || null,
       $scope.config = configService, $scope.name = 'store', $scope.stores = [],
       $scope.currencies = [], $scope.paymentProviders = [],
-      $scope.wizard = formService.getWizard($scope);
+      $scope.suggestedURLs = [], $scope.wizard = formService.getWizard($scope);
 
   /**
    * models in play here.
@@ -20,11 +20,22 @@ function storeController($scope, $cookieStore, $timeout, configService,
     $scope.Store.URI = angular.isDefined($scope.Store.URI) ? $scope.Store.URI
         : null, $scope.URIAvailable = true;
 
-    // auto generate URI based on name
-    
+    // suggest URIs
     $scope.$watch('Store.URI', function(uri) {
-      if ($scope.Store.Key === null && angular.isDefined(uri) && uri !== null
+      var isNew = !($scope.Store.Key === null);
+
+      if (isNew && angular.isDefined(uri) && uri !== null
           && uri.length > configService.typeahead.minLength) {
+        var re = /[^\a-z\d\-\_]{1,}/gi;
+        var sug = $scope.Store.Name.replace(re, '-').toLowerCase();
+
+        if ($scope.suggestedURLs.indexOf(sug) === -1) {
+          storeService.getURISuggestion(sug).then(function(_uri) {
+            $scope.suggestedURLs.push(_uri);
+          });
+        }
+
+        $scope.Store.URI = uri.replace(re, '-').toLowerCase();
         $scope.checkURIAvailability(uri);
       }
     })

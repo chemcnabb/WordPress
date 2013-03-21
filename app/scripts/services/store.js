@@ -72,8 +72,8 @@ azureTicketsApp
 
                   return def.promise;
                 },
-                checkURIAvailability : function(h, c) {
-                  var def = $q.defer(), _this = this;
+                getURISuggestion : function(h, c, def) {
+                  def = angular.isDefined(def) ? def : $q.defer(), _this = this;
 
                   // check URI availability and regenerate if
                   // exists
@@ -87,7 +87,7 @@ azureTicketsApp
                           // generate
                           // extra string
                           if (c < maxIt) {
-                            _this.checkURIAvailability(h, c++);
+                            _this.getURISuggestion(h, c++, def);
                             return;
                           } else {
                             def.reject(CommonResources.Error_System.replace(
