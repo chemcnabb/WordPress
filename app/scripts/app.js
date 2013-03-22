@@ -74,7 +74,8 @@ azureTicketsApp.config([
         redirectTo : '/'
       }).when('/admin/store', {
         templateUrl : 'views/store.html',
-        controller : storeController,
+        // controller : storeController, @nico storeController is already parent
+        // of the others
         resolve : routeFilters
       }).when('/admin/venue', {
         templateUrl : 'views/venue.html',

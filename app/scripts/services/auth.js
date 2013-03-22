@@ -7,7 +7,8 @@ azureTicketsApp
             '$q',
             '$rootScope',
             'modelService',
-            function(configService, $q, $rootScope, modelService) {
+            '$cookieStore',
+            function(configService, $q, $rootScope, modelService, $cookieStore) {
               var _clientKey = null, _domainProfile = null;
 
               return {
@@ -36,7 +37,7 @@ azureTicketsApp
                             def.reject(err)
                           })
                         });
-                  } else {
+                  } else if (this.isDomainProfileReady() || this.isLogged()) {
                     def.resolve();
                   }
 
@@ -215,6 +216,12 @@ azureTicketsApp
                   return this.getDomainProfile() !== null
                       && angular.isDefined(this.getDomainProfile().Key)
                       && this.getDomainProfile().Key !== null
+                },
+                isLogged : function() {
+                  var l = $cookieStore.get(configService.cookies.loggedStatus)
+                      || null;
+
+                  return l !== null && l;
                 }
               }
             }

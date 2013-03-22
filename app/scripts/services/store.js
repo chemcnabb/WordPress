@@ -12,13 +12,13 @@ azureTicketsApp
               var _stores = [], _lastAvailableURI = null;
 
               return {
-                listStoresAsync : function(storeKey, pages) {
+                listStoresAsync : function(storeKey, levels) {
                   var def = $q.defer();
 
                   if (storeKey !== null) {
                     def.resolve();
                   } else {
-                    BWL.Services.StoreService.ListStoresAsync(pages, function(
+                    BWL.Services.StoreService.ListStoresAsync(levels, function(
                         stores) {
                       _stores = stores;
 

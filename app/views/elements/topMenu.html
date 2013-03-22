@@ -2,8 +2,18 @@
 	<div class="navbar-inner">
 		<a class="brand" href="#/admin">{{config.appName}}</a>
 		<ul class="nav" ng-show="DomainProfile.Key || false">
-			<li ui-route="#/admin/store" ng-class="{active: $uiRoute}"><a
-				href="#/admin/store">{{ 'Common.Text_Store' | t }}</a></li>
+			<li ui-route="#/admin/store" ng-class="{active: $uiRoute}">
+				<div class="btn-group">
+					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+						{{ 'Common.Text_Store' | t }} <span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<!-- dropdown menu links -->
+					</ul>
+				</div>
+			</li>
+			<!-- 			<li ui-route="#/admin/store" ng-class="{active: $uiRoute}"><a -->
+			<!-- 				href="#/admin/store">{{ 'Common.Text_Store' | t }}</a></li> -->
 			<li ui-if="Store.Key || false" ui-route="#/admin/venue"
 				ng-class="{active: $uiRoute}"><a href="#/admin/venue">{{
 					'Common.Text_VenueMenu_Venue' | t }}</a></li>
