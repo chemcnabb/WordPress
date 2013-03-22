@@ -33,7 +33,20 @@ function addressController($scope, errorService, geoService) {
 
       geoService.getCountriesByContinent(continentIso).then(
           function(countries) {
-            $scope.countries = countries;
+            // prepend most used
+            var c = [
+                'CA', 'US', 'UK'
+            ];
+            var cc = [];
+            countries = countries.filter(function(_c) {
+              if (c.indexOf(_c.ISO) !== -1) {
+                cc.push(_c);
+                return false;
+              }
+              return true;
+            });
+
+            $scope.countries = cc.concat(countries);
           }, function(err) {
             errorService.log(err)
           });

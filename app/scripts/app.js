@@ -11,24 +11,19 @@ var azureTicketsApp = angular.module('azureTicketsApp', [
  */
 var routeFilters = {
   rememberUrl : [
-      '$location',
-      '$cookieStore',
-      'configService',
+      '$location', '$cookieStore', 'configService',
       function($location, $cookieStore, configService) {
         if ($location.$$path !== '/auth/login') {
-          $cookieStore.put(configService.auth.cookieNameLastPath,
-              $location.$$path);
+          $cookieStore.put(configService.cookies.lastPath, $location.$$path);
         }
       }
   ],
   redirectLogin : [
-      '$location',
-      '$cookieStore',
-      'authService',
-      'configService',
+      '$location', '$cookieStore', 'authService', 'configService',
       function($location, $cookieStore, authService, configService) {
-        if (!authService.isDomainProfileReady()
-            && $location.$$path !== '/auth/login') {
+        var lc = $cookieStore.get(configService.cookies.loggedStatus);
+
+        if ((lc === null || !lc) && $location.$$path !== '/auth/login') {
           $location.path('/auth/login');
         }
       }
@@ -54,9 +49,17 @@ azureTicketsApp.config([
             templateUrl : 'views/auth.html',
             resolve : {
               logoff : [
-                  'authService', '$rootScope', '$location',
-                  function(authService, $rootScope, $location) {
+                  'authService',
+                  '$rootScope',
+                  '$location',
+                  '$cookieStore',
+                  'configService',
+                  function(authService, $rootScope, $location, $cookieStore,
+                      configService) {
                     authService.logoffAsync().then(function() {
+                      $cookieStore.remove(configService.cookies.loggedStatus);
+                      $cookieStore.remove(configService.cookies.lastPath);
+
                       authService.setDomainProfile(null);
                       $location.path('/admin');
                     });

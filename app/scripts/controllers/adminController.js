@@ -31,14 +31,13 @@ function adminController($scope, $location, configService, authService,
   $scope.login = function(provider) {
     if (angular.isDefined(provider) && angular.isString(provider)) {
       // login by provider
-      authService.logonByProviderAsync(provider).then(
-          function() {
-            $scope.DomainProfile = authService.getDomainProfile();
-            $location.path($cookieStore
-                .get(configService.auth.cookieNameLastPath));
-          }, function(err) {
-            $scope.loginErr = err;
-          });
+      authService.logonByProviderAsync(provider).then(function() {
+        $scope.DomainProfile = authService.getDomainProfile();
+        $location.path($cookieStore.get(configService.cookies.lastPath));
+        $cookieStore.put(configService.cookies.loggedStatus, true);
+      }, function(err) {
+        $scope.loginErr = err;
+      });
     } else {
       // login by account
       authService.logonAsync({
