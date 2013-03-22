@@ -35,7 +35,7 @@ function addressController($scope, errorService, geoService) {
           function(countries) {
             // prepend most used
             var c = [
-                'CA', 'US', 'UK'
+                'CA', 'US', 'GB'
             ];
             var cc = [];
             countries = countries.filter(function(_c) {
