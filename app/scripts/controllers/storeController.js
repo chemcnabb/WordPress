@@ -1,6 +1,6 @@
 function storeController($scope, $cookieStore, $timeout, configService,
     authService, permService, storeService, modelService, errorService,
-    geoService, formService) {
+    geoService, formService, objectService) {
   $scope.storeKey = $cookieStore.get('storeKey') || null,
       $scope.config = configService, $scope.name = 'store', $scope.stores = [],
       $scope.currencies = [], $scope.paymentProviders = [],
@@ -22,7 +22,7 @@ function storeController($scope, $cookieStore, $timeout, configService,
 
     // suggest URIs
     $scope.$watch('Store.URI', function(uri) {
-      var isNew = ($scope.Store.Key === null);
+      var isNew = $scope.Store.Key === null;
 
       if (isNew && angular.isDefined(uri) && uri !== null
           && uri.length > configService.typeahead.minLength) {
@@ -132,7 +132,10 @@ function storeController($scope, $cookieStore, $timeout, configService,
 
   $scope.loadCurrencies = function() {
     storeService.getCurrencies().then(function(currencies) {
-      $scope.currencies = currencies;
+      var c = [
+          'CAD', 'USD', 'EUR', 'GBP'
+      ];
+      $scope.currencies = objectService.prioritizeSort(currencies, c, 'ISO');
     }, function(err) {
       errorService.log(err)
     });
@@ -175,8 +178,8 @@ function storeController($scope, $cookieStore, $timeout, configService,
     if (angular.isDefined(uri)) {
       storeService.getStoreKeyByURI(uri).then(
           function(storeKey) {
-            $scope.URIAvailable = (angular.isString(storeKey) && storeKey
-                .trim() === '');
+            $scope.URIAvailable = angular.isString(storeKey)
+                && storeKey.trim() === '';
           }, function(err) {
             errorService.log(err)
           });
@@ -290,5 +293,5 @@ function storeController($scope, $cookieStore, $timeout, configService,
 storeController.$inject = [
     '$scope', '$cookieStore', '$timeout', 'configService', 'authService',
     'permService', 'storeService', 'modelService', 'errorService',
-    'geoService', 'formService'
+    'geoService', 'formService', 'objectService'
 ];

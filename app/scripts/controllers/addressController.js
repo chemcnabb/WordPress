@@ -1,4 +1,4 @@
-function addressController($scope, errorService, geoService) {
+function addressController($scope, errorService, geoService, objectService) {
   $scope.countries = [], $scope.continents = [], $scope.regions = [],
       $scope.timezones = [];
 
@@ -37,16 +37,8 @@ function addressController($scope, errorService, geoService) {
             var c = [
                 'CA', 'US', 'GB'
             ];
-            var cc = [];
-            countries = countries.filter(function(_c) {
-              if (c.indexOf(_c.ISO) !== -1) {
-                cc.push(_c);
-                return false;
-              }
-              return true;
-            });
-
-            $scope.countries = cc.concat(countries);
+            $scope.countries = objectService
+                .prioritizeSort(countries, c, 'ISO');
           }, function(err) {
             errorService.log(err)
           });
@@ -124,5 +116,5 @@ function addressController($scope, errorService, geoService) {
 }
 
 addressController.$inject = [
-    '$scope', 'errorService', 'geoService'
+    '$scope', 'errorService', 'geoService', 'objectService'
 ];
