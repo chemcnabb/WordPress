@@ -142,3 +142,7 @@ ul.socialicons li a.quora 					{ background-position: 0 -2087px; }
 ul.socialicons li a.quora:hover 		{ background-position: -38px -2087px; }
 ul.socialicons li a.photobucket 			{ background-position: 0 -2123px; }
 ul.socialicons li a.photobucket:hover 	{ background-position: -38px -2123px; }
+ul.socialicons li a.mockoauth 			{ background-position: 0 -2190px; }
+ul.socialicons li a.mockoauth:hover 	{ background-position: -38px -2190px; }
+ul.socialicons li a.microsoft 			{ background-position: 0 -2225px; }
+ul.socialicons li a.microsoft:hover 	{ background-position: -36px -2225px; }
