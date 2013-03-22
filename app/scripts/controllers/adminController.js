@@ -1,5 +1,5 @@
 function adminController($scope, $location, configService, authService,
-    permService, modelService, errorService) {
+    permService, modelService, errorService, $cookieStore) {
   $scope.config = configService, $scope.authProviders = [],
       $scope.name = 'admin', $scope.loginErr = null, $scope.registerErr = null,
       $scope.registerOk = false, $scope.passwdOk = true;
@@ -31,11 +31,14 @@ function adminController($scope, $location, configService, authService,
   $scope.login = function(provider) {
     if (angular.isDefined(provider) && angular.isString(provider)) {
       // login by provider
-      authService.logonByProviderAsync(provider).then(function() {
-        $scope.DomainProfile = authService.getDomainProfile();
-      }, function(err) {
-        $scope.loginErr = err;
-      });
+      authService.logonByProviderAsync(provider).then(
+          function() {
+            $scope.DomainProfile = authService.getDomainProfile();
+            $location.path($cookieStore
+                .get(configService.auth.cookieNameLastPath));
+          }, function(err) {
+            $scope.loginErr = err;
+          });
     } else {
       // login by account
       authService.logonAsync({
@@ -73,5 +76,5 @@ function adminController($scope, $location, configService, authService,
 
 adminController.$inject = [
     '$scope', '$location', 'configService', 'authService', 'permService',
-    'modelService', 'errorService'
+    'modelService', 'errorService', '$cookieStore'
 ];

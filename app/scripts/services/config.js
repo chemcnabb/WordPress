@@ -12,6 +12,9 @@ azureTicketsApp.factory('configService', function() {
     },
     typeahead : {
       minLength : 3
+    },
+    auth : {
+      cookieNameLastPath : 'authLastPath'
     }
   }
 });
