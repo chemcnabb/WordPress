@@ -118,7 +118,8 @@
 						ng-change="loadPaymentProviderInfo(Store.tmpPaymentProvider)">
 						<option></option>
 						<option ng-selected="Store.tmpPaymentProvider.ProviderType == p"
-							ng-repeat="p in paymentProviders" value="{{p}}">{{p}}</option>
+							ng-repeat="p in paymentProviders" value="{{p}}">{{'Common.Text_Paypro_'+p
+							| t}}</option>
 					</select>
 				</dd>
 				<dd
@@ -149,7 +150,7 @@
 				</dd>
 			</dl>
 		</form>
-		<form ui-if="Store.Address || false"
+		<form ui-if="Store && Store.Key || false"
 			ng-show="wizard.currentStep == 4 && !wizard.saved" name="atStore2"
 			ng-submit="wizard.next('atStore4')">
 			<dl>

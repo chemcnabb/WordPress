@@ -24,6 +24,7 @@ var CommonResources = {
   Text_From : "From",
   Text_Print : "Print",
   Text_Showmap : "show map",
+  Text_Confirmation : 'Confirmation',
   Text_GetRoute : "Get Route",
   Text_Bingmap : "Bing map",
   Text_NotFindLocation : "Can't find the location",
@@ -302,5 +303,10 @@ var CommonResources = {
   Text_AdminContact_Description : "Please ensure that the following information is correct, we will only contact you when necessary and we will not share your information with any 3rd party for any reason.",
   Text_Payment_Description : "In order to collect payments you must add and configure payment gateway.",
   Text_Payment : "Payment Providers",
-  Text_Completed_Description : "Thank you for creating your store, we will now take you to your store where you can continue to customize and add events and tickets."
+  Text_Completed_Description : "Thank you for creating your store, we will now take you to your store where you can continue to customize and add events and tickets.",
+  Text_Paypro_AuthorizeNet : 'Authorize.Net',
+  Text_Paypro_MockPayment : 'Mock Payment',
+  Text_Paypro_Moneris : 'Moneris',
+  Text_Paypro_NoPayment : 'Without Payment',
+  Text_Paypro_PayPal : 'PayPal'
 };

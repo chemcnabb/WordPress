@@ -3,7 +3,8 @@ function storeController($scope, $cookieStore, $timeout, configService,
     geoService, formService, objectService) {
   $scope.storeKey = null, $scope.config = configService, $scope.name = 'store',
       $scope.stores = [], $scope.currencies = [], $scope.paymentProviders = [],
-      $scope.suggestedURLs = [], $scope.wizard = formService.getWizard($scope);
+      $scope.suggestedURLs = [], $scope.wizard = formService.getWizard($scope),
+      $scope.geo = geoService;
 
   $scope.$on('initStore', function(ev, key) {
     if (key === null) {
@@ -112,7 +113,8 @@ function storeController($scope, $cookieStore, $timeout, configService,
 
     $timeout(function() {
       $scope.$apply(function() {
-        $scope.$broadcast('loadCountry', $scope.Store.Address);
+        if (angular.isDefined($scope.Store)) $scope.$broadcast('loadCountry',
+            $scope.Store.Address);
       })
     }, 500);
   }

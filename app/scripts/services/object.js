@@ -21,6 +21,31 @@ azureTicketsApp.factory('objectService', function() {
       });
 
       return cc.concat(ret);
+    },
+    /**
+     * Iterates over array of objects and returns the element's whose property
+     * prop is equal to val.
+     * 
+     * @param arr
+     *          {array}
+     * @param prop
+     *          {string}
+     * @param val
+     *          {mixed}
+     * @returns {object}
+     */
+    grep : function(arr, prop, val) {
+      var ret = null;
+
+      angular.forEach(arr, function(v, k) {
+        if (angular.isDefined(v[prop])) {
+          if (angular.equals(v[prop], val)) {
+            ret = v;
+          }
+        }
+      });
+
+      return ret;
     }
   }
 });
