@@ -6,7 +6,6 @@ function storeController($scope, $cookieStore, $timeout, configService,
       $scope.suggestedURLs = [], $scope.wizard = formService.getWizard($scope);
 
   $scope.$on('initStore', function(ev, key) {
-    debugger
     if (key === null) {
       $cookieStore.remove(configService.cookies.storeKey);
       delete $scope.Store;
@@ -26,7 +25,6 @@ function storeController($scope, $cookieStore, $timeout, configService,
 
     if (authService.isDomainProfileReady()) {
       $cookieStore.put(configService.cookies.storeKey, key);
-      debugger
       $scope.$emit('initStore', key);
     }
   }, true);

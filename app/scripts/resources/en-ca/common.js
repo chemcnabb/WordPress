@@ -105,6 +105,7 @@ var CommonResources = {
   Text_ShippingInfo : 'Shipping Information',
   Text_OrdersMenu_Orders : 'Orders',
   Text_ReportMenu_Reports : 'Reports',
+  Text_Confirm : 'To finish, review and save your changes.',
   Text_ConfirmCloseDialog : 'You are about to close this window, all unsaved information will be lost.\nPress Cancel to go back to previous screen or OK to close the window.',
   Text_NoImageInLibrary : 'Currently there are no image files in the library.',
   Text_NoAudioInLibrary : 'Currently there are no audio files in the library.',

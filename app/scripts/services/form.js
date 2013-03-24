@@ -69,7 +69,7 @@ azureTicketsApp.factory('formService', [
          * @param {string}
          *          formName
          * @param {boolean}
-         *          finish
+         *          finish  Finishes the wizard (no more steps).
          * @returns
          */
         next : function(formName, finish) {
