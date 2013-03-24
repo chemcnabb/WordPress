@@ -5,30 +5,33 @@ function storeController($scope, $cookieStore, $timeout, configService,
       $scope.stores = [], $scope.currencies = [], $scope.paymentProviders = [],
       $scope.suggestedURLs = [], $scope.wizard = formService.getWizard($scope);
 
+  $scope.$on('initStore', function(ev, key) {
+    debugger
+    if (key === null) {
+      $cookieStore.remove(configService.cookies.storeKey);
+      delete $scope.Store;
+    } else if (angular.isDefined(key)) {
+      $scope.initStore(key, true);
+    }
+    if (angular.isDefined(ev) && angular.isFunction(ev.stopPropagation)) ev
+        .stopPropagation();
+  });
+
+  $scope.$on('resetDomainProfile', function() {
+    delete $scope.DomainProfile;
+  });
+
+  $scope.$watch('storeKey', function(key, oldKey) {
+    if (key === null || oldKey === key) return;
+
+    if (authService.isDomainProfileReady()) {
+      $cookieStore.put(configService.cookies.storeKey, key);
+      debugger
+      $scope.$emit('initStore', key);
+    }
+  }, true);
+
   $scope.init = function() {
-    $scope.$on('initStore', function(ev, key) {debugger
-      if (key === null) {
-        $cookieStore.remove(configService.cookies.storeKey);
-        delete $scope.Store;
-      } else if (angular.isDefined(key)) {
-        $scope.initStore(key, true);
-      }
-      ev.stopPropagation();
-    });
-
-    $scope.$on('resetDomainProfile', function() {
-      delete $scope.DomainProfile;
-    });
-
-    $scope.$watch('storeKey', function(key) {
-      if (key === null) return;
-
-      if (authService.isDomainProfileReady()) {
-        $cookieStore.put(configService.cookies.storeKey, key);
-        $scope.$emit('initStore', key);
-      }
-    }, true);
-
     authService.authenticate($scope).then(function() {
       $scope.DomainProfile = authService.getDomainProfile();
 
@@ -107,7 +110,7 @@ function storeController($scope, $cookieStore, $timeout, configService,
   }
 
   $scope.setStoreKey = function(key) {
-    $scope.storeKey = key;
+    if ($scope.storeKey !== key) $scope.storeKey = key;
 
     $timeout(function() {
       $scope.$apply(function() {
