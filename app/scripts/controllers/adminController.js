@@ -9,16 +9,12 @@ function adminController($scope, $location, configService, authService,
    * 
    * @todo inject models, using array of strings maybe.
    */
-  $scope.DomainProfile = authService.getDomainProfile();
   $scope.AccountProfile = authService.getAccountProfile();
   $scope.RegisterAccountProfile = angular.copy($scope.AccountProfile);
 
-  $scope.init = function() {
-    $scope.loginErr = null;
-    authService.authenticate($scope).then(null, function(err) {
-      errorService.log(err)
-    });
-  }
+  $scope.$on('resetDomainProfile', function() {
+    delete $scope.DomainProfile;
+  });
 
   $scope.loadAuthProviders = function() {
     authService.loadAuthProviders().then(function(providers) {
@@ -35,6 +31,8 @@ function adminController($scope, $location, configService, authService,
         $scope.DomainProfile = authService.getDomainProfile();
         $location.path($cookieStore.get(configService.cookies.lastPath));
         $cookieStore.put(configService.cookies.loggedStatus, true);
+
+        $scope.init();
       }, function(err) {
         $scope.loginErr = err;
       });

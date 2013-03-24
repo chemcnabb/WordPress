@@ -1,27 +1,89 @@
 function storeController($scope, $cookieStore, $timeout, configService,
     authService, permService, storeService, modelService, errorService,
     geoService, formService, objectService) {
-  $scope.storeKey = $cookieStore.get('storeKey') || null,
-      $scope.config = configService, $scope.name = 'store', $scope.stores = [],
-      $scope.currencies = [], $scope.paymentProviders = [],
+  $scope.storeKey = null, $scope.config = configService, $scope.name = 'store',
+      $scope.stores = [], $scope.currencies = [], $scope.paymentProviders = [],
       $scope.suggestedURLs = [], $scope.wizard = formService.getWizard($scope);
 
-  /**
-   * models in play here.
-   * 
-   * @todo inject models, using array of strings maybe.
-   */
-  $scope.DomainProfile = authService.getDomainProfile();
-  $scope.Store = modelService.getInstanceOf('Store');
-  $scope.Store.tmpPaymentProvider = modelService
-      .getInstanceOf('PaymentProvider');
-
   $scope.init = function() {
+    $scope.$on('initStore', function(ev, key) {debugger
+      if (key === null) {
+        $cookieStore.remove(configService.cookies.storeKey);
+        delete $scope.Store;
+      } else if (angular.isDefined(key)) {
+        $scope.initStore(key, true);
+      }
+      ev.stopPropagation();
+    });
+
+    $scope.$on('resetDomainProfile', function() {
+      delete $scope.DomainProfile;
+    });
+
+    $scope.$watch('storeKey', function(key) {
+      if (key === null) return;
+
+      if (authService.isDomainProfileReady()) {
+        $cookieStore.put(configService.cookies.storeKey, key);
+        $scope.$emit('initStore', key);
+      }
+    }, true);
+
+    authService.authenticate($scope).then(function() {
+      $scope.DomainProfile = authService.getDomainProfile();
+
+      // check if user has access to a store and populate list if so
+      if (authService.hasStoreAccess()) {
+        storeService.listStoresAsync(1).then(function() {
+          $scope.stores = storeService.getStores();
+
+          // set current store
+          $scope.storeKey = $cookieStore.get(configService.cookies.storeKey)
+        }, function(err) {
+          errorService.log(err)
+        });
+      } else if (authService.isLogged()) {
+        $scope.createStore();
+      }
+    }, function(err) {
+      errorService.log(err)
+    });
+  }
+
+  $scope.createStore = function() {
+    // initialize props
+    $scope.Store = modelService.getInstanceOf('Store');
+    $scope.Store.tmpPaymentProvider = modelService
+        .getInstanceOf('PaymentProvider');
+    $scope.Store.Address = modelService.getInstanceOf('Address');
+
+    // monitor URI
+    $scope.initStoreURI();
+
+    // show agreement
+    $timeout(function() {
+      $scope.$apply(function() {
+        $scope.wizard.currentStep = 0;
+        jQuery('#serviceAgreement').modal('show');
+      })
+    }, 500);
+
+  }
+
+  $scope.initStoreURI = function() {
+    if (!angular.isDefined($scope.Store) || $scope.Store === null) {
+      return;
+    }
+
     $scope.Store.URI = angular.isDefined($scope.Store.URI) ? $scope.Store.URI
         : null, $scope.URIAvailable = true;
 
     // suggest URIs
     $scope.$watch('Store.URI', function(uri) {
+      if (!angular.isDefined($scope.Store) || $scope.Store === null) {
+        return;
+      }
+
       var isNew = $scope.Store.Key === null;
 
       if (isNew && angular.isDefined(uri) && uri !== null
@@ -42,46 +104,24 @@ function storeController($scope, $cookieStore, $timeout, configService,
         $scope.checkURIAvailability(uri);
       }
     })
+  }
 
-    authService.authenticate($scope).then(function() {
-      if (authService.hasStoreAccess()) {
-        storeService.listStoresAsync($scope.storeKey, 1).then(function() {
-          $scope.initStore(null, true);
-        }, function(err) {
-          errorService.log(err)
-        });
-      } else {
-        // initialize props
-        $scope.Store.Address = modelService.getInstanceOf('Address');
+  $scope.setStoreKey = function(key) {
+    $scope.storeKey = key;
 
-        // show agreement
-        $timeout(function() {
-          $scope.$apply(function() {
-            $scope.wizard.currentStep = 0;
-            jQuery('#serviceAgreement').modal('show');
-          })
-        }, 500);
-      }
-    }, function(err) {
-      errorService.log(err)
-    });
+    $timeout(function() {
+      $scope.$apply(function() {
+        $scope.$broadcast('loadCountry', $scope.Store.Address);
+      })
+    }, 500);
   }
 
   $scope.initStore = function(storeKey, resetWizard) {
-    // reload full model
-    $scope.stores = storeService.getStores();
-    var storesLoaded = !configService.multipleStores
-        && angular.isDefined($scope.stores[0]) && $scope.stores[0].Key !== null;
-
-    storeKey = angular.isDefined(storeKey) && storeKey !== null ? storeKey
-        : storesLoaded ? $scope.stores[0].Key : $scope.storeKey
-
     if (storeKey !== null) {
       storeService
           .initStore(storeKey)
           .then(
               function(store, currency) {
-                $cookieStore.put('storeKey', store.Key);
                 $scope.Store = store;
                 $scope.Store.tmpPaymentProvider = angular
                     .isArray($scope.Store.PaymentProviders) ? $scope.Store.PaymentProviders[0]
@@ -107,16 +147,12 @@ function storeController($scope, $cookieStore, $timeout, configService,
                 if ($scope.Store.Currency && $scope.Store.Currency !== null) {
                   $scope.loadPaymentProvidersByCurrency($scope.Store.Currency);
                 }
+
+                // monitor URI
+                $scope.initStoreURI();
               }, function(err) {
                 errorService.log(err)
               });
-    } else {
-      // show agreement
-      $scope.wizard.currentStep = 0;
-      jQuery('#serviceAgreement').modal('show');
-
-      // initialize props
-      $scope.Store.Address = modelService.getInstanceOf('Address');
     }
   }
 

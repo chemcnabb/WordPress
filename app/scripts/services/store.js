@@ -12,25 +12,21 @@ azureTicketsApp
               var _stores = [], _lastAvailableURI = null;
 
               return {
-                listStoresAsync : function(storeKey, levels) {
+                listStoresAsync : function(levels) {
                   var def = $q.defer();
 
-                  if (storeKey !== null) {
-                    def.resolve();
-                  } else {
-                    BWL.Services.StoreService.ListStoresAsync(levels, function(
-                        stores) {
-                      _stores = stores;
+                  BWL.Services.StoreService.ListStoresAsync(levels, function(
+                      stores) {
+                    _stores = stores;
 
-                      $rootScope.$apply(function() {
-                        def.resolve();
-                      });
-                    }, function(err) {
-                      $rootScope.$apply(function() {
-                        def.reject(err)
-                      })
+                    $rootScope.$apply(function() {
+                      def.resolve();
                     });
-                  }
+                  }, function(err) {
+                    $rootScope.$apply(function() {
+                      def.reject(err)
+                    })
+                  });
 
                   return def.promise;
                 },

@@ -37,7 +37,7 @@ azureTicketsApp
                             def.reject(err)
                           })
                         });
-                  } else if (this.isDomainProfileReady() || this.isLogged()) {
+                  } else if (this.isDomainProfileReady()) {
                     def.resolve();
                   }
 
@@ -178,7 +178,7 @@ azureTicketsApp
                   return _domainProfile;
                 },
                 setDomainProfile : function(profile) {
-                  BWL.Profile = null;
+                  BWL.Profile = profile;
                 },
                 getAccountProfile : function() {
                   var o = BWL.Profile !== null

@@ -1,8 +1,7 @@
 function venueController($scope, $cookieStore, configService, authService,
     permService, modelService, geoService, placeService, errorService,
     formService) {
-  $scope.storeKey = $cookieStore.get('storeKey') || null,
-      $scope.config = configService, $scope.name = 'venue', $scope.venues = [],
+  $scope.config = configService, $scope.name = 'venue', $scope.venues = [],
       $scope.wizard = formService.getWizard($scope);
 
   $scope.$watch('wizard.open', function(v) {
@@ -19,28 +18,20 @@ function venueController($scope, $cookieStore, configService, authService,
    * 
    * @todo inject models, using array of strings maybe.
    */
-  $scope.DomainProfile = authService.getDomainProfile();
   $scope.Place = modelService.getInstanceOf('Place');
 
   $scope.init = function() {
-    authService.authenticate($scope).then(
+    placeService.listPlacesAsync($scope.storeKey, 0).then(
         function() {
-          if (authService.hasStoreAccess()) {
-            placeService.listPlacesAsync($scope.storeKey, 0).then(
-                function() {
-                  $scope.venues = placeService.getPlaces();
+          $scope.venues = placeService.getPlaces();
 
-                  if ($scope.venues.length > 0) {
-                    angular.forEach($scope.venues, function(venue, i) {
-                      placeService.initPlace($scope.storeKey, venue.Key).then(
-                          function(place) {
-                            $scope.venues[i] = place;
-                          })
-                    });
-                  }
-                }, function(err) {
-                  errorService.log(err)
-                });
+          if ($scope.venues.length > 0) {
+            angular.forEach($scope.venues, function(venue, i) {
+              placeService.initPlace($scope.storeKey, venue.Key).then(
+                  function(place) {
+                    $scope.venues[i] = place;
+                  })
+            });
           }
         }, function(err) {
           errorService.log(err)

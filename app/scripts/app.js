@@ -19,8 +19,12 @@ var routeFilters = {
       }
   ],
   redirectLogin : [
-      '$location', '$cookieStore', 'authService', 'configService',
-      function($location, $cookieStore, authService, configService) {
+      '$rootScope',
+      '$location',
+      '$cookieStore',
+      'authService',
+      'configService',
+      function($rootScope, $location, $cookieStore, authService, configService) {
         var lc = $cookieStore.get(configService.cookies.loggedStatus);
 
         if ((lc === null || !lc) && $location.$$path !== '/auth/login') {
@@ -51,17 +55,24 @@ azureTicketsApp.config([
               logoff : [
                   'authService',
                   '$rootScope',
+                  '$timeout',
                   '$location',
                   '$cookieStore',
                   'configService',
-                  function(authService, $rootScope, $location, $cookieStore,
-                      configService) {
+                  function(authService, $rootScope, $timeout, $location,
+                      $cookieStore, configService) {
                     authService.logoffAsync().then(function() {
                       $cookieStore.remove(configService.cookies.loggedStatus);
                       $cookieStore.remove(configService.cookies.lastPath);
-
                       authService.setDomainProfile(null);
-                      $location.path('/admin');
+                      $rootScope.$broadcast('initStore', null);
+                      $rootScope.$broadcast('resetDomainProfile');
+
+                      $timeout(function() {
+                        $rootScope.$apply(function() {
+                          $location.path('/admin');
+                        })
+                      }, 250)
                     });
                   }
               ]
@@ -74,8 +85,6 @@ azureTicketsApp.config([
         redirectTo : '/'
       }).when('/admin/store', {
         templateUrl : 'views/store.html',
-        // controller : storeController, @nico storeController is already parent
-        // of the others
         resolve : routeFilters
       }).when('/admin/venue', {
         templateUrl : 'views/venue.html',
