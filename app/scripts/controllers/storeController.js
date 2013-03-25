@@ -13,8 +13,9 @@ function storeController($scope, $cookieStore, $timeout, configService,
     } else if (angular.isDefined(key)) {
       $scope.initStore(key, true);
     }
-    if (angular.isDefined(ev) && angular.isFunction(ev.stopPropagation)) ev
-        .stopPropagation();
+    if (angular.isDefined(ev) && angular.isFunction(ev.stopPropagation)) {
+      ev.stopPropagation();
+    }
   });
 
   $scope.$on('resetDomainProfile', function() {
@@ -22,7 +23,9 @@ function storeController($scope, $cookieStore, $timeout, configService,
   });
 
   $scope.$watch('storeKey', function(key, oldKey) {
-    if (key === null || oldKey === key) return;
+    if (key === null || oldKey === key) {
+      return;
+    }
 
     if (authService.isDomainProfileReady()) {
       $cookieStore.put(configService.cookies.storeKey, key);
@@ -109,14 +112,20 @@ function storeController($scope, $cookieStore, $timeout, configService,
   }
 
   $scope.setStoreKey = function(key) {
-    if ($scope.storeKey !== key) $scope.storeKey = key;
+    if ($scope.storeKey !== key) {
+      $scope.storeKey = key;
+    }
 
+    // manually load location & accounting items
     $timeout(function() {
       $scope.$apply(function() {
-        if (angular.isDefined($scope.Store)) $scope.$broadcast('loadCountry',
-            $scope.Store.Address);
+        if (angular.isDefined($scope.Store)) {
+          $scope.$broadcast('loadCountry', $scope.Store.Address);
+        }
       })
     }, 500);
+
+    $scope.loadPaymentProvidersByCurrency($scope.Store.Currency);
   }
 
   $scope.initStore = function(storeKey, resetWizard) {

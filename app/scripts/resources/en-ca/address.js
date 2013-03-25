@@ -12,6 +12,7 @@
   LabelAreYouSureRemove : 'Are you sure you would like to remove this address from the contact ?',
   LabelAddress1 : 'Address Line 1',
   LabelAddress2 : 'Address Line 2',
+  LabelFullAddress : 'Full Address',
   LabelAddAddress : 'Add Address',
   Field_PostalCode : 'Postal Code',
   Field_PostalCodeUS : 'Zip Code',

@@ -152,12 +152,13 @@
 		</form>
 		<form ui-if="Store && Store.Key || false"
 			ng-show="wizard.currentStep == 4 && !wizard.saved" name="atStore2"
-			ng-submit="wizard.next('atStore4')">
+			ng-submit="wizard.next('atStore4', true)">
 			<dl>
 				<dd class="clear row-fluid">
-					<!-- model details -->
-					<div ng-include src="'views/elements/model.html'"
-						onload="modelName='Store'"></div>
+					<!-- store details -->
+					<atmodel
+						ui-if="geo.getLoadedCountries() != null && geo.getLoadedRegions() != null && currencies.length > 0"
+						ng-model="Store" extra1="geo" extra2="currencies"></atmodel>
 				</dd>
 				<dd class="pull-left">
 					<a ng-show="wizard.currentStep>1"

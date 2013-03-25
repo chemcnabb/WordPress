@@ -41,8 +41,7 @@
 				ng-repeat="r in regions" value="{{r.ISO}}">{{r.Name}}</option>
 		</select>
 	</dd>
-	<dd ui-if="Country && Country.HasPostalCodes || false"
-		class="pull-left">
+	<dd class="pull-left">
 		<atfield at-required class="input-small"
 			ng-model="this[modelName].Address.PostalCode"
 			label="'Address.LabelPostalCode' | t" />
