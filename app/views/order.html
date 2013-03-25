@@ -1,8 +1,8 @@
-<div class="atPanel" ng-controller="orderController" ng-init="init()"
-	ng-cloak>
+<div class="atPanel" ui-if="Store && Store.Key || false"
+	ng-controller="orderController" ng-init="init()" ng-cloak>
 	<!-- top menu -->
 	<div ng-include src="'views/elements/topMenu.html'"></div>
 	<div ng-include src="'views/elements/error.html'"></div>
 	<!-- order info -->
-	
+
 </div>
