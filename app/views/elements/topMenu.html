@@ -9,6 +9,9 @@
 					class="caret"></b>
 			</a>
 				<ul class="dropdown-menu">
+					<li ui-if="!stores || stores && !stores.length || false"><a
+						href="#/admin/store" ng-click="createStore()">{{
+							'Common.Text_CreateStore' | t }}</a></li>
 					<li ng-repeat="s in stores"><a ng-click="setStoreKey(s.Key)"
 						href="#/admin/store">{{s.Name}}</a></li>
 				</ul></li>

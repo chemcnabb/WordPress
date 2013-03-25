@@ -42,8 +42,13 @@ function storeController($scope, $cookieStore, $timeout, configService,
         storeService.listStoresAsync(1).then(function() {
           $scope.stores = storeService.getStores();
 
-          // set current store
-          $scope.storeKey = $cookieStore.get(configService.cookies.storeKey)
+          // if user has been upgraded but have not yet created a store
+          if (!angular.isArray($scope.stores)) {
+            $scope.createStore();
+          } else {
+            // set current store
+            $scope.storeKey = $cookieStore.get(configService.cookies.storeKey)
+          }
         }, function(err) {
           errorService.log(err)
         });
