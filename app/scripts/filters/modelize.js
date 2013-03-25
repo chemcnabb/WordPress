@@ -3,8 +3,9 @@
  */
 azureTicketsApp.filter('modelize', [
     '$window',
+    '$filter',
     'objectService',
-    function($window, objectService) {
+    function($window, $filter, objectService) {
       return function(model, extra1, extra2, extra3) {
         if (!angular.isDefined(model) || !angular.isObject(model)) {
           return;
@@ -13,7 +14,9 @@ azureTicketsApp.filter('modelize', [
         var out = {};
         for (p in model) {
           if (angular.isObject(model[p]) && model[p].Type) {
-            switch (model[p].Type) {
+            var pp = angular.isArray(model[p]) ? model[p][0] : model[p];
+
+            switch (pp.Type) {
               case BWL.Model.Address.Type:
                 var addr = {};
                 var countries = extra1.getLoadedCountries();
@@ -32,10 +35,14 @@ azureTicketsApp.filter('modelize', [
 
                 out.Address = addr;
                 break;
+              case BWL.Model.PaymentProvider.Type:
+                out.PaymentProvider = $filter('t')(
+                    'Common.Text_Paypro_' + pp.ProviderType);
+                break;
             }
           }
         }
-debugger
+
         return out;
       };
     }
