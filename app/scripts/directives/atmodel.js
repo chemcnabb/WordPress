@@ -30,10 +30,10 @@ azureTicketsApp
                 restrict : 'E',
                 scope : {
                   atExtra1 : '=extra1', // usually is instance of geoService,
-                                        // when
+                  // when
                   // object is or has an Address object.
                   atExtra2 : '=extra2', // PaymentProviders array for objects
-                                        // containing
+                  // containing
                   // a PaymentProvider property
                   atExtra3 : '=extra3',
                   atModel : '=ngModel'
@@ -47,7 +47,8 @@ azureTicketsApp
                         : $scope.atModel[p];
 
                     if (angular.isString(pp) && pp !== '' && [
-                        'URI', 'Key', 'Type', 'Currency'
+                        // hide these properties
+                        'URI', 'Key', 'Type', 'Currency', '$$hashKey'
                     ].indexOf(p) === -1) {
                       out[$filter('t')(resPrefix + p)] = pp;
                     } else if (angular.isString(pp)

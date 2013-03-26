@@ -89,7 +89,6 @@ function venueController($scope, $timeout, $cookieStore, configService,
           Address : $scope.Place.Address
         }).then(function(placeKey) {
           if (angular.isString(placeKey)) {
-            $scope.wizard.currentStep = 3;
             $scope.wizard.saved = true;
 
             // reload list
@@ -103,7 +102,6 @@ function venueController($scope, $timeout, $cookieStore, configService,
         placeService.updatePlace($scope.storeKey, $scope.Place).then(
             function(place) {
               geoService.updateAddress(place.Address).then(function(ret) {
-                $scope.wizard.currentStep = 3;
                 $scope.wizard.saved = true;
 
                 // reload list
