@@ -1,15 +1,22 @@
-function venueController($scope, $cookieStore, configService, authService,
-    permService, modelService, geoService, placeService, errorService,
-    formService) {
+function venueController($scope, $timeout, $cookieStore, configService,
+    authService, permService, modelService, geoService, placeService,
+    errorService, formService) {
   $scope.config = configService, $scope.name = 'venue', $scope.venues = [],
       $scope.wizard = formService.getWizard($scope);
 
+  // watch for update/create requests
   $scope.$watch('wizard.open', function(v) {
     if (v) {
       $('#formVenue').modal({
         show : true,
         backdrop : 'static'
       });
+    }
+  });
+
+  $scope.$watch('wizard.saved', function(v) {
+    if (v) {
+      $scope.wizard.checkStep = {}
     }
   })
 
@@ -43,11 +50,16 @@ function venueController($scope, $cookieStore, configService, authService,
     $scope.wizard.open = true;
     $scope.wizard.saved = false;
     $scope.wizard.finished = false;
-    $scope.wizard.currentStep = 1
+    $scope.wizard.currentStep = 1;
 
-    // refresh address dropdowns
-    $scope.loadRegionsByCountry($scope.Place.Address.Country);
-    $scope.loadTimezonesByCountry($scope.Place.Address.Country);
+    // manually load location
+    $timeout(function() {
+      $scope.$apply(function() {
+        if (angular.isDefined($scope.Store)) {
+          $scope.$broadcast('loadCountry', $scope.Place.Address);
+        }
+      })
+    }, 500);
   }
 
   $scope.create = function() {
@@ -106,6 +118,7 @@ function venueController($scope, $cookieStore, configService, authService,
 }
 
 venueController.$inject = [
-    '$scope', '$cookieStore', 'configService', 'authService', 'permService',
-    'modelService', 'geoService', 'placeService', 'errorService', 'formService'
+    '$scope', '$timeout', '$cookieStore', 'configService', 'authService',
+    'permService', 'modelService', 'geoService', 'placeService',
+    'errorService', 'formService'
 ];
