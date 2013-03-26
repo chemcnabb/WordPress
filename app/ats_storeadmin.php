@@ -24,18 +24,18 @@ GNU General Public License for more details.
 // test clientKey b31e42d6-9205-417d-a2d9-366abc7d5046
 
 //sangcu@20121114 Load scripts for client page
-add_action('wp_enqueue_scripts', 'ats2_wp_init');
-add_action('admin_init', 'ats2_admin_init');
-add_action('admin_menu','ats2_plugin_admin_menu');
-add_action('wp_head', 'ats2_load_constant');
-add_action('admin_head', 'ats2_load_constant');
+add_action('wp_enqueue_scripts', 'at2_wp_init');
+add_action('admin_init', 'at2_admin_init');
+add_action('admin_menu','at2_plugin_admin_menu');
+add_action('wp_head', 'at2_load_constant');
+add_action('admin_head', 'at2_load_constant');
 
 //sangcu@20121114 add shortcodes for client page
-function ats2_add_shortcode(){
-	add_shortcode('azuretickets2', 'ats2_filter_content');
+function at2_add_shortcode(){
+	add_shortcode('azuretickets2', 'at2_filter_content');
 }
 
-function ats2_load_constant(){
+function at2_load_constant(){
 	?>
 <!-- common head -->
 <script
@@ -63,22 +63,22 @@ iframe.atContainer {
 }
 
 //load script in client
-function ats2_wp_init(){
-	ats2_add_shortcode();
+function at2_wp_init(){
+	at2_add_shortcode();
 }
 
 //sangcu@20120811 init scripts/style for plugin
-function ats2_admin_init(){
+function at2_admin_init(){
 
 }
 
 //sangcu@20121108 init menu in admin page
-function ats2_plugin_admin_menu(){
-	$page = add_menu_page('AzureTickets2','AzureTickets2','manage_options','azuretickets2','ats2_admin_openmenu', '');
+function at2_plugin_admin_menu(){
+	$page = add_menu_page('AzureTickets2','AzureTickets2','manage_options','azuretickets2','at2_admin_openmenu', '');
 }
 
 //sangcu@20121108 Call this function when user click on admin menu.
-function ats2_admin_openmenu(){
+function at2_admin_openmenu(){
 	//sangcu@20121108 check permissions with current user
 	if(!current_user_can('manage_options')){
 		wp_die(__('You do not have sufficient permissions to access this page.'));
@@ -91,7 +91,7 @@ function ats2_admin_openmenu(){
 <?php
 }
 
-function ats2_filter_content($atts){
+function at2_filter_content($atts){
   // get attributes
   extract( shortcode_atts( array(
   'storeuri' => '',
