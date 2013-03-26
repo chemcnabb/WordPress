@@ -24,10 +24,11 @@
 			<div class="alert alert-info" ng-switch-when="4">
 				<strong>{{ 'Common.Text_Confirm' | t }}</strong>
 			</div>
-			<div class="alert alert-success" ng-switch-when="5">
-				<strong>{{ 'Common.Text_Congrats' | t }}</strong> {{
-				'Common.Text_WizardComplete' | t }}
-			</div>
+		</div>
+		<div class="alert alert-success"
+			ui-if="wizard.saved && wizard.finished">
+			<strong>{{ 'Common.Text_Congrats' | t }}</strong> {{
+			'Common.Text_WizardComplete' | t }}
 		</div>
 		<div id="serviceAgreement" class="modal hide fade">
 			<div class="modal-header">
@@ -151,14 +152,36 @@
 			</dl>
 		</form>
 		<form ui-if="Store && Store.Key || false"
-			ng-show="wizard.currentStep == 4 && !wizard.saved" name="atStore2"
-			ng-submit="wizard.next('atStore4', true)">
+			ng-show="(wizard.currentStep == 4 || wizard.currentStep == 5) && !wizard.saved"
+			name="atStore4" ng-submit="wizard.next('atStore4', true)">
 			<dl>
 				<dd class="clear row-fluid">
-					<!-- store details -->
-					<atmodel
-						ui-if="geo.getLoadedCountries() != null && geo.getLoadedRegions() != null && currencies.length > 0"
-						ng-model="Store" extra1="geo" extra2="currencies"></atmodel>
+					<div class="span6">
+						<!-- store details -->
+						<atmodel
+							ui-if="geo.getLoadedCountries() != null && geo.getLoadedRegions() != null && currencies.length > 0"
+							ng-model="Store" extra1="geo" extra2="currencies"></atmodel>
+					</div>
+					<div class="span6">
+						<ul class="wizardProgress">
+							<li><span
+								ng-class="{'label-success': wizard.checkStep.store, 'label-important':!wizard.checkStep.store}"
+								class="label">{{ 'Common.Text_Save' | t }} {{
+									'Common.Text_Store' | t }}</span></li>
+							<li><span
+								ng-class="{'label-success': wizard.checkStep.uri, 'label-important':!wizard.checkStep.uri}"
+								class="label">{{ 'Common.Text_Save' | t }} {{
+									'Common.Text_CustomURI' | t }}</span></li>
+							<li><span
+								ng-class="{'label-success': wizard.checkStep.payment, 'label-important':!wizard.checkStep.payment}"
+								class="label">{{ 'Common.Text_Save' | t }} {{
+									'Common.LabelStorePaymentProvider' | t }}</span></li>
+							<li><span
+								ng-class="{'label-success': wizard.checkStep.address, 'label-important':!wizard.checkStep.address}"
+								class="label">{{ 'Common.Text_Save' | t }} {{
+									'Common.Text_Location' | t }}</span></li>
+						</ul>
+					</div>
 				</dd>
 				<dd class="pull-left">
 					<a ng-show="wizard.currentStep>1"

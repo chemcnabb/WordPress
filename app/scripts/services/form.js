@@ -47,6 +47,9 @@ azureTicketsApp.factory('formService', [
 
       return {
         currentStep : 0,
+        checkStep : {
+
+        },
         finished : false,
         saved : false,
         /**
@@ -69,7 +72,7 @@ azureTicketsApp.factory('formService', [
          * @param {string}
          *          formName
          * @param {boolean}
-         *          finish  Finishes the wizard (no more steps).
+         *          finish Finishes the wizard (no more steps).
          * @returns
          */
         next : function(formName, finish) {
