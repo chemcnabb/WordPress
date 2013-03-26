@@ -15,8 +15,8 @@
 		href="#/admin/store"
 		ng-click="wizard.currentStep = 3;wizard.finished = false">{{
 			'Common.Text_CreateStore_Step3' | t }}</a> <span
-		ui-if="Store && Store.Key || wizard.checkStep.3" class="divider">/</span></li>
-	<li ui-if="Store && Store.Key || wizard.checkStep.3"
+		ui-if="wizard.checkStep.3" class="divider">/</span></li>
+	<li ui-if="wizard.checkStep.3"
 		ng-class="{active: wizard.currentStep == 4}"><a
 		href="#/admin/store"
 		ng-click="wizard.currentStep = 4;wizard.finished = false;wizard.saved = false">{{
