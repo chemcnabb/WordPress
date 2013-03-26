@@ -151,7 +151,7 @@
 				</dd>
 			</dl>
 		</form>
-		<form ui-if="Store && Store.Key || false"
+		<form ui-if="Store || false"
 			ng-show="wizard.currentStep == 4 && !wizard.saved" name="atStore4"
 			ng-submit="wizard.next('atStore4', true)">
 			<dl>

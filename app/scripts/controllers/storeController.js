@@ -132,11 +132,10 @@ function storeController($scope, $cookieStore, $timeout, configService,
       $scope.$apply(function() {
         if (angular.isDefined($scope.Store)) {
           $scope.$broadcast('loadCountry', $scope.Store.Address);
+          $scope.loadPaymentProvidersByCurrency($scope.Store.Currency);
         }
       })
     }, 500);
-
-    $scope.loadPaymentProvidersByCurrency($scope.Store.Currency);
   }
 
   $scope.initStore = function(storeKey, resetWizard) {

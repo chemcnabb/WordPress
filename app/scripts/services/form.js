@@ -86,6 +86,7 @@ azureTicketsApp.factory('formService', [
           });
 
           if (errors.length === 0) {
+            this.checkStep[this.currentStep] = true;
             this.currentStep++;
 
             if (angular.isDefined(finish) && finish) {
