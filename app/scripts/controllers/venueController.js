@@ -54,9 +54,7 @@ function venueController($scope, $timeout, $cookieStore, configService,
   $scope.update = function(venue) {
     $scope.Place = venue;
     $scope.wizard.open = true;
-    $scope.wizard.saved = false;
-    $scope.wizard.finished = false;
-    $scope.wizard.currentStep = 1;
+    $scope.wizard.reset();
 
     // manually load location
     $timeout(function() {
@@ -73,9 +71,7 @@ function venueController($scope, $timeout, $cookieStore, configService,
     $scope.Place = modelService.getInstanceOf('Place');
     $scope.Place.Address = modelService.getInstanceOf('Address');
     $scope.wizard.open = true;
-    $scope.wizard.saved = false;
-    $scope.wizard.finished = false;
-    $scope.wizard.currentStep = 1
+    $scope.wizard.reset();
   }
 
   $scope.save = function() {

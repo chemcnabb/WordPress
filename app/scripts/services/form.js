@@ -93,6 +93,10 @@ azureTicketsApp.factory('formService', [
               this.finished = true;
             }
           }
+        },
+        reset : function() {
+          this.currentStep = 1, this.finished = false, this.saved = false,
+              checkStep = {};
         }
       }
     }

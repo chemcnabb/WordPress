@@ -131,6 +131,8 @@ function storeController($scope, $cookieStore, $timeout, configService,
       $scope.storeKey = key;
     }
 
+    $scope.wizard.reset();
+
     // manually load location & accounting items
     $timeout(function() {
       $scope.$apply(function() {
@@ -156,7 +158,7 @@ function storeController($scope, $cookieStore, $timeout, configService,
                     : null;
 
                 if (resetWizard) {
-                  $scope.wizard.currentStep = 1;
+                  $scope.wizard.reset();
                 }
 
                 if ($scope.Store.Address
@@ -188,7 +190,7 @@ function storeController($scope, $cookieStore, $timeout, configService,
     authService.upgradeProfile().then(function() {
       return authService.authenticate($scope);
     }).then(function() {
-      $scope.wizard.currentStep = 1;
+      $scope.wizard.reset();
     }, function(err) {
       errorService.log(err)
     });
