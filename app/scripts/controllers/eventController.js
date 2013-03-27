@@ -10,24 +10,22 @@ function eventController($scope, $cookieStore) {
     }
   })
 
-  $scope.init = function() {
-    if ($scope.events.length === 0){$scope.event.loadEvents($scope);}
+  $scope.init = function(force) {
+    if (force || $scope.events.length === 0) {
+      $scope.event.loadEvents($scope);
+    }
   }
 
   $scope.update = function(event) {
     $scope.Event = event;
     $scope.wizard.open = true;
-    $scope.wizard.saved = false;
-    $scope.wizard.finished = false;
-    $scope.wizard.currentStep = 1
+    $scope.wizard.reset();
   }
 
   $scope.create = function() {
     $scope.Event = $scope.model.getInstanceOf('Event');
     $scope.wizard.open = true;
-    $scope.wizard.saved = false;
-    $scope.wizard.finished = false;
-    $scope.wizard.currentStep = 1;
+    $scope.wizard.reset();
   }
 
   $scope.deleteEvent = function(event) {
@@ -58,11 +56,10 @@ function eventController($scope, $cookieStore) {
           OnSaleDateTimeStart : $scope.Event.OnSaleDateTimeStart,
           OnSaleDateTimeEnd : $scope.Event.OnSaleDateTimeEnd
         }).then(function(eventKey) {
-          $scope.wizard.currentStep = 4;
           $scope.wizard.saved = true;
 
           // reload list
-          $scope.init();
+          $scope.init(true);
         }, function(err) {
           $scope.error.log(err)
         });
@@ -70,11 +67,10 @@ function eventController($scope, $cookieStore) {
         // update event
         $scope.event.updateEvent($scope.storeKey, $scope.Event).then(
             function(event) {
-              $scope.wizard.currentStep = 4;
               $scope.wizard.saved = true;
 
               // reload list
-              $scope.init();
+              $scope.init(true);
             }, function(err) {
               $scope.error.log(err)
             });

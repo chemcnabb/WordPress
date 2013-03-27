@@ -70,9 +70,6 @@ function venueController($scope, $timeout, $cookieStore) {
         $scope.place.createPlace($scope.storeKey, newPlace).then(
             function(placeKey) {
               if (angular.isString(placeKey)) {
-                newPlace.Key = placeKey;
-                $scope.venues.push(newPlace);
-
                 $scope.wizard.saved = true;
 
                 // reload list

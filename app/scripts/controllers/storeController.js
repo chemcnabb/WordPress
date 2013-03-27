@@ -16,7 +16,6 @@ function storeController($scope, $cookieStore, $location, $timeout,
 
   $scope.$on('initStore', function(ev, key) {
     if (key === null) {
-      // $cookieStore.remove($scope.config.cookies.storeKey);
       delete $scope.Store;
     } else if (angular.isDefined(key)) {
       $scope.initStore(key, true);
