@@ -1,16 +1,6 @@
 function venueController($scope, $timeout, $cookieStore) {
   $scope.name = 'venue';
 
-  // catches requests from other controllers so it makes available to the UI all
-  // venues from the current $scope.storeKey
-  $scope.$on('initVenue', function(ev) {
-    $scope.init();
-
-    if (angular.isDefined(ev) && angular.isFunction(ev.stopPropagation)) {
-      ev.stopPropagation();
-    }
-  });
-
   // watch for update/create requests
   $scope.$watch('wizard.open', function(v) {
     if (v) {
@@ -28,7 +18,9 @@ function venueController($scope, $timeout, $cookieStore) {
   })
 
   $scope.init = function() {
-    $scope.place.loadPlaces($scope);
+    if ($scope.venues.length === 0) {
+      $scope.place.loadPlaces($scope);
+    }
   }
 
   $scope.update = function(venue) {

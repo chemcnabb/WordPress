@@ -11,24 +11,7 @@ function eventController($scope, $cookieStore) {
   })
 
   $scope.init = function() {
-    $scope.storeKey = $scope.storeKey
-        || $cookieStore.get($scope.config.cookies.storeKey);
-
-    $scope.event.listEventsAsync($scope.storeKey, 0).then(
-        function() {
-          $scope.events = $scope.event.getEvents();
-
-          if ($scope.events.length > 0) {
-            angular.forEach($scope.events, function(event, i) {
-              $scope.event.initEvent($scope.storeKey, event.Key).then(
-                  function(event) {
-                    $scope.events[i] = event;
-                  })
-            });
-          }
-        }, function(err) {
-          $scope.error.log(err)
-        });
+    if ($scope.events.length === 0){$scope.event.loadEvents($scope);}
   }
 
   $scope.update = function(event) {

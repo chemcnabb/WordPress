@@ -70,7 +70,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
             $scope.storeKey = $cookieStore.get($scope.config.cookies.storeKey)
 
             // init venues
-            $scope.$emit('initVenue');
+            $scope.place.loadPlaces($scope);
           }
         }, function(err) {
           $scope.error.log(err)

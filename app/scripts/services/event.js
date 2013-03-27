@@ -158,6 +158,14 @@ azureTicketsApp.factory('eventService',
 
               return def.promise;
             },
+            /**
+             * To be used from any controller, so it updates the $scope.events
+             * array without requiring us to do complex DI.
+             * 
+             * @param $scope
+             *          Scope to refresh
+             * @returns
+             */
             loadEvents : function($scope) {
               $scope.storeKey = $scope.storeKey
                   || $cookieStore.get($scope.config.cookies.storeKey),
