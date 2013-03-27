@@ -47,43 +47,43 @@ function storeController($scope, $cookieStore, $location, $timeout,
   })
 
   $scope.init = function() {
-    $scope.auth.authenticate($scope).then(function() {
-      $scope.DomainProfile = $scope.auth.getDomainProfile();
+    $scope.auth.authenticate($scope).then(
+        function() {
+          $scope.DomainProfile = $scope.auth.getDomainProfile();
 
-      // redirect to login if no profile
-      if ($scope.DomainProfile.Key === null) {
-        $location.path('/auth/login');
-        return;
-      }
+          // redirect to login if no profile
+          if ($scope.DomainProfile.Key === null) {
+            $location.path('/auth/login');
+            return;
+          }
 
-      if (!authService.isDomainProfileReady()) {
-        $location.path('/auth/login');
-      }
+          // check if user has access to a store and populate list if so
+          if ($scope.auth.hasStoreAccess()) {
+            $scope.store.listStoresAsync(1).then(
+                function() {
+                  $scope.stores = $scope.store.getStores();
 
-      // check if user has access to a store and populate list if so
-      if ($scope.auth.hasStoreAccess()) {
-        $scope.store.listStoresAsync(1).then(function() {
-          $scope.stores = $scope.store.getStores();
+                  // if user has been upgraded but have not yet created a store
+                  if (!angular.isArray($scope.stores)) {
+                    $scope.createStore();
+                  } else {
+                    // set current store
+                    $scope.storeKey = $cookieStore
+                        .get($scope.config.cookies.storeKey)
+                        || $scope.stores[0].Key;
 
-          // if user has been upgraded but have not yet created a store
-          if (!angular.isArray($scope.stores)) {
+                    // init venues
+                    $scope.place.loadPlaces($scope);
+                  }
+                }, function(err) {
+                  $scope.error.log(err)
+                });
+          } else if ($scope.auth.isLogged()) {
             $scope.createStore();
-          } else {
-            // set current store
-            $scope.storeKey = $cookieStore.get($scope.config.cookies.storeKey)
-
-            // init venues
-            $scope.place.loadPlaces($scope);
           }
         }, function(err) {
           $scope.error.log(err)
         });
-      } else if ($scope.auth.isLogged()) {
-        $scope.createStore();
-      }
-    }, function(err) {
-      $scope.error.log(err)
-    });
   }
 
   $scope.createStore = function() {
@@ -213,7 +213,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
       var c = [
           'CAD', 'USD', 'EUR', 'GBP'
       ];
-      $scope.currencies = objectService.prioritizeSort(currencies, c, 'ISO');
+      $scope.currencies = $scope.object.prioritizeSort(currencies, c, 'ISO');
     }, function(err) {
       $scope.error.log(err)
     });
