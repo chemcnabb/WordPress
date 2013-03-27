@@ -148,9 +148,8 @@ azureTicketsApp.factory('placeService', [
           if (!_isPlacesLoading) {
             _isPlacesLoading = true;
 
-            $scope.storeKey = $scope.storeKey
-                || $cookieStore.get($scope.config.cookies.storeKey),
-                _this = this;
+            $scope.storeKey = ($scope.storeKey || $cookieStore
+                .get($scope.config.cookies.storeKey)), _this = this;
 
             _this.listPlacesAsync($scope.storeKey, 0).then(
                 function() {
