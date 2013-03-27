@@ -17,8 +17,12 @@ function venueController($scope, $timeout, $cookieStore) {
     }
   })
 
-  $scope.init = function() {
-    if ($scope.venues.length === 0) {
+  /**
+   * @param force
+   *          true to force reload
+   */
+  $scope.init = function(force) {
+    if (force || $scope.venues.length === 0) {
       $scope.place.loadPlaces($scope);
     }
   }
@@ -72,7 +76,7 @@ function venueController($scope, $timeout, $cookieStore) {
                 $scope.wizard.saved = true;
 
                 // reload list
-                $scope.init();
+                $scope.init(true);
               }
             }, function(err) {
               $scope.error.log(err)
@@ -85,7 +89,7 @@ function venueController($scope, $timeout, $cookieStore) {
                 $scope.wizard.saved = true;
 
                 // reload list
-                $scope.init();
+                $scope.init(true);
               }, function(err) {
                 $scope.error.log(err)
               });
