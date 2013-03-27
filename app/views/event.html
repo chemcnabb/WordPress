@@ -38,8 +38,8 @@
 					ng-submit="wizard.next('atEvent1')">
 					<dl class="clearfix">
 						<dd>
-							<atfield ng-required="true" class="input-xxlarge"
-								ng-model="Event.Name" label="'Common.Text_EventName' | t" />
+							<atfield at-required class="input-xxlarge" ng-model="Event.Name"
+								label="'Common.Text_EventName' | t" />
 						</dd>
 						<dd>
 							<atfield class="input-xxlarge" ng-model="Event.Description"
@@ -56,21 +56,21 @@
 					ng-submit="wizard.next('atEvent2')">
 					<dl>
 						<dd class="pull-left">
-							<atfield ng-required="true" class="input-large"
+							<atfield at-required class="input-large"
 								ng-model="Event.StartTime" label="'Event.Text_EventStartAt' | t" />
 						</dd>
 						<dd class="pull-left">
-							<atfield ng-required="true" class="input-large"
-								ng-model="Event.EndTime" label="'Event.Text_EventEndAt' | t" />
+							<atfield at-required class="input-large" ng-model="Event.EndTime"
+								label="'Event.Text_EventEndAt' | t" />
 						</dd>
 						<dd class="clear"></dd>
 						<dd class="pull-left">
-							<atfield ng-required="true" class="input-large"
+							<atfield at-required class="input-large"
 								ng-model="Event.OnSaleDateTimeStart"
 								label="'Event.Text_SaleStartAt' | t" />
 						</dd>
 						<dd class="pull-left">
-							<atfield ng-required="true" class="input-large"
+							<atfield at-required class="input-large"
 								ng-model="Event.OnSaleDateTimeEnd"
 								label="'Event.Text_SaleEndAt' | t" />
 						</dd>
@@ -90,11 +90,11 @@
 				<form ng-show="wizard.currentStep == 3" name="atEvent3"
 					ng-submit="wizard.next('atEvent3', true)">
 					<dl class="clearfix">
-						<dd>
+						<dd ui-if="venues">
 							<label>{{ 'Common.Text_Venue' | t}}</label> <select
 								data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
-								ui-select2="{containerCssClass:'input-xlarge'}"
-								ng-required="true" ng-model="Event.tmpVenues" ng-multiple="true">
+								ui-select2="{containerCssClass:'input-xlarge'}" at-required
+								ng-model="Event.tmpVenues" ng-multiple="true">
 								<option></option>
 								<option ng-repeat="v in venues" value="{{v.Key}}">{{v.Name}}</option>
 							</select>

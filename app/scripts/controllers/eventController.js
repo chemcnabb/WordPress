@@ -1,8 +1,5 @@
-function eventController($scope, $cookieStore, configService, authService,
-    permService, modelService, eventService, placeService, geoService,
-    errorService, formService) {
-  $scope.config = configService, $scope.name = 'event',
-      $scope.wizard = formService.getWizard($scope);
+function eventController($scope, $cookieStore) {
+  $scope.name = 'event';
 
   $scope.$watch('wizard.open', function(v) {
     if (v) {
@@ -15,22 +12,22 @@ function eventController($scope, $cookieStore, configService, authService,
 
   $scope.init = function() {
     $scope.storeKey = $scope.storeKey
-        || $cookieStore.get(configService.cookies.storeKey);
+        || $cookieStore.get($scope.config.cookies.storeKey);
 
-    eventService.listEventsAsync($scope.storeKey, 0).then(
+    $scope.event.listEventsAsync($scope.storeKey, 0).then(
         function() {
-          $scope.events = eventService.getEvents();
+          $scope.events = $scope.event.getEvents();
 
           if ($scope.events.length > 0) {
             angular.forEach($scope.events, function(event, i) {
-              eventService.initEvent($scope.storeKey, event.Key).then(
+              $scope.event.initEvent($scope.storeKey, event.Key).then(
                   function(event) {
                     $scope.events[i] = event;
                   })
             });
           }
         }, function(err) {
-          errorService.log(err)
+          $scope.error.log(err)
         });
   }
 
@@ -43,7 +40,7 @@ function eventController($scope, $cookieStore, configService, authService,
   }
 
   $scope.create = function() {
-    $scope.Event = modelService.getInstanceOf('Event');
+    $scope.Event = $scope.model.getInstanceOf('Event');
     $scope.wizard.open = true;
     $scope.wizard.saved = false;
     $scope.wizard.finished = false;
@@ -51,10 +48,10 @@ function eventController($scope, $cookieStore, configService, authService,
   }
 
   $scope.deleteEvent = function(event) {
-    eventService.deleteEvent($scope.storeKey, event.Key).then(function() {
+    $scope.event.deleteEvent($scope.storeKey, event.Key).then(function() {
       $scope.init();
     }, function(err) {
-      errorService.log(err)
+      $scope.error.log(err)
     });
   }
 
@@ -64,7 +61,7 @@ function eventController($scope, $cookieStore, configService, authService,
 
       if ($scope.Event.Key === null) {
         // go on and create
-        eventService.createEvent($scope.storeKey, {
+        $scope.event.createEvent($scope.storeKey, {
           Public : true,
           Name : $scope.Event.Name,
           Description : $scope.Event.Description,
@@ -84,11 +81,11 @@ function eventController($scope, $cookieStore, configService, authService,
           // reload list
           $scope.init();
         }, function(err) {
-          errorService.log(err)
+          $scope.error.log(err)
         });
       } else {
         // update event
-        eventService.updateEvent($scope.storeKey, $scope.Event).then(
+        $scope.event.updateEvent($scope.storeKey, $scope.Event).then(
             function(event) {
               $scope.wizard.currentStep = 4;
               $scope.wizard.saved = true;
@@ -96,7 +93,7 @@ function eventController($scope, $cookieStore, configService, authService,
               // reload list
               $scope.init();
             }, function(err) {
-              errorService.log(err)
+              $scope.error.log(err)
             });
       }
     }
@@ -104,7 +101,5 @@ function eventController($scope, $cookieStore, configService, authService,
 }
 
 eventController.$inject = [
-    '$scope', '$cookieStore', 'configService', 'authService', 'permService',
-    'modelService', 'eventService', 'placeService', 'geoService',
-    'errorService', 'formService'
+    '$scope', '$cookieStore'
 ];

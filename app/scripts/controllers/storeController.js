@@ -1,15 +1,22 @@
-function storeController($scope, $cookieStore, $timeout, configService,
-    authService, permService, storeService, modelService, errorService,
-    geoService, formService, objectService) {
+function storeController($scope, $cookieStore, $location, $timeout,
+    configService, authService, permService, storeService, modelService,
+    errorService, geoService, formService, objectService, placeService,
+    eventService) {
+  /**
+   * The following vars are shared across controllers and accessible via $scope
+   */
   $scope.storeKey = null, $scope.config = configService, $scope.name = 'store',
       $scope.stores = [], $scope.venues = [], $scope.events = [],
       $scope.currencies = [], $scope.paymentProviders = [],
       $scope.suggestedURLs = [], $scope.wizard = formService.getWizard($scope),
-      $scope.geo = geoService;
+      $scope.geo = geoService, $scope.error = errorService,
+      $scope.object = objectService, $scope.auth = authService,
+      $scope.model = modelService, $scope.event = eventService,
+      $scope.place = placeService, $scope.store = storeService;
 
   $scope.$on('initStore', function(ev, key) {
     if (key === null) {
-      // $cookieStore.remove(configService.cookies.storeKey);
+      // $cookieStore.remove($scope.config.cookies.storeKey);
       delete $scope.Store;
     } else if (angular.isDefined(key)) {
       $scope.initStore(key, true);
@@ -28,8 +35,8 @@ function storeController($scope, $cookieStore, $timeout, configService,
       return;
     }
 
-    if (authService.isDomainProfileReady()) {
-      $cookieStore.put(configService.cookies.storeKey, key);
+    if ($scope.auth.isDomainProfileReady()) {
+      $cookieStore.put($scope.config.cookies.storeKey, key);
       $scope.$emit('initStore', key);
     }
   }, true);
@@ -41,41 +48,47 @@ function storeController($scope, $cookieStore, $timeout, configService,
   })
 
   $scope.init = function() {
-    authService.authenticate($scope).then(function() {
-      $scope.DomainProfile = authService.getDomainProfile();
+    $scope.auth.authenticate($scope).then(function() {
+      $scope.DomainProfile = $scope.auth.getDomainProfile();
+
+      // redirect to login if no profile
+      if ($scope.DomainProfile.Key === null) {
+        $location.path('/auth/login');
+        return;
+      }
 
       // check if user has access to a store and populate list if so
-      if (authService.hasStoreAccess()) {
-        storeService.listStoresAsync(1).then(function() {
-          $scope.stores = storeService.getStores();
+      if ($scope.auth.hasStoreAccess()) {
+        $scope.store.listStoresAsync(1).then(function() {
+          $scope.stores = $scope.store.getStores();
 
           // if user has been upgraded but have not yet created a store
           if (!angular.isArray($scope.stores)) {
             $scope.createStore();
           } else {
             // set current store
-            $scope.storeKey = $cookieStore.get(configService.cookies.storeKey)
+            $scope.storeKey = $cookieStore.get($scope.config.cookies.storeKey)
 
             // init venues
-            $scope.$broadcast('initVenue');
+            $scope.$emit('initVenue');
           }
         }, function(err) {
-          errorService.log(err)
+          $scope.error.log(err)
         });
-      } else if (authService.isLogged()) {
+      } else if ($scope.auth.isLogged()) {
         $scope.createStore();
       }
     }, function(err) {
-      errorService.log(err)
+      $scope.error.log(err)
     });
   }
 
   $scope.createStore = function() {
     // initialize props
-    $scope.Store = modelService.getInstanceOf('Store');
-    $scope.Store.tmpPaymentProvider = modelService
+    $scope.Store = $scope.model.getInstanceOf('Store');
+    $scope.Store.tmpPaymentProvider = $scope.model
         .getInstanceOf('PaymentProvider');
-    $scope.Store.Address = modelService.getInstanceOf('Address');
+    $scope.Store.Address = $scope.model.getInstanceOf('Address');
 
     // monitor URI
     $scope.initStoreURI();
@@ -107,13 +120,13 @@ function storeController($scope, $cookieStore, $timeout, configService,
       var isNew = $scope.Store.Key === null;
 
       if (isNew && angular.isDefined(uri) && uri !== null
-          && uri.length > configService.typeahead.minLength) {
+          && uri.length > $scope.config.typeahead.minLength) {
         var re = /[^\a-z\d\-\_]{1,}/gi;
         var sug = $scope.Store.Name !== null ? $scope.Store.Name.replace(re,
             '-').toLowerCase() : null;
 
         if (sug !== null && $scope.suggestedURLs.indexOf(sug) === -1) {
-          storeService.getURISuggestion(sug).then(function(_uri) {
+          $scope.store.getURISuggestion(sug).then(function(_uri) {
             if ($scope.suggestedURLs.indexOf(_uri) === -1) {
               $scope.suggestedURLs.push(_uri);
             }
@@ -127,6 +140,7 @@ function storeController($scope, $cookieStore, $timeout, configService,
   }
 
   $scope.setStoreKey = function(key) {
+    // here $watch is not being triggered, so we later call initStore manually
     if ($scope.storeKey !== key) {
       $scope.storeKey = key;
     }
@@ -136,19 +150,14 @@ function storeController($scope, $cookieStore, $timeout, configService,
     // manually load location & accounting items
     $timeout(function() {
       $scope.$apply(function() {
-        if (angular.isDefined($scope.Store)) {
-          $scope.$broadcast('loadCountry', $scope.Store.Address);
-          $scope.loadPaymentProvidersByCurrency($scope.Store.Currency);
-        } else {
-          $scope.initStore($scope.storeKey, true);
-        }
+        $scope.initStore($scope.storeKey, true);
       })
     }, 500);
   }
 
   $scope.initStore = function(storeKey, resetWizard) {
     if (storeKey !== null) {
-      storeService
+      $scope.store
           .initStore(storeKey)
           .then(
               function(store, currency) {
@@ -181,35 +190,35 @@ function storeController($scope, $cookieStore, $timeout, configService,
                 // monitor URI
                 $scope.initStoreURI();
               }, function(err) {
-                errorService.log(err)
+                $scope.error.log(err)
               });
     }
   }
 
   $scope.upgradeProfile = function() {
-    authService.upgradeProfile().then(function() {
-      return authService.authenticate($scope);
+    $scope.auth.upgradeProfile().then(function() {
+      return $scope.auth.authenticate($scope);
     }).then(function() {
       $scope.wizard.reset();
     }, function(err) {
-      errorService.log(err)
+      $scope.error.log(err)
     });
   }
 
   $scope.loadCurrencies = function() {
-    storeService.getCurrencies().then(function(currencies) {
+    $scope.store.getCurrencies().then(function(currencies) {
       var c = [
           'CAD', 'USD', 'EUR', 'GBP'
       ];
       $scope.currencies = objectService.prioritizeSort(currencies, c, 'ISO');
     }, function(err) {
-      errorService.log(err)
+      $scope.error.log(err)
     });
   }
 
   $scope.loadPaymentProvidersByCurrency = function(currency) {
     if (angular.isDefined(currency) && currency !== '') {
-      storeService.getPaymentProvidersByCurrency(currency).then(
+      $scope.store.getPaymentProvidersByCurrency(currency).then(
           function(paypros) {
             $scope.paymentProviders = paypros;
 
@@ -217,7 +226,7 @@ function storeController($scope, $cookieStore, $timeout, configService,
               $scope.loadPaymentProviderInfo($scope.Store.tmpPaymentProvider);
             }
           }, function(err) {
-            errorService.log(err)
+            $scope.error.log(err)
           });
     }
   }
@@ -242,12 +251,12 @@ function storeController($scope, $cookieStore, $timeout, configService,
 
   $scope.checkURIAvailability = function(uri) {
     if (angular.isDefined(uri)) {
-      storeService.getStoreKeyByURI(uri).then(
+      $scope.store.getStoreKeyByURI(uri).then(
           function(storeKey) {
             $scope.URIAvailable = angular.isString(storeKey)
                 && storeKey.trim() === '';
           }, function(err) {
-            errorService.log(err)
+            $scope.error.log(err)
           });
     }
   }
@@ -255,11 +264,11 @@ function storeController($scope, $cookieStore, $timeout, configService,
   $scope.loadPaymentProviderInfo = function(paymentProvider) {
     if (angular.isDefined(paymentProvider)
         && paymentProvider.ProviderType !== null) {
-      storeService.getPaymentProviderInfo(paymentProvider.ProviderType).then(
+      $scope.store.getPaymentProviderInfo(paymentProvider.ProviderType).then(
           function(info) {
             $scope.tmpPaymentProviderInfo = info;
           }, function(err) {
-            errorService.log(err)
+            $scope.error.log(err)
           });
     }
   }
@@ -272,10 +281,10 @@ function storeController($scope, $cookieStore, $timeout, configService,
         // create store
 
         // API claims not null properties
-        modelService.nonNull($scope.Store.Address);
+        $scope.model.nonNull($scope.Store.Address);
 
         // go on and create
-        storeService.createStore({
+        $scope.store.createStore({
           Name : $scope.Store.Name,
           Description : $scope.Store.Description,
           Public : true,
@@ -297,10 +306,10 @@ function storeController($scope, $cookieStore, $timeout, configService,
 
                 $scope.Store.Key = storeKey;
 
-                modelService.nonNull($scope.Store.tmpPaymentProvider);
+                $scope.model.nonNull($scope.Store.tmpPaymentProvider);
 
                 // attach payment providers
-                storeService.addPaymentProvider($scope.Store,
+                $scope.store.addPaymentProvider($scope.Store,
                     $scope.Store.tmpPaymentProvider).then(function() {
                   $scope.wizard.checkStep.payment = true;
                   $scope.wizard.saved = true;
@@ -310,7 +319,7 @@ function storeController($scope, $cookieStore, $timeout, configService,
                 }, function(err) {
                   $scope.wizard.payment = false;
 
-                  errorService.log(err)
+                  $scope.error.log(err)
                 });
               }
             },
@@ -319,7 +328,7 @@ function storeController($scope, $cookieStore, $timeout, configService,
                   $scope.wizard.checkStep.uri = false,
                   $scope.wizard.checkStep.address = false,
                   $scope.wizard.checkStep.payment = false;
-              errorService.log(err)
+              $scope.error.log(err)
             });
 
       } else {
@@ -328,11 +337,11 @@ function storeController($scope, $cookieStore, $timeout, configService,
           $scope.wizard.checkStep.address = true;
 
           // attach payment providers
-          storeService.removePaymentProvider($scope.Store, 0).then(
+          $scope.store.removePaymentProvider($scope.Store, 0).then(
               function() {
-                modelService.nonNull($scope.Store.tmpPaymentProvider);
+                $scope.model.nonNull($scope.Store.tmpPaymentProvider);
 
-                storeService.addPaymentProvider($scope.Store,
+                $scope.store.addPaymentProvider($scope.Store,
                     $scope.Store.tmpPaymentProvider).then(function() {
                   $scope.wizard.checkStep.payment = true;
 
@@ -343,28 +352,28 @@ function storeController($scope, $cookieStore, $timeout, configService,
                 }, function(err) {
                   $scope.wizard.payment = false;
 
-                  errorService.log(err)
+                  $scope.error.log(err)
                 });
               }, function(err) {
                 $scope.wizard.payment = false;
 
-                errorService.log(err)
+                $scope.error.log(err)
               });
         }
 
         // update store & address
         if ($scope.Store.Address.Key !== null) {
-          storeService.updateStore($scope.Store).then(
+          $scope.store.updateStore($scope.Store).then(
               function(store) {
                 if (angular.isDefined(store.Key)) {
                   $scope.wizard.checkStep.store = true,
                       $scope.wizard.checkStep.uri = true;
 
-                  geoService.updateAddress($scope.Store.Address).then(
+                  $scope.geo.updateAddress($scope.Store.Address).then(
                       _finishes, function(err) {
                         $scope.wizard.address = false;
 
-                        errorService.log(err)
+                        $scope.error.log(err)
                       });
                 }
               },
@@ -374,21 +383,21 @@ function storeController($scope, $cookieStore, $timeout, configService,
                     $scope.wizard.checkStep.address = false,
                     $scope.wizard.checkStep.payment = false;
 
-                errorService.log(err)
+                $scope.error.log(err)
               });
         } else {
           // update store & create address
-          storeService.updateStore($scope.Store).then(
+          $scope.store.updateStore($scope.Store).then(
               function(store) {
                 if (angular.isDefined(store.Key)) {
                   $scope.wizard.checkStep.store = true,
                       $scope.wizard.checkStep.uri = true;
 
-                  geoService.createAddressForStore(store.Key,
+                  $scope.geo.createAddressForStore(store.Key,
                       $scope.Store.Address).then(_finishes, function(err) {
                     $scope.wizard.checkStep.address = false;
 
-                    errorService.log(err)
+                    $scope.error.log(err)
                   });
                 }
               },
@@ -398,7 +407,7 @@ function storeController($scope, $cookieStore, $timeout, configService,
                     $scope.wizard.checkStep.address = false,
                     $scope.wizard.checkStep.payment = false;
 
-                errorService.log(err)
+                $scope.error.log(err)
               });
         }
       }
@@ -407,7 +416,8 @@ function storeController($scope, $cookieStore, $timeout, configService,
 }
 
 storeController.$inject = [
-    '$scope', '$cookieStore', '$timeout', 'configService', 'authService',
-    'permService', 'storeService', 'modelService', 'errorService',
-    'geoService', 'formService', 'objectService'
+    '$scope', '$cookieStore', '$location', '$timeout', 'configService',
+    'authService', 'permService', 'storeService', 'modelService',
+    'errorService', 'geoService', 'formService', 'objectService',
+    'placeService', 'eventService'
 ];

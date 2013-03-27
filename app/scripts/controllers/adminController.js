@@ -1,15 +1,14 @@
-function adminController($scope, $location, configService, authService,
-    permService, modelService, errorService, $cookieStore) {
-  $scope.config = configService, $scope.authProviders = [],
-      $scope.name = 'admin', $scope.loginErr = null, $scope.registerErr = null,
-      $scope.registerOk = false, $scope.passwdOk = true;
+function adminController($scope, $location, $cookieStore) {
+  $scope.authProviders = [], $scope.name = 'admin', $scope.loginErr = null,
+      $scope.registerErr = null, $scope.registerOk = false,
+      $scope.passwdOk = true;
 
   /**
    * models in play here.
    * 
    * @todo inject models, using array of strings maybe.
    */
-  $scope.AccountProfile = authService.getAccountProfile();
+  $scope.AccountProfile = $scope.auth.getAccountProfile();
   $scope.RegisterAccountProfile = angular.copy($scope.AccountProfile);
 
   $scope.$on('resetDomainProfile', function() {
@@ -17,20 +16,20 @@ function adminController($scope, $location, configService, authService,
   });
 
   $scope.loadAuthProviders = function() {
-    authService.loadAuthProviders().then(function(providers) {
+    $scope.auth.loadAuthProviders().then(function(providers) {
       $scope.authProviders = providers;
     }, function(err) {
-      errorService.log(err);
+      $scope.error.log(err);
     });
   }
 
   $scope.login = function(provider) {
     if (angular.isDefined(provider) && angular.isString(provider)) {
       // login by provider
-      authService.logonByProviderAsync(provider).then(function() {
-        $scope.DomainProfile = authService.getDomainProfile();
-        $location.path($cookieStore.get(configService.cookies.lastPath));
-        $cookieStore.put(configService.cookies.loggedStatus, true);
+      $scope.auth.logonByProviderAsync(provider).then(function() {
+        $scope.DomainProfile = $scope.auth.getDomainProfile();
+        $location.path($cookieStore.get($scope.config.cookies.lastPath));
+        $cookieStore.put($scope.config.cookies.loggedStatus, true);
 
         $scope.init();
       }, function(err) {
@@ -38,11 +37,11 @@ function adminController($scope, $location, configService, authService,
       });
     } else {
       // login by account
-      authService.logonAsync({
+      $scope.auth.logonAsync({
         Email : $scope.AccountProfile.Email,
         PasswordHash : BWL.oAuth.HashPassword($scope.AccountProfile.Password)
       }).then(function() {
-        authService.authenticate($scope);
+        $scope.auth.authenticate($scope);
       }, function(err) {
         $scope.loginErr = err;
       });
@@ -52,7 +51,7 @@ function adminController($scope, $location, configService, authService,
   $scope.register = function() {
     // register account
     if ($scope.passwdOk) {
-      authService.registerAsync(
+      $scope.auth.registerAsync(
           {
             FullName : $scope.RegisterAccountProfile.FullName,
             Email : $scope.RegisterAccountProfile.Email,
@@ -72,6 +71,5 @@ function adminController($scope, $location, configService, authService,
 }
 
 adminController.$inject = [
-    '$scope', '$location', 'configService', 'authService', 'permService',
-    'modelService', 'errorService', '$cookieStore'
+    '$scope', '$location', '$cookieStore'
 ];

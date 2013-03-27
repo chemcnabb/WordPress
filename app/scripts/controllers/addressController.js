@@ -1,4 +1,4 @@
-function addressController($scope, errorService, geoService, objectService) {
+function addressController($scope) {
   $scope.countries = [], $scope.continents = [], $scope.regions = [],
       $scope.timezones = [];
 
@@ -7,10 +7,10 @@ function addressController($scope, errorService, geoService, objectService) {
   });
 
   $scope.loadContinents = function() {
-    geoService.getContinents().then(function(continents) {
+    $scope.geo.getContinents().then(function(continents) {
       $scope.continents = continents;
     }, function(err) {
-      errorService.log(err)
+      $scope.error.log(err)
     });
   }
 
@@ -31,34 +31,34 @@ function addressController($scope, errorService, geoService, objectService) {
             address.Region = null, address.PostalCode = null;
       }
 
-      geoService.getCountriesByContinent(continentIso).then(
+      $scope.geo.getCountriesByContinent(continentIso).then(
           function(countries) {
             // prepend most used
             var c = [
                 'CA', 'US', 'GB'
             ];
-            $scope.countries = objectService
+            $scope.countries = $scope.object
                 .prioritizeSort(countries, c, 'ISO');
           }, function(err) {
-            errorService.log(err)
+            $scope.error.log(err)
           });
     }
   }
 
   $scope.loadTimezonesByCountry = function(address) {
     if (angular.isDefined(address.Country)) {
-      geoService.getTimezonesByCountry(address.Country).then(
+      $scope.geo.getTimezonesByCountry(address.Country).then(
           function(timezones) {
             $scope.timezones = timezones;
           }, function(err) {
-            errorService.log(err)
+            $scope.error.log(err)
           });
     }
   }
 
   $scope.loadCountry = function(address) {
     if (angular.isDefined(address) && angular.isDefined(address.Country)) {
-      geoService.loadCountry(address.Country).then(function(country) {
+      $scope.geo.loadCountry(address.Country).then(function(country) {
         $scope.Country = country;
         address.tmpContinentIso = country.ContinentISO;
 
@@ -72,17 +72,17 @@ function addressController($scope, errorService, geoService, objectService) {
           $scope.loadTimezonesByCountry(address)
         }
       }, function(err) {
-        errorService.log(err)
+        $scope.error.log(err)
       });
     }
   }
 
   $scope.loadRegionsByCountry = function(address) {
     if (angular.isDefined(address.Country)) {
-      geoService.getRegionsByCountry(address.Country).then(function(regions) {
+      $scope.geo.getRegionsByCountry(address.Country).then(function(regions) {
         $scope.regions = regions;
       }, function(err) {
-        errorService.log(err)
+        $scope.error.log(err)
       });
     }
   }
@@ -91,10 +91,10 @@ function addressController($scope, errorService, geoService, objectService) {
     if (angular.isDefined(address.Country)
         && angular.isDefined(address.PostalCode) && address.PostalCode !== null
         && address.PostalCode.trim().length >= 3) {
-      geoService.getCityByPostalCode(address.Country, address.PostalCode).then(
+      $scope.geo.getCityByPostalCode(address.Country, address.PostalCode).then(
           function(city) {
             // lookup timezone
-            geoService.getCityByName(city.CityName, city.RegionISO,
+            $scope.geo.getCityByName(city.CityName, city.RegionISO,
                 city.CountryISO).then(
                 function(city) {
                   if (angular.isDefined(city.Name)
@@ -106,15 +106,15 @@ function addressController($scope, errorService, geoService, objectService) {
                     $scope.loadTimezonesByCountry(address);
                   }
                 }, function(err) {
-                  errorService.log(err)
+                  $scope.error.log(err)
                 });
           }, function(err) {
-            errorService.log(err)
+            $scope.error.log(err)
           });
     }
   }
 }
 
 addressController.$inject = [
-    '$scope', 'errorService', 'geoService', 'objectService'
+  '$scope'
 ];
