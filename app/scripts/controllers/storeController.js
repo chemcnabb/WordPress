@@ -1,6 +1,6 @@
-function storeController($scope, $cookieStore, $timeout, configService,
-    authService, permService, storeService, modelService, errorService,
-    geoService, formService, objectService) {
+function storeController($scope, $cookieStore, $timeout, $location,
+    configService, authService, permService, storeService, modelService,
+    errorService, geoService, formService, objectService) {
   $scope.storeKey = null, $scope.config = configService, $scope.name = 'store',
       $scope.stores = [], $scope.venues = [], $scope.events = [],
       $scope.currencies = [], $scope.paymentProviders = [],
@@ -43,6 +43,10 @@ function storeController($scope, $cookieStore, $timeout, configService,
   $scope.init = function() {
     authService.authenticate($scope).then(function() {
       $scope.DomainProfile = authService.getDomainProfile();
+
+      if (!authService.isDomainProfileReady()) {
+        $location.path('/auth/login');
+      }
 
       // check if user has access to a store and populate list if so
       if (authService.hasStoreAccess()) {
@@ -407,7 +411,7 @@ function storeController($scope, $cookieStore, $timeout, configService,
 }
 
 storeController.$inject = [
-    '$scope', '$cookieStore', '$timeout', 'configService', 'authService',
-    'permService', 'storeService', 'modelService', 'errorService',
-    'geoService', 'formService', 'objectService'
+    '$scope', '$cookieStore', '$timeout', '$location', 'configService',
+    'authService', 'permService', 'storeService', 'modelService',
+    'errorService', 'geoService', 'formService', 'objectService'
 ];
