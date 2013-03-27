@@ -1,48 +1,50 @@
 // event service
-azureTicketsApp.factory('eventService', [
-    '$q',
-    '$rootScope',
-    'modelService',
-    'configService',
-    'geoService',
-    function($q, $rootScope, modelService, configService, geoService) {
-      var _events = [], _lastAvailableURI = null;
+azureTicketsApp.factory('eventService',
+    [
+        '$q',
+        '$rootScope',
+        '$cookieStore',
+        'modelService',
+        'configService',
+        'geoService',
+        function($q, $rootScope, $cookieStore, modelService, configService,
+            geoService) {
+          var _events = [], _lastAvailableURI = null;
 
-      return {
-        listEventsAsync : function(storeKey, pages) {
-          var def = $q.defer();
+          return {
+            listEventsAsync : function(storeKey, pages) {
+              var def = $q.defer();
 
-          BWL.Services.ModelService.ListAsync(storeKey, 'Event', pages,
-              function(events) {
-                if (angular.isArray(events)) {
-                  _events = events;
-                } else {
-                  _events = [];
-                }
+              BWL.Services.ModelService.ListAsync(storeKey, 'Event', pages,
+                  function(events) {
+                    if (angular.isArray(events)) {
+                      _events = events;
+                    } else {
+                      _events = [];
+                    }
 
-                $rootScope.$apply(function() {
-                  def.resolve();
-                });
-              }, function(err) {
-                $rootScope.$apply(function() {
-                  def.reject(err)
-                })
-              });
+                    $rootScope.$apply(function() {
+                      def.resolve();
+                    });
+                  }, function(err) {
+                    $rootScope.$apply(function() {
+                      def.reject(err)
+                    })
+                  });
 
-          return def.promise;
-        },
-        getEvents : function() {
-          return _events;
-        },
-        getEvent : function() {
-          return modelService.getInstanceOf('Event');
-        },
-        initEvent : function(storeKey, eventKey) {
-          var def = $q.defer();
+              return def.promise;
+            },
+            getEvents : function() {
+              return _events;
+            },
+            getEvent : function() {
+              return modelService.getInstanceOf('Event');
+            },
+            initEvent : function(storeKey, eventKey) {
+              var def = $q.defer();
 
-          BWL.Services.ModelService
-              .ReadAsync(storeKey, "Event", eventKey, 10,
-                  function(event) {
+              BWL.Services.ModelService.ReadAsync(storeKey, "Event", eventKey,
+                  10, function(event) {
                     if (!angular.isDefined(event.Address)
                         || event.Address === null) {
                       event.Address = modelService.getInstanceOf('Address');
@@ -81,80 +83,110 @@ azureTicketsApp.factory('eventService', [
                     })
                   });
 
-          return def.promise;
-        },
-        createEvent : function(storeKey, event) {
-          var def = $q.defer();
+              return def.promise;
+            },
+            createEvent : function(storeKey, event) {
+              var def = $q.defer();
 
-          BWL.Services.ModelService.CreateAsync(storeKey, this.getEvent().Type,
-              event, function(eventKey) {
-                $rootScope.$apply(function() {
-                  def.resolve(eventKey)
-                });
-              }, function(err) {
-                $rootScope.$apply(function() {
-                  def.reject(err)
-                })
-              });
-
-          return def.promise;
-        },
-        deleteEvent : function(storeKey, eventKey) {
-          var def = $q.defer();
-
-          BWL.Services.ModelService.DeleteAsync(storeKey, this.getEvent().Type,
-              eventKey, function() {
-                $rootScope.$apply(function() {
-                  def.resolve()
-                });
-              }, function(err) {
-                $rootScope.$apply(function() {
-                  def.reject(err)
-                })
-              });
-
-          return def.promise;
-        },
-        addEventAddress : function(eventKey, address) {
-          var def = $q.defer(), _this = this;
-
-          BWL.Services.ModelService.CreateAsync(eventKey, "Address", address,
-              function(addressKey) {
-                BWL.Services.ModelService.AddAsync(eventKey, "Event", eventKey,
-                    "Address", "Address", addressKey, function(ret) {
-                      $rootScope.$apply(def.resolve)
-                    }, function(err) {
-                      $rootScope.$apply(function() {
-                        def.reject(err)
-                      })
+              BWL.Services.ModelService.CreateAsync(storeKey,
+                  this.getEvent().Type, event, function(eventKey) {
+                    $rootScope.$apply(function() {
+                      def.resolve(eventKey)
                     });
-              }, function(err) {
-                $rootScope.$apply(function() {
-                  def.reject(err)
-                })
-              });
+                  }, function(err) {
+                    $rootScope.$apply(function() {
+                      def.reject(err)
+                    })
+                  });
 
-          return def.promise;
-        },
-        updateEvent : function(storeKey, event) {
-          var def = $q.defer(), tmpEvent = angular.copy(event);
-          var _event = angular.copy(event);
+              return def.promise;
+            },
+            deleteEvent : function(storeKey, eventKey) {
+              var def = $q.defer();
 
-          delete tmpEvent.Address;
+              BWL.Services.ModelService.DeleteAsync(storeKey,
+                  this.getEvent().Type, eventKey, function() {
+                    $rootScope.$apply(function() {
+                      def.resolve()
+                    });
+                  }, function(err) {
+                    $rootScope.$apply(function() {
+                      def.reject(err)
+                    })
+                  });
 
-          BWL.Services.ModelService.UpdateAsync(storeKey, 'Event', _event.Key,
-              tmpEvent, function(ret) {
-                $rootScope.$apply(function() {
-                  def.resolve(_event)
-                });
-              }, function(err) {
-                $rootScope.$apply(function() {
-                  def.reject(err)
-                })
-              });
+              return def.promise;
+            },
+            addEventAddress : function(eventKey, address) {
+              var def = $q.defer(), _this = this;
 
-          return def.promise;
+              BWL.Services.ModelService.CreateAsync(eventKey, "Address",
+                  address, function(addressKey) {
+                    BWL.Services.ModelService.AddAsync(eventKey, "Event",
+                        eventKey, "Address", "Address", addressKey, function(
+                            ret) {
+                          $rootScope.$apply(def.resolve)
+                        }, function(err) {
+                          $rootScope.$apply(function() {
+                            def.reject(err)
+                          })
+                        });
+                  }, function(err) {
+                    $rootScope.$apply(function() {
+                      def.reject(err)
+                    })
+                  });
+
+              return def.promise;
+            },
+            updateEvent : function(storeKey, event) {
+              var def = $q.defer(), tmpEvent = angular.copy(event);
+              var _event = angular.copy(event);
+
+              delete tmpEvent.Address;
+
+              BWL.Services.ModelService.UpdateAsync(storeKey, 'Event',
+                  _event.Key, tmpEvent, function(ret) {
+                    $rootScope.$apply(function() {
+                      def.resolve(_event)
+                    });
+                  }, function(err) {
+                    $rootScope.$apply(function() {
+                      def.reject(err)
+                    })
+                  });
+
+              return def.promise;
+            },
+            /**
+             * To be used from any controller, so it updates the $scope.events
+             * array without requiring us to do complex DI.
+             * 
+             * @param $scope
+             *          Scope to refresh
+             * @returns
+             */
+            loadEvents : function($scope) {
+              $scope.storeKey = $scope.storeKey
+                  || $cookieStore.get($scope.config.cookies.storeKey),
+                  _this = this;
+
+              _this.listEventsAsync($scope.storeKey, 0).then(
+                  function() {
+                    $scope.events = _this.getEvents();
+
+                    if ($scope.events.length > 0) {
+                      angular.forEach($scope.events, function(event, i) {
+                        _this.initEvent($scope.storeKey, event.Key).then(
+                            function(event) {
+                              $scope.events[i] = event;
+                            })
+                      });
+                    }
+                  }, function(err) {
+                    $scope.error.log(err)
+                  });
+            }
+          }
         }
-      }
-    }
-]);
+    ]);

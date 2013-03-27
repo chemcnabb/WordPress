@@ -2,11 +2,13 @@
 azureTicketsApp.factory('placeService', [
     '$q',
     '$rootScope',
+    '$cookieStore',
     'modelService',
     'configService',
     'geoService',
-    function($q, $rootScope, modelService, configService, geoService) {
-      var _places = [], _lastAvailableURI = null;
+    function($q, $rootScope, $cookieStore, modelService, configService,
+        geoService) {
+      var _places = [], _lastAvailableURI = null, _isPlacesLoading = false;
 
       return {
         listPlacesAsync : function(storeKey, pages) {
@@ -133,6 +135,41 @@ azureTicketsApp.factory('placeService', [
               });
 
           return def.promise;
+        },
+        /**
+         * To be used from any controller, so it updates the $scope.venues array
+         * without requiring us to do complex DI.
+         * 
+         * @param $scope
+         *          Scope to refresh
+         * @returns
+         */
+        loadPlaces : function($scope) {
+          if (!_isPlacesLoading) {
+            _isPlacesLoading = true;
+
+            $scope.storeKey = $scope.storeKey
+                || $cookieStore.get($scope.config.cookies.storeKey),
+                _this = this;
+
+            _this.listPlacesAsync($scope.storeKey, 0).then(
+                function() {
+                  $scope.venues = _this.getPlaces();
+
+                  if ($scope.venues.length > 0) {
+                    angular.forEach($scope.venues, function(venue, i) {
+                      _this.initPlace($scope.storeKey, venue.Key).then(
+                          function(place) {
+                            $scope.venues[i] = place;
+                          })
+                    });
+                  }
+                  _isPlacesLoading = false;
+                }, function(err) {
+                  _isPlacesLoading = false;
+                  $scope.error.log(err)
+                });
+          }
         }
       }
     }
