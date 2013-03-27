@@ -2,13 +2,14 @@ function storeController($scope, $cookieStore, $timeout, configService,
     authService, permService, storeService, modelService, errorService,
     geoService, formService, objectService) {
   $scope.storeKey = null, $scope.config = configService, $scope.name = 'store',
-      $scope.stores = [], $scope.currencies = [], $scope.paymentProviders = [],
+      $scope.stores = [], $scope.venues = [], $scope.events = [],
+      $scope.currencies = [], $scope.paymentProviders = [],
       $scope.suggestedURLs = [], $scope.wizard = formService.getWizard($scope),
       $scope.geo = geoService;
 
   $scope.$on('initStore', function(ev, key) {
     if (key === null) {
-      $cookieStore.remove(configService.cookies.storeKey);
+      // $cookieStore.remove(configService.cookies.storeKey);
       delete $scope.Store;
     } else if (angular.isDefined(key)) {
       $scope.initStore(key, true);
@@ -54,6 +55,9 @@ function storeController($scope, $cookieStore, $timeout, configService,
           } else {
             // set current store
             $scope.storeKey = $cookieStore.get(configService.cookies.storeKey)
+
+            // init venues
+            $scope.$broadcast('initVenue');
           }
         }, function(err) {
           errorService.log(err)
@@ -133,6 +137,8 @@ function storeController($scope, $cookieStore, $timeout, configService,
         if (angular.isDefined($scope.Store)) {
           $scope.$broadcast('loadCountry', $scope.Store.Address);
           $scope.loadPaymentProvidersByCurrency($scope.Store.Currency);
+        } else {
+          $scope.initStore($scope.storeKey, true);
         }
       })
     }, 500);

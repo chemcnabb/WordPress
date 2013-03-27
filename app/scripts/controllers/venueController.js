@@ -4,6 +4,16 @@ function venueController($scope, $timeout, $cookieStore, configService,
   $scope.config = configService, $scope.name = 'venue', $scope.venues = [],
       $scope.wizard = formService.getWizard($scope);
 
+  // catches requests from other controllers so it makes available to the UI all
+  // venues from the current $scope.storeKey
+  $scope.$on('initVenue', function(ev) {
+    $scope.init();
+
+    if (angular.isDefined(ev) && angular.isFunction(ev.stopPropagation)) {
+      ev.stopPropagation();
+    }
+  });
+
   // watch for update/create requests
   $scope.$watch('wizard.open', function(v) {
     if (v) {
@@ -20,14 +30,10 @@ function venueController($scope, $timeout, $cookieStore, configService,
     }
   })
 
-  /**
-   * models in play here.
-   * 
-   * @todo inject models, using array of strings maybe.
-   */
-  $scope.Place = modelService.getInstanceOf('Place');
-
   $scope.init = function() {
+    $scope.storeKey = $scope.storeKey
+        || $cookieStore.get(configService.cookies.storeKey);
+
     placeService.listPlacesAsync($scope.storeKey, 0).then(
         function() {
           $scope.venues = placeService.getPlaces();
@@ -82,21 +88,27 @@ function venueController($scope, $timeout, $cookieStore, configService,
         // API claims not null properties
         modelService.nonNull($scope.Place.Address);
 
-        placeService.createPlace($scope.storeKey, {
+        var newPlace = {
           Public : true,
           Name : $scope.Place.Name,
           Description : $scope.Place.Description,
           Address : $scope.Place.Address
-        }).then(function(placeKey) {
-          if (angular.isString(placeKey)) {
-            $scope.wizard.saved = true;
+        };
 
-            // reload list
-            $scope.init();
-          }
-        }, function(err) {
-          errorService.log(err)
-        });
+        placeService.createPlace($scope.storeKey, newPlace).then(
+            function(placeKey) {
+              if (angular.isString(placeKey)) {
+                newPlace.Key = placeKey;
+                $scope.venues.push(newPlace);
+
+                $scope.wizard.saved = true;
+
+                // reload list
+                $scope.init();
+              }
+            }, function(err) {
+              errorService.log(err)
+            });
       } else {
         // update place
         placeService.updatePlace($scope.storeKey, $scope.Place).then(

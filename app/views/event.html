@@ -1,11 +1,10 @@
-<div class="atPanel" ui-if="Store && Store.Key || false"
+<div class="atPanel" ui-if="DomainProfile && DomainProfile.Key || false"
 	ng-controller="eventController" ng-init="init()" ng-cloak>
 	<!-- top menu -->
 	<div ng-include src="'views/elements/topMenu.html'"></div>
 	<div ng-include src="'views/elements/error.html'"></div>
 	<!-- event info -->
-	<div ui-if="DomainProfile.Key || false" class="row-fluid"
-		ng-init="loadVenues()">
+	<div ui-if="Store && Store.Key || false" class="row-fluid">
 		<p class="lead pull-left">{{ 'Common.Text_EventMenu_Events' | t}}</p>
 		<div class="btn-group pull-right">
 			<button class="btn btn-info" ng-click="create()">{{

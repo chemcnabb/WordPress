@@ -1,10 +1,10 @@
-<div class="atPanel" ui-if="Store && Store.Key || false"
+<div class="atPanel" ui-if="DomainProfile && DomainProfile.Key || false"
 	ng-controller="venueController" ng-init="init()" ng-cloak>
 	<!-- top menu -->
 	<div ng-include src="'views/elements/topMenu.html'"></div>
 	<div ng-include src="'views/elements/error.html'"></div>
 	<!-- venue info -->
-	<div ui-if="DomainProfile.Key || false" class="row-fluid">
+	<div ui-if="Store && Store.Key || false" class="row-fluid">
 		<p class="lead pull-left">{{ 'Common.Text_VenueMenu_Venue' | t}}</p>
 		<div class="btn-group pull-right">
 			<button class="btn btn-info" ng-click="create()">{{
@@ -78,7 +78,7 @@
 						<dd class="clear row-fluid">
 							<!-- venue details -->
 							<atmodel
-								ui-if="geo.getLoadedCountries() != null && geo.getLoadedRegions() != null"
+								ui-if="Place && geo.getLoadedCountries() != null && geo.getLoadedRegions() != null"
 								ng-model="Place" extra1="geo"></atmodel>
 						</dd>
 						<dd class="pull-left">

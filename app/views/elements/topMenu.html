@@ -15,18 +15,19 @@
 					<li ng-repeat="s in stores"><a ng-click="setStoreKey(s.Key)"
 						href="#/admin/store">{{s.Name}}</a></li>
 				</ul></li>
-			<li ui-if="Store.Key || false" ui-route="#/admin/venue"
+			<li ui-if="Store && Store.Key || false" ui-route="#/admin/venue"
 				ng-class="{active: $uiRoute}"><a href="#/admin/venue">{{
 					'Common.Text_VenueMenu_Venue' | t }}</a></li>
-			<li ui-if="Store.Events || false" ui-route="#/admin/event"
-				ng-class="{active: $uiRoute}"><a href="#/admin/event">{{
-					'Common.Text_EventMenu_Events' | t }}</a></li>
-			<li ui-if="Store.Events || false" ui-route="#/admin/scanner"
-				ng-class="{active: $uiRoute}"><a href="#/admin/scanner">{{
-					'Common.Text_ScannerMenu_Scanner' | t }}</a></li>
-			<li ui-if="Store.Events || false" ui-route="#/admin/order"
-				ng-class="{active: $uiRoute}"><a href="#/admin/order">{{
-					'Common.Text_OrdersMenu_Orders' | t }}</a></li>
+			<li ui-if="venues && venues.length > 0 || false"
+				ui-route="#/admin/event" ng-class="{active: $uiRoute}"><a
+				href="#/admin/event">{{ 'Common.Text_EventMenu_Events' | t }}</a></li>
+			<li ui-if="events && events.length > 0 || false"
+				ui-route="#/admin/scanner" ng-class="{active: $uiRoute}"><a
+				href="#/admin/scanner">{{ 'Common.Text_ScannerMenu_Scanner' | t
+					}}</a></li>
+			<li ui-if="events && events.length > 0 || false"
+				ui-route="#/admin/order" ng-class="{active: $uiRoute}"><a
+				href="#/admin/order">{{ 'Common.Text_OrdersMenu_Orders' | t }}</a></li>
 		</ul>
 		<div class="pull-right">
 			<a href="#/auth/logoff"

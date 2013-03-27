@@ -5,8 +5,8 @@
 		ng-include src="'views/elements/store/bcSettings.html'"></div>
 	<div ng-include src="'views/elements/error.html'"></div>
 	<!-- store info -->
-	<div ui-if="DomainProfile.Key || false" class="row-fluid"
-		ng-init="loadCurrencies()">
+	<div ui-if="DomainProfile && DomainProfile.Key || false"
+		class="row-fluid" ng-init="loadCurrencies()">
 		<p ng-show="wizard.currentStep>
 			0" class="lead">{{
 			'Common.Text_RegistrationStep1' | t }}</p>

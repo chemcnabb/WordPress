@@ -1,9 +1,8 @@
 function eventController($scope, $cookieStore, configService, authService,
     permService, modelService, eventService, placeService, geoService,
     errorService, formService) {
-  $scope.storeKey = $cookieStore.get('storeKey') || null,
-      $scope.config = configService, $scope.name = 'event', $scope.events = [],
-      $scope.venues = [], $scope.wizard = formService.getWizard($scope);
+  $scope.config = configService, $scope.name = 'event',
+      $scope.wizard = formService.getWizard($scope);
 
   $scope.$watch('wizard.open', function(v) {
     if (v) {
@@ -14,33 +13,21 @@ function eventController($scope, $cookieStore, configService, authService,
     }
   })
 
-  /**
-   * models in play here.
-   * 
-   * @todo inject models, using array of strings maybe.
-   */
-  $scope.DomainProfile = authService.getDomainProfile();
-  $scope.Event = modelService.getInstanceOf('Event');
-
   $scope.init = function() {
-    authService.authenticate($scope).then(
-        function() {
-          if (authService.hasStoreAccess()) {
-            eventService.listEventsAsync($scope.storeKey, 0).then(
-                function() {
-                  $scope.events = eventService.getEvents();
+    $scope.storeKey = $scope.storeKey
+        || $cookieStore.get(configService.cookies.storeKey);
 
-                  if ($scope.events.length > 0) {
-                    angular.forEach($scope.events, function(event, i) {
-                      eventService.initEvent($scope.storeKey, event.Key).then(
-                          function(event) {
-                            $scope.events[i] = event;
-                          })
-                    });
-                  }
-                }, function(err) {
-                  errorService.log(err)
-                });
+    eventService.listEventsAsync($scope.storeKey, 0).then(
+        function() {
+          $scope.events = eventService.getEvents();
+
+          if ($scope.events.length > 0) {
+            angular.forEach($scope.events, function(event, i) {
+              eventService.initEvent($scope.storeKey, event.Key).then(
+                  function(event) {
+                    $scope.events[i] = event;
+                  })
+            });
           }
         }, function(err) {
           errorService.log(err)
@@ -61,14 +48,6 @@ function eventController($scope, $cookieStore, configService, authService,
     $scope.wizard.saved = false;
     $scope.wizard.finished = false;
     $scope.wizard.currentStep = 1;
-  }
-
-  $scope.loadVenues = function() {
-    placeService.listPlacesAsync($scope.storeKey, 0).then(function(venues) {
-      $scope.venues = placeService.getPlaces();
-    }, function(err) {
-      errorService.log(err)
-    });
   }
 
   $scope.deleteEvent = function(event) {
