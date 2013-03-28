@@ -9,6 +9,14 @@ azureTicketsApp.factory('eventService', [
     function($q, $rootScope, $cookieStore, modelService, configService,
         geoService) {
       var _events = [], _lastAvailableURI = null;
+      var _formatDates = function(tmpEvent) {
+        tmpEvent.StartTime = new Date(tmpEvent.StartTime).toString('s');
+        tmpEvent.EndTime = new Date(tmpEvent.EndTime).toString('s');
+        tmpEvent.OnSaleDateTimeStart = new Date(tmpEvent.OnSaleDateTimeStart)
+            .toString('s');
+        tmpEvent.OnSaleDateTimeEnd = new Date(tmpEvent.OnSaleDateTimeEnd)
+            .toString('s');
+      }
 
       return {
         listEventsAsync : function(storeKey, pages) {
@@ -45,10 +53,6 @@ azureTicketsApp.factory('eventService', [
           BWL.Services.ModelService
               .ReadAsync(storeKey, "Event", eventKey, 10,
                   function(event) {
-                    if (!angular.isDefined(event.Address)
-                        || event.Address === null) {
-                      event.Address = modelService.getInstanceOf('Address');
-                    }
                     // prepare tmp var to be used by UI
                     if (angular.isDefined(event.Places)
                         && angular.isArray(event.Places)) {
@@ -62,22 +66,17 @@ azureTicketsApp.factory('eventService', [
                     }
 
                     try {
+                      // parse date and make it compatible with select2 widget
                       var st = new Date(event.StartTime);
                       var et = new Date(event.EndTime);
                       var sst = new Date(event.OnSaleDateTimeStart);
                       var set = new Date(event.OnSaleDateTimeEnd);
-                      event.StartTime = st.getMonth() + '/' + st.getDay() + '/'
-                          + st.getFullYear() + ' ' + st.getHours() + ':'
-                          + st.getMinutes();
-                      event.EndTime = et.getMonth() + '/' + et.getDay() + '/'
-                          + et.getFullYear() + ' ' + et.getHours() + ':'
-                          + et.getMinutes();
-                      event.OnSaleDateTimeStart = sst.getMonth() + '/'
-                          + sst.getDay() + '/' + sst.getFullYear() + ' '
-                          + sst.getHours() + ':' + sst.getMinutes();
-                      event.OnSaleDateTimeEnd = set.getMonth() + '/'
-                          + set.getDay() + '/' + set.getFullYear() + ' '
-                          + set.getHours() + ':' + set.getMinutes();
+                      event.StartTime = st.toString('dd/MM/yyyy hh:mm tt');
+                      event.EndTime = et.toString('dd/MM/yyyy hh:mm tt');
+                      event.OnSaleDateTimeStart = sst
+                          .toString('dd/MM/yyyy hh:mm tt');
+                      event.OnSaleDateTimeEnd = set
+                          .toString('dd/MM/yyyy hh:mm tt');
                     } catch (e) {
                     }
 
@@ -97,10 +96,13 @@ azureTicketsApp.factory('eventService', [
           return def.promise;
         },
         createEvent : function(storeKey, event) {
-          var def = $q.defer();
+          var def = $q.defer(), tmpEvent = angular.copy(event);
+
+          // format dates to be ISO 8601 as expected by API
+          _formatDates(tmpEvent);
 
           BWL.Services.ModelService.CreateAsync(storeKey, this.getEvent().Type,
-              event, function(eventKey) {
+              tmpEvent, function(eventKey) {
                 $rootScope.$apply(function() {
                   def.resolve(eventKey)
                 });
@@ -151,14 +153,18 @@ azureTicketsApp.factory('eventService', [
         },
         updateEvent : function(storeKey, event) {
           var def = $q.defer(), tmpEvent = angular.copy(event);
-          var _event = angular.copy(event);
 
-          delete tmpEvent.Address;
+          delete tmpEvent.tmpVenues;
+          delete tmpEvent.$$hashKey;
+          delete tmpEvent.Type;
 
-          BWL.Services.ModelService.UpdateAsync(storeKey, 'Event', _event.Key,
+          // format dates to be ISO 8601 as expected by API
+          _formatDates(tmpEvent);
+
+          BWL.Services.ModelService.UpdateAsync(storeKey, 'Event', event.Key,
               tmpEvent, function(ret) {
                 $rootScope.$apply(function() {
-                  def.resolve(_event)
+                  def.resolve(event)
                 });
               }, function(err) {
                 $rootScope.$apply(function() {

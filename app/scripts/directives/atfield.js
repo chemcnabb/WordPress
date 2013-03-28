@@ -92,9 +92,11 @@ azureTicketsApp
                       }\
                       ";
 
-                    dateTimeScript.text("jQuery(function(){jQuery('#"
-                        + _attr.id + "').datetimepicker({onClose: " + js
-                        + " });});");
+                    dateTimeScript
+                        .text("jQuery(function(){jQuery('#"
+                            + _attr.id
+                            + "').datetimepicker({timeFormat: 'hh:mm tt', onClose: "
+                            + js + " });});");
 
                     if ($attrs.uiDateFormat) {
                       _el.attr('ui-date-format', $attrs.uiDateFormat)

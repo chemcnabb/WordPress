@@ -43,6 +43,11 @@ azureTicketsApp
                       + $scope.atModel.Type;
 
                   for (p in $scope.atModel) {
+                    // we ignore tmp variables
+                    if (/^tmp.*$/g.test(p)) {
+                      continue
+                    }
+
                     var pp = angular.isArray($scope.atModel[p]) ? $scope.atModel[p][0]
                         : $scope.atModel[p];
 

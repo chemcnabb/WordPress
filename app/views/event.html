@@ -98,8 +98,8 @@
 						<dd ui-if="venues">
 							<label>{{ 'Common.Text_Venue' | t}}</label> <select
 								data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
-								ui-select2="{containerCssClass:'input-xlarge', formatSelection: onVenueSelected}" at-required
-								ng-model="Event.tmpVenues" name="Event_tmpVenues"
+								ui-select2="{containerCssClass:'input-xlarge', formatSelection: onVenueSelected}"
+								at-required ng-model="Event.tmpVenues" name="Event_tmpVenues"
 								ng-multiple="true">
 								<option ng-repeat="v in venues" value="{{v.Key}}">{{v.Name}}</option>
 							</select>

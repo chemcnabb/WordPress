@@ -50,11 +50,12 @@ function eventController($scope, $cookieStore) {
         $scope.Event.tmpVenues = [];
       }
 
-      if ($scope.Event.tmpVenues.indexOf(v.id) === -1){$scope.Event.tmpVenues
-          .push(v.id);}
+      if ($scope.Event.tmpVenues.indexOf(v.id) === -1) {
+        $scope.Event.tmpVenues.push(v.id);
+      }
     }
 
-    return v;
+    return v.text;
   }
 
   $scope.save = function() {
