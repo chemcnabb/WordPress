@@ -27,7 +27,7 @@ function eventController($scope, $cookieStore) {
 
   $scope.create = function() {
     $scope.Event = $scope.model.getInstanceOf('Event');
-    debugger
+
     $scope.wizard.open = true;
     $scope.wizard.reset();
   }

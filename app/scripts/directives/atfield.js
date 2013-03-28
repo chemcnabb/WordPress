@@ -24,8 +24,9 @@ azureTicketsApp
                 },
                 link : function($scope, $element, $attrs) {
                   var ss = $attrs.ngModel.split('.');
-                  var m = ss.length === 3 ? ss[1] : ss[0];
-                  var f = ss.length === 3 ? ss[ss.length - 1] : ss[1];
+                  var m = ss.length === 3 ? ss[1] : ss[0];// model name
+                  var f = ss.length === 3 ? ss[ss.length - 1] : ss[1]; // property
+                  // name
                   var copyOf = angular.isDefined($attrs.atCopy) ? BWL.ModelMeta[$attrs.atCopy]
                       : null
                   var fieldType = copyOf === null
@@ -75,8 +76,25 @@ azureTicketsApp
                   } else if (/^Date|Time/g.test(fieldType)) {
                     _attr.type = 'text', _el = jQuery('<input ' + _req + '/>');
                     dateTimeScript = jQuery('<script type="text/javascript" />');
+
+                    // we're outside angular, so we need to do some tricks here
+                    // to update model
+                    var js = "function(v, el, format){\
+                      var formScope = angular.element(jQuery('#'+el.id).parents('form').first()).scope();\
+                      var ctrlScope = formScope.$parent;\
+                      ctrlScope.$apply(function(){\
+                  		  ctrlScope."
+                        + m
+                        + "."
+                        + f
+                        + " = v;\
+                  		});\
+                      }\
+                      ";
+
                     dateTimeScript.text("jQuery(function(){jQuery('#"
-                        + _attr.id + "').datetimepicker();});");
+                        + _attr.id + "').datetimepicker({onClose: " + js
+                        + " });});");
 
                     if ($attrs.uiDateFormat) {
                       _el.attr('ui-date-format', $attrs.uiDateFormat)
