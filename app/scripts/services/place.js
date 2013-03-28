@@ -164,6 +164,11 @@ azureTicketsApp.factory('placeService', [
                           })
                     });
                   }
+
+                  if (!$scope.$$phase) {
+                    $scope.$apply();
+                  }
+
                   _isPlacesLoading = false;
                 }, function(err) {
                   _isPlacesLoading = false;

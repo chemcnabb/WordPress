@@ -17,6 +17,9 @@ function eventController($scope, $cookieStore) {
     if (force || $scope.events.length === 0) {
       $scope.event.loadEvents($scope);
     }
+    if ($scope.venues.length === 0) {
+      $scope.place.loadPlaces($scope);
+    }
   }
 
   $scope.update = function(event) {
