@@ -72,7 +72,7 @@
 						</dd>
 					</dl>
 				</form>
-				<form ng-show="wizard.currentStep == 3 && !wizard.saved"
+				<form ui-if="wizard.currentStep == 3 && !wizard.saved"
 					name="atVenue3" ng-submit="wizard.next('atVenue3', true)">
 					<dl>
 						<dd class="clear row-fluid">

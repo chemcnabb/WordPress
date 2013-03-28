@@ -55,11 +55,24 @@ function venueController($scope, $timeout, $cookieStore, $filter) {
 
   $scope.deleteVenue = function(venue) {
     if (confirm($filter('t')('Common.Text_RemoveProduct'))) {
-      $scope.place.deletePlace($scope.storeKey, venue.Key).then(function() {
-        $scope.init(true);
-      }, function(err) {
-        $scope.error.log(err)
-      });
+      $scope.place.deletePlace($scope.storeKey, venue)
+          .then(
+              function() {
+                // delete address
+                if (angular.isDefined(venue.Address)
+                    && venue.Address.Key !== null) {
+                  $scope.geo.deleteAddress($scope.storeKey, venue.Address.Key)
+                      .then(function() {
+                        $scope.init(true);
+                      }, function(err) {
+                        $scope.error.log(err)
+                      });
+                } else {
+                  $scope.init(true);
+                }
+              }, function(err) {
+                $scope.error.log(err)
+              });
     }
   }
 

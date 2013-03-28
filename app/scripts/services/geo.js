@@ -11,6 +11,9 @@ azureTicketsApp
               var _countries = null, _continents = null, _regions = null, _cities = null;
 
               return {
+                getAddress : function() {
+                  return modelService.getInstanceOf('Address');
+                },
                 getLoadedCountries : function() {
                   return _countries;
                 },
@@ -187,6 +190,22 @@ azureTicketsApp
                           def.reject(err)
                         });
                       });
+
+                  return def.promise;
+                },
+                deleteAddress : function(storeKey, addressKey) {
+                  var def = $q.defer();
+
+                  BWL.Services.ModelService.DeleteAsync(storeKey, this
+                      .getAddress().Type, addressKey, function() {
+                    $rootScope.$apply(function() {
+                      def.resolve()
+                    });
+                  }, function(err) {
+                    $rootScope.$apply(function() {
+                      def.reject(err)
+                    })
+                  });
 
                   return def.promise;
                 },
