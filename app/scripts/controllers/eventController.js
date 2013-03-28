@@ -32,11 +32,13 @@ function eventController($scope, $cookieStore) {
   }
 
   $scope.deleteEvent = function(event) {
-    $scope.event.deleteEvent($scope.storeKey, event.Key).then(function() {
-      $scope.init();
-    }, function(err) {
-      $scope.error.log(err)
-    });
+    if (confirm($filter('t')('Common.Text_RemoveProduct'))) {
+      $scope.event.deleteEvent($scope.storeKey, event.Key).then(function() {
+        $scope.init(true);
+      }, function(err) {
+        $scope.error.log(err)
+      });
+    }
   }
 
   /**

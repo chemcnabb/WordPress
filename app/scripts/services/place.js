@@ -80,11 +80,11 @@ azureTicketsApp.factory('placeService', [
 
           return def.promise;
         },
-        deletePlace : function(storeKey, event) {
+        deletePlace : function(storeKey, venueKey) {
           var def = $q.defer();
 
-          BWL.Services.ModelService.DeleteAsync(storeKey, this.getEvent().Type,
-              event.Key, function() {
+          BWL.Services.ModelService.DeleteAsync(storeKey, this.getPlace().Type,
+              venueKey, function() {
                 $rootScope.$apply(function() {
                   def.resolve()
                 });
@@ -148,8 +148,9 @@ azureTicketsApp.factory('placeService', [
           if (!_isPlacesLoading) {
             _isPlacesLoading = true;
 
-            $scope.storeKey = ($scope.storeKey || $cookieStore
-                .get($scope.config.cookies.storeKey)), _this = this;
+            $scope.storeKey = $scope.storeKey
+                || $cookieStore.get($scope.config.cookies.storeKey),
+                _this = this;
 
             _this.listPlacesAsync($scope.storeKey, 0).then(
                 function() {

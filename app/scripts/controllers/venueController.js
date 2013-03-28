@@ -1,4 +1,4 @@
-function venueController($scope, $timeout, $cookieStore) {
+function venueController($scope, $timeout, $cookieStore, $filter) {
   $scope.name = 'venue';
 
   // initialize wizard for Venue
@@ -53,6 +53,16 @@ function venueController($scope, $timeout, $cookieStore) {
     $scope.wizard.reset();
   }
 
+  $scope.deleteVenue = function(venue) {
+    if (confirm($filter('t')('Common.Text_RemoveProduct'))) {
+      $scope.place.deletePlace($scope.storeKey, venue.Key).then(function() {
+        $scope.init(true);
+      }, function(err) {
+        $scope.error.log(err)
+      });
+    }
+  }
+
   $scope.save = function() {
     if ($scope.wizard.finished) {
       $scope.wizard.saved = false;
@@ -100,5 +110,5 @@ function venueController($scope, $timeout, $cookieStore) {
 }
 
 venueController.$inject = [
-    '$scope', '$timeout', '$cookieStore'
+    '$scope', '$timeout', '$cookieStore', '$filter'
 ];

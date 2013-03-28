@@ -105,7 +105,8 @@
 							</select>
 						</dd>
 						<dd class="clear">
-							<atfield class="input-small" ng-model="Event.MaximumCapacity" />
+							<atfield class="input-small" ng-model="Event.MaximumCapacity"
+								at-required />
 						</dd>
 						<dd class="clear"></dd>
 						<dd class="pull-left">
@@ -166,8 +167,7 @@
 						<div class="btn-group pull-right">
 							<button class="btn btn-mini btn-success" ng-click="update(event)">{{
 								'Common.Text_Update' | t }}</button>
-							<button ng-click="delete(event)"
-								ng-confirm="{{'Common.Text_RemoveProduct'|t}}"
+							<button ng-click="deleteEvent(event)"
 								class="btn btn-mini btn-danger">{{ 'Common.Text_Remove'
 								| t }}</button>
 						</div>
