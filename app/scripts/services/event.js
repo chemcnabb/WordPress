@@ -49,6 +49,17 @@ azureTicketsApp.factory('eventService', [
                         || event.Address === null) {
                       event.Address = modelService.getInstanceOf('Address');
                     }
+                    // prepare tmp var to be used by UI
+                    if (angular.isDefined(event.Places)
+                        && angular.isArray(event.Places)) {
+                      event.tmpVenues = [];
+                      angular.forEach(event.Places, function(ev) {
+                        event.tmpVenues.push({
+                          id : ev.Key,
+                          text : ev.Name
+                        })
+                      })
+                    }
 
                     try {
                       var st = new Date(event.StartTime);
@@ -166,16 +177,17 @@ azureTicketsApp.factory('eventService', [
          * @returns
          */
         loadEvents : function($scope) {
-          $scope.storeKey = ($scope.storeKey || $cookieStore
-              .get($scope.config.cookies.storeKey)), _this = this;
+          $scope.storeKey = $scope.storeKey
+              || $cookieStore.get($scope.config.cookies.storeKey),
+              __this = this;
 
-          _this.listEventsAsync($scope.storeKey, 0).then(
+          __this.listEventsAsync($scope.storeKey, 0).then(
               function() {
-                $scope.events = _this.getEvents();
+                $scope.events = __this.getEvents();
 
                 if ($scope.events.length > 0) {
                   angular.forEach($scope.events, function(event, i) {
-                    _this.initEvent($scope.storeKey, event.Key).then(
+                    __this.initEvent($scope.storeKey, event.Key).then(
                         function(event) {
                           $scope.events[i] = event;
                         })

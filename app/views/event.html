@@ -98,8 +98,9 @@
 						<dd ui-if="venues">
 							<label>{{ 'Common.Text_Venue' | t}}</label> <select
 								data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
-								ui-select2="{containerCssClass:'input-xlarge'}" at-required
-								ng-model="Event.tmpVenues" ng-multiple="true">
+								ui-select2="{containerCssClass:'input-xlarge', formatSelection: onVenueSelected}" at-required
+								ng-model="Event.tmpVenues" name="Event_tmpVenues"
+								ng-multiple="true">
 								<option ng-repeat="v in venues" value="{{v.Key}}">{{v.Name}}</option>
 							</select>
 						</dd>
@@ -119,7 +120,7 @@
 						</dd>
 					</dl>
 				</form>
-				<form ng-show="wizard.currentStep == 4 && !wizard.saved"
+				<form ui-if="wizard.currentStep == 4 && !wizard.saved"
 					name="atEvent3" ng-submit="wizard.next('atEvent4', true)">
 					<dl>
 						<dd class="clear row-fluid">

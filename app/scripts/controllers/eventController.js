@@ -27,7 +27,6 @@ function eventController($scope, $cookieStore) {
 
   $scope.create = function() {
     $scope.Event = $scope.model.getInstanceOf('Event');
-
     $scope.wizard.open = true;
     $scope.wizard.reset();
   }
@@ -38,6 +37,24 @@ function eventController($scope, $cookieStore) {
     }, function(err) {
       $scope.error.log(err)
     });
+  }
+
+  /**
+   * The select2 directive doesn't update model when using ng-multiple, so we
+   * need to update manually.
+   */
+  $scope.onVenueSelected = function(v, add, rem) {
+    if (angular.isDefined($scope.Event) && angular.isDefined(v.id)
+        && v.id !== null && !/\{\{[^\}]+\}\}/g.test(v.id)) {
+      if (!angular.isDefined($scope.Event.tmpVenues)) {
+        $scope.Event.tmpVenues = [];
+      }
+
+      if ($scope.Event.tmpVenues.indexOf(v.id) === -1){$scope.Event.tmpVenues
+          .push(v.id);}
+    }
+
+    return v;
   }
 
   $scope.save = function() {
