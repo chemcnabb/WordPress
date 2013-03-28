@@ -109,7 +109,7 @@ var CommonResources = {
   Text_ScannerMenu_Scanner : 'Scanners',
   Text_VenueMenu_Venue : 'Venues',
   Text_DashboardMenu_Dashboard : 'Dashboard',
-  Text_VenueEmpty : 'No venues where found for your store',
+  Text_VenueEmpty : 'No venues were found for your store',
   Text_FansMenu_Fans : 'Fans',
   Text_AboutMenu : 'About',
   Text_ShippingInfo : 'Shipping Information',
