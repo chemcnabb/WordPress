@@ -58,6 +58,7 @@ azureTicketsApp
                       out[$filter('t')(resPrefix + p)] = c.Name;
                     } else if (angular.isObject(pp) && pp.Type) {
                       switch (pp.Type) {
+                        // handle Address type
                         case BWL.Model.Address.Type:
                           var addr = {};
                           var countries = $scope.atExtra1.getLoadedCountries();
@@ -81,10 +82,12 @@ azureTicketsApp
 
                           out[$filter('t')('Common.Text_LocationInfo')] = addr;
                           break;
+                        // Handle PaymentProvider type
                         case BWL.Model.PaymentProvider.Type:
                           out[$filter('t')(resPrefix + 'PaymentProvider')] = $filter(
                               't')('Common.Text_Paypro_' + pp.ProviderType);
                           break;
+                        // Handle StoreURI type
                         case BWL.Model.StoreURI.Type:
                           out[$filter('t')('Common.Text_CustomURI')] = pp.URI;
                           break;

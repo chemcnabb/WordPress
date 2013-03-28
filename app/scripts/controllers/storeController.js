@@ -8,11 +8,14 @@ function storeController($scope, $cookieStore, $location, $timeout,
   $scope.storeKey = null, $scope.config = configService, $scope.name = 'store',
       $scope.stores = [], $scope.venues = [], $scope.events = [],
       $scope.currencies = [], $scope.paymentProviders = [],
-      $scope.suggestedURLs = [], $scope.wizard = formService.getWizard($scope),
+      $scope.suggestedURLs = [], $scope.form = formService,
       $scope.geo = geoService, $scope.error = errorService,
       $scope.object = objectService, $scope.auth = authService,
       $scope.model = modelService, $scope.event = eventService,
       $scope.place = placeService, $scope.store = storeService;
+
+  // initialize wizard for Store
+  $scope.wizard = $scope.form.getWizard($scope);
 
   $scope.$on('initStore', function(ev, key) {
     if (key === null) {

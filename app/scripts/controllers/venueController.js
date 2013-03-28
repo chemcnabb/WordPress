@@ -1,6 +1,9 @@
 function venueController($scope, $timeout, $cookieStore) {
   $scope.name = 'venue';
 
+  // initialize wizard for Venue
+  $scope.wizard = $scope.form.getWizard($scope);
+
   // watch for update/create requests
   $scope.$watch('wizard.open', function(v) {
     if (v) {

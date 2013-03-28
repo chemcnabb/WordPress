@@ -1,6 +1,9 @@
 function eventController($scope, $cookieStore) {
   $scope.name = 'event';
 
+  // initialize wizard for Event
+  $scope.wizard = $scope.form.getWizard($scope);
+
   $scope.$watch('wizard.open', function(v) {
     if (v) {
       $('#formEvent').modal({
@@ -24,6 +27,7 @@ function eventController($scope, $cookieStore) {
 
   $scope.create = function() {
     $scope.Event = $scope.model.getInstanceOf('Event');
+    debugger
     $scope.wizard.open = true;
     $scope.wizard.reset();
   }

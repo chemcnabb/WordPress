@@ -84,7 +84,7 @@ azureTicketsApp.factory('formService', [
               _fieldTypes.join(',')).each(function(i, e) {
             errors = errors.concat(_validates(e));
           });
-
+debugger
           if (errors.length === 0) {
             this.checkStep[this.currentStep] = true;
             this.currentStep++;
