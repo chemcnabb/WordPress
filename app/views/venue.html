@@ -35,7 +35,7 @@
 				</div>
 
 				<!-- form -->
-				<ng-form name="atVenue" ng-submit="save()">
+				<ng-form  ui-if="Place" name="atVenue" ng-submit="save()">
 				<form ng-show="wizard.currentStep == 1" name="atVenue1"
 					ng-submit="wizard.next('atVenue1')">
 					<dl class="clearfix">
@@ -116,7 +116,7 @@
 			<ul class="thumbnails" ng-show="venues.length > 0">
 				<li ng-repeat="venue in venues" class="span3">
 					<div class="thumbnail">
-						<h3 class="pull-left">{{venue.Name}}</h3>
+						<h4 class="pull-left">{{venue.Name}}</h4>
 						<div class="btn-group pull-right">
 							<button class="btn btn-mini btn-success" ng-click="update(venue)">{{
 								'Common.Text_Update' | t }}</button>

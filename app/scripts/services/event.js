@@ -55,49 +55,49 @@ azureTicketsApp
                 initEvent : function(storeKey, eventKey) {
                   var def = $q.defer();
 
-                  BWL.Services.ModelService
-                      .ReadAsync(storeKey, "Event", eventKey, 10,
-                          function(event) {
-                            // prepare tmp var to be used by UI
-                            event.tmpVenues = [];
-                            if (angular.isDefined(event.Places)
-                                && angular.isArray(event.Places)) {
-                              angular.forEach(event.Places, function(ev) {
-                                event.tmpVenues.push({
-                                  id : ev.Key,
-                                  text : ev.Name
-                                })
-                              })
-                            }
-
-                            try {
-                              // parse date and make it compatible with select2
-                              // widget
-                              var st = new Date(event.StartTime);
-                              var et = new Date(event.EndTime);
-                              var sst = new Date(event.OnSaleDateTimeStart);
-                              var set = new Date(event.OnSaleDateTimeEnd);
-                              event.StartTime = st.toString(_uiDateFormat);
-                              event.EndTime = et.toString(_uiDateFormat);
-                              event.OnSaleDateTimeStart = sst
-                                  .toString(_uiDateFormat);
-                              event.OnSaleDateTimeEnd = set
-                                  .toString(_uiDateFormat);
-                            } catch (e) {
-                            }
-
-                            $rootScope.$apply(function() {
-                              def.resolve(event)
-                            });
-                          }, function(err) {
-                            $rootScope.$apply(function() {
-                              def.reject(err)
+                  BWL.Services.ModelService.ReadAsync(storeKey, "Event",
+                      eventKey, 10, function(_event) {
+                        debugger
+                        // prepare tmp var to be used by UI
+                        _event.tmpVenues = [];
+                        if (angular.isDefined(_event.Places)
+                            && angular.isArray(_event.Places)) {
+                          angular.forEach(_event.Places, function(ev) {
+                            _event.tmpVenues.push({
+                              id : ev.Key,
+                              text : ev.Name
                             })
-                          }, function(err) {
-                            $rootScope.$apply(function() {
-                              def.reject(err)
-                            })
-                          });
+                          })
+                        }
+
+                        try {
+                          // parse date and make it compatible with select2
+                          // widget
+                          var st = new Date(_event.StartTime);
+                          var et = new Date(_event.EndTime);
+                          var sst = new Date(_event.OnSaleDateTimeStart);
+                          var set = new Date(_event.OnSaleDateTimeEnd);
+                          _event.StartTime = st.toString(_uiDateFormat);
+                          _event.EndTime = et.toString(_uiDateFormat);
+                          _event.OnSaleDateTimeStart = sst
+                              .toString(_uiDateFormat);
+                          _event.OnSaleDateTimeEnd = set
+                              .toString(_uiDateFormat);
+                        } catch (e) {
+                        }
+
+                        $rootScope.$apply(function() {
+                          def.resolve(_event)
+                        });
+                      }, function(err) {
+                        $rootScope.$apply(function() {
+                          def.reject(err)
+                        })
+                      }, function(err) {
+                        $rootScope.$apply(function() {
+                          def.reject(err)
+                        })
+                      });
 
                   return def.promise;
                 },

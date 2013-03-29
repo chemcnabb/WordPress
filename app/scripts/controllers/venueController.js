@@ -28,7 +28,7 @@ function venueController($scope, $timeout, $cookieStore, $filter) {
     if (force || $scope.venues.length === 0) {
       $scope.place.loadPlaces($scope);
     }
-    if ($scope.events.length === 0) {
+    if (force || $scope.events.length === 0) {
       $scope.event.loadEvents($scope);
     }
   }

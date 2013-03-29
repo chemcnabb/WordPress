@@ -102,6 +102,7 @@
 								ui-select2="{containerCssClass:'input-xlarge', formatSelection: onVenueSelected}"
 								at-required ng-model="Event.tmpVenues" name="Event_tmpVenues"
 								ng-multiple="true">
+								<option><option>
 								<option ng-repeat="v in venues" value="{{v.Key}}">{{v.Name}}</option>
 							</select>
 						</dd>
@@ -164,7 +165,7 @@
 			<ul class="thumbnails" ng-show="events.length > 0">
 				<li ng-repeat="event in events" class="span3">
 					<div class="thumbnail">
-						<h3 class="pull-left">{{event.Name}}</h3>
+						<h4 class="pull-left">{{event.Name}}</h4>
 						<div class="btn-group pull-right">
 							<button class="btn btn-mini btn-success" ng-click="update(event)">{{
 								'Common.Text_Update' | t }}</button>

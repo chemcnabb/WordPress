@@ -17,13 +17,13 @@ function eventController($scope, $cookieStore, $filter) {
     if (force || $scope.events.length === 0) {
       $scope.event.loadEvents($scope);
     }
-    if ($scope.venues.length === 0) {
+    if (force || $scope.venues.length === 0) {
       $scope.place.loadPlaces($scope);
     }
   }
 
-  $scope.update = function(event) {
-    $scope.Event = event;
+  $scope.update = function(_event) {
+    $scope.Event = angular.copy(_event);
     $scope.wizard.open = true;
     $scope.wizard.reset();
   }
@@ -94,6 +94,9 @@ function eventController($scope, $cookieStore, $filter) {
         // update event
         $scope.event.updateEvent($scope.storeKey, $scope.Event).then(
             function(event) {
+              // update venues
+              debugger
+
               $scope.wizard.saved = true;
 
               // reload list

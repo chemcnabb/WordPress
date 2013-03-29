@@ -48,7 +48,7 @@
 					'Common.Text_IAccept' | t }}</a>
 			</div>
 		</div>
-		<ng-form name="atStore" ng-submit="save()">
+		<ng-form  ui-if="Store" name="atStore" ng-submit="save()">
 		<form ng-show="wizard.currentStep == 1" name="atStore1"
 			ng-submit="URIAvailable && wizard.next('atStore1') || false">
 			<dl class="clearfix">
