@@ -78,6 +78,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
   }
 
   $scope.createStore = function() {
+    $scope.wizard.reset(0);
     // initialize props
     $scope.Store = $scope.model.getInstanceOf('Store');
     $scope.Store.tmpPaymentProvider = $scope.model
@@ -90,7 +91,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
     // show agreement
     $timeout(function() {
       $scope.$apply(function() {
-        $scope.wizard.currentStep = 0;
+        debugger
         jQuery('#serviceAgreement').modal('show');
       })
     }, 500);

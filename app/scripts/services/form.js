@@ -94,9 +94,14 @@ azureTicketsApp.factory('formService', [
             }
           }
         },
-        reset : function() {
-          this.currentStep = 1, this.finished = false, this.saved = false,
-              checkStep = {};
+        /**
+         * @param step
+         *          (optional) Initialization step
+         * @returns
+         */
+        reset : function(step) {
+          this.currentStep = angular.isDefined(step) ? step : 1;
+          this.finished = false, this.saved = false, checkStep = {};
         }
       }
     }
