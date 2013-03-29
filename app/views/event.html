@@ -39,7 +39,7 @@
 				</div>
 
 				<!-- form -->
-				<ng-form name="atEvent" ng-submit="save()">
+				<ng-form ui-if="Event" name="atEvent" ng-submit="save()">
 				<form ng-show="wizard.currentStep == 1" name="atEvent1"
 					ng-submit="wizard.next('atEvent1')">
 					<dl class="clearfix">
@@ -96,7 +96,7 @@
 				<form ng-show="wizard.currentStep == 3" name="atEvent3"
 					ng-submit="wizard.next('atEvent3')">
 					<dl class="clearfix">
-						<dd ui-if="venues">
+						<dd>
 							<label>{{ 'Common.Text_Venue' | t}}</label> <select
 								data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
 								ui-select2="{containerCssClass:'input-xlarge', formatSelection: onVenueSelected}"

@@ -59,9 +59,9 @@ azureTicketsApp
                       .ReadAsync(storeKey, "Event", eventKey, 10,
                           function(event) {
                             // prepare tmp var to be used by UI
+                            event.tmpVenues = [];
                             if (angular.isDefined(event.Places)
                                 && angular.isArray(event.Places)) {
-                              event.tmpVenues = [];
                               angular.forEach(event.Places, function(ev) {
                                 event.tmpVenues.push({
                                   id : ev.Key,
