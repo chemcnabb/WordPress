@@ -15,18 +15,6 @@ function adminController($scope, $location, $cookieStore) {
     delete $scope.DomainProfile;
   });
 
-  $scope.init = function(force) {
-    if ($scope.venues.length === 0) {
-      $scope.place.loadPlaces($scope);
-    }
-    if ($scope.events.length === 0) {
-      $scope.event.loadEvents($scope);
-    }
-    if ($scope.orders.length === 0) {
-      $scope.order.loadOrders($scope);
-    }
-  }
-
   $scope.loadAuthProviders = function() {
     $scope.auth.loadAuthProviders().then(function(providers) {
       $scope.authProviders = providers;

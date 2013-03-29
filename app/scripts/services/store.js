@@ -5,11 +5,14 @@ azureTicketsApp
         [
             '$q',
             '$rootScope',
+            '$location',
+            '$cookieStore',
             'modelService',
             'configService',
             'geoService',
-            function($q, $rootScope, modelService, configService, geoService) {
-              var _stores = [], _lastAvailableURI = null;
+            function($q, $rootScope, $location, $cookieStore, modelService,
+                configService, geoService) {
+              var _stores = [], _lastAvailableURI = null, _isStoresLoading = false;
 
               return {
                 listStoresAsync : function(levels) {
@@ -314,6 +317,67 @@ azureTicketsApp
                       });
 
                   return def.promise;
+                },
+                /**
+                 * To be used from any controller, so it updates the
+                 * $scope.stores array without requiring us to do complex DI.
+                 * 
+                 * @param $scope
+                 *          Scope to refresh
+                 * @returns
+                 */
+                loadStores : function($scope) {
+                  if (!_isStoresLoading) {
+                    _isStoresLoading = true;
+
+                    $scope.DomainProfile = $scope.auth.getDomainProfile();
+
+                    // redirect to login if no profile
+                    if ($scope.DomainProfile.Key === null) {
+                      $location.path('/auth/login');
+                      return;
+                    }
+
+                    // check if user has access to a store and populate list if
+                    // so
+                    if ($scope.auth.hasStoreAccess()) {
+                      $scope.store.listStoresAsync(1).then(
+                          function() {
+                            $scope.stores = $scope.store.getStores();
+
+                            // if user has been upgraded but have not yet
+                            // created
+                            // a store
+                            if (!angular.isArray($scope.stores)) {
+                              $scope.createStore();
+                            } else {
+                              // set current store
+                              $scope.storeKey = $cookieStore
+                                  .get($scope.config.cookies.storeKey)
+                                  || $scope.stores[0].Key;
+
+                              // init venues
+                              if ($scope.venues.length === 0) {
+                                $scope.place.loadPlaces($scope);
+                              }
+                              if ($scope.events.length === 0) {
+                                $scope.event.loadEvents($scope);
+                              }
+                              if ($scope.orders.length === 0) {
+                                $scope.order.loadOrders($scope);
+                              }
+                            }
+
+                            _isStoresLoading = false;
+                          }, function(err) {
+                            _isStoresLoading = false;
+                            $scope.error.log(err)
+                          });
+                    } else if ($scope.auth.isLogged()) {
+                      _isStoresLoading = false;
+                      $scope.createStore();
+                    }
+                  }
                 }
               }
             }

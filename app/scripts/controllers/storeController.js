@@ -51,48 +51,11 @@ function storeController($scope, $cookieStore, $location, $timeout,
   })
 
   $scope.init = function() {
-    $scope.auth.authenticate($scope).then(
-        function() {
-          $scope.DomainProfile = $scope.auth.getDomainProfile();
-
-          // redirect to login if no profile
-          if ($scope.DomainProfile.Key === null) {
-            $location.path('/auth/login');
-            return;
-          }
-
-          // check if user has access to a store and populate list if so
-          if ($scope.auth.hasStoreAccess()) {
-            $scope.store.listStoresAsync(1).then(
-                function() {
-                  $scope.stores = $scope.store.getStores();
-
-                  // if user has been upgraded but have not yet created a store
-                  if (!angular.isArray($scope.stores)) {
-                    $scope.createStore();
-                  } else {
-                    // set current store
-                    $scope.storeKey = $cookieStore
-                        .get($scope.config.cookies.storeKey)
-                        || $scope.stores[0].Key;
-
-                    // init venues
-                    if ($scope.venues.length === 0) {
-                      $scope.place.loadPlaces($scope);
-                    }
-                    if ($scope.events.length === 0) {
-                      $scope.event.loadEvents($scope);
-                    }
-                  }
-                }, function(err) {
-                  $scope.error.log(err)
-                });
-          } else if ($scope.auth.isLogged()) {
-            $scope.createStore();
-          }
-        }, function(err) {
-          $scope.error.log(err)
-        });
+    $scope.auth.authenticate($scope).then(function() {
+      $scope.store.loadStores($scope);
+    }, function(err) {
+      $scope.error.log(err)
+    });
   }
 
   $scope.createStore = function() {

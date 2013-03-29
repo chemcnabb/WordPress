@@ -150,8 +150,8 @@ azureTicketsApp.factory('orderService', [
             _isOrdersLoading = true;
 
             $scope.storeKey = $scope.storeKey
-                || $cookieStore.get($scope.config.cookies.storeKey),
-                _this = this;
+                || $cookieStore.get($scope.config.cookies.storeKey);
+            var _this = this;
 
             _this.listOrdersAsync($scope.storeKey, 0).then(
                 function() {
