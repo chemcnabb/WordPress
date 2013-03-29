@@ -21,7 +21,9 @@ function storeController($scope, $cookieStore, $location, $timeout,
   $scope.$on('initStore', function(ev, key) {
     if (key === null) {
       delete $scope.Store;
-    } else if (angular.isDefined(key)) {
+    } else if (angular.isDefined(key) && $scope.auth.isDomainProfileReady()) {
+      $scope.storeKey = key;
+      $cookieStore.put($scope.config.cookies.storeKey, key);
       $scope.initStore(key, true);
     }
     if (angular.isDefined(ev) && angular.isFunction(ev.stopPropagation)) {
@@ -32,17 +34,6 @@ function storeController($scope, $cookieStore, $location, $timeout,
   $scope.$on('resetDomainProfile', function() {
     delete $scope.DomainProfile;
   });
-
-  $scope.$watch('storeKey', function(key, oldKey) {
-    if (key === null || oldKey === key) {
-      return;
-    }
-
-    if ($scope.auth.isDomainProfileReady()) {
-      $cookieStore.put($scope.config.cookies.storeKey, key);
-      $scope.$emit('initStore', key);
-    }
-  }, true);
 
   $scope.$watch('wizard.saved', function(v) {
     if (v) {
@@ -71,18 +62,9 @@ function storeController($scope, $cookieStore, $location, $timeout,
                   if (!angular.isArray($scope.stores)) {
                     $scope.createStore();
                   } else {
-                    // set current store
-                    $scope.storeKey = $cookieStore
+                    $scope.$emit('initStore', $cookieStore
                         .get($scope.config.cookies.storeKey)
-                        || $scope.stores[0].Key;
-
-                    // init venues
-                    if ($scope.venues.length === 0) {
-                      $scope.place.loadPlaces($scope);
-                    }
-                    if ($scope.events.length === 0) {
-                      $scope.event.loadEvents($scope);
-                    }
+                        || $scope.stores[0].Key);
                   }
                 }, function(err) {
                   $scope.error.log(err)
@@ -201,6 +183,14 @@ function storeController($scope, $cookieStore, $location, $timeout,
 
                 // monitor URI
                 $scope.initStoreURI();
+
+                // init venues
+                if ($scope.venues.length === 0) {
+                  $scope.place.loadPlaces($scope);
+                }
+                if ($scope.events.length === 0) {
+                  $scope.event.loadEvents($scope);
+                }
               }, function(err) {
                 $scope.error.log(err)
               });
