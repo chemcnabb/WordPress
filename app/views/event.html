@@ -4,7 +4,8 @@
 	<div ng-include src="'views/elements/topMenu.html'"></div>
 	<div ng-include src="'views/elements/error.html'"></div>
 	<!-- event info -->
-	<div ui-if="Store && Store.Key || false" class="row-fluid">
+	<div ui-if="Store && Store.Key && venues && venues.length > 0 || false"
+		class="row-fluid">
 		<p class="lead pull-left">{{ 'Common.Text_EventMenu_Events' | t}}</p>
 		<div class="btn-group pull-right">
 			<button class="btn btn-info" ng-click="create()">{{
