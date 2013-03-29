@@ -1,18 +1,19 @@
 function storeController($scope, $cookieStore, $location, $timeout,
     configService, authService, permService, storeService, modelService,
     errorService, geoService, formService, objectService, placeService,
-    eventService) {
+    orderService, eventService) {
   /**
    * The following vars are shared across controllers and accessible via $scope
    */
   $scope.storeKey = null, $scope.config = configService, $scope.name = 'store',
       $scope.stores = [], $scope.venues = [], $scope.events = [],
-      $scope.currencies = [], $scope.paymentProviders = [],
+      $scope.orders = [], $scope.currencies = [], $scope.paymentProviders = [],
       $scope.suggestedURLs = [], $scope.form = formService,
       $scope.geo = geoService, $scope.error = errorService,
       $scope.object = objectService, $scope.auth = authService,
       $scope.model = modelService, $scope.event = eventService,
-      $scope.place = placeService, $scope.store = storeService;
+      $scope.place = placeService, $scope.store = storeService,
+      $scope.order = orderService;
 
   // initialize wizard for Store
   $scope.wizard = $scope.form.getWizard($scope);
@@ -76,7 +77,12 @@ function storeController($scope, $cookieStore, $location, $timeout,
                         || $scope.stores[0].Key;
 
                     // init venues
-                    $scope.place.loadPlaces($scope);
+                    if ($scope.venues.length === 0) {
+                      $scope.place.loadPlaces($scope);
+                    }
+                    if ($scope.events.length === 0) {
+                      $scope.event.loadEvents($scope);
+                    }
                   }
                 }, function(err) {
                   $scope.error.log(err)
@@ -425,5 +431,5 @@ storeController.$inject = [
     '$scope', '$cookieStore', '$location', '$timeout', 'configService',
     'authService', 'permService', 'storeService', 'modelService',
     'errorService', 'geoService', 'formService', 'objectService',
-    'placeService', 'eventService'
+    'placeService', 'orderService', 'eventService'
 ];

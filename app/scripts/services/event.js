@@ -11,7 +11,7 @@ azureTicketsApp
             'geoService',
             function($q, $rootScope, $cookieStore, modelService, configService,
                 geoService) {
-              var _events = [], _lastAvailableURI = null, _uiDateFormat = 'MM/dd/yyyy hh:mm tt';
+              var _events = [], _lastAvailableURI = null, _uiDateFormat = 'MM/dd/yyyy hh:mm tt', _isEventsLoading = false;
 
               // format dates to be ISO 8601 as expected by API
               var _formatDates = function(tmpEvent) {
@@ -188,25 +188,32 @@ azureTicketsApp
                  * @returns
                  */
                 loadEvents : function($scope) {
-                  $scope.storeKey = $scope.storeKey
-                      || $cookieStore.get($scope.config.cookies.storeKey),
-                      __this = this;
+                  if (!_isEventsLoading) {
+                    _isEventsLoading = true;
 
-                  __this.listEventsAsync($scope.storeKey, 0).then(
-                      function() {
-                        $scope.events = __this.getEvents();
+                    $scope.storeKey = $scope.storeKey
+                        || $cookieStore.get($scope.config.cookies.storeKey),
+                        __this = this;
 
-                        if ($scope.events.length > 0) {
-                          angular.forEach($scope.events, function(event, i) {
-                            __this.initEvent($scope.storeKey, event.Key).then(
-                                function(event) {
-                                  $scope.events[i] = event;
-                                })
-                          });
-                        }
-                      }, function(err) {
-                        $scope.error.log(err)
-                      });
+                    __this.listEventsAsync($scope.storeKey, 0).then(
+                        function() {
+                          $scope.events = __this.getEvents();
+
+                          if ($scope.events.length > 0) {
+                            angular.forEach($scope.events, function(event, i) {
+                              __this.initEvent($scope.storeKey, event.Key)
+                                  .then(function(event) {
+                                    $scope.events[i] = event;
+                                  })
+                            });
+                          }
+
+                          _isEventsLoading = false;
+                        }, function(err) {
+                          _isEventsLoading = false;
+                          $scope.error.log(err)
+                        });
+                  }
                 }
               }
             }
