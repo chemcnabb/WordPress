@@ -1,4 +1,4 @@
-function eventController($scope, $cookieStore) {
+function eventController($scope, $cookieStore, $filter) {
   $scope.name = 'event';
 
   // initialize wizard for Event
@@ -107,5 +107,5 @@ function eventController($scope, $cookieStore) {
 }
 
 eventController.$inject = [
-    '$scope', '$cookieStore'
+    '$scope', '$cookieStore', '$filter'
 ];
