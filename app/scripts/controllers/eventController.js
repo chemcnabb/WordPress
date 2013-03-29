@@ -20,9 +20,6 @@ function eventController($scope, $cookieStore, $filter) {
     if ($scope.venues.length === 0) {
       $scope.place.loadPlaces($scope);
     }
-    if ($scope.orders.length === 0) {
-      $scope.order.loadOrders($scope);
-    }
   }
 
   $scope.update = function(event) {

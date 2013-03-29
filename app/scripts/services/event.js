@@ -192,17 +192,17 @@ azureTicketsApp
                     _isEventsLoading = true;
 
                     $scope.storeKey = $scope.storeKey
-                        || $cookieStore.get($scope.config.cookies.storeKey);
-                    var _this = this;
+                        || $cookieStore.get($scope.config.cookies.storeKey),
+                        __this = this;
 
-                    _this.listEventsAsync($scope.storeKey, 0).then(
+                    __this.listEventsAsync($scope.storeKey, 0).then(
                         function() {
-                          $scope.events = _this.getEvents();
+                          $scope.events = __this.getEvents();
 
                           if ($scope.events.length > 0) {
                             angular.forEach($scope.events, function(event, i) {
-                              _this.initEvent($scope.storeKey, event.Key).then(
-                                  function(event) {
+                              __this.initEvent($scope.storeKey, event.Key)
+                                  .then(function(event) {
                                     $scope.events[i] = event;
                                   })
                             });
