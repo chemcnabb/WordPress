@@ -1,5 +1,5 @@
 <div class="atPanel" ui-if="DomainProfile && DomainProfile.Key || false"
-	ng-controller="venueController" ng-init="init()" ng-cloak>
+	ng-controller="venueController" ng-cloak>
 	<!-- top menu -->
 	<div ng-include src="'views/elements/topMenu.html'"></div>
 	<div ng-include src="'views/elements/error.html'"></div>
@@ -35,7 +35,7 @@
 				</div>
 
 				<!-- form -->
-				<ng-form  ui-if="Place" name="atVenue" ng-submit="save()">
+				<ng-form ui-if="Place" name="atVenue" ng-submit="save()">
 				<form ng-show="wizard.currentStep == 1" name="atVenue1"
 					ng-submit="wizard.next('atVenue1')">
 					<dl class="clearfix">

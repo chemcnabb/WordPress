@@ -13,13 +13,8 @@ function eventController($scope, $cookieStore, $filter) {
     }
   })
 
-  $scope.init = function(force) {
-    if (force || $scope.events.length === 0) {
-      $scope.event.loadEvents($scope);
-    }
-    if (force || $scope.venues.length === 0) {
-      $scope.place.loadPlaces($scope);
-    }
+  $scope.init = function() {
+    $scope.event.loadEvents($scope);
   }
 
   $scope.update = function(_event) {
@@ -86,22 +81,31 @@ function eventController($scope, $cookieStore, $filter) {
           $scope.wizard.saved = true;
 
           // reload list
-          $scope.init(true);
+          $scope.init();
         }, function(err) {
           $scope.error.log(err)
         });
       } else {
         // update event
-        $scope.event.updateEvent($scope.storeKey, $scope.Event).then(
-            function(event) {
-              // update venues
-              debugger
 
-              $scope.wizard.saved = true;
+        // update venues
+        var _finishes = function() {
+          $scope.event.deleteVenues($scope.storeKey, $scope.Event).then(
+              function() {
+                $scope.event.addVenues($scope.storeKey, $scope.Event).then(
+                    function() {
+                      $scope.wizard.saved = true;
+                      $scope.init(true);
+                    }, function(err) {
+                      $scope.error.log(err)
+                    });
+              }, function(err) {
+                $scope.error.log(err)
+              });
+        }
 
-              // reload list
-              $scope.init(true);
-            }, function(err) {
+        $scope.event.updateEvent($scope.storeKey, $scope.Event).then(_finishes,
+            function(err) {
               $scope.error.log(err)
             });
       }

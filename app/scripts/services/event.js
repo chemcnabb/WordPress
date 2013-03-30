@@ -8,9 +8,10 @@ azureTicketsApp
             '$cookieStore',
             'modelService',
             'configService',
+            'objectService',
             'geoService',
             function($q, $rootScope, $cookieStore, modelService, configService,
-                geoService) {
+                objectService, geoService) {
               var _events = [], _lastAvailableURI = null, _uiDateFormat = 'MM/dd/yyyy hh:mm tt', _isEventsLoading = false;
 
               // format dates to be ISO 8601 as expected by API
@@ -57,7 +58,6 @@ azureTicketsApp
 
                   BWL.Services.ModelService.ReadAsync(storeKey, "Event",
                       eventKey, 10, function(_event) {
-                        debugger
                         // prepare tmp var to be used by UI
                         _event.tmpVenues = [];
                         if (angular.isDefined(_event.Places)
@@ -161,6 +161,7 @@ azureTicketsApp
                   var def = $q.defer(), tmpEvent = angular.copy(event);
 
                   delete tmpEvent.tmpVenues;
+                  delete tmpEvent.Places;
                   delete tmpEvent.$$hashKey;
                   delete tmpEvent.Type;
 
@@ -176,6 +177,71 @@ azureTicketsApp
                           def.reject(err)
                         })
                       });
+
+                  return def.promise;
+                },
+                deleteVenues : function(storeKey, _event) {
+                  var def = $q.defer();
+                  var tmpEvent = angular.copy(_event);
+                  var _allRemove = null;
+
+                  // if venues, then delete existing
+                  if (angular.isArray(_event.Places)
+                      && _event.Places.length > 0) {
+                    var tmpPlaces = _event.Places.map(function(v, k) {
+                      return v.Key
+                    });
+                    // declare remove func
+                    var _removeVenue = function(venueKey) {
+                      var __def = $q.defer();
+                      var _existent = _event.Places ? objectService.grep(
+                          _event.Places, 'Key', venueKey) : false;
+
+                      if (_existent === false || _existent === null) {
+                        __def.resolve();
+                      } else {
+                        BWL.Services.ModelService.RemoveAsync(storeKey,
+                            'Event', _event.Key, 'Places', 'Place', venueKey,
+                            __def.resolve, __def.reject);
+                      }
+
+                      return __def.promise;
+                    }
+
+                    _allRemove = $q.all(tmpPlaces.map(_removeVenue));
+                  }
+
+                  if (_allRemove === null) {
+                    def.resolve()
+                  } else {
+                    _allRemove.then(def.resolve, def.reject);
+                  }
+
+                  return def.promise;
+                },
+                addVenues : function(storeKey, _event) {
+                  var def = $q.defer();
+                  var tmpEvent = angular.copy(_event);
+
+                  var _addVenue = function(venueKey) {
+                    var _def = $q.defer();
+                    var _existent = _event.Places ? objectService.grep(
+                        _event.Places, 'Key', venueKey) : false;
+
+                    if (_existent !== false && _existent !== null) {
+                      _def.resolve();
+                    } else {
+                      BWL.Services.ModelService.AddAsync(storeKey, 'Event',
+                          tmpEvent.Key, 'Places', 'Place', {
+                            Key : venueKey
+                          }, _def.resolve, _def.reject);
+                    }
+
+                    return _def.promise;
+                  }
+
+                  var _allAdd = $q.all(tmpEvent.tmpVenues.map(_addVenue));
+                  _allAdd.then(def.resolve, def.reject);
 
                   return def.promise;
                 },

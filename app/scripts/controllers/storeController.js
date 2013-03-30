@@ -185,7 +185,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
                 // monitor URI
                 $scope.initStoreURI();
 
-                // init venues
+                // init venues, events
                 if ($scope.venues.length === 0) {
                   $scope.place.loadPlaces($scope);
                 }

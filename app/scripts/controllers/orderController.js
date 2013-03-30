@@ -13,16 +13,8 @@ function orderController($scope, $cookieStore, $filter) {
     }
   })
 
-  $scope.init = function(force) {
-    if (force || $scope.orders.length === 0) {
-      $scope.order.loadOrders($scope);
-    }
-    if ($scope.venues.length === 0) {
-      $scope.place.loadPlaces($scope);
-    }
-    if ($scope.events.length === 0) {
-      $scope.event.loadEvents($scope);
-    }
+  $scope.init = function() {
+    $scope.order.loadOrders($scope);
   }
 
   $scope.update = function(order) {
@@ -70,7 +62,7 @@ function orderController($scope, $cookieStore, $filter) {
           $scope.wizard.saved = true;
 
           // reload list
-          $scope.init(true);
+          $scope.init();
         }, function(err) {
           $scope.error.log(err)
         });
@@ -81,7 +73,7 @@ function orderController($scope, $cookieStore, $filter) {
               $scope.wizard.saved = true;
 
               // reload list
-              $scope.init(true);
+              $scope.init();
             }, function(err) {
               $scope.error.log(err)
             });

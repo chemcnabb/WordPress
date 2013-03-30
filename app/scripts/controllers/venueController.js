@@ -20,17 +20,8 @@ function venueController($scope, $timeout, $cookieStore, $filter) {
     }
   })
 
-  /**
-   * @param force
-   *          true to force reload
-   */
-  $scope.init = function(force) {
-    if (force || $scope.venues.length === 0) {
-      $scope.place.loadPlaces($scope);
-    }
-    if (force || $scope.events.length === 0) {
-      $scope.event.loadEvents($scope);
-    }
+  $scope.init = function() {
+    $scope.place.loadPlaces($scope);
   }
 
   $scope.update = function(venue) {
@@ -66,12 +57,12 @@ function venueController($scope, $timeout, $cookieStore, $filter) {
                     && venue.Address.Key !== null) {
                   $scope.geo.deleteAddress($scope.storeKey, venue.Address.Key)
                       .then(function() {
-                        $scope.init(true);
+                        $scope.init();
                       }, function(err) {
                         $scope.error.log(err)
                       });
                 } else {
-                  $scope.init(true);
+                  $scope.init();
                 }
               }, function(err) {
                 $scope.error.log(err)

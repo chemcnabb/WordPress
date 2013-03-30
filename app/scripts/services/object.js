@@ -37,13 +37,15 @@ azureTicketsApp.factory('objectService', function() {
     grep : function(arr, prop, val) {
       var ret = null;
 
-      angular.forEach(arr, function(v, k) {
-        if (angular.isDefined(v[prop])) {
-          if (angular.equals(v[prop], val)) {
-            ret = v;
+      if (angular.isArray(arr)) {
+        angular.forEach(arr, function(v, k) {
+          if (angular.isDefined(v[prop])) {
+            if (angular.equals(v[prop], val)) {
+              ret = v;
+            }
           }
-        }
-      });
+        });
+      }
 
       return ret;
     }

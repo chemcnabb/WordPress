@@ -1,5 +1,5 @@
 <div class="atPanel" ui-if="DomainProfile && DomainProfile.Key || false"
-	ng-controller="eventController" ng-init="init()" ng-cloak>
+	ng-controller="eventController" ng-cloak>
 	<!-- top menu -->
 	<div ng-include src="'views/elements/topMenu.html'"></div>
 	<div ng-include src="'views/elements/error.html'"></div>
@@ -99,10 +99,9 @@
 						<dd>
 							<label>{{ 'Common.Text_Venue' | t}}</label> <select
 								data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
-								ui-select2="{containerCssClass:'input-xlarge', formatSelection: onVenueSelected}"
+								ui-select2="{multiple: true, containerCssClass:'input-xlarge', formatSelection: onVenueSelected}"
 								at-required ng-model="Event.tmpVenues" name="Event_tmpVenues"
 								ng-multiple="true">
-								<option><option>
 								<option ng-repeat="v in venues" value="{{v.Key}}">{{v.Name}}</option>
 							</select>
 						</dd>
