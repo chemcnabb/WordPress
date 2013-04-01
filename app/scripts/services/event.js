@@ -6,12 +6,13 @@ azureTicketsApp
             '$q',
             '$rootScope',
             '$cookieStore',
+            '$timeout',
             'modelService',
             'configService',
             'objectService',
             'geoService',
-            function($q, $rootScope, $cookieStore, modelService, configService,
-                objectService, geoService) {
+            function($q, $rootScope, $cookieStore, $timeout, modelService,
+                configService, objectService, geoService) {
               var _events = [], _lastAvailableURI = null, _uiDateFormat = 'MM/dd/yyyy hh:mm tt', _isEventsLoading = false;
 
               // format dates to be ISO 8601 as expected by API
@@ -193,28 +194,48 @@ azureTicketsApp
                     });
                     // declare remove func
                     var _removeVenue = function(venueKey) {
-                      var __def = $q.defer();
+                      var _def = $q.defer();
                       var _existent = _event.Places ? objectService.grep(
                           _event.Places, 'Key', venueKey) : false;
 
                       if (_existent === false || _existent === null) {
-                        __def.resolve();
+                        $timeout(function() {
+                          _def.resolve();
+                        }, 50);
                       } else {
                         BWL.Services.ModelService.RemoveAsync(storeKey,
                             'Event', _event.Key, 'Places', 'Place', venueKey,
-                            __def.resolve, __def.reject);
+                            function() {
+                              $timeout(function() {
+                                _def.resolve();
+                              }, 50);
+                            }, function(err) {
+                              $timeout(function() {
+                                _def.reject(err);
+                              }, 50);
+                            });
                       }
 
-                      return __def.promise;
+                      return _def.promise;
                     }
 
                     _allRemove = $q.all(tmpPlaces.map(_removeVenue));
                   }
 
                   if (_allRemove === null) {
-                    def.resolve()
+                    $timeout(function() {
+                      def.resolve();
+                    }, 150);
                   } else {
-                    _allRemove.then(def.resolve, def.reject);
+                    _allRemove.then(function() {
+                      $timeout(function() {
+                        def.resolve();
+                      }, 150);
+                    }, function(err) {
+                      $timeout(function() {
+                        def.reject(err);
+                      }, 150);
+                    });
                   }
 
                   return def.promise;
@@ -229,19 +250,38 @@ azureTicketsApp
                         _event.Places, 'Key', venueKey) : false;
 
                     if (_existent !== false && _existent !== null) {
-                      _def.resolve();
+                      $timeout(function() {
+                        _def.resolve();
+                      }, 50);
                     } else {
                       BWL.Services.ModelService.AddAsync(storeKey, 'Event',
                           tmpEvent.Key, 'Places', 'Place', {
                             Key : venueKey
-                          }, _def.resolve, _def.reject);
+                          }, function() {
+                            $timeout(function() {
+                              _def.resolve();
+                            }, 50);
+                          }, function(err) {
+                            $timeout(function() {
+                              _def.reject(err);
+                            }, 50);
+                          });
                     }
 
                     return _def.promise;
                   }
 
                   var _allAdd = $q.all(tmpEvent.tmpVenues.map(_addVenue));
-                  _allAdd.then(def.resolve, def.reject);
+
+                  _allAdd.then(function() {
+                    $timeout(function() {
+                      def.resolve();
+                    }, 150);
+                  }, function(err) {
+                    $timeout(function() {
+                      def.reject(err);
+                    }, 150);
+                  });
 
                   return def.promise;
                 },

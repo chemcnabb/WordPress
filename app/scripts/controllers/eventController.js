@@ -94,6 +94,7 @@ function eventController($scope, $cookieStore, $filter) {
               function() {
                 $scope.event.addVenues($scope.storeKey, $scope.Event).then(
                     function() {
+                      debugger
                       $scope.wizard.saved = true;
                       $scope.init(true);
                     }, function(err) {
