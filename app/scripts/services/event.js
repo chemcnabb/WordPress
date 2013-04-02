@@ -64,12 +64,11 @@ azureTicketsApp
                         if (angular.isDefined(_event.Places)
                             && angular.isArray(_event.Places)) {
                           angular.forEach(_event.Places, function(ev) {
-                            _event.tmpVenues.push({
-                              id : ev.Key,
-                              text : ev.Name
-                            })
+                            _event.tmpVenues.push(ev)
                           })
                         }
+                        // used by select2 internally
+                        _event._tmpVenues = angular.copy(_event.tmpVenues);
 
                         try {
                           // parse date and make it compatible with select2
@@ -162,6 +161,7 @@ azureTicketsApp
                   var def = $q.defer(), tmpEvent = angular.copy(event);
 
                   delete tmpEvent.tmpVenues;
+                  delete tmpEvent._tmpVenues;
                   delete tmpEvent.Places;
                   delete tmpEvent.$$hashKey;
                   delete tmpEvent.Type;
@@ -183,10 +183,9 @@ azureTicketsApp
                 },
                 deleteVenues : function(storeKey, _event) {
                   var def = $q.defer();
-                  var tmpEvent = angular.copy(_event);
                   var _allRemove = null;
 
-                  // if venues, then delete existing
+                  // remove those Places which are not present in _tmpVenues
                   if (angular.isArray(_event.Places)
                       && _event.Places.length > 0) {
                     var tmpPlaces = _event.Places.map(function(v, k) {
@@ -195,18 +194,29 @@ azureTicketsApp
                     // declare remove func
                     var _removeVenue = function(venueKey) {
                       var _def = $q.defer();
-                      var _existent = _event.Places ? objectService.grep(
-                          _event.Places, 'Key', venueKey) : false;
 
-                      if (_existent === false || _existent === null) {
+                      if (!angular.isDefined(venueKey)) {
+                        _def.resolve();
+                        return;
+                      }
+
+                      // checks whether the venue has been removed or not
+                      var _existent = _event._tmpVenues ? objectService.grep(
+                          _event._tmpVenues, 'Key', venueKey) : null;
+
+                      if (_existent !== null) {
+                        // venue still present, do nothing
                         $timeout(function() {
                           _def.resolve();
                         }, 50);
                       } else {
+                        // venue is not selected anymore, remove
                         BWL.Services.ModelService.RemoveAsync(storeKey,
                             'Event', _event.Key, 'Places', 'Place', venueKey,
                             function() {
                               $timeout(function() {
+                                objectService.remove(_event.Places, 'Key',
+                                    venueKey);
                                 _def.resolve();
                               }, 50);
                             }, function(err) {
@@ -242,10 +252,14 @@ azureTicketsApp
                 },
                 addVenues : function(storeKey, _event) {
                   var def = $q.defer();
-                  var tmpEvent = angular.copy(_event);
-
                   var _addVenue = function(venueKey) {
                     var _def = $q.defer();
+
+                    if (!angular.isDefined(venueKey)) {
+                      _def.resolve();
+                      return;
+                    }
+
                     var _existent = _event.Places ? objectService.grep(
                         _event.Places, 'Key', venueKey) : false;
 
@@ -255,7 +269,7 @@ azureTicketsApp
                       }, 50);
                     } else {
                       BWL.Services.ModelService.AddAsync(storeKey, 'Event',
-                          tmpEvent.Key, 'Places', 'Place', {
+                          _event.Key, 'Places', 'Place', {
                             Key : venueKey
                           }, function() {
                             $timeout(function() {
@@ -271,7 +285,12 @@ azureTicketsApp
                     return _def.promise;
                   }
 
-                  var _allAdd = $q.all(tmpEvent.tmpVenues.map(_addVenue));
+                  // select2 has set undefined for _event.tmpVenues, so we
+                  // restore the backup
+                  var venues = angular.copy(_event._tmpVenues).filter(Boolean);
+                  var _allAdd = $q.all(venues.map(function(v) {
+                    return v.Key;
+                  }).map(_addVenue));
 
                   _allAdd.then(function() {
                     $timeout(function() {

@@ -172,9 +172,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
                   // a bit in order to properly broadcast
                   // msg
                   $timeout(function() {
-                    $scope.$apply(function() {
-                      $scope.$broadcast('loadCountry', $scope.Store.Address);
-                    })
+                    $scope.$broadcast('loadCountry', $scope.Store.Address);
                   }, 500);
                 }
 

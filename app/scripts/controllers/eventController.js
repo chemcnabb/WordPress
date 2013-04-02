@@ -25,6 +25,7 @@ function eventController($scope, $cookieStore, $filter) {
 
   $scope.create = function() {
     $scope.Event = $scope.model.getInstanceOf('Event');
+    $scope.Event.tmpVenues = [];
     $scope.wizard.open = true;
     $scope.wizard.reset();
   }
@@ -40,22 +41,44 @@ function eventController($scope, $cookieStore, $filter) {
   }
 
   /**
-   * The select2 directive doesn't update model when using ng-multiple, so we
-   * need to update manually.
+   * Options for the venue selector widget. select2 doesn't work properly on
+   * "multiple" mode, so we need to update model manually and do other hacks.
    */
-  $scope.onVenueSelected = function(v, add, rem) {
-    if (angular.isDefined($scope.Event) && angular.isDefined(v.id)
-        && v.id !== null && !/\{\{[^\}]+\}\}/g.test(v.id)) {
-      if (!angular.isDefined($scope.Event.tmpVenues)) {
-        $scope.Event.tmpVenues = [];
-      }
+  // @todo make this part of the atfield directive
+  $scope.optsSelVenue = {
+    containerCssClass : 'input-xlarge',
+    multiple : true,
+    initSelection : function(element, callback) {
+      var el = jQuery('[name=Event_tmpVenues]').first();
 
-      if ($scope.Event.tmpVenues.indexOf(v.id) === -1) {
-        $scope.Event.tmpVenues.push(v.id);
-      }
-    }
+      // watch for changes
+      jQuery(el).on('change', function(ev) {
+        $scope.$apply(function() {
+          var a = ev.added || null;
+          var r = ev.removed || null;
 
-    return v.text;
+          // adding venue
+          if (a !== null) {
+            $scope.Event._tmpVenues.push($scope.object.undoFormatSelect2(a));
+          }
+          // removing venue
+          if (r !== null) {
+            $scope.object.remove($scope.Event._tmpVenues, 'Key', r.id);
+          }
+
+          if ($scope.Event._tmpVenues.length === 0) {
+            jQuery(el).select2('data', []);
+          }
+        });
+      });
+
+      callback($scope.Event._tmpVenues.map($scope.object.formatSelect2));
+    },
+    query : function(query) {
+      query.callback({
+        results : $scope.venues.map($scope.object.formatSelect2)
+      });
+    },
   }
 
   $scope.save = function() {
@@ -68,9 +91,9 @@ function eventController($scope, $cookieStore, $filter) {
           Public : true,
           Name : $scope.Event.Name,
           Description : $scope.Event.Description,
-          Places : $scope.Event.tmpVenues.filter(Boolean).map(function(v) {
+          Places : $scope.Event.tmpVenues.map(function(v) {
             return {
-              Key : v
+              Key : v.Key
             }
           }),
           StartTime : $scope.Event.StartTime,
@@ -94,7 +117,6 @@ function eventController($scope, $cookieStore, $filter) {
               function() {
                 $scope.event.addVenues($scope.storeKey, $scope.Event).then(
                     function() {
-                      debugger
                       $scope.wizard.saved = true;
                       $scope.init(true);
                     }, function(err) {

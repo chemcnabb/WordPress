@@ -40,7 +40,7 @@
 
 				<!-- form -->
 				<ng-form ui-if="Event" name="atEvent" ng-submit="save()">
-				<form ng-show="wizard.currentStep == 1" name="atEvent1"
+				<form ui-if="wizard.currentStep == 1" name="atEvent1"
 					ng-submit="wizard.next('atEvent1')">
 					<dl class="clearfix">
 						<dd>
@@ -58,7 +58,7 @@
 						</dd>
 					</dl>
 				</form>
-				<form ng-show="wizard.currentStep == 2" name="atEvent2"
+				<form ui-if="wizard.currentStep == 2" name="atEvent2"
 					ng-submit="wizard.next('atEvent2')">
 					<dl>
 						<dd class="pull-left">
@@ -97,13 +97,12 @@
 					ng-submit="wizard.next('atEvent3')">
 					<dl class="clearfix">
 						<dd>
-							<label>{{ 'Common.Text_Venue' | t}}</label> <select
+							<label>{{ 'Common.Text_Venue' | t}}</label>
+							<!-- @todo make this part of the atfield directive -->
+							<input type="text"
 								data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
-								ui-select2="{multiple: true, containerCssClass:'input-xlarge', formatSelection: onVenueSelected}"
-								at-required ng-model="Event.tmpVenues" name="Event_tmpVenues"
-								ng-multiple="true">
-								<option ng-repeat="v in venues" value="{{v.Key}}">{{v.Name}}</option>
-							</select>
+								ui-select2="optsSelVenue" at-required ng-model="Event.tmpVenues"
+								name="Event_tmpVenues" />
 						</dd>
 						<dd class="clear">
 							<atfield class="input-small" ng-model="Event.MaximumCapacity"

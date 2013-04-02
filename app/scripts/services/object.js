@@ -48,6 +48,55 @@ azureTicketsApp.factory('objectService', function() {
       }
 
       return ret;
+    },
+    /**
+     * Iterates over array of objects and removes the element's whose property
+     * prop is equal to val.
+     * 
+     * @param arr
+     *          {array}
+     * @param prop
+     *          {string}
+     * @param val
+     *          {mixed}
+     * @returns {object}
+     */
+    remove : function(arr, prop, val) {
+      if (angular.isArray(arr)) {
+        angular.forEach(arr, function(v, k) {
+          if (angular.isDefined(v[prop])) {
+            if (angular.equals(v[prop], val)) {
+              Array.prototype.splice.call(arr, k, 1)
+            }
+          }
+        });
+      }
+    },
+    /**
+     * Prepares and formats a model based object to be used by select2
+     * 
+     * @param type
+     *          {string}
+     * @return {object}
+     */
+    formatSelect2 : function(model) {
+      return {
+        id : (!model.id ? model.Key : model.id),
+        text : (!model.text ? model.Name : model.text)
+      }
+    },
+    /**
+     * Converts back from select2 object to model based object
+     * 
+     * @param type
+     *          {string}
+     * @return {object}
+     */
+    undoFormatSelect2 : function(o) {
+      return {
+        Key : o.id,
+        Name : o.text
+      }
     }
   }
 });
