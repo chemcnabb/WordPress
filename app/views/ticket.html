@@ -5,7 +5,13 @@
 	<div ng-include src="'views/elements/error.html'"></div>
 	<!-- ticket info -->
 	<div ui-if="Store && Store.Key && events && events.length > 0 || false"
-		class="row-fluid">
+		class="row-fluid" ng-init="init()">
+		<ul class="breadcrumb">
+			<li><a href="/#/admin/event">{{
+					'Common.Text_EventMenu_Events' | t}}</a> <span class="divider">/</span></li>
+			<li class="active">{{ Event.Name }}</li>
+		</ul>
+
 		<p class="lead pull-left">{{ 'Common.Text_TicketMenu_Tickets' |
 			t}}</p>
 		<div class="btn-group pull-right">
@@ -24,10 +30,10 @@
 				<!-- messages -->
 				<div ng-switch="wizard.currentStep">
 					<div class="alert alert-info" ng-switch-when="2">
-						<strong>{{ 'Ticket.Text_DateInformation' | t }}</strong>
+						<strong>{{ 'Event.Text_DateInformation' | t }}</strong>
 					</div>
 					<div class="alert alert-info" ng-switch-when="3">
-						<strong>{{ 'Ticket.Text_PlaceInformation' | t }}</strong>
+						<strong>{{ 'Common.Text_QtyInformation' | t }}</strong>
 					</div>
 					<div class="alert alert-info" ng-switch-when="4">
 						<strong>{{ 'Common.Text_Confirm' | t }}</strong>
@@ -53,7 +59,7 @@
 						<dd>
 							<atfield class="input-xxlarge"
 								ng-model="GeneralAdmissionTicketItemInfo.Policy"
-								label="'Common.Text_Description' | t" rows="5" />
+								label="'Common.Text_Policy' | t" rows="5" />
 						</dd>
 						<dd>
 							<input type="submit" class="btn btn-primary clear"
@@ -68,12 +74,12 @@
 						<dd class="pull-left">
 							<atfield at-required class="input-large"
 								ng-model="GeneralAdmissionTicketItemInfo.OnSaleDateTimeStart"
-								label="'GeneralAdmissionTicketItemInfo.Text_SaleStartAt' | t" />
+								label="'Common.LabelGeneralAdmissionTicketItemInfoOnSaleDateTimeStart' | t" />
 						</dd>
 						<dd class="pull-left">
 							<atfield at-required class="input-large"
 								ng-model="GeneralAdmissionTicketItemInfo.OnSaleDateTimeEnd"
-								label="'GeneralAdmissionTicketItemInfo.Text_SaleEndAt' | t" />
+								label="'Common.LabelGeneralAdmissionTicketItemInfoOnSaleDateTimeEnd' | t" />
 						</dd>
 						<dd class="clear"></dd>
 						<dd class="pull-left">
@@ -94,6 +100,11 @@
 						<dd class="clear">
 							<atfield class="input-small"
 								ng-model="GeneralAdmissionTicketItemInfo.MaxPurchaseQuantity"
+								at-required />
+						</dd>
+						<dd class="clear">
+							<atfield class="input-small"
+								ng-model="GeneralAdmissionTicketItemInfo.Price.ItemPrice"
 								at-required />
 						</dd>
 						<dd class="clear"></dd>
@@ -147,7 +158,7 @@
 		</div>
 		<div class="clear row-fluid list">
 			<div ng-show="tickets.length == 0" class="alert alert-info">{{
-				'Ticket.Text_NoTicket_Msg' | t }}</div>
+				'Common.Text_TicketEmpty' | t }}</div>
 			<!-- ticket list -->
 			<ul class="thumbnails" ng-show="tickets.length > 0">
 				<li ng-repeat="ticket in tickets" class="span3">
@@ -161,7 +172,7 @@
 								class="btn btn-mini btn-danger">{{ 'Common.Text_Remove'
 								| t }}</button>
 						</div>
-						<p class="text clear">{{ticket.Description}}</p>
+						<p class="text clear">{{ticket.Policy}}</p>
 						<span class="label label-inverse">Sales Start on {{
 							ticket.OnSaleDateTimeStart | date:'MM/dd/yyyy @ h:mma' }}</span> <span
 							class="label label-inverse">Sales End on {{

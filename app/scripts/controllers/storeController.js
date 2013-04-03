@@ -191,9 +191,6 @@ function storeController($scope, $cookieStore, $location, $timeout,
                 if ($scope.events.length === 0) {
                   $scope.event.loadEvents($scope);
                 }
-                if ($scope.tickets.length === 0) {
-                  $scope.ticket.loadTickets($scope);
-                }
               }, function(err) {
                 $scope.error.log(err)
               });

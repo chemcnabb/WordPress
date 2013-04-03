@@ -54,13 +54,13 @@ azureTicketsApp
                           $scope.atModel[p]
                         ];
                     var cc = 0;
-
+                    debugger
                     angular
                         .forEach(
                             pp,
                             function(prop, k) {
                               // suffix added when multiple objects in property
-                              var countSuffix = pp.length > 1 ? ' #' + (++cc)
+                              var countSuffix = pp.length > 1 ? ' #' + ++cc
                                   : '';
 
                               if ((angular.isNumber(prop) || angular
@@ -131,6 +131,11 @@ azureTicketsApp
                                   case BWL.Model.Place.Type:
                                     out[$filter('t')('Common.Text_Venue')
                                         + countSuffix] = prop.Name;
+                                    break;
+                                  case BWL.Model.Price.Type:
+                                    out[$filter('t')('Common.Text_Price')
+                                        + ' (' + prop.Currency + ')'
+                                        + countSuffix] = prop.ItemPrice;
                                     break;
                                 }
                               }

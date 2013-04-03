@@ -1,4 +1,4 @@
-function ticketController($scope, $cookieStore, $filter) {
+function ticketController($scope, $cookieStore, $filter, $routeParams) {
   $scope.name = 'ticket';
 
   // initialize wizard for GeneralAdmissionTicketItemInfo
@@ -13,7 +13,16 @@ function ticketController($scope, $cookieStore, $filter) {
     }
   })
 
+  // load event
+  $scope.loadEvent = function() {
+    if (angular.isDefined($routeParams.eventKey)) {
+      $scope.Event = $scope.object.grep($scope.events, 'Key',
+          $routeParams.eventKey);
+    }
+  }
+
   $scope.init = function() {
+    $scope.loadEvent();
     $scope.ticket.loadTickets($scope);
   }
 
@@ -53,7 +62,10 @@ function ticketController($scope, $cookieStore, $filter) {
                   Public : true,
                   Name : $scope.GeneralAdmissionTicketItemInfo.Name,
                   Policy : $scope.GeneralAdmissionTicketItemInfo.Policy,
-                  Price : $scope.GeneralAdmissionTicketItemInfo.Price,
+                  Price : {
+                    ItemPrice : parseFloat($scope.GeneralAdmissionTicketItemInfo.Price.ItemPrice),
+                    Currency : $scope.Store.Currency
+                  },
                   MaxPurchaseQuantity : $scope.GeneralAdmissionTicketItemInfo.MaxPurchaseQuantity,
                   OnSaleDateTimeStart : $scope.GeneralAdmissionTicketItemInfo.OnSaleDateTimeStart,
                   OnSaleDateTimeEnd : $scope.GeneralAdmissionTicketItemInfo.OnSaleDateTimeEnd
@@ -68,6 +80,8 @@ function ticketController($scope, $cookieStore, $filter) {
       } else {
         // update ticket
         var _finishes = function() {
+          // attach ticket to current event
+
           $scope.wizard.saved = true;
           $scope.init(true);
         }
@@ -83,5 +97,5 @@ function ticketController($scope, $cookieStore, $filter) {
 }
 
 ticketController.$inject = [
-    '$scope', '$cookieStore', '$filter'
+    '$scope', '$cookieStore', '$filter', '$routeParams'
 ];
