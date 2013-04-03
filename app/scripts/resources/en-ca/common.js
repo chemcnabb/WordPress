@@ -102,6 +102,7 @@ var CommonResources = {
   LabelGeneralAdmissionTicketItemInfoOnSaleDateTimeStart : 'Sales Starts On',
   LabelGeneralAdmissionTicketItemInfoOnSaleDateTimeEnd : 'Sales Ends On',
   LabelGeneralAdmissionTicketItemInfoPolicy : 'Policy',
+  LabelGeneralAdmissionTicketItemInfoMaxPurchaseQuantity : 'Maximum Allowed Quantity',
   Text_StoreMenu_StoreDetailBt : 'Store Details',
   Text_StoreMenu_Categories : 'Categories',
   Text_StoreMenu_CreateCate : 'Create Category',

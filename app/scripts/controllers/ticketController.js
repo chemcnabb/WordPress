@@ -89,8 +89,7 @@ function ticketController($scope, $cookieStore, $filter, $routeParams) {
         // update ticket
         var _finishes = function() {
           // attach ticket to current event
-
-          $scope.wizard.saved = true;
+          $scope.ticket.$scope.wizard.saved = true;
           $scope.init(true);
         }
 
