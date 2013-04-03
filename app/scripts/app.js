@@ -94,6 +94,10 @@ azureTicketsApp.config([
         templateUrl : 'views/event.html',
         controller : eventController,
         resolve : routeFilters
+      }).when('/admin/ticket/:eventKey', {
+        templateUrl : 'views/ticket.html',
+        controller : ticketController,
+        resolve : routeFilters
       }).when('/admin/scanner', {
         templateUrl : 'views/scanner.html',
         controller : scannerController,

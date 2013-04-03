@@ -1,32 +1,33 @@
 <div class="atPanel" ui-if="DomainProfile && DomainProfile.Key || false"
-	ng-controller="eventController" ng-cloak>
+	ng-controller="ticketController" ng-cloak>
 	<!-- top menu -->
 	<div ng-include src="'views/elements/topMenu.html'"></div>
 	<div ng-include src="'views/elements/error.html'"></div>
-	<!-- event info -->
-	<div ui-if="Store && Store.Key && venues && venues.length > 0 || false"
+	<!-- ticket info -->
+	<div ui-if="Store && Store.Key && events && events.length > 0 || false"
 		class="row-fluid">
-		<p class="lead pull-left">{{ 'Common.Text_EventMenu_Events' | t}}</p>
+		<p class="lead pull-left">{{ 'Common.Text_TicketMenu_Tickets' |
+			t}}</p>
 		<div class="btn-group pull-right">
 			<button class="btn btn-info" ng-click="create()">{{
-				'Common.Text_EventMenu_CreateEvent' | t }}</button>
+				'Common.Text_TicketMenu_CreateTicket' | t }}</button>
 		</div>
-		<div id="formEvent" class="modal form hide fade">
+		<div id="formTicket" class="modal form hide fade">
 			<div class="modal-header">
 				<button type="button" ng-click="wizard.open = false" class="close"
 					data-dismiss="modal" aria-hidden="true">&times;</button>
 				<h3>
-					<p class="text-info">{{ 'Common.Text_Event' | t}}</p>
+					<p class="text-info">{{ 'Common.Text_Ticket' | t}}</p>
 				</h3>
 			</div>
 			<div class="modal-body">
 				<!-- messages -->
 				<div ng-switch="wizard.currentStep">
 					<div class="alert alert-info" ng-switch-when="2">
-						<strong>{{ 'Event.Text_DateInformation' | t }}</strong>
+						<strong>{{ 'Ticket.Text_DateInformation' | t }}</strong>
 					</div>
 					<div class="alert alert-info" ng-switch-when="3">
-						<strong>{{ 'Event.Text_PlaceInformation' | t }}</strong>
+						<strong>{{ 'Ticket.Text_PlaceInformation' | t }}</strong>
 					</div>
 					<div class="alert alert-info" ng-switch-when="4">
 						<strong>{{ 'Common.Text_Confirm' | t }}</strong>
@@ -39,16 +40,19 @@
 				</div>
 
 				<!-- form -->
-				<ng-form ui-if="Event" name="atEvent" ng-submit="save()">
-				<form ui-if="wizard.currentStep == 1" name="atEvent1"
-					ng-submit="wizard.next('atEvent1')">
+				<ng-form ui-if="GeneralAdmissionTicketItemInfo" name="atTicket"
+					ng-submit="save()">
+				<form ui-if="wizard.currentStep == 1" name="atTicket1"
+					ng-submit="wizard.next('atTicket1')">
 					<dl class="clearfix">
 						<dd>
-							<atfield at-required class="input-xxlarge" ng-model="Event.Name"
-								label="'Common.Text_EventName' | t" />
+							<atfield at-required class="input-xxlarge"
+								ng-model="GeneralAdmissionTicketItemInfo.Name"
+								label="'Common.Text_TicketName' | t" />
 						</dd>
 						<dd>
-							<atfield class="input-xxlarge" ng-model="Event.Description"
+							<atfield class="input-xxlarge"
+								ng-model="GeneralAdmissionTicketItemInfo.Policy"
 								label="'Common.Text_Description' | t" rows="5" />
 						</dd>
 						<dd>
@@ -58,27 +62,18 @@
 						</dd>
 					</dl>
 				</form>
-				<form ui-if="wizard.currentStep == 2" name="atEvent2"
-					ng-submit="wizard.next('atEvent2')">
+				<form ui-if="wizard.currentStep == 2" name="atTicket2"
+					ng-submit="wizard.next('atTicket2')">
 					<dl>
 						<dd class="pull-left">
 							<atfield at-required class="input-large"
-								ng-model="Event.StartTime" label="'Event.Text_EventStartAt' | t" />
-						</dd>
-						<dd class="pull-left">
-							<atfield at-required class="input-large" ng-model="Event.EndTime"
-								label="'Event.Text_EventEndAt' | t" />
-						</dd>
-						<dd class="clear"></dd>
-						<dd class="pull-left">
-							<atfield at-required class="input-large"
-								ng-model="Event.OnSaleDateTimeStart"
-								label="'Event.Text_SaleStartAt' | t" />
+								ng-model="GeneralAdmissionTicketItemInfo.OnSaleDateTimeStart"
+								label="'GeneralAdmissionTicketItemInfo.Text_SaleStartAt' | t" />
 						</dd>
 						<dd class="pull-left">
 							<atfield at-required class="input-large"
-								ng-model="Event.OnSaleDateTimeEnd"
-								label="'Event.Text_SaleEndAt' | t" />
+								ng-model="GeneralAdmissionTicketItemInfo.OnSaleDateTimeEnd"
+								label="'GeneralAdmissionTicketItemInfo.Text_SaleEndAt' | t" />
 						</dd>
 						<dd class="clear"></dd>
 						<dd class="pull-left">
@@ -93,19 +88,12 @@
 						</dd>
 					</dl>
 				</form>
-				<form ng-show="wizard.currentStep == 3" name="atEvent3"
-					ng-submit="wizard.next('atEvent3')">
+				<form ng-show="wizard.currentStep == 3" name="atTicket3"
+					ng-submit="wizard.next('atTicket3')">
 					<dl class="clearfix">
-						<dd>
-							<label>{{ 'Common.Text_Venue' | t}}</label>
-							<!-- @todo make this part of the atfield directive -->
-							<input type="text" ui-if="Event._tmpVenues"
-								data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
-								ui-select2="optsSelVenue" at-required ng-model="Event.tmpVenues"
-								name="Event_tmpVenues" />
-						</dd>
 						<dd class="clear">
-							<atfield class="input-small" ng-model="Event.MaximumCapacity"
+							<atfield class="input-small"
+								ng-model="GeneralAdmissionTicketItemInfo.MaxPurchaseQuantity"
 								at-required />
 						</dd>
 						<dd class="clear"></dd>
@@ -122,11 +110,12 @@
 					</dl>
 				</form>
 				<form ui-if="wizard.currentStep == 4 && !wizard.saved"
-					name="atEvent3" ng-submit="wizard.next('atEvent4', true)">
+					name="atTicket3" ng-submit="wizard.next('atTicket4', true)">
 					<dl>
 						<dd class="clear row-fluid">
-							<!-- event details -->
-							<atmodel ui-if="Event && Event._tmpVenues" ng-model="Event"></atmodel>
+							<!-- ticket details -->
+							<atmodel ui-if="GeneralAdmissionTicketItemInfo"
+								ng-model="GeneralAdmissionTicketItemInfo"></atmodel>
 						</dd>
 						<dd class="pull-left">
 							<a ng-show="wizard.currentStep>1"
@@ -157,31 +146,26 @@
 			<div class="modal-footer"></div>
 		</div>
 		<div class="clear row-fluid list">
-			<div ng-show="events.length == 0" class="alert alert-info">{{
-				'Event.Text_NoEvent_Msg' | t }}</div>
-			<!-- event list -->
-			<ul class="thumbnails" ng-show="events.length > 0">
-				<li ng-repeat="event in events" class="span3">
+			<div ng-show="tickets.length == 0" class="alert alert-info">{{
+				'Ticket.Text_NoTicket_Msg' | t }}</div>
+			<!-- ticket list -->
+			<ul class="thumbnails" ng-show="tickets.length > 0">
+				<li ng-repeat="ticket in tickets" class="span3">
 					<div class="thumbnail">
-						<h4 class="pull-left">{{event.Name}}</h4>
+						<h4 class="pull-left">{{ticket.Name}}</h4>
 						<div class="btn-group pull-right">
-							<button class="btn btn-mini btn-success" ng-click="update(event)">{{
-								'Common.Text_Update' | t }}</button>
-							<button ng-click="manageTickets(event)"
-								class="btn btn-mini btn-warning">{{
-								'Common.Text_Tickets' | t }}</button>
-							<button ng-click="deleteEvent(event)"
+							<button class="btn btn-mini btn-success"
+								ng-click="update(ticket)">{{ 'Common.Text_Update' | t
+								}}</button>
+							<button ng-click="deleteTicket(ticket)"
 								class="btn btn-mini btn-danger">{{ 'Common.Text_Remove'
 								| t }}</button>
 						</div>
-						<p class="text clear">{{event.Description}}</p>
-						<span class="label">Starts on {{ event.StartTime |
-							date:'MM/dd/yyyy @ h:mma' }}</span> <span class="label">Ends on
-							{{ event.EndTime | date:'MM/dd/yyyy @ h:mma' }}</span><br /> <span
-							class="label label-inverse">Sales Start on {{
-							event.OnSaleDateTimeStart | date:'MM/dd/yyyy @ h:mma' }}</span> <span
+						<p class="text clear">{{ticket.Description}}</p>
+						<span class="label label-inverse">Sales Start on {{
+							ticket.OnSaleDateTimeStart | date:'MM/dd/yyyy @ h:mma' }}</span> <span
 							class="label label-inverse">Sales End on {{
-							event.OnSaleDateTimeEnd | date:'MM/dd/yyyy @ h:mma' }}</span>
+							ticket.OnSaleDateTimeEnd | date:'MM/dd/yyyy @ h:mma' }}</span>
 					</div>
 				</li>
 			</ul>

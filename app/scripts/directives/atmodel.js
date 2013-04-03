@@ -63,10 +63,15 @@ azureTicketsApp
                               var countSuffix = pp.length > 1 ? ' #' + (++cc)
                                   : '';
 
-                              if (angular.isString(prop) && prop !== '' && [
-                                  // hide these properties
-                                  'URI', 'Key', 'Type', 'Currency', '$$hashKey'
-                              ].indexOf(p) === -1) {
+                              if ((angular.isNumber(prop) || angular
+                                  .isString(prop))
+                                  && prop !== ''
+                                  && prop !== 0
+                                  && [
+                                      // hide these properties
+                                      'URI', 'Key', 'Type', 'Currency',
+                                      '$$hashKey'
+                                  ].indexOf(p) === -1) {
                                 out[$filter('t')(resPrefix + p)] = prop;
                               } else if (angular.isString(prop)
                                   && p === BWL.Model.Currency.Type) {

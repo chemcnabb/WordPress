@@ -1,19 +1,20 @@
 function storeController($scope, $cookieStore, $location, $timeout,
     configService, authService, permService, storeService, modelService,
     errorService, geoService, formService, objectService, placeService,
-    orderService, eventService) {
+    orderService, eventService, ticketService) {
   /**
    * The following vars are shared across controllers and accessible via $scope
    */
   $scope.storeKey = null, $scope.config = configService, $scope.name = 'store',
       $scope.stores = [], $scope.venues = [], $scope.events = [],
-      $scope.orders = [], $scope.currencies = [], $scope.paymentProviders = [],
-      $scope.suggestedURLs = [], $scope.form = formService,
-      $scope.geo = geoService, $scope.error = errorService,
-      $scope.object = objectService, $scope.auth = authService,
-      $scope.model = modelService, $scope.event = eventService,
-      $scope.place = placeService, $scope.store = storeService,
-      $scope.order = orderService;
+      $scope.tickets = [], $scope.orders = [], $scope.currencies = [],
+      $scope.paymentProviders = [], $scope.suggestedURLs = [],
+      $scope.form = formService, $scope.geo = geoService,
+      $scope.error = errorService, $scope.object = objectService,
+      $scope.auth = authService, $scope.model = modelService,
+      $scope.event = eventService, $scope.place = placeService,
+      $scope.store = storeService, $scope.order = orderService,
+      $scope.ticket = ticketService;
 
   // initialize wizard for Store
   $scope.wizard = $scope.form.getWizard($scope);
@@ -189,6 +190,9 @@ function storeController($scope, $cookieStore, $location, $timeout,
                 }
                 if ($scope.events.length === 0) {
                   $scope.event.loadEvents($scope);
+                }
+                if ($scope.tickets.length === 0) {
+                  // $scope.ticket.loadTickets($scope);
                 }
               }, function(err) {
                 $scope.error.log(err)
@@ -420,5 +424,5 @@ storeController.$inject = [
     '$scope', '$cookieStore', '$location', '$timeout', 'configService',
     'authService', 'permService', 'storeService', 'modelService',
     'errorService', 'geoService', 'formService', 'objectService',
-    'placeService', 'orderService', 'eventService'
+    'placeService', 'orderService', 'eventService', 'ticketService'
 ];
