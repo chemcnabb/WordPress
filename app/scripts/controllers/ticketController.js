@@ -77,27 +77,30 @@ function ticketController($scope, $cookieStore, $filter, $routeParams) {
                   MaxPurchaseQuantity : $scope.GeneralAdmissionTicketItemInfo.MaxPurchaseQuantity,
                   OnSaleDateTimeStart : $scope.GeneralAdmissionTicketItemInfo.OnSaleDateTimeStart,
                   OnSaleDateTimeEnd : $scope.GeneralAdmissionTicketItemInfo.OnSaleDateTimeEnd
-                }).then(function(ticketKey) {
-              $scope.wizard.saved = true;
+                }).then(
+                function(ticketKey) {
+                  // attach ticket to current event
+                  $scope.event.addTicket($scope.storeKey, $scope.Event,
+                      ticketKey).then(function() {
+                    $scope.wizard.saved = true;
 
-              // reload list
-              $scope.init();
-            }, function(err) {
-              $scope.error.log(err)
-            });
+                    // reload list
+                    $scope.init();
+                  }, function(err) {
+                    $scope.error.log(err)
+                  });
+                }, function(err) {
+                  $scope.error.log(err)
+                });
       } else {
         // update ticket
-        var _finishes = function() {
-          // attach ticket to current event
+        $scope.ticket.updateTicket($scope.storeKey,
+            $scope.GeneralAdmissionTicketItemInfo).then(function() {
           $scope.ticket.$scope.wizard.saved = true;
           $scope.init(true);
-        }
-
-        $scope.ticket.updateTicket($scope.storeKey,
-            $scope.GeneralAdmissionTicketItemInfo).then(_finishes,
-            function(err) {
-              $scope.error.log(err)
-            });
+        }, function(err) {
+          $scope.error.log(err)
+        });
       }
     }
   }

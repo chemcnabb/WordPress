@@ -28,7 +28,7 @@ azureTicketsApp
                   var def = $q.defer();
 
                   BWL.Services.ModelService.ListAsync(storeKey,
-                      'GeneralAdmissionTicketItemInfo', pages,
+                      BWL.Model.GeneralAdmissionTicketItemInfo.Type, pages,
                       function(tickets) {
                         if (angular.isArray(tickets)) {
                           _tickets = tickets;
@@ -58,8 +58,8 @@ azureTicketsApp
                   var def = $q.defer();
 
                   BWL.Services.ModelService.ReadAsync(storeKey,
-                      "GeneralAdmissionTicketItemInfo", ticketKey, 10,
-                      function(_ticket) {
+                      BWL.Model.GeneralAdmissionTicketItemInfo.Type, ticketKey,
+                      10, function(_ticket) {
                         try {
                           // parse date and make it compatible with select2
                           // widget
@@ -130,8 +130,8 @@ azureTicketsApp
                   _formatDates(tmpTicket);
 
                   BWL.Services.ModelService.UpdateAsync(storeKey,
-                      'GeneralAdmissionTicketItemInfo', ticket.Key, tmpTicket,
-                      function(ret) {
+                      BWL.Model.GeneralAdmissionTicketItemInfo.Type,
+                      ticket.Key, tmpTicket, function(ret) {
                         $rootScope.$apply(function() {
                           def.resolve(ticket)
                         });

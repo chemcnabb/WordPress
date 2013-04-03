@@ -29,8 +29,8 @@ azureTicketsApp
                 listEventsAsync : function(storeKey, pages) {
                   var def = $q.defer();
 
-                  BWL.Services.ModelService.ListAsync(storeKey, 'Event', pages,
-                      function(events) {
+                  BWL.Services.ModelService.ListAsync(storeKey,
+                      BWL.Model.Event.Type, pages, function(events) {
                         if (angular.isArray(events)) {
                           _events = events;
                         } else {
@@ -57,8 +57,8 @@ azureTicketsApp
                 initEvent : function(storeKey, eventKey) {
                   var def = $q.defer();
 
-                  BWL.Services.ModelService.ReadAsync(storeKey, "Event",
-                      eventKey, 10, function(_event) {
+                  BWL.Services.ModelService.ReadAsync(storeKey,
+                      BWL.Model.Event.Type, eventKey, 10, function(_event) {
                         // prepare tmp var to be used by UI
                         _event.tmpVenues = [];
                         if (angular.isDefined(_event.Places)
@@ -138,11 +138,11 @@ azureTicketsApp
                 addEventAddress : function(eventKey, address) {
                   var def = $q.defer(), _this = this;
 
-                  BWL.Services.ModelService.CreateAsync(eventKey, "Address",
-                      address, function(addressKey) {
+                  BWL.Services.ModelService.CreateAsync(eventKey,
+                      BWL.Model.Address.Type, address, function(addressKey) {
                         BWL.Services.ModelService.AddAsync(eventKey, "Event",
-                            eventKey, "Address", "Address", addressKey,
-                            function(ret) {
+                            eventKey, "Address", BWL.Model.Address.Type,
+                            addressKey, function(ret) {
                               $rootScope.$apply(def.resolve)
                             }, function(err) {
                               $rootScope.$apply(function() {
@@ -168,8 +168,8 @@ azureTicketsApp
 
                   _formatDates(tmpEvent);
 
-                  BWL.Services.ModelService.UpdateAsync(storeKey, 'Event',
-                      event.Key, tmpEvent, function(ret) {
+                  BWL.Services.ModelService.UpdateAsync(storeKey,
+                      BWL.Model.Event.Type, event.Key, tmpEvent, function(ret) {
                         $rootScope.$apply(function() {
                           def.resolve(event)
                         });
@@ -212,8 +212,8 @@ azureTicketsApp
                       } else {
                         // venue is not selected anymore, remove
                         BWL.Services.ModelService.RemoveAsync(storeKey,
-                            'Event', _event.Key, 'Places', 'Place', venueKey,
-                            function() {
+                            BWL.Model.Event.Type, _event.Key, 'Places',
+                            BWL.Model.Place.Type, venueKey, function() {
                               $timeout(function() {
                                 objectService.remove(_event.Places, 'Key',
                                     venueKey);
@@ -268,8 +268,9 @@ azureTicketsApp
                         _def.resolve();
                       }, 50);
                     } else {
-                      BWL.Services.ModelService.AddAsync(storeKey, 'Event',
-                          _event.Key, 'Places', 'Place', {
+                      BWL.Services.ModelService.AddAsync(storeKey,
+                          BWL.Model.Event.Type, _event.Key, 'Places',
+                          BWL.Model.Place.Type, {
                             Key : venueKey
                           }, function() {
                             $timeout(function() {
@@ -301,6 +302,25 @@ azureTicketsApp
                       def.reject(err);
                     }, 150);
                   });
+
+                  return def.promise;
+                },
+                addTicket : function(storeKey, _event, ticketKey) {
+                  var def = $q.defer();
+
+                  BWL.Services.ModelService.AddAsync(storeKey,
+                      BWL.Model.Event.Type, _event.Key, 'Items',
+                      BWL.Model.GeneralAdmissionTicketItemInfo.Type, {
+                        Key : ticketKey
+                      }, function() {
+                        $rootScope.$apply(function() {
+                          def.resolve()
+                        });
+                      }, function(err) {
+                        $rootScope.$apply(function() {
+                          def.reject(err)
+                        })
+                      });
 
                   return def.promise;
                 },
