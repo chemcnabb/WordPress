@@ -156,18 +156,17 @@ azureTicketsApp
                     _isTicketsLoading = true;
 
                     $scope.storeKey = $scope.storeKey
-                        || $cookieStore.get($scope.config.cookies.storeKey),
-                        __this = this;
+                        || $cookieStore.get($scope.config.cookies.storeKey);
+                    var _this = this;
 
-                    __this.listTicketsAsync($scope.storeKey, 0).then(
+                    _this.listTicketsAsync($scope.storeKey, 0).then(
                         function() {
-                          $scope.tickets = __this.getTickets();
+                          $scope.tickets = _this.getTickets();
 
                           if ($scope.tickets.length > 0) {
                             angular.forEach($scope.tickets,
                                 function(ticket, i) {
-                                  __this
-                                      .initTicket($scope.storeKey, ticket.Key)
+                                  _this.initTicket($scope.storeKey, ticket.Key)
                                       .then(function(ticket) {
                                         $scope.tickets[i] = ticket;
                                       })
