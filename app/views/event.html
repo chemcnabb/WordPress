@@ -99,7 +99,7 @@
 						<dd>
 							<label>{{ 'Common.Text_Venue' | t}}</label>
 							<!-- @todo make this part of the atfield directive -->
-							<input type="text"
+							<input type="text" ui-if="Event._tmpVenues"
 								data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
 								ui-select2="optsSelVenue" at-required ng-model="Event.tmpVenues"
 								name="Event_tmpVenues" />

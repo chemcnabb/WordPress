@@ -25,7 +25,8 @@ function eventController($scope, $cookieStore, $filter) {
 
   $scope.create = function() {
     $scope.Event = $scope.model.getInstanceOf('Event');
-    $scope.Event.tmpVenues = [];
+    $scope.Event.tmpVenues = $scope.venues.splice(0, 1),
+        $scope.Event._tmpVenues = angular.copy($scope.Event.tmpVenues);
     $scope.wizard.open = true;
     $scope.wizard.reset();
   }
@@ -50,7 +51,6 @@ function eventController($scope, $cookieStore, $filter) {
     multiple : true,
     initSelection : function(element, callback) {
       var el = jQuery('[name=Event_tmpVenues]').first();
-
       // watch for changes
       jQuery(el).on(
           'change',
@@ -94,7 +94,7 @@ function eventController($scope, $cookieStore, $filter) {
           Public : true,
           Name : $scope.Event.Name,
           Description : $scope.Event.Description,
-          Places : $scope.Event.tmpVenues.map(function(v) {
+          Places : $scope.Event._tmpVenues.map(function(v) {
             return {
               Key : v.Key
             }
