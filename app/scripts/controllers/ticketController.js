@@ -35,6 +35,17 @@ function ticketController($scope, $cookieStore, $filter, $routeParams) {
   $scope.create = function() {
     $scope.GeneralAdmissionTicketItemInfo = $scope.model
         .getInstanceOf('GeneralAdmissionTicketItemInfo');
+
+    // set defaults
+    $scope.GeneralAdmissionTicketItemInfo.Price = $scope.model
+        .getInstanceOf('Price');
+    $scope.GeneralAdmissionTicketItemInfo.Price.Currency = $scope.Store.Currency;
+
+    $scope.$watch('GeneralAdmissionTicketItemInfo.Price.ItemPrice', function(n,
+        o) {
+      n = parseFloat(n);
+    })
+
     $scope.wizard.open = true;
     $scope.wizard.reset();
   }
@@ -62,10 +73,7 @@ function ticketController($scope, $cookieStore, $filter, $routeParams) {
                   Public : true,
                   Name : $scope.GeneralAdmissionTicketItemInfo.Name,
                   Policy : $scope.GeneralAdmissionTicketItemInfo.Policy,
-                  Price : {
-                    ItemPrice : parseFloat($scope.GeneralAdmissionTicketItemInfo.Price.ItemPrice),
-                    Currency : $scope.Store.Currency
-                  },
+                  Price : $scope.GeneralAdmissionTicketItemInfo.Price,
                   MaxPurchaseQuantity : $scope.GeneralAdmissionTicketItemInfo.MaxPurchaseQuantity,
                   OnSaleDateTimeStart : $scope.GeneralAdmissionTicketItemInfo.OnSaleDateTimeStart,
                   OnSaleDateTimeEnd : $scope.GeneralAdmissionTicketItemInfo.OnSaleDateTimeEnd
