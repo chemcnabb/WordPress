@@ -167,9 +167,9 @@
 						<div class="btn-group pull-right">
 							<button class="btn btn-mini btn-success" ng-click="update(event)">{{
 								'Common.Text_Update' | t }}</button>
-							<button ng-click="manageTickets(event)"
-								class="btn btn-mini btn-warning">{{
-								'Common.Text_Tickets' | t }}</button>
+							<a ng-href="/#/admin/ticket/{{event.Key}}"
+								class="btn btn-mini btn-warning">{{ 'Common.Text_Tickets' |
+								t }} </a>
 							<button ng-click="deleteEvent(event)"
 								class="btn btn-mini btn-danger">{{ 'Common.Text_Remove'
 								| t }}</button>
