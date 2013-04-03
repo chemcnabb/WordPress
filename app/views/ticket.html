@@ -105,7 +105,7 @@
 						<dd class="clear">
 							<atfield class="input-small"
 								ng-model="GeneralAdmissionTicketItemInfo.Price.ItemPrice"
-								at-required />
+								at-required ng-pattern="/^[\d\.\,]+$/" />
 						</dd>
 						<dd class="clear"></dd>
 						<dd class="pull-left">

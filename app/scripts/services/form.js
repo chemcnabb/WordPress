@@ -12,8 +12,19 @@ azureTicketsApp.factory('formService', [
       ];
 
       var _validates = function(e) {
+        var _renderError = function(n, err) {
+          jQuery('.error-' + n).remove();
+          var errDiv = jQuery('<div class="error-' + n
+              + ' alert alert-error" />');
+          errDiv.text(err).css({
+            width : 'auto'
+          });
+          jQuery(e).after(errDiv);
+        }
+
         var n = jQuery(e).attr('name') || null;
         var _validationErrors = [];
+        var model = angular.element(e).data('$ngModelController');
 
         if (n !== null) {
           var m = n.split('_')[0];
@@ -24,18 +35,22 @@ azureTicketsApp.factory('formService', [
             var req = angular.isDefined(jQuery(e).attr('at-required'));
             var err = null;
 
-            // check required
             if (!v && req) {
+              // check required
               err = CommonResources.Text_RequiredField.replace(/\{0\}/g, f
                   .replace(/([A-Z]|\d+)/g, ' $1').trim());
               _validationErrors.push(err);
-              jQuery('.error-' + n).remove();
-              var errDiv = jQuery('<div class="error-' + n
-                  + ' alert alert-error" />');
-              errDiv.text(err).css({
-                width : 'auto'
-              });
-              jQuery(e).after(errDiv);
+              _renderError(n, err);
+            } else if (angular.isObject(model.$error)) {
+              // pattern error
+              if (model.$error.pattern && model.$error.pattern === true) {
+                var perr = CommonResources.Text_InvalidPattern.replace(
+                    /\{0\}/g, f.replace(/([A-Z]|\d+)/g, ' $1').trim());
+                _validationErrors.push(perr);
+                _renderError(n, perr);
+              } else {
+                jQuery('.error-' + n).remove();
+              }
             } else {
               jQuery('.error-' + n).remove();
             }

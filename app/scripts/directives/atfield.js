@@ -16,10 +16,10 @@ azureTicketsApp
                   atTip : '=tip',
                   atChange : '=ngChange',
                   atReadonly : '=ngReadonly',
-                  atUiValidate : '=uiValidate',
-                  atUiValidateWatch : '=uiValidateWatch',
+                  atUiValidate : '&uiValidate',
+                  atUiValidateWatch : '&uiValidateWatch',
+                  // atPattern : '@ngPattern',
                   atBlur : '=ngBlur',
-                  atPattern : '=ngPattern',
                   atTypeahead : '=bsTypeahead',
                 },
                 link : function($scope, $element, $attrs) {
@@ -136,14 +136,14 @@ azureTicketsApp
                   if ($attrs.uiValidate) {
                     _el.attr('ui-validate', 'atUiValidate');
                   }
+                  if ($attrs.uiValidateWatch) {
+                    _el.attr('ui-validate-watch', 'atUiValidateWatch');
+                  }
                   if ($attrs.ngPattern) {
-                    _el.attr('ng-pattern', 'atPattern');
+                    _el.attr('ng-pattern', $attrs.ngPattern);
                   }
                   if ($attrs.bsTypeahead) {
                     _el.attr('bs-typeahead', 'atTypeahead');
-                  }
-                  if ($attrs.uiValidateWatch) {
-                    _el.attr('ui-validate-watch', 'atUiValidateWatch');
                   }
                   if ($attrs.ngBlur) {
                     _el.attr('ng-blur', 'atBlur');
