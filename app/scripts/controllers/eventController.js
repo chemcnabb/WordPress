@@ -52,25 +52,28 @@ function eventController($scope, $cookieStore, $filter) {
       var el = jQuery('[name=Event_tmpVenues]').first();
 
       // watch for changes
-      jQuery(el).on('change', function(ev) {
-        $scope.$apply(function() {
-          var a = ev.added || null;
-          var r = ev.removed || null;
+      jQuery(el).on(
+          'change',
+          function(ev) {
+            $scope.$apply(function() {
+              var a = ev.added || null;
+              var r = ev.removed || null;
 
-          // adding venue
-          if (a !== null) {
-            $scope.Event._tmpVenues.push($scope.object.undoFormatSelect2(a));
-          }
-          // removing venue
-          if (r !== null) {
-            $scope.object.remove($scope.Event._tmpVenues, 'Key', r.id);
-          }
+              // adding venue
+              if (a !== null) {
+                $scope.Event._tmpVenues.push($scope.object.undoFormatSelect2(a,
+                    BWL.Model.Place.Type));
+              }
+              // removing venue
+              if (r !== null) {
+                $scope.object.remove($scope.Event._tmpVenues, 'Key', r.id);
+              }
 
-          if ($scope.Event._tmpVenues.length === 0) {
-            jQuery(el).select2('data', []);
-          }
-        });
-      });
+              if ($scope.Event._tmpVenues.length === 0) {
+                jQuery(el).select2('data', []);
+              }
+            });
+          });
 
       callback($scope.Event._tmpVenues.map($scope.object.formatSelect2));
     },

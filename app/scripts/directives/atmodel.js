@@ -43,61 +43,93 @@ azureTicketsApp
                       + $scope.atModel.Type;
 
                   for (p in $scope.atModel) {
-                    // we ignore tmp variables
-                    if (/^tmp.*$/g.test(p)) {
+                    // we ignore tmp variables and Places (when dealing with
+                    // venues, we use _tmpVenues to store selected Places)
+                    if (/^tmp.*|Places$/g.test(p)) {
                       continue
                     }
 
-                    var pp = angular.isArray($scope.atModel[p]) ? $scope.atModel[p][0]
-                        : $scope.atModel[p];
+                    var pp = angular.isArray($scope.atModel[p]) ? $scope.atModel[p]
+                        : [
+                          $scope.atModel[p]
+                        ];
+                    var cc = 0;
 
-                    if (angular.isString(pp) && pp !== '' && [
-                        // hide these properties
-                        'URI', 'Key', 'Type', 'Currency', '$$hashKey'
-                    ].indexOf(p) === -1) {
-                      out[$filter('t')(resPrefix + p)] = pp;
-                    } else if (angular.isString(pp)
-                        && p === BWL.Model.Currency.Type) {
-                      // handle Currency property
-                      var c = objectService.grep($scope.atExtra2, 'ISO', pp);
-                      out[$filter('t')(resPrefix + p)] = c.Name;
-                    } else if (angular.isObject(pp) && pp.Type) {
-                      switch (pp.Type) {
-                        // handle Address type
-                        case BWL.Model.Address.Type:
-                          var addr = {};
-                          var countries = $scope.atExtra1.getLoadedCountries();
-                          var regions = $scope.atExtra1.getLoadedRegions();
-                          var c = objectService.grep(countries, 'ISO',
-                              pp.Country);
-                          var r = objectService.grep(regions, 'ISO', pp.Region);
+                    angular
+                        .forEach(
+                            pp,
+                            function(prop, k) {
+                              // suffix added when multiple objects in property
+                              var countSuffix = pp.length > 1 ? ' #' + (++cc)
+                                  : '';
 
-                          addr[$filter('t')('Address.LabelCity')] = pp.City;
-                          addr[$filter('t')('Address.LabelPostalCode')] = pp.PostalCode;
-                          addr[$filter('t')('Address.LabelCountry')] = angular
-                              .isObject(c) ? c.Name : pp.Country;
-                          var sp = $filter('t')('Address.LabelProvince')
-                              + ' / ' + $filter('t')('Address.LabelState');
-                          addr[sp] = angular.isObject(r) ? r.Name
-                              : $scope.atModel[p].Region;
-                          addr[$filter('t')('Address.LabelFullAddress')] = [
-                              pp.AddressLine1, pp.AddressLine2, pp.PostalCode
-                          ].filter(Boolean).join(', ');
-                          addr[$filter('t')('Address.LabelTimezone')] = pp.Timezone;
+                              if (angular.isString(prop) && prop !== '' && [
+                                  // hide these properties
+                                  'URI', 'Key', 'Type', 'Currency', '$$hashKey'
+                              ].indexOf(p) === -1) {
+                                out[$filter('t')(resPrefix + p)] = prop;
+                              } else if (angular.isString(prop)
+                                  && p === BWL.Model.Currency.Type) {
+                                // handle Currency property
+                                var c = objectService.grep($scope.atExtra2,
+                                    'ISO', prop);
+                                out[$filter('t')(resPrefix + p)] = c.Name;
+                              } else if (angular.isObject(prop) && prop.Type) {
+                                switch (prop.Type) {
+                                  // handle Address type
+                                  case BWL.Model.Address.Type:
+                                    var addr = {};
+                                    var countries = $scope.atExtra1
+                                        .getLoadedCountries();
+                                    var regions = $scope.atExtra1
+                                        .getLoadedRegions();
+                                    var c = objectService.grep(countries,
+                                        'ISO', prop.Country);
+                                    var r = objectService.grep(regions, 'ISO',
+                                        prop.Region);
 
-                          out[$filter('t')('Common.Text_LocationInfo')] = addr;
-                          break;
-                        // Handle PaymentProvider type
-                        case BWL.Model.PaymentProvider.Type:
-                          out[$filter('t')(resPrefix + 'PaymentProvider')] = $filter(
-                              't')('Common.Text_Paypro_' + pp.ProviderType);
-                          break;
-                        // Handle StoreURI type
-                        case BWL.Model.StoreURI.Type:
-                          out[$filter('t')('Common.Text_CustomURI')] = pp.URI;
-                          break;
-                      }
-                    }
+                                    addr[$filter('t')('Address.LabelCity')] = prop.City;
+                                    addr[$filter('t')
+                                        ('Address.LabelPostalCode')] = prop.PostalCode;
+                                    addr[$filter('t')('Address.LabelCountry')] = angular
+                                        .isObject(c) ? c.Name : prop.Country;
+                                    var sp = $filter('t')(
+                                        'Address.LabelProvince')
+                                        + ' / '
+                                        + $filter('t')('Address.LabelState');
+                                    addr[sp] = angular.isObject(r) ? r.Name
+                                        : $scope.atModel[p].Region;
+                                    addr[$filter('t')(
+                                        'Address.LabelFullAddress')] = [
+                                        prop.AddressLine1, prop.AddressLine2,
+                                        prop.PostalCode
+                                    ].filter(Boolean).join(', ');
+                                    addr[$filter('t')('Address.LabelTimezone')] = prop.Timezone;
+
+                                    out[$filter('t')
+                                        ('Common.Text_LocationInfo')
+                                        + countSuffix] = addr;
+                                    break;
+                                  // Handle PaymentProvider type
+                                  case BWL.Model.PaymentProvider.Type:
+                                    out[$filter('t')(
+                                        resPrefix + 'PaymentProvider')
+                                        + countSuffix] = $filter('t')(
+                                        'Common.Text_Paypro_'
+                                            + prop.ProviderType);
+                                    break;
+                                  // Handle StoreURI type
+                                  case BWL.Model.StoreURI.Type:
+                                    out[$filter('t')('Common.Text_CustomURI')
+                                        + countSuffix] = prop.URI;
+                                    break;
+                                  case BWL.Model.Place.Type:
+                                    out[$filter('t')('Common.Text_Venue')
+                                        + countSuffix] = prop.Name;
+                                    break;
+                                }
+                              }
+                            });
                   }
 
                   $element.append(_render(out));

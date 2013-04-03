@@ -126,7 +126,7 @@
 					<dl>
 						<dd class="clear row-fluid">
 							<!-- event details -->
-							<atmodel ui-if="Event" ng-model="Event"></atmodel>
+							<atmodel ui-if="Event && Event._tmpVenues" ng-model="Event"></atmodel>
 						</dd>
 						<dd class="pull-left">
 							<a ng-show="wizard.currentStep>1"

@@ -88,14 +88,17 @@ azureTicketsApp.factory('objectService', function() {
     /**
      * Converts back from select2 object to model based object
      * 
+     * @param o
+     *          {object}
      * @param type
-     *          {string}
+     *          {string} Force Type of model
      * @return {object}
      */
-    undoFormatSelect2 : function(o) {
+    undoFormatSelect2 : function(o, type) {
       return {
         Key : o.id,
-        Name : o.text
+        Name : o.text,
+        Type : type
       }
     }
   }
