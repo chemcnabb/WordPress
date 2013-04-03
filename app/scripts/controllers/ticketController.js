@@ -1,4 +1,4 @@
-function ticketController($scope, $cookieStore, $filter, $routeParams) {
+function ticketController($scope, $cookieStore, $filter, $routeParams, $timeout) {
   $scope.name = 'ticket';
 
   // initialize wizard for GeneralAdmissionTicketItemInfo
@@ -24,6 +24,11 @@ function ticketController($scope, $cookieStore, $filter, $routeParams) {
   $scope.init = function() {
     $scope.loadEvent();
     $scope.ticket.loadTickets($scope);
+  }
+
+  $scope.filterByEvent = function(ticket) {
+    var t = $scope.object.grep($scope.Event.Items, 'Key', ticket.Key);
+    return angular.isObject(t) && angular.equals(t.Key, ticket.Key);
   }
 
   $scope.update = function(_ticket) {
@@ -107,5 +112,5 @@ function ticketController($scope, $cookieStore, $filter, $routeParams) {
 }
 
 ticketController.$inject = [
-    '$scope', '$cookieStore', '$filter', '$routeParams'
+    '$scope', '$cookieStore', '$filter', '$routeParams', '$timeout'
 ];

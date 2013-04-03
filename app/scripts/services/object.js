@@ -41,7 +41,7 @@ azureTicketsApp.factory('objectService', function() {
         angular.forEach(arr, function(v, k) {
           if (angular.isDefined(v[prop])) {
             if (angular.equals(v[prop], val)) {
-              ret = v;
+              ret = angular.copy(v);
             }
           }
         });

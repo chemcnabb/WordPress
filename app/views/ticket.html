@@ -4,7 +4,8 @@
 	<div ng-include src="'views/elements/topMenu.html'"></div>
 	<div ng-include src="'views/elements/error.html'"></div>
 	<!-- ticket info -->
-	<div ui-if="Store && Store.Key && events && events.length > 0 || false"
+	<div
+		ui-if="Store && Store.Key && events && events.length > 0 && events[0].Items || false"
 		class="row-fluid" ng-init="init()">
 		<ul class="breadcrumb">
 			<li><a href="/#/admin/event">{{
@@ -160,8 +161,9 @@
 			<div ng-show="tickets.length == 0" class="alert alert-info">{{
 				'Common.Text_TicketEmpty' | t }}</div>
 			<!-- ticket list -->
-			<ul class="thumbnails" ng-show="tickets.length > 0">
-				<li ng-repeat="ticket in tickets" class="span3">
+			<ul class="thumbnails" ng-show="tickets.length>0">
+				<li ng-repeat="ticket in tickets | filter:filterByEvent"
+					class="span3">
 					<div class="thumbnail">
 						<h4 class="pull-left">{{ticket.Name}}</h4>
 						<div class="btn-group pull-right">
