@@ -87,7 +87,7 @@ function at2_admin_openmenu(){
 <!-- admin panel -->
 <iframe
 	class="atContainer"
-	src="<?php echo plugins_url('/',__FILE__)?>index.html#/admin"></iframe>
+	src="<?php echo plugins_url('/',__FILE__)?>index.html#/"></iframe>
 <?php
 }
 

@@ -38,7 +38,7 @@ var routeFilters = {
 azureTicketsApp.config([
     '$routeProvider',
     function($routeProvider) {
-      $routeProvider.when('/admin', {
+      $routeProvider.when('/', {
         templateUrl : 'views/admin.html',
         controller : adminController,
         resolve : routeFilters
@@ -70,7 +70,7 @@ azureTicketsApp.config([
 
                       $timeout(function() {
                         $rootScope.$apply(function() {
-                          $location.path('/admin');
+                          $location.path('/');
                         })
                       }, 250)
                     });
@@ -83,26 +83,26 @@ azureTicketsApp.config([
         resolve : routeFilters
       }).otherwise({
         redirectTo : '/'
-      }).when('/admin/store', {
+      }).when('/store', {
         templateUrl : 'views/store.html',
         resolve : routeFilters
-      }).when('/admin/venue', {
+      }).when('/venue', {
         templateUrl : 'views/venue.html',
         controller : venueController,
         resolve : routeFilters
-      }).when('/admin/event', {
+      }).when('/event', {
         templateUrl : 'views/event.html',
         controller : eventController,
         resolve : routeFilters
-      }).when('/admin/ticket/:eventKey', {
+      }).when('/ticket/:eventKey', {
         templateUrl : 'views/ticket.html',
         controller : ticketController,
         resolve : routeFilters
-      }).when('/admin/scanner', {
+      }).when('/scanner', {
         templateUrl : 'views/scanner.html',
         controller : scannerController,
         resolve : routeFilters
-      }).when('/admin/order', {
+      }).when('/order', {
         templateUrl : 'views/order.html',
         controller : orderController,
         resolve : routeFilters

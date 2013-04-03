@@ -1,35 +1,35 @@
 <div class="navbar">
 	<div class="navbar-inner">
-		<a class="brand" href="#/admin">{{config.appName}}</a>
+		<a class="brand" href="#/">{{config.appName}}</a>
 		<ul class="nav" ng-show="DomainProfile && DomainProfile.Key || false">
-			<li class="dropdown" ui-route="#/admin/store"
-				ng-class="{active: $uiRoute}"><a class="dropdown-toggle"
-				data-toggle="dropdown" href="#"> {{ 'Common.Text_Store' | t }} <span
+			<li class="dropdown" ui-route="#/store" ng-class="{active: $uiRoute}"><a
+				class="dropdown-toggle" data-toggle="dropdown" href="#"> {{
+					'Common.Text_Store' | t }} <span
 					ui-if="Store && Store.Name || false">: {{Store.Name}}</span> <b
 					class="caret"></b>
 			</a>
 				<ul class="dropdown-menu">
 					<li ui-if="!stores || stores && !stores.length || false"><a
-						href="#/admin/store" ng-click="createStore()">{{
+						href="#/store" ng-click="createStore()">{{
 							'Common.Text_CreateStore' | t }}</a></li>
 					<li ng-repeat="s in stores"><a ng-click="setStoreKey(s.Key)"
-						href="#/admin/store">{{s.Name}}</a></li>
+						href="#/store">{{s.Name}}</a></li>
 				</ul></li>
-			<li ui-if="Store && Store.Key != null || false"
-				ui-route="#/admin/venue" ng-class="{active: $uiRoute}"><a
-				href="#/admin/venue">{{ 'Common.Text_VenueMenu_Venue' | t }}</a></li>
+			<li ui-if="Store && Store.Key != null || false" ui-route="#/venue"
+				ng-class="{active: $uiRoute}"><a href="#/venue">{{
+					'Common.Text_VenueMenu_Venue' | t }}</a></li>
 			<li
 				ui-if="Store && Store.Key != null && venues && venues.length > 0 || false"
-				ui-route="#/admin/(event|ticket).*" ng-class="{active: $uiRoute}"><a
-				href="#/admin/event">{{ 'Common.Text_EventMenu_Events' | t }}</a></li>
+				ui-route="#/(event|ticket).*" ng-class="{active: $uiRoute}"><a
+				href="#/event">{{ 'Common.Text_EventMenu_Events' | t }}</a></li>
 			<!-- 			<li ui-if="events && events.length > 0 || false" -->
 			<!-- 				ui-route="#/admin/scanner" ng-class="{active: $uiRoute}"><a -->
 			<!-- 				href="#/admin/scanner">{{ 'Common.Text_ScannerMenu_Scanner' | t -->
 			<!-- 					}}</a></li> -->
 			<li
 				ui-if="Store && Store.Key != null && events && events.length > 0 || false"
-				ui-route="#/admin/order" ng-class="{active: $uiRoute}"><a
-				href="#/admin/order">{{ 'Common.Text_OrdersMenu_Orders' | t }}</a></li>
+				ui-route="#/order" ng-class="{active: $uiRoute}"><a
+				href="#/order">{{ 'Common.Text_OrdersMenu_Orders' | t }}</a></li>
 		</ul>
 		<div class="pull-right">
 			<a href="#/auth/logoff"
