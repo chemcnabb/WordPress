@@ -107,7 +107,7 @@ function at2_filter_content($atts){
 <!-- front panel -->
 <iframe
 	class="atContainer"
-	src="<?php echo plugins_url('/',__FILE__)?>index.html#/front" />
+	src="<?php echo plugins_url('/',__FILE__)?>index.html#/store/<?php echo $storeuri?>" />
 <?php
 return ob_get_contents();
 }

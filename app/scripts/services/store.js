@@ -17,7 +17,7 @@ azureTicketsApp
 
                   BWL.Services.StoreService.ListStoresAsync(levels, function(
                       stores) {
-                    _stores = stores;
+                    _stores = angular.isArray(stores) ? stores : [];
 
                     $rootScope.$apply(function() {
                       def.resolve();
@@ -298,6 +298,7 @@ azureTicketsApp
 
                   delete tmpStore.Address;
                   delete tmpStore.StoreURIs;
+                  delete tmpStore.isNew;
                   delete tmpStore.PaymentProviders;
                   delete tmpStore.tmpPaymentProvider;
 

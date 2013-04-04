@@ -5,31 +5,32 @@
 		ng-include src="'views/elements/store/bcSettings.html'"></div>
 	<div ng-include src="'views/elements/error.html'"></div>
 	<!-- store info -->
-	<div ui-if="DomainProfile && DomainProfile.Key || false"
-		class="row-fluid" ng-init="loadCurrencies()">
-		<p ng-show="wizard.currentStep>
+	<div class="row-fluid" ng-init="loadCurrencies()">
+		<span ui-if="Store && Store.isNew || Store && Store.IsOwner">
+			<p ng-show="wizard.currentStep>
 			0" class="lead">{{
-			'Common.Text_RegistrationStep1' | t }}</p>
-		<div ng-switch="wizard.currentStep">
-			<div ng-switch-when="1" ng-show="!Store.Key || false" class="alert">
-				<button type="button" class="close" data-dismiss="alert">&times;</button>
-				{{ 'Common.Text_StoreCreate' | t }}
+				'Common.Text_RegistrationStep1' | t }}</p>
+			<div ng-switch="wizard.currentStep">
+				<div ng-switch-when="1" ng-show="!Store.Key || false" class="alert">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					{{ 'Common.Text_StoreCreate' | t }}
+				</div>
+				<div class="alert alert-info" ng-switch-when="2">
+					<strong>{{ 'Common.Text_LocationInfo' | t }}</strong>
+				</div>
+				<div class="alert alert-info" ng-switch-when="3">
+					<strong>{{ 'Common.Text_StoreMenu_PaymentSettings' | t }}</strong>
+				</div>
+				<div class="alert alert-info" ng-switch-when="4">
+					<strong>{{ 'Common.Text_Confirm' | t }}</strong>
+				</div>
 			</div>
-			<div class="alert alert-info" ng-switch-when="2">
-				<strong>{{ 'Common.Text_LocationInfo' | t }}</strong>
+			<div class="alert alert-success"
+				ui-if="wizard.saved && wizard.finished">
+				<strong>{{ 'Common.Text_Congrats' | t }}</strong> {{
+				'Common.Text_WizardComplete' | t }}
 			</div>
-			<div class="alert alert-info" ng-switch-when="3">
-				<strong>{{ 'Common.Text_StoreMenu_PaymentSettings' | t }}</strong>
-			</div>
-			<div class="alert alert-info" ng-switch-when="4">
-				<strong>{{ 'Common.Text_Confirm' | t }}</strong>
-			</div>
-		</div>
-		<div class="alert alert-success"
-			ui-if="wizard.saved && wizard.finished">
-			<strong>{{ 'Common.Text_Congrats' | t }}</strong> {{
-			'Common.Text_WizardComplete' | t }}
-		</div>
+		</span>
 		<div id="serviceAgreement" class="modal hide fade">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
@@ -48,7 +49,8 @@
 					'Common.Text_IAccept' | t }}</a>
 			</div>
 		</div>
-		<ng-form  ui-if="Store" name="atStore" ng-submit="save()">
+		<ng-form ui-if="Store && Store.isNew || Store && Store.IsOwner"
+			name="atStore" ng-submit="save()">
 		<form ng-show="wizard.currentStep == 1" name="atStore1"
 			ng-submit="URIAvailable && wizard.next('atStore1') || false">
 			<dl class="clearfix">
@@ -203,5 +205,15 @@
 			</dd>
 		</dl>
 		</ng-form>
+		<!-- shown to store visitors -->
+		<div ui-if="Store && !Store.IsOwner && !Store.isNew" class="row-fluid">
+			<!-- store details -->
+			<!-- location info (will fetch geo related stuff) -->
+			<div ng-show="false" ng-include src="'views/address.html'"
+				onload="modelName='Store'"></div>
+			<atmodel
+				ui-if="geo.getLoadedCountries() != null && geo.getLoadedRegions() != null && currencies.length > 0"
+				ng-model="Store" extra1="geo" extra2="currencies"></atmodel>
+		</div>
 	</div>
 </div>

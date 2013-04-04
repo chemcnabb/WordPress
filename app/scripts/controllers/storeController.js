@@ -1,7 +1,7 @@
 function storeController($scope, $cookieStore, $location, $timeout,
-    configService, authService, permService, storeService, modelService,
-    errorService, geoService, formService, objectService, placeService,
-    orderService, eventService, ticketService) {
+    $routeParams, configService, authService, permService, storeService,
+    modelService, errorService, geoService, formService, objectService,
+    placeService, orderService, eventService, ticketService) {
   /**
    * The following vars are shared across controllers and accessible via $scope
    */
@@ -22,7 +22,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
   $scope.$on('initStore', function(ev, key) {
     if (key === null) {
       delete $scope.Store;
-    } else if (angular.isDefined(key) && $scope.auth.isDomainProfileReady()) {
+    } else if (angular.isDefined(key)) {
       $scope.storeKey = key;
       $cookieStore.put($scope.config.cookies.storeKey, key);
       $scope.initStore(key, true);
@@ -47,25 +47,36 @@ function storeController($scope, $cookieStore, $location, $timeout,
         function() {
           $scope.DomainProfile = $scope.auth.getDomainProfile();
 
-          // redirect to login if no profile
-          if ($scope.DomainProfile.Key === null) {
+          // redirect to login if no profile, but allow store visitors
+          if (!angular.isDefined($routeParams.storeURI)
+              && $scope.DomainProfile.Key === null) {
             $location.path('/auth/login');
             return;
           }
 
-          // check if user has access to a store and populate list if so
-          if ($scope.auth.hasStoreAccess()) {
+          // if we are accessing a store from URI
+          if (angular.isDefined($routeParams.storeURI)) {
+            $scope.store.getStoreKeyByURI($routeParams.storeURI).then(
+                function(storeKey) {
+                  $scope.$emit('initStore', storeKey);
+                }, function(err) {
+                  $scope.error.log(err)
+                });
+          } else if ($scope.auth.hasStoreAccess()) {
+            // check if user has access to a store and populate list if so
             $scope.store.listStoresAsync(1).then(
                 function() {
                   $scope.stores = $scope.store.getStores();
 
-                  // if user has been upgraded but have not yet created a store
                   if (!angular.isArray($scope.stores)) {
+                    // if user has been upgraded but have not yet created a
+                    // store
                     $scope.createStore();
                   } else {
-                    $scope.$emit('initStore', $cookieStore
+                    var storeKey = $cookieStore
                         .get($scope.config.cookies.storeKey)
-                        || $scope.stores[0].Key);
+                        || $scope.stores[0].Key;
+                    $scope.$emit('initStore', storeKey);
                   }
                 }, function(err) {
                   $scope.error.log(err)
@@ -81,9 +92,11 @@ function storeController($scope, $cookieStore, $location, $timeout,
   $scope.createStore = function() {
     $scope.wizard.reset(0);
     // initialize props
-    $scope.Store = $scope.model.getInstanceOf('Store');
+    $scope.Store = $scope.model.getInstanceOf('Store', null, null, true);
     $scope.Store.tmpPaymentProvider = $scope.model
         .getInstanceOf('PaymentProvider');
+    $scope.Store.isNew = true; // removed by storeService on save, temporary
+    // for UI checks
     $scope.Store.Address = $scope.model.getInstanceOf('Address');
 
     // monitor URI
@@ -92,7 +105,6 @@ function storeController($scope, $cookieStore, $location, $timeout,
     // show agreement
     $timeout(function() {
       $scope.$apply(function() {
-        debugger
         jQuery('#serviceAgreement').modal('show');
       })
     }, 500);
@@ -177,7 +189,9 @@ function storeController($scope, $cookieStore, $location, $timeout,
                   }, 500);
                 }
 
-                if ($scope.Store.Currency && $scope.Store.Currency !== null) {
+                // this API call requires DomainProfile
+                if ($scope.Store.Currency && $scope.Store.Currency !== null
+                    && $scope.auth.isDomainProfileReady()) {
                   $scope.loadPaymentProvidersByCurrency($scope.Store.Currency);
                 }
 
@@ -185,11 +199,21 @@ function storeController($scope, $cookieStore, $location, $timeout,
                 $scope.initStoreURI();
 
                 // init venues, events
-                if ($scope.venues.length === 0) {
+                if ($scope.venues.length === 0
+                    && $scope.auth.isDomainProfileReady()) {
                   $scope.place.loadPlaces($scope);
                 }
-                if ($scope.events.length === 0) {
+                if ($scope.events.length === 0
+                    && $scope.auth.isDomainProfileReady()) {
                   $scope.event.loadEvents($scope);
+                }
+
+                // if visitor, then remember visited store
+                if (!$scope.Store.IsOwner) {
+                  if (!angular.isObject($scope.object.grep($scope.stores,
+                      'Key', $scope.Store.Key))) {
+                    $scope.stores.push($scope.Store);
+                  }
                 }
               }, function(err) {
                 $scope.error.log(err)
@@ -418,8 +442,9 @@ function storeController($scope, $cookieStore, $location, $timeout,
 }
 
 storeController.$inject = [
-    '$scope', '$cookieStore', '$location', '$timeout', 'configService',
-    'authService', 'permService', 'storeService', 'modelService',
-    'errorService', 'geoService', 'formService', 'objectService',
-    'placeService', 'orderService', 'eventService', 'ticketService'
+    '$scope', '$cookieStore', '$location', '$timeout', '$routeParams',
+    'configService', 'authService', 'permService', 'storeService',
+    'modelService', 'errorService', 'geoService', 'formService',
+    'objectService', 'placeService', 'orderService', 'eventService',
+    'ticketService'
 ];

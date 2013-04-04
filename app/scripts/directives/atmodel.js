@@ -54,7 +54,7 @@ azureTicketsApp
                           $scope.atModel[p]
                         ];
                     var cc = 0;
-                    debugger
+
                     angular
                         .forEach(
                             pp,

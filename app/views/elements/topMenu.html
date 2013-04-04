@@ -9,17 +9,17 @@
 					class="caret"></b>
 			</a>
 				<ul class="dropdown-menu">
-					<li ui-if="!stores || stores && !stores.length || false"><a
-						href="#/store" ng-click="createStore()">{{
-							'Common.Text_CreateStore' | t }}</a></li>
+					<li ui-if="Store && !Store.IsOwner"><a href="#/store"
+						ng-click="createStore()">{{ 'Common.Text_CreateStore' | t }}</a></li>
+					<li ui-if="!stores || stores && !stores.length || false" style=""><hr></li>
 					<li ng-repeat="s in stores"><a ng-click="setStoreKey(s.Key)"
 						href="#/store">{{s.Name}}</a></li>
 				</ul></li>
-			<li ui-if="Store && Store.Key != null || false" ui-route="#/venue"
-				ng-class="{active: $uiRoute}"><a href="#/venue">{{
-					'Common.Text_VenueMenu_Venue' | t }}</a></li>
+			<li ui-if="Store && Store.Key != null && Store.IsOwner || false"
+				ui-route="#/venue" ng-class="{active: $uiRoute}"><a
+				href="#/venue">{{ 'Common.Text_VenueMenu_Venue' | t }}</a></li>
 			<li
-				ui-if="Store && Store.Key != null && venues && venues.length > 0 || false"
+				ui-if="Store && Store.Key != null && Store.IsOwner && venues && venues.length > 0 || false"
 				ui-route="#/(event|ticket).*" ng-class="{active: $uiRoute}"><a
 				href="#/event">{{ 'Common.Text_EventMenu_Events' | t }}</a></li>
 			<!-- 			<li ui-if="events && events.length > 0 || false" -->
@@ -27,7 +27,7 @@
 			<!-- 				href="#/admin/scanner">{{ 'Common.Text_ScannerMenu_Scanner' | t -->
 			<!-- 					}}</a></li> -->
 			<li
-				ui-if="Store && Store.Key != null && events && events.length > 0 || false"
+				ui-if="Store && Store.Key != null && Store.IsOwner && events && events.length > 0 || false"
 				ui-route="#/order" ng-class="{active: $uiRoute}"><a
 				href="#/order">{{ 'Common.Text_OrdersMenu_Orders' | t }}</a></li>
 		</ul>

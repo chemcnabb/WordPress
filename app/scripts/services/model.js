@@ -11,13 +11,15 @@ azureTicketsApp.factory('modelService', [
          *          Additional attributes to add to the new instance.
          * @param alias
          *          Alias used in BWL, used to retrieve loaded instance.
+         * @param force
+         *          Force to load a new & clean copy of the model.
          * @returns
          */
-        getInstanceOf : function(modelName, tmpAttrs, alias) {
-          var o = {};
-          var a = alias ? alias : modelName;
+        getInstanceOf : function(modelName, tmpAttrs, alias, force) {
+          var o = {}, force = angular.isDefined(force) ? force : false;
+          var a = alias && alias !== null ? alias : modelName;
 
-          if (angular.isDefined(BWL[a]) && BWL[a] !== null) {
+          if (!force && angular.isDefined(BWL[a]) && BWL[a] !== null) {
             o = BWL[a]
           } else if (angular.isDefined(BWL.Model[modelName])) {
             o = angular.copy(BWL.Model[modelName]);

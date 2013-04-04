@@ -26,8 +26,10 @@ var routeFilters = {
       'configService',
       function($rootScope, $location, $cookieStore, authService, configService) {
         var lc = $cookieStore.get(configService.cookies.loggedStatus);
+        var isStoreVisitor = /^\/store\/[\w\-\d]+$/g.test($location.$$path);
 
-        if ((lc === null || !lc) && $location.$$path !== '/auth/login') {
+        if ((lc === null || !lc) && $location.$$path !== '/auth/login'
+            && !isStoreVisitor) {
           $location.path('/auth/login');
         }
       }
@@ -85,6 +87,10 @@ azureTicketsApp.config([
         redirectTo : '/'
       }).when('/store', {
         templateUrl : 'views/store.html',
+        resolve : routeFilters
+      }).when('/store/:storeURI', {
+        templateUrl : 'views/store.html',
+        controller : storeController,
         resolve : routeFilters
       }).when('/venue', {
         templateUrl : 'views/venue.html',
