@@ -1,6 +1,7 @@
 <div class="navbar">
 	<div class="navbar-inner">
-		<a class="brand" href="#/">{{config.appName}}</a>
+		<a class="brand"
+			ng-href="#/{{ Store && !Store.IsOwner && 'store/' + Store.StoreURIs[0].URI || '' }}">{{config.appName}}</a>
 		<ul class="nav" ng-show="DomainProfile && DomainProfile.Key || false">
 			<li class="dropdown" ui-route="#/store(?:\/[\w\d\-]+)?"
 				ng-class="{active: $uiRoute}"><a class="dropdown-toggle"

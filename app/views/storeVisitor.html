@@ -3,7 +3,7 @@
 	<div ng-include src="'views/elements/topMenu.html'"></div>
 	<div ng-include src="'views/elements/error.html'"></div>
 	<!-- store for visitors -->
-	<div ui-if="Store && !Store.IsOwner && !Store.isNew" class="row-fluid"
+	<div ui-if="Store && Store.Key" class="row-fluid"
 		ng-init="loadCurrencies()">
 		<!-- location info (will fetch geo related stuff) -->
 		<div ng-show="
