@@ -163,7 +163,7 @@
 			<!-- ticket list -->
 			<ul class="thumbnails" ng-show="tickets.length>0">
 				<li ng-repeat="ticket in tickets | filter:filterByEvent"
-					class="span3">
+					class="span4">
 					<div class="thumbnail">
 						<h4 class="pull-left">{{ticket.Name}}</h4>
 						<div class="btn-group pull-right">
@@ -178,7 +178,9 @@
 						<span class="label label-inverse">Sales Start on {{
 							ticket.OnSaleDateTimeStart | date:'MM/dd/yyyy @ h:mma' }}</span> <span
 							class="label label-inverse">Sales End on {{
-							ticket.OnSaleDateTimeEnd | date:'MM/dd/yyyy @ h:mma' }}</span>
+							ticket.OnSaleDateTimeEnd | date:'MM/dd/yyyy @ h:mma' }}</span> <span
+							class="pull-right label label-info">{{
+							ticket.Price.ItemPrice | currency }}</span>
 					</div>
 				</li>
 			</ul>
