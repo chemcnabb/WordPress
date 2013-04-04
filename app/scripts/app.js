@@ -89,8 +89,8 @@ azureTicketsApp.config([
         templateUrl : 'views/store.html',
         resolve : routeFilters
       }).when('/store/:storeURI', {
-        templateUrl : 'views/store.html',
-        controller : storeController,
+        templateUrl : 'views/storeVisitor.html',
+        // controller : storeController,
         resolve : routeFilters
       }).when('/venue', {
         templateUrl : 'views/venue.html',

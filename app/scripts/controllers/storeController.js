@@ -210,6 +210,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
 
                 // if visitor, then remember visited store
                 if (!$scope.Store.IsOwner) {
+                  debugger
                   if (!angular.isObject($scope.object.grep($scope.stores,
                       'Key', $scope.Store.Key))) {
                     $scope.stores.push($scope.Store);

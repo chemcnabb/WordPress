@@ -2,18 +2,20 @@
 	<div class="navbar-inner">
 		<a class="brand" href="#/">{{config.appName}}</a>
 		<ul class="nav" ng-show="DomainProfile && DomainProfile.Key || false">
-			<li class="dropdown" ui-route="#/store" ng-class="{active: $uiRoute}"><a
-				class="dropdown-toggle" data-toggle="dropdown" href="#"> {{
-					'Common.Text_Store' | t }} <span
+			<li class="dropdown" ui-route="#/store(?:\/[\w\d\-]+)?"
+				ng-class="{active: $uiRoute}"><a class="dropdown-toggle"
+				data-toggle="dropdown" href="#"> {{ 'Common.Text_Store' | t }} <span
 					ui-if="Store && Store.Name || false">: {{Store.Name}}</span> <b
 					class="caret"></b>
 			</a>
 				<ul class="dropdown-menu">
 					<li ui-if="Store && !Store.IsOwner"><a href="#/store"
 						ng-click="createStore()">{{ 'Common.Text_CreateStore' | t }}</a></li>
-					<li ui-if="!stores || stores && !stores.length || false" style=""><hr></li>
-					<li ng-repeat="s in stores"><a ng-click="setStoreKey(s.Key)"
-						href="#/store">{{s.Name}}</a></li>
+					<li ui-if="Store && !Store.IsOwner && stores && stores.length > 0"><hr
+							style="margin: .5em" /></li>
+					<li ng-repeat="s in stores"><a ui-if="!s.IsOwner"
+						ng-href="#/store/{{ s.StoreURIs[0].URI }}">{{s.Name}}</a><a
+						ui-if="s.IsOwner" ng-click="setStoreKey(s.Key)" href="#/store">{{s.Name}}</a></li>
 				</ul></li>
 			<li ui-if="Store && Store.Key != null && Store.IsOwner || false"
 				ui-route="#/venue" ng-class="{active: $uiRoute}"><a

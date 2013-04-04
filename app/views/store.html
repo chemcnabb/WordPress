@@ -4,8 +4,9 @@
 	<div ui-if="DomainProfile.Key && wizard.currentStep > 0 || false"
 		ng-include src="'views/elements/store/bcSettings.html'"></div>
 	<div ng-include src="'views/elements/error.html'"></div>
-	<!-- store info -->
-	<div class="row-fluid" ng-init="loadCurrencies()">
+	<!-- store info update -->
+	<div ui-if="DomainProfile && DomainProfile.Key" class="row-fluid"
+		ng-init="loadCurrencies()">
 		<span ui-if="Store && Store.isNew || Store && Store.IsOwner">
 			<p ng-show="wizard.currentStep>
 			0" class="lead">{{
@@ -205,15 +206,5 @@
 			</dd>
 		</dl>
 		</ng-form>
-		<!-- shown to store visitors -->
-		<div ui-if="Store && !Store.IsOwner && !Store.isNew" class="row-fluid">
-			<!-- store details -->
-			<!-- location info (will fetch geo related stuff) -->
-			<div ng-show="false" ng-include src="'views/address.html'"
-				onload="modelName='Store'"></div>
-			<atmodel
-				ui-if="geo.getLoadedCountries() != null && geo.getLoadedRegions() != null && currencies.length > 0"
-				ng-model="Store" extra1="geo" extra2="currencies"></atmodel>
-		</div>
 	</div>
 </div>
