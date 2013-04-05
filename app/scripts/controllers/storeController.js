@@ -209,7 +209,11 @@ function storeController($scope, $cookieStore, $location, $timeout,
                 }
                 if ($scope.events.length === 0
                     && $scope.auth.isDomainProfileReady()) {
-                  $scope.event.loadEvents($scope);
+                  if (!angular.isDefined($scope.Store.Events)) {
+                    $scope.event.loadEvents($scope);
+                  } else {
+                    $scope.events = angular.copy($scope.Store.Events);
+                  }
                 }
 
                 // if visitor, then remember visited store

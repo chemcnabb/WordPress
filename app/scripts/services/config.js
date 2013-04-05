@@ -17,6 +17,9 @@ azureTicketsApp.factory('configService', function() {
       lastPath : 'authLastPath',
       loggedStatus : 'auth',
       storeKey : 'storeKey'
+    },
+    api : {
+      stockLimit : 500
     }
   }
 });

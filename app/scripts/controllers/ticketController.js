@@ -33,6 +33,7 @@ function ticketController($scope, $cookieStore, $filter, $routeParams, $timeout)
 
   $scope.update = function(_ticket) {
     $scope.GeneralAdmissionTicketItemInfo = angular.copy(_ticket);
+
     $scope.wizard.open = true;
     $scope.wizard.reset();
   }
@@ -46,10 +47,11 @@ function ticketController($scope, $cookieStore, $filter, $routeParams, $timeout)
         .getInstanceOf('Price');
     $scope.GeneralAdmissionTicketItemInfo.Price.Currency = $scope.Store.Currency;
 
-    $scope.$watch('GeneralAdmissionTicketItemInfo.Price.ItemPrice', function(n,
-        o) {
-      n = parseFloat(n);
-    })
+    /**
+     * We don't use 'tmp' prefix here so the property will be visible on atmodel
+     * display.
+     */
+    $scope.GeneralAdmissionTicketItemInfo.Stock = 0;
 
     $scope.wizard.open = true;
     $scope.wizard.reset();
@@ -65,9 +67,20 @@ function ticketController($scope, $cookieStore, $filter, $routeParams, $timeout)
     }
   }
 
+  $scope.updateItemStock = function(ev, ui) {
+    $scope.$apply(function() {
+      $scope.GeneralAdmissionTicketItemInfo.Stock = ui.value
+    });
+  }
+
   $scope.save = function() {
     if ($scope.wizard.finished) {
       $scope.wizard.saved = false;
+
+      // format price
+      if (angular.isDefined($scope.GeneralAdmissionTicketItemInfo.Price)) {
+        $scope.GeneralAdmissionTicketItemInfo.Price.ItemPrice = parseFloat($scope.GeneralAdmissionTicketItemInfo.Price.ItemPrice);
+      }
 
       if ($scope.GeneralAdmissionTicketItemInfo.Key === null) {
         // go on and create
@@ -86,26 +99,44 @@ function ticketController($scope, $cookieStore, $filter, $routeParams, $timeout)
                 function(ticketKey) {
                   // attach ticket to current event
                   $scope.event.addTicket($scope.storeKey, $scope.Event,
-                      ticketKey).then(function() {
-                    $scope.wizard.saved = true;
+                      ticketKey).then(
+                      function() {
+                        $scope.GeneralAdmissionTicketItemInfo.Key = ticketKey;
 
-                    // reload list
-                    $scope.init();
-                  }, function(err) {
-                    $scope.error.log(err)
-                  });
+                        // update stock (inventory)
+                        $scope.ticket.updateStock($scope.storeKey,
+                            $scope.GeneralAdmissionTicketItemInfo).then(
+                            function() {
+                              $scope.wizard.saved = true;
+
+                              // reload list
+                              $scope.init();
+                            }, function(err) {
+                              $scope.error.log(err)
+                            });
+                      }, function(err) {
+                        $scope.error.log(err)
+                      });
                 }, function(err) {
                   $scope.error.log(err)
                 });
       } else {
         // update ticket
+        debugger
         $scope.ticket.updateTicket($scope.storeKey,
-            $scope.GeneralAdmissionTicketItemInfo).then(function() {
-          $scope.ticket.$scope.wizard.saved = true;
-          $scope.init(true);
-        }, function(err) {
-          $scope.error.log(err)
-        });
+            $scope.GeneralAdmissionTicketItemInfo).then(
+            function() {
+              // update stock (inventory)
+              $scope.ticket.updateStock($scope.storeKey,
+                  $scope.GeneralAdmissionTicketItemInfo).then(function() {
+                $scope.wizard.saved = true;
+                $scope.init(true);
+              }, function(err) {
+                $scope.error.log(err)
+              });
+            }, function(err) {
+              $scope.error.log(err)
+            });
       }
     }
   }

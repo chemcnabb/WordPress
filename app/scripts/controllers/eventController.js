@@ -86,6 +86,7 @@ function eventController($scope, $cookieStore, $filter) {
 
   $scope.save = function() {
     if ($scope.wizard.finished) {
+      debugger
       $scope.wizard.saved = false;
 
       if ($scope.Event.Key === null) {
@@ -104,10 +105,15 @@ function eventController($scope, $cookieStore, $filter) {
           OnSaleDateTimeStart : $scope.Event.OnSaleDateTimeStart,
           OnSaleDateTimeEnd : $scope.Event.OnSaleDateTimeEnd
         }).then(function(eventKey) {
-          $scope.wizard.saved = true;
+          // attach event to store
+          $scope.store.addEvent($scope.storeKey, eventKey).then(function() {
+            $scope.wizard.saved = true;
 
-          // reload list
-          $scope.init();
+            // reload list
+            $scope.init();
+          }, function(err) {
+            $scope.error.log(err)
+          });
         }, function(err) {
           $scope.error.log(err)
         });
@@ -130,10 +136,21 @@ function eventController($scope, $cookieStore, $filter) {
               });
         }
 
-        $scope.event.updateEvent($scope.storeKey, $scope.Event).then(_finishes,
-            function(err) {
-              $scope.error.log(err)
-            });
+        if (angular.isArray($scope.Event.Items)) {
+          $scope.event.updateEvent($scope.storeKey, $scope.Event).then(
+              function() {
+                // process items
+
+                _finishes();
+              }, function(err) {
+                $scope.error.log(err)
+              });
+        } else {
+          $scope.event.updateEvent($scope.storeKey, $scope.Event).then(
+              _finishes, function(err) {
+                $scope.error.log(err)
+              });
+        }
       }
     }
   }

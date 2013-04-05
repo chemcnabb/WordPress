@@ -110,6 +110,8 @@ azureTicketsApp
                       _el.append(jQuery('<option value="' + _enum[e] + '" />')
                           .text(e));
                     }
+                  } else {
+                    _attr.type = 'text', _el = jQuery('<input ' + _req + '/>');
                   }
 
                   // define new element attributes
@@ -121,8 +123,8 @@ azureTicketsApp
                         && [
                             'ngModel', 'ngRequired', 'ngChange', 'uiValidate',
                             'uiValidateWatch', 'ngBlur', 'uiEvent',
-                            'uiDateFormat', 'ngPattern', 'dataProvide',
-                            'dataSource'
+                            'uiDateFormat', 'ngPattern', 'dataProvider',
+                            'dataSource', 'uiJq'
                         ].indexOf(p) === -1) {
                       var pp = p.replace(/([A-Z]+)/g, '-$1').toLowerCase();
                       var v = $scope.$eval($attrs[p]) !== 0 ? $scope
@@ -158,6 +160,9 @@ azureTicketsApp
                   }
                   if ($attrs.uiEvent) {
                     _el.attr('ui-event', 'atUiEvent');
+                  }
+                  if ($attrs.uiJq) {
+                    _el.attr('ui-jq', $attrs.uiJq);
                   }
                   if (_label !== null) {
                     $compile(_label)($scope);

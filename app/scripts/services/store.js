@@ -126,7 +126,7 @@ azureTicketsApp
                           configService.container.store,
                           "Store",
                           storeKey,
-                          2,
+                          4,
                           function(store) {
                             if (!angular.isDefined(store.Address)
                                 || store.Address === null) {
