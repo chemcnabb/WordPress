@@ -187,7 +187,8 @@ azureTicketsApp
                   }, function(uriKey) {
                     BWL.Services.ModelService.AddAsync(
                         configService.container.store, "Store", storeKey,
-                        "StoreURIs", "StoreURI", uriKey, function(ret) {
+                        "StoreURIs", BWL.Model.StoreURI.Type, uriKey, function(
+                            ret) {
                           $rootScope.$apply(def.resolve)
                         }, function(err) {
                           $rootScope.$apply(function() {
@@ -256,9 +257,9 @@ azureTicketsApp
                   delete p.Type;
                   delete p.Key;
 
-                  BWL.Services.ModelService.AddAsync(store.Key, 'Store',
-                      store.Key, 'PaymentProviders', 'PaymentProvider', p,
-                      function(ret) {
+                  BWL.Services.ModelService.AddAsync(store.Key,
+                      BWL.Model.Store.Type, store.Key, 'PaymentProviders',
+                      BWL.Model.PaymentProvider.Type, p, function(ret) {
                         $rootScope.$apply(function() {
                           def.resolve(ret)
                         })
@@ -276,7 +277,8 @@ azureTicketsApp
                   if (angular.isDefined(store.PaymentProviders)
                       && store.PaymentProviders !== null) {
                     BWL.Services.ModelService.RemoveAsync(store.Key, 'Store',
-                        store.Key, 'PaymentProviders', 'PaymentProvider',
+                        store.Key, 'PaymentProviders',
+                        BWL.Model.PaymentProvider.Type,
                         store.PaymentProviders[ix].Key, function(ret) {
                           $rootScope.$apply(function() {
                             def.resolve(ret)
@@ -289,6 +291,25 @@ azureTicketsApp
                   } else {
                     def.resolve();
                   }
+
+                  return def.promise;
+                },
+                addEvent : function(storeKey, eventKey) {
+                  var def = $q.defer();
+
+                  BWL.Services.ModelService.AddAsync(storeKey,
+                      BWL.Model.Store.Type, storeKey, 'Events',
+                      BWL.Model.Event.Type, {
+                        Key : eventKey
+                      }, function(ret) {
+                        $rootScope.$apply(function() {
+                          def.resolve(ret)
+                        })
+                      }, function(err) {
+                        $rootScope.$apply(function() {
+                          def.reject(err)
+                        })
+                      });
 
                   return def.promise;
                 },

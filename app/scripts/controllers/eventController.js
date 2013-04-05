@@ -86,7 +86,6 @@ function eventController($scope, $cookieStore, $filter) {
 
   $scope.save = function() {
     if ($scope.wizard.finished) {
-      debugger
       $scope.wizard.saved = false;
 
       if ($scope.Event.Key === null) {
