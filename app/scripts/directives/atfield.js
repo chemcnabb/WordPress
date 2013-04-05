@@ -20,7 +20,8 @@ azureTicketsApp
                   atUiValidateWatch : '&uiValidateWatch',
                   // atPattern : '@ngPattern',
                   atBlur : '=ngBlur',
-                  atTypeahead : '=bsTypeahead',
+                  atDataProvider : '=dataProvider',
+                  atDataSource : '=dataSource',
                 },
                 link : function($scope, $element, $attrs) {
                   var ss = $attrs.ngModel.split('.');
@@ -120,7 +121,8 @@ azureTicketsApp
                         && [
                             'ngModel', 'ngRequired', 'ngChange', 'uiValidate',
                             'uiValidateWatch', 'ngBlur', 'uiEvent',
-                            'uiDateFormat', 'ngPattern'
+                            'uiDateFormat', 'ngPattern', 'dataProvide',
+                            'dataSource'
                         ].indexOf(p) === -1) {
                       var pp = p.replace(/([A-Z]+)/g, '-$1').toLowerCase();
                       var v = $scope.$eval($attrs[p]) !== 0 ? $scope

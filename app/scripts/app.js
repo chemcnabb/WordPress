@@ -26,6 +26,8 @@ var routeFilters = {
       'configService',
       function($rootScope, $location, $cookieStore, authService, configService) {
         var lc = $cookieStore.get(configService.cookies.loggedStatus);
+
+        // direct access to store, don't redirect
         var isStoreVisitor = /^\/store\/[\w\-\d]+$/g.test($location.$$path);
 
         if ((lc === null || !lc) && $location.$$path !== '/auth/login'

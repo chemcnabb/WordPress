@@ -120,8 +120,12 @@ function storeController($scope, $cookieStore, $location, $timeout,
         : null, $scope.URIAvailable = true;
 
     // suggest URIs
-    $scope.$watch('Store.URI', function(uri) {
+    $scope.$watch('Store.URI', function(uri, oldUri) {
       if (!angular.isDefined($scope.Store) || $scope.Store === null) {
+        return;
+      }
+
+      if (angular.equals(uri, oldUri)) {
         return;
       }
 
@@ -210,7 +214,6 @@ function storeController($scope, $cookieStore, $location, $timeout,
 
                 // if visitor, then remember visited store
                 if (!$scope.Store.IsOwner) {
-                  debugger
                   if (!angular.isObject($scope.object.grep($scope.stores,
                       'Key', $scope.Store.Key))) {
                     $scope.stores.push($scope.Store);

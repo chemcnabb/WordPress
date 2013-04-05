@@ -1,9 +1,9 @@
 <div class="atPanel" ng-cloak>
 	<!-- top menu -->
 	<div ng-include src="'views/elements/topMenu.html'"></div>
+	<div ng-include src="'views/elements/error.html'"></div>
 	<div ui-if="DomainProfile.Key && wizard.currentStep > 0 || false"
 		ng-include src="'views/elements/store/bcSettings.html'"></div>
-	<div ng-include src="'views/elements/error.html'"></div>
 	<!-- store info update -->
 	<div ui-if="DomainProfile && DomainProfile.Key" class="row-fluid"
 		ng-init="loadCurrencies()">
@@ -60,8 +60,8 @@
 						label="'Common.Text_StoreName' | t"></atfield>
 				</dd>
 				<dd>
-					<atfield bs-typeahead="suggestedURLs" at-required
-						ng-readonly="Store.Key || false" class="input-xlarge"
+					<atfield data-provider="typeahead" data-source="suggestedURLs"
+						at-required ng-readonly="Store.Key || false" class="input-xlarge"
 						ng-model="Store.URI" at-copy="CustomURI"
 						label="'Common.Text_CustomURI' | t"
 						tip="'Common.Text_TipCustomURI' | t"></atfield>
