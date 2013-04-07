@@ -213,6 +213,12 @@ function storeController($scope, $cookieStore, $location, $timeout,
                     $scope.event.loadEvents($scope);
                   } else {
                     $scope.events = angular.copy($scope.Store.Events);
+                    angular.forEach($scope.events, function(ev, k) {
+                      $scope.event.initEvent($scope.storeKey, ev.Key).then(
+                          function(event) {
+                            $scope.events[k] = event;
+                          });
+                    });
                   }
                 }
 
