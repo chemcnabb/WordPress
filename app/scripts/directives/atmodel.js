@@ -59,6 +59,15 @@ azureTicketsApp
                         .forEach(
                             pp,
                             function(prop, k) {
+                              // hide props
+                              if (angular.isDefined($attrs.atHide)) {
+                                var hide = $scope.$eval($attrs.atHide);
+                                if (angular.isArray(hide)
+                                    && hide.indexOf(p) !== -1) {
+                                  return;
+                                }
+                              }
+
                               // suffix added when multiple objects in property
                               var countSuffix = pp.length > 1 ? ' #' + ++cc
                                   : '';
