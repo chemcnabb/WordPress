@@ -105,10 +105,14 @@
 						</dd>
 						<dd class="clear">
 							<label>{{'Common.LabelGeneralAdmissionTicketItemInfoStock'
-								| t}} (<b>{{ GeneralAdmissionTicketItemInfo.Stock || 0 }}</b>)
-							</label>
+								| t}} </label> <small class="muted">{{ 'Common.Text_Inventory' |
+								t }}: {{GeneralAdmissionTicketItemInfo.NumberTotal}}</small>&nbsp;<small
+								class="muted">{{ 'Common.Text_Add' | t }}:
+								{{GeneralAdmissionTicketItemInfo.Stock}}</small>&nbsp;<small
+								class="muted">{{ 'Common.Text_Total' | t }}: <b>{{GeneralAdmissionTicketItemInfo.Stock
+									+ GeneralAdmissionTicketItemInfo.NumberTotal}}</b></small>
 							<div ui-jq="slider"
-								ui-options="{slide: updateItemStock, step: 25, max: 500, value: GeneralAdmissionTicketItemInfo.Stock || 0}"></div>
+								ui-options="{slide: updateItemStock, step: 25, value:0, max: 500}"></div>
 						</dd>
 						<dd class="clear">
 							<atfield class="input-small"

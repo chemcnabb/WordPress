@@ -104,7 +104,7 @@ var CommonResources = {
   LabelGeneralAdmissionTicketItemInfoPolicy : 'Policy',
   LabelGeneralAdmissionTicketItemInfoMaxPurchaseQuantity : 'Maximum Allowed Quantity',
   LabelEventMaximumCapacity : 'Maximum Capacity',
-  LabelGeneralAdmissionTicketItemInfoStock : 'Total Stock',
+  LabelGeneralAdmissionTicketItemInfoStock : 'Stock',
   Text_StoreMenu_StoreDetailBt : 'Store Details',
   Text_StoreMenu_Categories : 'Categories',
   Text_StoreMenu_CreateCate : 'Create Category',
