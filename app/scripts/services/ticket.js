@@ -214,21 +214,18 @@ azureTicketsApp
                     var _addStock = function(stock) {
                       var _def = $q.defer();
 
-                      // add delay to avoid throttle
-                      setTimeout(function() {
-                        BWL.Services.InventoryService.AddInventoryItemsAsync(
-                            storeKey,
-                            BWL.Model.GeneralAdmissionTicketItemInfo.Type,
-                            ticket.Key, stock, function() {
-                              $timeout(function() {
-                                _def.resolve();
-                              }, 50);
-                            }, function(err) {
-                              $timeout(function() {
-                                _def.reject(err)
-                              }, 50);
-                            });
-                      }, 250);
+                      BWL.Services.InventoryService.AddInventoryItemsAsync(
+                          storeKey,
+                          BWL.Model.GeneralAdmissionTicketItemInfo.Type,
+                          ticket.Key, stock, function() {
+                            $timeout(function() {
+                              _def.resolve();
+                            }, 50);
+                          }, function(err) {
+                            $timeout(function() {
+                              _def.reject(err)
+                            }, 50);
+                          });
 
                       return _def.promise;
                     }

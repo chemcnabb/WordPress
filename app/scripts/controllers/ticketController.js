@@ -122,7 +122,6 @@ function ticketController($scope, $cookieStore, $filter, $routeParams, $timeout)
                 });
       } else {
         // update ticket
-        debugger
         $scope.ticket.updateTicket($scope.storeKey,
             $scope.GeneralAdmissionTicketItemInfo).then(
             function() {

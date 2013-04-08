@@ -54,7 +54,6 @@ BWL.Services.DownloadService = {
 BWL.Services.InventoryService = {
   AddInventoryItemsAsync : function(storeKey, type, key, quantity,
       successCallback, errorCallback) {
-    debugger
     var uri = '<%= at.urlApi %>/inventory.svc/{0}/{1}/{2}/{3}'.format(storeKey,
         type, key, quantity);
     BWL.InvokeService('PUT', uri, null, successCallback, errorCallback);
