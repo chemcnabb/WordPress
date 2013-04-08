@@ -23,7 +23,7 @@ azureTicketsApp.factory('objectService', function() {
       return cc.concat(ret);
     },
     /**
-     * Iterates over array of objects and returns the element's whose property
+     * Iterates over array of objects and returns the element whose property
      * prop is equal to val.
      * 
      * @param arr
@@ -50,7 +50,61 @@ azureTicketsApp.factory('objectService', function() {
       return ret;
     },
     /**
-     * Iterates over array of objects and removes the element's whose property
+     * Iterates over array of objects and returns the number of elements whose
+     * property prop is equal to val.
+     * 
+     * @param arr
+     *          {array}
+     * @param prop
+     *          {string}
+     * @param val
+     *          {mixed}
+     * @returns {object}
+     */
+    count : function(arr, prop, val) {
+      var ret = 0;
+
+      if (angular.isArray(arr)) {
+        angular.forEach(arr, function(v, k) {
+          if (angular.isDefined(v[prop])) {
+            if (angular.equals(v[prop], val)) {
+              ret++;
+            }
+          }
+        });
+      }
+
+      return ret;
+    },
+    /**
+     * Iterates over array of objects and returns the index of the element whose
+     * property prop is equal to val.
+     * 
+     * @param arr
+     *          {array}
+     * @param prop
+     *          {string}
+     * @param val
+     *          {mixed}
+     * @returns {object}
+     */
+    getIndex : function(arr, prop, val) {
+      var ret = -1;
+
+      if (angular.isArray(arr)) {
+        angular.forEach(arr, function(v, k) {
+          if (angular.isDefined(v[prop])) {
+            if (angular.equals(v[prop], val)) {
+              ret = k;
+            }
+          }
+        });
+      }
+
+      return ret;
+    },
+    /**
+     * Iterates over array of objects and removes the element whose property
      * prop is equal to val.
      * 
      * @param arr

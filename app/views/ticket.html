@@ -184,9 +184,12 @@
 							<button ui-if="Store.IsOwner" class="btn btn-mini btn-success"
 								ng-click="update(ticket)">{{ 'Common.Text_Update' | t
 								}}</button>
-							<button ui-if="!Store.IsOwner" class="btn btn-mini btn-success"
-								ng-click="addToCart(ticket)">{{
-								'ShoppingCart.labelAddToCart' | t }}</button>
+							<button ng-controller="cartController" ui-if="!Store.IsOwner"
+								class="btn btn-mini btn-success" ng-click="addToCart(ticket)">
+								<i class="icon-ok pull-left"
+									ui-if="ticket.added && ticket.added == true"></i>{{
+								'ShoppingCart.labelAddToCart' | t }}
+							</button>
 							<button ui-if="Store.IsOwner" ng-click="deleteTicket(ticket)"
 								class="btn btn-mini btn-danger">{{ 'Common.Text_Remove'
 								| t }}</button>

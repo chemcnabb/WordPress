@@ -18,6 +18,9 @@
 						ng-href="#/store/{{ s.StoreURIs[0].URI }}">{{s.Name}}</a><a
 						ui-if="s.IsOwner" ng-click="setStoreKey(s.Key)" href="#/store">{{s.Name}}</a></li>
 				</ul></li>
+			<li ui-if="Store && !Store.IsOwner || false" ui-route="#/cart"
+				ng-class="{active: $uiRoute}"><a href="#/cart">{{
+					'ShoppingCart.labelMyCart' | t }}</a></li>
 			<li ui-if="Store && Store.Key != null && Store.IsOwner || false"
 				ui-route="#/venue" ng-class="{active: $uiRoute}"><a
 				href="#/venue">{{ 'Common.Text_VenueMenu_Venue' | t }}</a></li>

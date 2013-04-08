@@ -94,6 +94,10 @@ azureTicketsApp.config([
         templateUrl : 'views/storeVisitor.html',
         // controller : storeController,
         resolve : routeFilters
+      }).when('/cart', {
+        templateUrl : 'views/cart.html',
+        controller : cartController,
+        resolve : routeFilters
       }).when('/venue', {
         templateUrl : 'views/venue.html',
         controller : venueController,

@@ -1,7 +1,7 @@
 function storeController($scope, $cookieStore, $location, $timeout,
     $routeParams, configService, authService, permService, storeService,
     modelService, errorService, geoService, formService, objectService,
-    placeService, orderService, eventService, ticketService) {
+    placeService, orderService, eventService, ticketService, cartService) {
   /**
    * The following vars are shared across controllers and accessible via $scope
    */
@@ -14,7 +14,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
       $scope.auth = authService, $scope.model = modelService,
       $scope.event = eventService, $scope.place = placeService,
       $scope.store = storeService, $scope.order = orderService,
-      $scope.ticket = ticketService;
+      $scope.ticket = ticketService, $scope.cart = cartService;
 
   // initialize wizard for Store
   $scope.wizard = $scope.form.getWizard($scope);
@@ -471,5 +471,5 @@ storeController.$inject = [
     'configService', 'authService', 'permService', 'storeService',
     'modelService', 'errorService', 'geoService', 'formService',
     'objectService', 'placeService', 'orderService', 'eventService',
-    'ticketService'
+    'ticketService', 'cartService'
 ];
