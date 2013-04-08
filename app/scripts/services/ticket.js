@@ -251,6 +251,8 @@ azureTicketsApp
                         stockParts[stockParts.length - 1] = stockParts[stockParts.length - 1]
                             - (c * parts - ticket.Stock);
                       }
+                    } else {
+                      stockParts.push(ticket.Stock);
                     }
 
                     // should we remove some?

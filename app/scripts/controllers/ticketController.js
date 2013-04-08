@@ -21,8 +21,10 @@ function ticketController($scope, $cookieStore, $filter, $routeParams, $timeout)
     }
   }
 
-  $scope.init = function() {
-    $scope.loadEvent();
+  $scope.init = function(resetEvent) {
+    if (!angular.isDefined(resetEvent) || resetEvent) {
+      $scope.loadEvent();
+    }
     $scope.ticket.loadTickets($scope);
   }
 
@@ -109,8 +111,15 @@ function ticketController($scope, $cookieStore, $filter, $routeParams, $timeout)
                             function() {
                               $scope.wizard.saved = true;
 
-                              // reload list
-                              $scope.init();
+                              // refresh Event.Items
+                              $scope.event.initEvent($scope.storeKey,
+                                  $scope.Event.Key).then(function(event) {
+                                $scope.Event = event;
+                                // reload list
+                                $scope.init(false);
+                              }, function(err) {
+                                $scope.error.log(err)
+                              })
                             }, function(err) {
                               $scope.error.log(err)
                             });
@@ -129,7 +138,9 @@ function ticketController($scope, $cookieStore, $filter, $routeParams, $timeout)
               $scope.ticket.updateStock($scope.storeKey,
                   $scope.GeneralAdmissionTicketItemInfo).then(function() {
                 $scope.wizard.saved = true;
-                $scope.init(true);
+
+                // reload list
+                $scope.init(false);
               }, function(err) {
                 $scope.error.log(err)
               });
