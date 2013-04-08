@@ -5,12 +5,15 @@
 	<!-- store for visitors -->
 	<div ui-if="Store && Store.Key" class="row-fluid"
 		ng-init="loadCurrencies()">
-		<!-- location info (will fetch geo related stuff) -->
-		<div ng-show="
-		false" ng-include src="'views/address.html'"
-			onload="modelName='Store'"></div>
-		<atmodel
-			ui-if="geo.getLoadedCountries() != null && geo.getLoadedRegions() != null && currencies.length > 0"
-			ng-model="Store" extra1="geo" extra2="currencies"></atmodel>
+		<div class="btn-group pull-right">
+			<button class="btn btn-info" ng-click="showInfo()">{{
+				'Common.Text_Information' | t }}</button>
+		</div>
+		<p class="lead">{{ 'Common.Text_UpcomingEvents' | t }}</p>
+		<!-- events list -->
+		<div ng-include src="'views/eventList.html'"></div>
+
+		<!-- store info -->
+		<div ng-include src="'views/storeInfo.html'"></div>
 	</div>
 </div>

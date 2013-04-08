@@ -42,6 +42,17 @@ function storeController($scope, $cookieStore, $location, $timeout,
     }
   })
 
+  $scope.showInfo = function() {
+    $('#storeInfo').modal({
+      show : true,
+      backdrop : 'static'
+    });
+  }
+
+  $scope.hideInfo = function() {
+    $('#storeInfo').modal('hide')
+  }
+
   $scope.init = function() {
     $scope.auth.authenticate($scope).then(
         function() {
@@ -58,6 +69,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
           if (angular.isDefined($routeParams.storeURI)) {
             $scope.store.getStoreKeyByURI($routeParams.storeURI).then(
                 function(storeKey) {
+                  $scope.storeURI = $routeParams.storeURI;
                   $scope.$emit('initStore', storeKey);
                 }, function(err) {
                   $scope.error.log(err)
@@ -208,6 +220,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
                     && $scope.Store.IsOwner) {
                   $scope.place.loadPlaces($scope);
                 }
+
                 if ($scope.events.length === 0
                     && $scope.auth.isDomainProfileReady()) {
                   // always load whole set of events for owners
@@ -216,6 +229,8 @@ function storeController($scope, $cookieStore, $location, $timeout,
                   } else if (angular.isDefined($scope.Store.Events)) {
                     $scope.events = angular.copy($scope.Store.Events);
                   }
+                } else if (angular.isDefined($scope.Store.Events)) {
+                  $scope.events = angular.copy($scope.Store.Events);
                 }
 
                 // if visitor, then remember visited store

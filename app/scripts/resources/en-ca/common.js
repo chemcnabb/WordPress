@@ -43,6 +43,7 @@ var CommonResources = {
   Text_Search : 'Search',
   Text_Search_here : 'Search here.........',
   Text_IAccept : 'I Accept',
+  Text_Information : 'Information',
   Text_Name : 'Name',
   Text_Item : 'Item',
   Text_Password : 'Password',
