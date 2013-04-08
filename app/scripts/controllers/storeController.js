@@ -204,21 +204,17 @@ function storeController($scope, $cookieStore, $location, $timeout,
 
                 // init venues, events
                 if ($scope.venues.length === 0
-                    && $scope.auth.isDomainProfileReady()) {
+                    && $scope.auth.isDomainProfileReady()
+                    && $scope.Store.IsOwner) {
                   $scope.place.loadPlaces($scope);
                 }
                 if ($scope.events.length === 0
                     && $scope.auth.isDomainProfileReady()) {
-                  if (!angular.isDefined($scope.Store.Events)) {
+                  // always load whole set of events for owners
+                  if ($scope.Store.IsOwner) {
                     $scope.event.loadEvents($scope);
-                  } else {
+                  } else if (angular.isDefined($scope.Store.Events)) {
                     $scope.events = angular.copy($scope.Store.Events);
-                    angular.forEach($scope.events, function(ev, k) {
-                      $scope.event.initEvent($scope.storeKey, ev.Key).then(
-                          function(event) {
-                            $scope.events[k] = event;
-                          });
-                    });
                   }
                 }
 
