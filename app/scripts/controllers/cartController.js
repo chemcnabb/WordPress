@@ -26,7 +26,7 @@ function cartController($scope, $cookieStore, $filter) {
                 }
                 // push to tmp
                 $scope._tmpCartItems.push(_item);
-                debugger
+
                 // check for existing
                 var c = $scope.object.count($scope._tmpCartItems, 'Key',
                     _item.Key);

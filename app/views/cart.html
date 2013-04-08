@@ -22,8 +22,14 @@
 					<td>{{ item.Name }}</td>
 					<td class="text-info">{{ item.Price.ItemPrice | currency }}</td>
 					<td>{{ item.Qty }}</td>
-					<td class="text-info">{{ item.Qty * item.Price.ItemPrice |
-						currency }}</td>
+					<td ng-init="item.subTotal = item.Qty * item.Price.ItemPrice"
+						class="text-info">{{ item.subTotal | currency }}</td>
+				</tr>
+				<tr>
+					<td colspan="4"><b>{{ 'ShoppingCart.labelTotal' | t }}</b><span
+						class="pull-right label label-info">{{ Cart.Total.ItemPrice
+							| currency }}</span>
+					<td>
 				</tr>
 			</tbody>
 		</table>
