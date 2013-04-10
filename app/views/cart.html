@@ -18,7 +18,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="item in cartItems">
+				<tr ng-repeat="item in cartItems | orderBy:'Name'">
 					<td>{{ item.Name }}</td>
 					<td class="text-info">{{ item.Price.ItemPrice | currency }}</td>
 					<td width="105">
@@ -49,10 +49,10 @@
 		</table>
 		<div class="btn-group pull-right">
 			<a ng-href="/#/store/{{storeURI}}" class="btn btn-primary">{{
-				'ShoppingCart.labelContinuesShopping' | t }}</a>
-			<button ui-if="Cart && cartItems && cartItems.length > 0"
-				ng-click="checkout()" class="btn btn-success">{{
-				'ShoppingCart.labelProcessedToCheckout' | t }}</button>
+				'ShoppingCart.labelContinuesShopping' | t }}</a> <a
+				ui-if="Cart && cartItems && cartItems.length > 0"
+				ng-href="/#/checkout" class="btn btn-success">{{
+				'ShoppingCart.labelProcessedToCheckout' | t }}</a>
 		</div>
 	</div>
 </div>

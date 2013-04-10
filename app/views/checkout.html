@@ -1,0 +1,73 @@
+<div class="atPanel" ng-cloak ui-if="Store" ng-init="init()">
+	<!-- top menu -->
+	<div ng-include src="'views/elements/topMenu.html'"></div>
+	<div ng-include src="'views/elements/error.html'"></div>
+	<div class="row-fluid" ui-if="Cart"
+		ng-init="loadCurrencies(); wizard.currentStep = 1">
+		<p class="lead">{{ 'ShoppingCart.labelCheckout' | t }}</p>
+		<div ng-switch="wizard.currentStep">
+			<div class="alert alert-info" ng-switch-when="1">
+				<strong>{{ 'ShoppingCart.labelShoppingCart' | t }}</strong>
+			</div>
+			<div class="alert alert-info" ng-switch-when="2">
+				<strong>{{ 'ShoppingCart.labelShipTo' | t }}</strong>
+			</div>
+		</div>
+		<ng-form ui-if="Store && Cart" name="atCart" ng-submit="checkout()">
+		<form ng-show="wizard.currentStep == 1" name="atCart1"
+			ng-submit="wizard.next('atCart1') || false">
+			<dl class="clearfix">
+				<dd>
+					<!-- cart details -->
+					<atmodel
+						ui-if="Cart && Cart.Items && Cart.Items.length > 0 && currencies.length > 0"
+						ng-model="Cart" extra2="currencies"
+						at-hide="['ProfileKey','ExpiryDateTime','State']"></atmodel>
+				</dd>
+				<dd class="pull-left">
+					<a ng-href="#/cart" class="btn btn-primary clear">{{
+						'Common.Text_Back' | t }}</a>
+				</dd>
+				<dd class="pull-left">
+					<input type="submit" class="btn btn-primary clear"
+						ng-click="wizard.currentStep = wizard.currentStep+1"
+						value="{{
+							'Common.Text_Next' | t }}" />
+				</dd>
+			</dl>
+		</form>
+		<form ui-if="Cart.RequiresShipping && wizard.currentStep == 2"
+			name="atCart2" ng-submit="wizard.next('atCart2')">
+			<!-- location info -->
+			<div ng-include src="'views/address.html'" onload="modelName='Cart'"></div>
+			<dl>
+				<dd class="pull-left">
+					<a ng-show="wizard.currentStep>1"
+						ng-click="wizard.currentStep = wizard.currentStep-1"
+						class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
+				</dd>
+				<dd class="pull-left">
+					<input type="submit" class="btn btn-primary clear"
+						value="{{
+		 							'Common.Text_Next' | t }}" />
+				</dd>
+			</dl>
+		</form>
+		<form ui-if="wizard.currentStep == 3" name="atCart3"
+			ng-submit="wizard.next('atCart3')">
+			<dl>
+				<dd class="pull-left">
+					<a ng-show="wizard.currentStep>1"
+						ng-click="wizard.currentStep = Cart.RequiresShipping && wizard.currentStep-1 || wizard.currentStep-2"
+						class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
+				</dd>
+				<dd class="pull-left">
+					<input type="submit" class="btn btn-primary clear"
+						value="{{
+		 							'Common.Text_Next' | t }}" />
+				</dd>
+			</dl>
+		</form>
+		</ng-form>
+	</div>
+</div>

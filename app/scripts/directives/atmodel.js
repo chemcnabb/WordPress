@@ -89,6 +89,7 @@ azureTicketsApp
                                     'ISO', prop);
                                 out[$filter('t')(resPrefix + p)] = c.Name;
                               } else if (angular.isObject(prop) && prop.Type) {
+                                debugger
                                 switch (prop.Type) {
                                   // handle Address type
                                   case BWL.Model.Address.Type:
@@ -145,6 +146,12 @@ azureTicketsApp
                                     out[$filter('t')('Common.Text_Price')
                                         + ' (' + prop.Currency + ')'
                                         + countSuffix] = prop.ItemPrice;
+                                    break;
+                                  case BWL.Model.GeneralAdmissionTicketItemInfo.Type:
+                                    out[$filter('t')('ShoppingCart.labelItem')
+                                        + countSuffix] = prop.Name
+                                        + ' <span class="text-success"><b>x '
+                                        + prop.Qty + '</b></span>';
                                     break;
                                 }
                               }

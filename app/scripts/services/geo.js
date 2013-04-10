@@ -163,6 +163,26 @@ azureTicketsApp
 
                   return def.promise;
                 },
+                createAddress : function(storeKey, address) {
+                  var def = $q.defer();
+
+                  delete address.tmpContinentIso;
+                  modelService.nonNull(address);
+
+                  BWL.Services.ModelService.CreateAsync(
+                      configService.container.store, BWL.Model.Address.Type,
+                      address, function(addressKey) {
+                        $rootScope.$apply(function() {
+                          def.resolve(addressKey)
+                        });
+                      }, function(err) {
+                        $rootScope.$apply(function() {
+                          def.reject(err)
+                        });
+                      });
+
+                  return def.promise;
+                },
                 createAddressForStore : function(storeKey, address) {
                   var def = $q.defer();
 
@@ -170,12 +190,12 @@ azureTicketsApp
                   modelService.nonNull(address);
 
                   BWL.Services.ModelService.CreateAsync(
-                      configService.container.store, "Address", address,
-                      function(addressKey) {
+                      configService.container.store, BWL.Model.Address.Type,
+                      address, function(addressKey) {
                         if (addressKey) {
                           BWL.Services.ModelService.AddAsync(storeKey, "Store",
-                              storeKey, "Address", "Address", addressKey,
-                              function(ret) {
+                              storeKey, "Address", BWL.Model.Address.Type,
+                              addressKey, function(ret) {
                                 $rootScope.$apply(function() {
                                   def.resolve(ret)
                                 })
@@ -216,8 +236,8 @@ azureTicketsApp
                   modelService.nonNull(address);
 
                   BWL.Services.ModelService.UpdateAsync(
-                      configService.container.store, 'Address', address.Key,
-                      address, function(ret) {
+                      configService.container.store, BWL.Model.Address.Type,
+                      address.Key, address, function(ret) {
                         $rootScope.$apply(function() {
                           def.resolve()
                         })

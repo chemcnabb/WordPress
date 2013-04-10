@@ -84,6 +84,7 @@ var CommonResources = {
   Text_StoreName : 'Store\'s Name',
   Text_StoreType : 'Your Store',
   Text_StoreCurrency : 'Currency',
+  LabelCartCurrency : 'Currency',
   Text_StoreCreate : 'You haven\'t created a store yet. Please follow these registration steps.',
   Text_Description : 'Description',
   Text_InvalidPattern : 'The format for {0} is not valid',
