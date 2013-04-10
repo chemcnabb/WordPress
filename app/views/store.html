@@ -154,9 +154,8 @@
 				</dd>
 			</dl>
 		</form>
-		<form ui-if="Store || false"
-			ng-show="wizard.currentStep == 4 && !wizard.saved" name="atStore4"
-			ng-submit="wizard.next('atStore4', true)">
+		<form ui-if="Store && wizard.currentStep == 4 && !wizard.saved"
+			name="atStore4" ng-submit="wizard.next('atStore4', true)">
 			<dl>
 				<dd class="clear row-fluid">
 					<div class="span6">
