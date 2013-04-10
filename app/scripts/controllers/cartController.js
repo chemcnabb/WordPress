@@ -11,7 +11,7 @@ function cartController($scope, $cookieStore, $filter) {
             if (angular.isDefined($scope.Cart.InventoryItems)) {
               // join all events items
               angular.forEach($scope.events, function(ev) {
-                if (angular.isDefined(ev.Items)) {
+                if (angular.isDefined(ev.Items) && angular.isArray(ev.Items)) {
                   $scope.allItems = $scope.allItems.concat(ev.Items);
                 }
               });
@@ -20,26 +20,16 @@ function cartController($scope, $cookieStore, $filter) {
               angular.forEach($scope.Cart.InventoryItems, function(item) {
                 var _item = $scope.object.grep($scope.allItems, 'Key',
                     item.ItemInfoKey);
-                // set tmp array to check for dups
-                if (!angular.isDefined($scope._tmpCartItems)) {
-                  $scope._tmpCartItems = [];
-                }
-                // push to tmp
-                $scope._tmpCartItems.push(_item);
-
                 // check for existing
-                var c = $scope.object.count($scope._tmpCartItems, 'Key',
-                    _item.Key);
-
-                if (c === 1) {
-                  $scope.cartItems.push(_item);
-                }
-
-                // update qty
                 var k = $scope.object.getIndex($scope.cartItems, 'Key',
                     _item.Key);
-                if (k !== -1) {
-                  $scope.cartItems[k].Qty = c;
+
+                if (k === -1) {
+                  _item.Qty = 1;
+                  $scope.cartItems.push(_item);
+                } else {
+                  // update qty
+                  $scope.cartItems[k].Qty = $scope.cartItems[k].Qty + 1;
                 }
               })
             }
@@ -49,10 +39,20 @@ function cartController($scope, $cookieStore, $filter) {
     }
   }
 
-  $scope.addToCart = function(ticket) {
-    $scope.cart.addItem($scope.storeKey, ticket.Type, ticket.Key, 1).then(
+  $scope.addToCart = function(item) {
+    $scope.cart.addItem($scope.storeKey, item.Type, item.Key, 1).then(
         function() {
-          ticket.added = true;
+          item.added = true;
+          $scope.init();
+        }, function(err) {
+          $scope.error.log(err)
+        });
+  }
+
+  $scope.removeFromCart = function(item) {
+    $scope.cart.removeItem($scope.storeKey, item.Type, item.Key, 1).then(
+        function() {
+          item.added = false;
           $scope.init();
         }, function(err) {
           $scope.error.log(err)

@@ -56,6 +56,22 @@ azureTicketsApp.factory('cartService', [
               });
 
           return def.promise;
+        },
+        removeItem : function(storeKey, type, itemKey, qty) {
+          var def = $q.defer();
+
+          BWL.Services.CartService.RemoveItemsAsync(storeKey, type, itemKey,
+              qty, function() {
+                $rootScope.$apply(function() {
+                  def.resolve()
+                });
+              }, function(err) {
+                $rootScope.$apply(function() {
+                  def.reject(err)
+                })
+              });
+
+          return def.promise;
         }
       }
     }

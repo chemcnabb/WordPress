@@ -21,7 +21,21 @@
 				<tr ng-repeat="item in cartItems">
 					<td>{{ item.Name }}</td>
 					<td class="text-info">{{ item.Price.ItemPrice | currency }}</td>
-					<td>{{ item.Qty }}</td>
+					<td width="105">
+						<div class="row-fluid">
+							<div class="span4">
+								<button class="btn btn-mini" ng-click="removeFromCart(item)">
+									<i class="icon-minus-sign"></i>
+								</button>
+							</div>
+							<div class="span4" style="padding-left: 7px">{{ item.Qty }}</div>
+							<div class="span4">
+								<button class="btn btn-mini" ng-click="addToCart(item)">
+									<i class="icon-plus-sign"></i>
+								</button>
+							</div>
+						</div>
+					</td>
 					<td ng-init="item.subTotal = item.Qty * item.Price.ItemPrice"
 						class="text-info">{{ item.subTotal | currency }}</td>
 				</tr>
