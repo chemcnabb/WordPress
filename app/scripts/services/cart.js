@@ -87,7 +87,24 @@ azureTicketsApp.factory('cartService', [
               });
 
           return def.promise;
-        }
+        },
+        beginPayment : function(storeKey, paymentProvider, redirectURL) {
+          var def = $q.defer();
+
+          BWL.Services.PaymentService.BeginPaymentAsync(storeKey,
+              paymentProvider.ProviderType, 'HTML', redirectURL, function(
+                  paymentInfo) {
+                $rootScope.$apply(function() {
+                  def.resolve(paymentInfo)
+                });
+              }, function(err) {
+                $rootScope.$apply(function() {
+                  def.reject(err)
+                })
+              });
+
+          return def.promise;
+        },
       }
     }
 ]);

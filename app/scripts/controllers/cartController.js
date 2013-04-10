@@ -94,6 +94,26 @@ function cartController($scope, $cookieStore, $filter) {
           $scope.error.log(err)
         });
   }
+
+  $scope.checkout = function() {
+    if ($scope.wizard.finished) {
+      // begin payment
+      $scope.cart.beginPayment($scope.storeKey, $scope.paymentProvider,
+          'http://localhost:9001/#/checkout').then(
+          function(paymentInfo) {
+            if (angular.isDefined(paymentInfo.StartPaymentURL)) {
+              // we've got an URL, continue payment process
+              window.location.href = paymentInfo.StartPaymentURL;
+            } else {
+              // no payment URL
+              $scope.error.log($filter('t')(
+                  'ShoppingCart.msg_PaymentCannotProceed'));
+            }
+          }, function(err) {
+            $scope.error.log(err)
+          });
+    }
+  }
 }
 
 cartController.$inject = [
