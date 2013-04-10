@@ -33,16 +33,19 @@ function cartController($scope, $cookieStore, $filter) {
               angular.forEach($scope.Cart.InventoryItems, function(item) {
                 var _item = $scope.object.grep($scope.allItems, 'Key',
                     item.ItemInfoKey);
-                // check for existing
-                var k = $scope.object.getIndex($scope.cartItems, 'Key',
-                    _item.Key);
 
-                if (k === -1) {
-                  _item.Qty = 1;
-                  $scope.cartItems.push(_item);
-                } else {
-                  // update qty
-                  $scope.cartItems[k].Qty = $scope.cartItems[k].Qty + 1;
+                if (angular.isObject(_item)) {
+                  // check for existing
+                  var k = $scope.object.getIndex($scope.cartItems, 'Key',
+                      _item.Key);
+
+                  if (k === -1) {
+                    _item.Qty = 1;
+                    $scope.cartItems.push(_item);
+                  } else {
+                    // update qty
+                    $scope.cartItems[k].Qty = $scope.cartItems[k].Qty + 1;
+                  }
                 }
 
                 $scope.Cart.Items = $scope.cartItems;
@@ -99,8 +102,12 @@ function cartController($scope, $cookieStore, $filter) {
     if ($scope.wizard.finished) {
       // begin payment
       $scope.cart.beginPayment($scope.storeKey, $scope.paymentProvider,
-          'http://localhost:9001/#/checkout').then(
+          'http://nico9.localhost:9001/#/checkout').then(
           function(paymentInfo) {
+            // store payment session for later use
+            $cookieStore.put($scope.config.cookies.paymentSessionKey,
+                paymentInfo.SessionKey);
+
             if (angular.isDefined(paymentInfo.StartPaymentURL)) {
               // we've got an URL, continue payment process
               window.location.href = paymentInfo.StartPaymentURL;

@@ -140,6 +140,12 @@
 						at-copy="PaymentProvider"
 						label="tmpPaymentProviderInfo.ProviderTokenText"></atfield>
 				</dd>
+				<dd ui-if="tmpPaymentProviderInfo || false">
+					<atfield class="input-xxlarge"
+						ng-model="Store.tmpPaymentProvider.Policy" at-required
+						at-copy="PaymentProvider" label="'Common.Text_Policy' | t"
+						rows="5"></atfield>
+				</dd>
 			</dl>
 			<dl>
 				<dd class="pull-left">

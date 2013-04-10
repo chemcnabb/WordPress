@@ -65,19 +65,26 @@ azureTicketsApp.config([
                   'configService',
                   function(authService, $rootScope, $timeout, $location,
                       $cookieStore, configService) {
-                    authService.logoffAsync().then(function() {
-                      $cookieStore.remove(configService.cookies.loggedStatus);
-                      $cookieStore.remove(configService.cookies.lastPath);
-                      authService.setDomainProfile(null);
-                      $rootScope.$broadcast('initStore', null);
-                      $rootScope.$broadcast('resetDomainProfile');
+                    authService.logoffAsync().then(
+                        function() {
+                          // clear cookies
+                          $cookieStore
+                              .remove(configService.cookies.loggedStatus);
+                          $cookieStore.remove(configService.cookies.lastPath);
+                          $cookieStore
+                              .remove(configService.cookies.paymentSessionKey);
 
-                      $timeout(function() {
-                        $rootScope.$apply(function() {
-                          $location.path('/');
-                        })
-                      }, 250)
-                    });
+                          // reset store & profile
+                          authService.setDomainProfile(null);
+                          $rootScope.$broadcast('initStore', null);
+                          $rootScope.$broadcast('resetDomainProfile');
+
+                          $timeout(function() {
+                            $rootScope.$apply(function() {
+                              $location.path('/');
+                            })
+                          }, 250)
+                        });
                   }
               ]
             }
