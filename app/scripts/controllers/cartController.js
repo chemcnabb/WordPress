@@ -1,5 +1,6 @@
 function cartController($scope, $cookieStore, $filter) {
-  $scope.name = 'cart';
+  $scope.name = 'cart', $scope.paymentProvider = $scope.model
+      .getInstanceOf('PaymentProvider');
 
   // initialize wizard for the checkout process
   $scope.wizard = $scope.form.getWizard($scope);
@@ -60,6 +61,16 @@ function cartController($scope, $cookieStore, $filter) {
     return function() {
       $scope.$apply(function() {
         ticket.added = false;
+      });
+    }
+  }
+
+  $scope.clearCart = function() {
+    if (confirm($filter('t')('ShoppingCart.labelConfirmClear'))) {
+      $scope.cart.clearCart($scope.storeKey).then(function() {
+        $scope.init();
+      }, function(err) {
+        $scope.error.log(err)
       });
     }
   }

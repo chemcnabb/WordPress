@@ -12,6 +12,9 @@
 			<div class="alert alert-info" ng-switch-when="2">
 				<strong>{{ 'ShoppingCart.labelShipTo' | t }}</strong>
 			</div>
+			<div class="alert alert-info" ng-switch-when="3">
+				<strong>{{ 'ShoppingCart.labelPaymentProvider' | t }}</strong>
+			</div>
 		</div>
 		<ng-form ui-if="Store && Cart" name="atCart" ng-submit="checkout()">
 		<form ng-show="wizard.currentStep == 1" name="atCart1"
@@ -38,6 +41,7 @@
 		</form>
 		<form ui-if="Cart.RequiresShipping && wizard.currentStep == 2"
 			name="atCart2" ng-submit="wizard.next('atCart2')">
+			<!-- @todo location info not currently being saved because we're dealing with tickets only (for now) -->
 			<!-- location info -->
 			<div ng-include src="'views/address.html'" onload="modelName='Cart'"></div>
 			<dl>
@@ -56,6 +60,22 @@
 		<form ui-if="wizard.currentStep == 3" name="atCart3"
 			ng-submit="wizard.next('atCart3')">
 			<dl>
+				<dd ui-if="Store && Store.PaymentProviders && paymentProvider">
+					<label>{{'Common.LabelStorePaymentProvider' | t}}</label> <select
+						type="text" ui-select2="{containerCssClass:'input-xlarge'}"
+						data-placeholder="{{ 'Common.Text_ChooseOption' | t}}" at-required
+						name="paymentProvider" ng-model="paymentProvider.ProviderType">
+						<option></option>
+						<option
+							ng-selected="paymentProvider.ProviderType == p.ProviderType"
+							ng-repeat="p in Store.PaymentProviders"
+							value="{{p.ProviderType}}">{{'Common.Text_Paypro_'+p.ProviderType
+							| t}}</option>
+					</select>
+				</dd>
+				<dd class="clearfix">
+					<br />
+				</dd>
 				<dd class="pull-left">
 					<a ng-show="wizard.currentStep>1"
 						ng-click="wizard.currentStep = Cart.RequiresShipping && wizard.currentStep-1 || wizard.currentStep-2"

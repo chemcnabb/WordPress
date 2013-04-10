@@ -41,6 +41,21 @@ azureTicketsApp.factory('cartService', [
 
           return def.promise;
         },
+        clearCart : function(storeKey) {
+          var def = $q.defer();
+
+          BWL.Services.CartService.ClearCartAsync(storeKey, function() {
+            $rootScope.$apply(function() {
+              def.resolve()
+            });
+          }, function(err) {
+            $rootScope.$apply(function() {
+              def.reject(err)
+            })
+          });
+
+          return def.promise;
+        },
         addItem : function(storeKey, type, itemKey, qty) {
           var def = $q.defer();
 

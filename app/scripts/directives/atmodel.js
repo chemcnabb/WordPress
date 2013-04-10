@@ -89,7 +89,6 @@ azureTicketsApp
                                     'ISO', prop);
                                 out[$filter('t')(resPrefix + p)] = c.Name;
                               } else if (angular.isObject(prop) && prop.Type) {
-                                debugger
                                 switch (prop.Type) {
                                   // handle Address type
                                   case BWL.Model.Address.Type:

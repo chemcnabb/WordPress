@@ -49,8 +49,11 @@
 		</table>
 		<div class="btn-group pull-right">
 			<a ng-href="/#/store/{{storeURI}}" class="btn btn-primary">{{
-				'ShoppingCart.labelContinuesShopping' | t }}</a> <a
-				ui-if="Cart && cartItems && cartItems.length > 0"
+				'ShoppingCart.labelContinuesShopping' | t }}</a>
+			<button ui-if="Cart && cartItems && cartItems.length > 0"
+				ng-click="clearCart()" class="btn btn-danger">{{
+				'ShoppingCart.labelClear' | t }}</button>
+			<a ui-if="Cart && cartItems && cartItems.length > 0"
 				ng-href="/#/checkout" class="btn btn-success">{{
 				'ShoppingCart.labelProcessedToCheckout' | t }}</a>
 		</div>
