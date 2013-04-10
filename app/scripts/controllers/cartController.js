@@ -53,6 +53,17 @@ function cartController($scope, $cookieStore, $filter) {
     }
   }
 
+  /**
+   * Executed once item has been added
+   */
+  $scope.evAddItem = function(ticket) {
+    return function() {
+      $scope.$apply(function() {
+        ticket.added = false;
+      });
+    }
+  }
+
   $scope.addToCart = function(item) {
     $scope.cart.addItem($scope.storeKey, item.Type, item.Key, 1).then(
         function() {
