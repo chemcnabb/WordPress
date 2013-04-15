@@ -18,7 +18,7 @@ Date.prototype.getGMTOffset = function() {
 // Main BWL Namespace
 var BWL = {
   // Global variables
-  Server : "<%= at.urlApi %>",
+  Server : '<%= at.urlApi %>',
   Store : null,
   StoreKey : null,
   Profile : null,
@@ -32,10 +32,9 @@ var BWL = {
   xhdList : new Array(),
 
   InvokeService : function(method, url, data, successCallback, errorCallback) {
-
     method = method.toUpperCase();
 
-    if (errorCallback == undefined) errorCallback = BWL.ServiceFailedCallback;
+    if (errorCallback == undefined){errorCallback = BWL.ServiceFailedCallback;}
 
     // the default config is a simple request
     var requestConfig = {
@@ -44,12 +43,11 @@ var BWL = {
     };
 
     if (method == "POST" || method == "PUT") {
-
       var contentType = "";
 
       // if this is a JS object, convert to JSON, else just pass the data as
       // form data
-      if (typeof (data) == 'object') {
+      if (typeof data == 'object') {
         contentType = "application/json";
         data = BWL.Plugins.json2.stringify(data);
       } else {
@@ -114,22 +112,21 @@ var BWL = {
   dump : function(arr, eolchar, level, levelId) {
     var dumped_text = "";
     var paddding = "    ";
-    if (!level) level = 0;
-    if (!eolchar) eolchar = "\n";
-    if (!levelId) levelId = Date.now() + ".";
+    if (!level){level = 0;}
+    if (!eolchar){eolchar = "\n";}
+    if (!levelId){levelId = Date.now() + ".";}
 
-    if (eolchar != "\n") paddding = "&nbsp;&nbsp;&nbsp;&nbsp;";
+    if (eolchar != "\n"){paddding = "&nbsp;&nbsp;&nbsp;&nbsp;";}
 
     // The padding given at the beginning of the line.
     var level_padding = "";
-    for ( var j = 0; j < level + 1; j++)
-      level_padding += paddding;
+    for ( var j = 0; j < level + 1; j++) {level_padding += paddding;}
 
-    if (typeof (arr) == 'object') { // Array/Hashes/Objects
+    if (typeof arr == 'object') { // Array/Hashes/Objects
       for ( var item in arr) {
         var value = arr[item];
 
-        if (typeof (value) == 'object') { // If it is an array,
+        if (typeof value == 'object') { // If it is an array,
           levelId += item;
           dumped_text += level_padding + item;
           if (value != null && value != undefined) {
@@ -139,8 +136,8 @@ var BWL = {
               var label = "";
 
               // add the type, key or both to the label if available
-              if (value.Key != undefined) label += value.Key;
-              if (label.length == 0) label += "=>";
+              if (value.Key != undefined){label += value.Key;}
+              if (label.length == 0){label += "=>";}
 
               dumped_text += " <a href=\"javascript:BWL.toggle('" + levelId
                   + "');\">" + label + "</a>";
@@ -152,11 +149,10 @@ var BWL = {
           } else {
             dumped_text += " => null" + eolchar;
           }
-
-        } else if (typeof (value) == 'function') {
+        } else if (typeof value == 'function') {
           dumped_text += level_padding + item + " => \"" + eval(value) + "\""
               + eolchar;
-        } else if (typeof (value) == 'string') {
+        } else if (typeof value == 'string') {
           dumped_text += level_padding + item + " => \"" + value + "\""
               + eolchar;
         } else {
@@ -164,14 +160,14 @@ var BWL = {
         }
       }
     } else { // Stings/Chars/Numbers etc.
-      dumped_text = "(" + typeof (arr) + ")=>" + arr;
+      dumped_text = "(" + typeof arr + ")=>" + arr;
     }
     return dumped_text;
   },
 
   toggle : function(target) {
     var obj = document.getElementById(target);
-    obj.style.display = (obj.style.display == "block") ? "none" : "block";
+    obj.style.display = obj.style.display == "block" ? "none" : "block";
   },
 
   leftPad : function(val, size, ch) {
@@ -188,8 +184,11 @@ var BWL = {
   isArray : function(obj) {
     // returns true is it is an array
     if (obj == undefined || obj == null
-        || obj.constructor.toString().indexOf('Array') == -1) return false;
-    else return true;
+        || obj.constructor.toString().indexOf('Array') == -1) {
+      return false;
+    } else {
+      return true;
+    }
   },
 
   getHost : function(url) {
@@ -205,16 +204,16 @@ var BWL = {
 };
 
 BWL.Plugins = {};
+BWL.Plugins.easyXDM = typeof easyXDM !== 'undefined' ? easyXDM : {};
 BWL.Services = {};
 BWL.ServicesMeta = {};
-BWL.Plugins.easyXDM = typeof easyXDM !== 'undefined' ? easyXDM : {};
 BWL.Model = {};
 BWL.ModelEnum = {};
 BWL.ModelMeta = {};
 BWL.Helpers = {};
 
-// oAuth functions
-BWL.oAuth = {
+// Auth functions
+BWL.Auth = {
   ClientKey : null,
   PopupWidth : 0,
   PopupHeight : 0,
@@ -224,8 +223,8 @@ BWL.oAuth = {
   LoadProfileAsyncCallback : null,
 
   Init : function(clientKey, popupWidth, popupHeight) {
-    if (popupWidth == undefined) popupWidth = 500;
-    if (popupHeight == undefined) popupHeight = 500;
+    if (popupWidth == undefined){popupWidth = 500;}
+    if (popupHeight == undefined){popupHeight = 500;}
 
     this.ClientKey = clientKey;
     this.PopupHeight = popupHeight;
@@ -236,12 +235,10 @@ BWL.oAuth = {
   },
 
   LoadProfileAsync : function(successCallback, errorCallback) {
+    if (errorCallback == undefined){errorCallback = BWL.ServiceFailedCallback;}
+    BWL.Auth.LoadProfileAsyncCallback = successCallback;
 
-    if (errorCallback == undefined) errorCallback = BWL.ServiceFailedCallback;
-    BWL.oAuth.LoadProfileAsyncCallback = successCallback;
-
-    BWL.Services.SystemProfileService.GetProfileAsync(5,
-        BWL.oAuth.GetProfileCallback);
+    BWL.Services.AccountService.GetProfileAsync(BWL.Auth.GetProfileCallback);
   },
 
   GetProfileCallback : function(profile) {
@@ -249,94 +246,89 @@ BWL.oAuth = {
     if (profile != undefined && profile != null && profile.AccessToken != null) {
       BWL.Profile = profile;
     }
-    if (BWL.oAuth.LoadProfileAsyncCallback != null) {
+    if (BWL.Auth.LoadProfileAsyncCallback != null) {
       // return to the callback
-      BWL.oAuth.LoadProfileAsyncCallback();
+      BWL.Auth.LoadProfileAsyncCallback();
       // now remove the callback
-      BWL.oAuth.LoadProfileAsyncCallback = null;
+      BWL.Auth.LoadProfileAsyncCallback = null;
     }
   },
 
   GetAuthLogonURL : function(providerName, redirectURL) {
     return BWL.Server
-        + '/oAuth/logon?providerName={0}&clientKey={1}&display=HTML&redirectURL={2}'
-            .format(providerName, BWL.oAuth.ClientKey, redirectURL);
+        + '/auth/logon?providerName={0}&clientKey={1}&display=HTML&redirectURL={2}'
+            .format(providerName, BWL.Auth.ClientKey, redirectURL);
   },
 
   GetAuthAddLogonURL : function(providerName, redirectURL) {
     return BWL.Server
-        + '/oAuth/addLogon?providerName={0}&clientKey={1}&display=HTML&redirectURL={2}'
-            .format(providerName, BWL.oAuth.ClientKey, redirectURL);
+        + '/auth/addLogon?providerName={0}&clientKey={1}&display=HTML&redirectURL={2}'
+            .format(providerName, BWL.Auth.ClientKey, redirectURL);
   },
 
   LogonAsync : function(provider, successCallback, errorCallback) {
-
-    if (errorCallback == undefined) errorCallback = BWL.ServiceFailedCallback;
-    BWL.oAuth.BeginLogonAsyncCallback = successCallback;
+    if (errorCallback == undefined){errorCallback = BWL.ServiceFailedCallback;}
+    BWL.Auth.BeginLogonAsyncCallback = successCallback;
 
     var authURL = this.GetAuthLogonURL(provider, '');
 
-    BWL.oAuth.PopupWindow = BWL.Helpers.UI.PopupCenter(authURL, 'AuthWindow',
-        BWL.oAuth.PopupWidth, BWL.oAuth.PopupHeight);
+    BWL.Auth.PopupWindow = BWL.Helpers.UI.PopupCenter(authURL, 'AuthWindow',
+        BWL.Auth.PopupWidth, BWL.Auth.PopupHeight);
 
-    if (BWL.Helpers.UI.IsPopupClosed(BWL.oAuth.PopupWindow)) {
+    if (BWL.Helpers.UI.IsPopupClosed(BWL.Auth.PopupWindow)) {
       // no popups allowed, use inline
       window.location = this.GetAuthLogonURL(provider, window.location);
     } else {
       // now start watching the login window
-      setTimeout(BWL.oAuth.CheckLoginWindow, BWL.RETRYDELAY);
+      setTimeout(BWL.Auth.CheckLoginWindow, BWL.RETRYDELAY);
     }
   },
 
   CheckLoginWindow : function() {
     // see if the window is still open
-    if (BWL.Helpers.UI.IsPopupClosed(BWL.oAuth.PopupWindow)) {
+    if (BWL.Helpers.UI.IsPopupClosed(BWL.Auth.PopupWindow)) {
       // it is not open, try and get the profile
-      BWL.oAuth.PopupWindow = null;
+      BWL.Auth.PopupWindow = null;
 
-      BWL.oAuth.LoadProfileAsync(BWL.oAuth.BeginLogonAsyncCallback);
-
+      BWL.Auth.LoadProfileAsync(BWL.Auth.BeginLogonAsyncCallback);
     } else {
-      setTimeout(BWL.oAuth.CheckLoginWindow, BWL.RETRYDELAY);
+      setTimeout(BWL.Auth.CheckLoginWindow, BWL.RETRYDELAY);
     }
   },
 
   BeginLogoffAsync : function(successCallback, errorCallback) {
-    if (errorCallback == undefined) errorCallback = BWL.ServiceFailedCallback;
-    BWL.oAuth.BeginLogoffAsyncCallback = successCallback;
+    if (errorCallback == undefined){errorCallback = BWL.ServiceFailedCallback;}
+    BWL.Auth.BeginLogoffAsyncCallback = successCallback;
 
-    BWL.Services.oAuthService.LogoffAsync(BWL.oAuth.LogoffCallback);
+    BWL.Services.AuthService.LogoffAsync(BWL.Auth.LogoffCallback);
   },
 
   LogoffCallback : function(result) {
-
     BWL.Profile = null;
 
-    if (BWL.oAuth.BeginLogoffAsyncCallback != null) {
+    if (BWL.Auth.BeginLogoffAsyncCallback != null) {
       // return to the callback
-      BWL.oAuth.BeginLogoffAsyncCallback();
+      BWL.Auth.BeginLogoffAsyncCallback();
       // now remove the callback
-      BWL.oAuth.BeginLogoffAsyncCallback = null;
+      BWL.Auth.BeginLogoffAsyncCallback = null;
     }
-
   },
 
   AddLogonAsync : function(provider, successCallback, errorCallback) {
-
-    if (errorCallback == undefined) errorCallback = BWL.ServiceFailedCallback;
-    BWL.oAuth.BeginLogonAsyncCallback = successCallback;
+    if (errorCallback == undefined){errorCallback = BWL.ServiceFailedCallback;}
+    BWL.Auth.BeginLogonAsyncCallback = successCallback;
 
     var authURL = this.GetAuthAddLogonURL(provider, '');
 
-    BWL.oAuth.PopupWindow = BWL.Helpers.UI.PopupCenter(authURL, 'AuthWindow',
-        BWL.oAuth.PopupWidth, BWL.oAuth.PopupHeight);
+    BWL.Auth.PopupWindow = BWL.Helpers.UI.PopupCenter(authURL, 'AuthWindow',
+        BWL.Auth.PopupWidth, BWL.Auth.PopupHeight);
 
-    if (BWL.Helpers.UI.IsPopupClosed(BWL.oAuth.PopupWindow)) {
+    if (BWL.Helpers.UI.IsPopupClosed(BWL.Auth.PopupWindow)) {
       // no popups allowed, use inline
       window.location = this.GetAuthAddLogonURL(provider, window.location);
     } else {
       // now start watching the login window
-      setTimeout(BWL.oAuth.CheckLoginWindow, BWL.RETRYDELAY);
+      setTimeout(BWL.Auth.CheckLoginWindow, BWL.RETRYDELAY);
     }
   },
 
@@ -349,44 +341,41 @@ BWL.oAuth = {
 BWL.Membership = {
   RegisterAsync : function(fullName, email, password, successCallback,
       errorCallback) {
-
-    if (successCallback == undefined) successCallback = this.RegisterCallback;
-    if (errorCallback == undefined) errorCallback = BWL.ServiceFailedCallback;
+    if (successCallback == undefined){successCallback = this.RegisterCallback;}
+    if (errorCallback == undefined){errorCallback = BWL.ServiceFailedCallback;}
 
     var membership = {};
     membership.FullName = fullName;
     membership.Email = email;
-    membership.PasswordHash = BWL.oAuth.HashPassword(password);
+    membership.PasswordHash = BWL.Auth.HashPassword(password);
 
     BWL.Services.MembershipService.RegisterAsync(BWL.StoreKey, membership,
         successCallback, errorCallback);
   },
 
   RegisterCallback : function() {
-    BWL.oAuth.LoadProfileAsync(null);
+    BWL.Auth.LoadProfileAsync(null);
   },
 
   LoginAsync : function(email, password, successCallback, errorCallback) {
-
-    if (successCallback == undefined) successCallback = this.LoginCallback;
-    if (errorCallback == undefined) errorCallback = BWL.ServiceFailedCallback;
+    if (successCallback == undefined){successCallback = this.LoginCallback;}
+    if (errorCallback == undefined){errorCallback = BWL.ServiceFailedCallback;}
 
     var membership = {};
     membership.Email = email;
-    membership.PasswordHash = BWL.oAuth.HashPassword(password);
+    membership.PasswordHash = BWL.Auth.HashPassword(password);
 
     BWL.Services.MembershipService.LoginAsync(BWL.StoreKey, membership,
         successCallback, errorCallback);
   },
 
   LoginCallback : function() {
-    BWL.oAuth.LoadProfileAsync(null);
+    BWL.Auth.LoadProfileAsync(null);
   },
 
   ResetPasswordAsync : function(email, successCallback, errorCallback) {
-
-    if (successCallback == undefined) successCallback = this.ResetPasswordCallback;
-    if (errorCallback == undefined) errorCallback = BWL.ServiceFailedCallback;
+    if (successCallback == undefined){successCallback = this.ResetPasswordCallback;}
+    if (errorCallback == undefined){errorCallback = BWL.ServiceFailedCallback;}
 
     var membership = {};
     membership.Email = email;
@@ -405,15 +394,14 @@ BWL.Membership = {
 
   ChangePasswordAsync : function(email, currentPassword, newPassword,
       successCallback, errorCallback) {
-
-    if (successCallback == undefined) successCallback = this.ChangePasswordCallback;
-    if (errorCallback == undefined) errorCallback = BWL.ServiceFailedCallback;
+    if (successCallback == undefined){successCallback = this.ChangePasswordCallback;}
+    if (errorCallback == undefined){errorCallback = BWL.ServiceFailedCallback;}
 
     var membership = {};
     membership.Email = email;
-    membership.PasswordHash = BWL.oAuth.HashPassword(currentPassword);
+    membership.PasswordHash = BWL.Auth.HashPassword(currentPassword);
 
-    BWL.Services.MembershipService.ChangePasswordAsync(BWL.StoreKey, BWL.oAuth
+    BWL.Services.MembershipService.ChangePasswordAsync(BWL.StoreKey, BWL.Auth
         .HashPassword(newPassword), membership, successCallback, errorCallback);
   },
 
@@ -429,7 +417,7 @@ BWL.Membership = {
 // UI Helpers
 BWL.Helpers.UI = {
   Inject : function(template, item, crawlitem) {
-    if (crawlitem == undefined || crawlitem == null) crawlitem = true;
+    if (crawlitem == undefined || crawlitem == null){crawlitem = true;}
 
     // Clean-up the template
     template = unescape(template);
@@ -442,16 +430,16 @@ BWL.Helpers.UI = {
   },
 
   InjectItem : function(template, item, crawlitem, prefix) {
-    if (crawlitem == undefined || crawlitem == null) crawlitem = true;
-    if (prefix == undefined || prefix == null) prefix = "";
+    if (crawlitem == undefined || crawlitem == null){crawlitem = true;}
+    if (prefix == undefined || prefix == null){prefix = "";}
 
     if (item != undefined && item != null) {
       // inject the item
       for (prop in item) {
         // if this is another object, keep crawling
-        if (item[prop] != null && typeof (item[prop]) == "object") {
-          if (crawlitem) template = this.InjectItem(template, item[prop],
-              crawlitem, prefix + prop + ".");
+        if (item[prop] != null && typeof item[prop] == "object") {
+          if (crawlitem){template = this.InjectItem(template, item[prop],
+              crawlitem, prefix + prop + ".");}
         } else {
           template = template.replace(new RegExp('\\{item.' + prefix + prop
               + '\\}', 'gi'), item[prop]);
@@ -481,8 +469,12 @@ BWL.Helpers.UI = {
 
   CompareDisplayOrder : function(a, b) {
     try {
-      if (a.DisplayOrder < b.DisplayOrder) return -1;
-      if (a.DisplayOrder > b.DisplayOrder) return 1;
+      if (a.DisplayOrder < b.DisplayOrder) {
+        return -1;
+      }
+      if (a.DisplayOrder > b.DisplayOrder) {
+        return 1;
+      }
     } catch (e) {
     } // ignore an error
     return 0;
@@ -497,19 +489,17 @@ BWL.Helpers.UI = {
   },
 
   BuildListTemplate : function(elementName, data, selected) {
-
-    selected = (selected == undefined) ? null : selected;
+    selected = selected == undefined ? null : selected;
 
     var html, items = "";
 
     html = BWL.$(elementName + "_view").html();
 
     if (data != undefined && data != null) {
-
       this.SortDisplayOrder(data);
 
       for (pos in data) {
-        items += (selected == data[pos].Key) ? this.Inject(BWL.$(
+        items += selected == data[pos].Key ? this.Inject(BWL.$(
             elementName + "_view_selected").html(), data[pos]) : this.Inject(
             BWL.$(elementName + "_view_item").html(), data[pos]);
       }
@@ -522,14 +512,13 @@ BWL.Helpers.UI = {
   },
 
   BuildGridTemplate : function(elementName, data, gridTitle, itemsperrow) {
-    if (itemsperrow == undefined) itemsperrow = 4;
+    if (itemsperrow == undefined){itemsperrow = 4;}
 
     var html = "";
     var rows = "";
     var items = "";
 
     if (data != undefined && data != null) {
-
       this.SortDisplayOrder(data);
 
       var rowCount = 0;
@@ -550,8 +539,8 @@ BWL.Helpers.UI = {
       }
 
       // add the row
-      if (items.length > 0) rows += BWL.$(elementName + "_view_row").html()
-          .replace("{items}", items);
+      if (items.length > 0){rows += BWL.$(elementName + "_view_row").html()
+          .replace("{items}", items);}
     }
 
     html = BWL.$(elementName + "_view").html().replace("{rows}", rows);
@@ -563,11 +552,9 @@ BWL.Helpers.UI = {
   },
 
   DisplayLoading : function(elementName) {
-
-    elementName = (elementName == undefined) ? null : elementName;
+    elementName = elementName == undefined ? null : elementName;
 
     if (elementName != null) {
-
       var element = BWL.$(elementName);
 
       if (element != undefined && element != null) {
@@ -599,16 +586,16 @@ BWL.Helpers.UI = {
   IsPopupClosed : function(popup) {
     var windowClosed = false;
     try {
-      windowClosed = (!popup || popup.closed
-          || typeof popup.closed == 'undefined' || typeof popup.document.getElementById == "undefined");
+      windowClosed = !popup || popup.closed
+          || typeof popup.closed == 'undefined' || typeof popup.document.getElementById == "undefined";
     } catch (error) {
     }
     return windowClosed;
   },
 
   PopupCenter : function(url, title, width, height) {
-    var left = (screen.width / 2) - (width / 2);
-    var top = (screen.height / 2) - (height / 2);
+    var left = screen.width / 2 - width / 2;
+    var top = screen.height / 2 - height / 2;
     var popup = window
         .open(
             url,
@@ -630,10 +617,15 @@ BWL.Helpers.UI = {
   },
 
   OpenInlineBrowser : function(url, title, width, height) {
-
-    if (!title) var title = "";
-    if (!width) var width = 500;
-    if (!height) var height = 500;
+    if (!title) {
+      var title = "";
+    }
+    if (!width) {
+      var width = 500;
+    }
+    if (!height) {
+      var height = 500;
+    }
 
     var browser = BWL.$(
         '<div><input type="text" style="width:100%;" disabled="disabled" value="'
@@ -658,7 +650,7 @@ BWL.Helpers.UI = {
   DialogCache : [],
 
   OpenDialog : function(html, title, width, height) {
-    if (!height) height = 200;
+    if (!height){height = 200;}
 
     // make id by geting the date now as a number
     var id = Date.now();
@@ -707,7 +699,6 @@ BWL.Helpers.UI = {
       return this.DialogCache[id].dialog('option', 'title', title);
     }
   }
-
 };
 
 // Category helpers
@@ -726,7 +717,7 @@ BWL.Helpers.Category = {
           for ( var categoryPos in searchObj.Categories) {
             var category = searchObj.Categories[categoryPos];
 
-            if (!BWL.isArray(categoryReturn[category.Key])) categoryReturn[category.Key] = new Array();
+            if (!BWL.isArray(categoryReturn[category.Key])){categoryReturn[category.Key] = new Array();}
 
             // save the item to the array
             categoryReturn[category.Key].push(searchObj);
@@ -759,13 +750,15 @@ BWL.Helpers.Category = {
     }
 
     // return only this category
-    return (BWL.Store._categoryCache[categoryKey] != undefined) ? BWL.Store._categoryCache[categoryKey]
+    return BWL.Store._categoryCache[categoryKey] != undefined ? BWL.Store._categoryCache[categoryKey]
         : null;
   },
 
   CheckCategory : function(category, categoryKey) {
     if (category != null) {
-      if (category.Key == categoryKey) return category;
+      if (category.Key == categoryKey) {
+        return category;
+      }
       // now search the category children
       if (category.ChildCategories != null
           && category.ChildCategories != undefined
@@ -786,7 +779,9 @@ BWL.Helpers.Category = {
       for ( var catPos in BWL.Store.Categories) {
         var category = BWL.Helpers.Category.CheckCategory(
             BWL.Store.Categories[catPos], categoryKey);
-        if (category != null) return category;
+        if (category != null) {
+          return category;
+        }
       }
     }
     return null;

@@ -5,15 +5,6 @@ function cartController($scope, $cookieStore, $filter) {
   // initialize wizard for the checkout process
   $scope.wizard = $scope.form.getWizard($scope);
 
-  $scope.$watch('wizard.open', function(v) {
-    if (v) {
-      $('#formCheckout').modal({
-        show : true,
-        backdrop : 'static'
-      });
-    }
-  })
-
   $scope.init = function() {
     if ($scope.Store && !$scope.Store.IsOwner) {
       $scope.cart.initCart($scope.storeKey).then(

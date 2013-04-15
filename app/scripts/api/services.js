@@ -1,3 +1,190 @@
+BWL.Services.AccountService = {
+  GetProfileAsync : function(successCallback, errorCallback) {
+    BWL.InvokeService('GET', '<%= at.urlApi %>/account.svc/me', null,
+        successCallback, errorCallback);
+  },
+  RegisterAsync : function(requestedRole, objAccount, successCallback,
+      errorCallback) {
+    var uri = '<%= at.urlApi %>/account.svc/register/{0}'.format(requestedRole,
+        objAccount);
+    BWL.InvokeService('POST', uri, objAccount, successCallback, errorCallback);
+  },
+  LogonAsync : function(objAccount, successCallback, errorCallback) {
+    var uri = '<%= at.urlApi %>/account.svc/logon'.format(objAccount);
+    BWL.InvokeService('POST', uri, objAccount, successCallback, errorCallback);
+  },
+  LogoffAsync : function(successCallback, errorCallback) {
+    BWL.InvokeService('GET', '<%= at.urlApi %>/account.svc/logoff', null,
+        successCallback, errorCallback);
+  },
+  SignupAsync : function(successCallback, errorCallback) {
+    BWL.InvokeService('GET', '<%= at.urlApi %>/account.svc/signup', null,
+        successCallback, errorCallback);
+  },
+  ChangePasswordAsync : function(newPasswordHash, objAccount, successCallback,
+      errorCallback) {
+    var uri = '<%= at.urlApi %>/account.svc/changepass/{0}'.format(
+        newPasswordHash, objAccount);
+    BWL.InvokeService('POST', uri, objAccount, successCallback, errorCallback);
+  },
+  ResetPasswordAsync : function(objAccount, successCallback, errorCallback) {
+    var uri = '<%= at.urlApi %>/account.svc/resetpass'.format(objAccount);
+    BWL.InvokeService('POST', uri, objAccount, successCallback, errorCallback);
+  },
+  AccessRequestAsync : function(type, key, requestedAccess, successCallback,
+      errorCallback) {
+    var uri = '<%= at.urlApi %>/account.svc/access/request/{0}/{1}/{2}'.format(
+        type, key, requestedAccess);
+    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
+  },
+  AccessRequestForAsync : function(type, key, profileKey, requestedAccess,
+      successCallback, errorCallback) {
+    var uri = '<%= at.urlApi %>/account.svc/access/requestfor/{0}/{1}/{2}/{3}'
+        .format(type, key, profileKey, requestedAccess);
+    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
+  },
+  AccessAddAsync : function(type, key, profileKey, access, successCallback,
+      errorCallback) {
+    var uri = '<%= at.urlApi %>/account.svc/access/add/{0}/{1}/{2}/{3}'.format(
+        type, key, profileKey, access);
+    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
+  },
+  AccessPendingAsync : function(successCallback, errorCallback) {
+    BWL.InvokeService('GET', '<%= at.urlApi %>/account.svc/access/pending',
+        null, successCallback, errorCallback);
+  },
+  AccessApproveAsync : function(key, successCallback, errorCallback) {
+    var uri = '<%= at.urlApi %>/account.svc/access/approve/{0}'.format(key);
+    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
+  },
+  AccessRejectAsync : function(key, successCallback, errorCallback) {
+    var uri = '<%= at.urlApi %>/account.svc/access/reject/{0}'.format(key);
+    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
+  }
+};
+BWL.Services.AccountsService = {
+  RootAsync : function(successCallback, errorCallback) {
+    BWL.InvokeService('GET', '<%= at.urlApi %>/accounts.svc/', null,
+        successCallback, errorCallback);
+  },
+  GetProfileAsync : function(successCallback, errorCallback) {
+    BWL.InvokeService('GET', '<%= at.urlApi %>/accounts.svc/me', null,
+        successCallback, errorCallback);
+  },
+  RegisterAsync : function(sessionKey, successCallback, errorCallback) {
+    var uri = '<%= at.urlApi %>/accounts.svc/register?session={0}'
+        .format(sessionKey);
+    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
+  },
+  VerifyEmailAsync : function(email, approveToken, successCallback,
+      errorCallback) {
+    var uri = '<%= at.urlApi %>/accounts.svc/verify/{1}?email={0}'.format(
+        email, approveToken);
+    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
+  },
+  ApproveRegisterAsync : function(email, approveToken, successCallback,
+      errorCallback) {
+    var uri = '<%= at.urlApi %>/accounts.svc/register/{1}?email={0}'.format(
+        email, approveToken);
+    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
+  },
+  LogonAsync : function(sessionKey, successCallback, errorCallback) {
+    var uri = '<%= at.urlApi %>/accounts.svc/logon?session={0}'
+        .format(sessionKey);
+    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
+  },
+  LogoffAsync : function(successCallback, errorCallback) {
+    BWL.InvokeService('GET', '<%= at.urlApi %>/accounts.svc/logoff', null,
+        successCallback, errorCallback);
+  },
+  SignupAsync : function(sessionKey, successCallback, errorCallback) {
+    var uri = '<%= at.urlApi %>/accounts.svc/signup?session={0}'
+        .format(sessionKey);
+    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
+  },
+  ChangePasswordAsync : function(sessionKey, successCallback, errorCallback) {
+    var uri = '<%= at.urlApi %>/accounts.svc/changepass?session={0}'
+        .format(sessionKey);
+    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
+  },
+  ResetPasswordAsync : function(sessionKey, successCallback, errorCallback) {
+    var uri = '<%= at.urlApi %>/accounts.svc/resetpass?session={0}'
+        .format(sessionKey);
+    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
+  },
+  ApproveResetPasswordAsync : function(email, approveToken, successCallback,
+      errorCallback) {
+    var uri = '<%= at.urlApi %>/accounts.svc/resetpass/{1}?email={0}'.format(
+        email, approveToken);
+    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
+  },
+  AuthorizeAsync : function(sessionKey, successCallback, errorCallback) {
+    var uri = '<%= at.urlApi %>/accounts.svc/authorize/{0}'.format(sessionKey);
+    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
+  },
+  AuthorizeApproveAsync : function(sessionKey, successCallback, errorCallback) {
+    var uri = '<%= at.urlApi %>/accounts.svc/authorize/approve/{0}'
+        .format(sessionKey);
+    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
+  },
+  AuthorizeCancelAsync : function(sessionKey, successCallback, errorCallback) {
+    var uri = '<%= at.urlApi %>/accounts.svc/authorize/cancel/{0}'
+        .format(sessionKey);
+    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
+  }
+};
+BWL.Services.AuthService = {
+  ListAuthProvidersAsync : function(successCallback, errorCallback) {
+    BWL.InvokeService('GET', '<%= at.urlApi %>/auth.svc/providers', null,
+        successCallback, errorCallback);
+  },
+  BeginAuthAsync : function(providerName, clientKey, display, redirectURL,
+      successCallback, errorCallback) {
+    var uri = '<%= at.urlApi %>/auth.svc/authorize?providerName={0}&clientKey={1}&display={2}&redirectURL={3}'
+        .format(providerName, clientKey, display, redirectURL);
+    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
+  },
+  GetSessionStateAsync : function(sessionKey, successCallback, errorCallback) {
+    var uri = '<%= at.urlApi %>/auth.svc/sessionState/{0}'.format(sessionKey);
+    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
+  },
+  GetTokenStateAsync : function(successCallback, errorCallback) {
+    BWL.InvokeService('GET', '<%= at.urlApi %>/auth.svc/tokenState', null,
+        successCallback, errorCallback);
+  },
+  GetTokenAsync : function(sessionKey, clientKey, clientSecret,
+      successCallback, errorCallback) {
+    var uri = '<%= at.urlApi %>/auth.svc/getToken?sessionKey={0}&clientKey={1}&clientSecret={2}'
+        .format(sessionKey, clientKey, clientSecret);
+    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
+  },
+  CancelAuthAsync : function(sessionKey, successCallback, errorCallback) {
+    var uri = '<%= at.urlApi %>/auth.svc/cancel?sessionKey={0}'
+        .format(sessionKey);
+    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
+  },
+  LogonAsync : function(providerName, clientKey, display, redirectURL,
+      successCallback, errorCallback) {
+    var uri = '<%= at.urlApi %>/auth.svc/logon?providerName={0}&clientKey={1}&display={2}&redirectURL={3}'
+        .format(providerName, clientKey, display, redirectURL);
+    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
+  },
+  LogoffAsync : function(successCallback, errorCallback) {
+    BWL.InvokeService('GET', '<%= at.urlApi %>/auth.svc/logoff', null,
+        successCallback, errorCallback);
+  },
+  AddLogonAsync : function(providerName, clientKey, display, redirectURL,
+      successCallback, errorCallback) {
+    var uri = '<%= at.urlApi %>/auth.svc/addLogon?providerName={0}&clientKey={1}&display={2}&redirectURL={3}'
+        .format(providerName, clientKey, display, redirectURL);
+    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
+  },
+  RemoveLogonAsync : function(AuthProfileKey, successCallback, errorCallback) {
+    var uri = '<%= at.urlApi %>/auth.svc/removeLogon/{0}'
+        .format(AuthProfileKey);
+    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
+  }
+};
 BWL.Services.CartService = {
   AddItemsAsync : function(storeKey, itemTypeName, itemKey, quantity,
       successCallback, errorCallback) {
@@ -18,6 +205,10 @@ BWL.Services.CartService = {
   },
   GetCartAsync : function(storeKey, successCallback, errorCallback) {
     var uri = '<%= at.urlApi %>/cart.svc/{0}'.format(storeKey);
+    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
+  },
+  HasCartAsync : function(storeKey, successCallback, errorCallback) {
+    var uri = '<%= at.urlApi %>/cart.svc/{0}/hascart'.format(storeKey);
     BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
   },
   ClearCartAsync : function(storeKey, successCallback, errorCallback) {
@@ -96,45 +287,6 @@ BWL.Services.MediaLibraryService = {
     var uri = '<%= at.urlApi %>/medialibrary.svc/{0}/file/{1}'.format(storeKey,
         key);
     BWL.InvokeService('DELETE', uri, null, successCallback, errorCallback);
-  }
-};
-BWL.Services.MembershipService = {
-  RegisterAsync : function(storeKey, objMembership, successCallback,
-      errorCallback) {
-    var uri = '<%= at.urlApi %>/membership.svc/{0}/register'.format(storeKey,
-        objMembership);
-    BWL.InvokeService('POST', uri, objMembership, successCallback,
-        errorCallback);
-  },
-  LogonAsync : function(storeKey, objMembership, successCallback, errorCallback) {
-    var uri = '<%= at.urlApi %>/membership.svc/{0}/logon'.format(storeKey,
-        objMembership);
-    BWL.InvokeService('POST', uri, objMembership, successCallback,
-        errorCallback);
-  },
-  LogoffAsync : function(storeKey, successCallback, errorCallback) {
-    var uri = '<%= at.urlApi %>/membership.svc/{0}/logoff'.format(storeKey);
-    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
-  },
-  ChangePasswordAsync : function(storeKey, newPasswordHash, objMembership,
-      successCallback, errorCallback) {
-    var uri = '<%= at.urlApi %>/membership.svc/{0}/changepass/{1}'.format(
-        storeKey, newPasswordHash, objMembership);
-    BWL.InvokeService('POST', uri, objMembership, successCallback,
-        errorCallback);
-  },
-  ResetPasswordAsync : function(storeKey, objMembership, successCallback,
-      errorCallback) {
-    var uri = '<%= at.urlApi %>/membership.svc/{0}/resetpass'.format(storeKey,
-        objMembership);
-    BWL.InvokeService('POST', uri, objMembership, successCallback,
-        errorCallback);
-  },
-  ApproveResetPasswordAsync : function(storeKey, email, approveToken,
-      successCallback, errorCallback) {
-    var uri = '<%= at.urlApi %>/membership.svc/{0}/resetpass/{2}?email={1}'
-        .format(storeKey, email, approveToken);
-    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
   }
 };
 BWL.Services.MessageService = {
@@ -222,58 +374,6 @@ BWL.Services.ModelService = {
       errorCallback) {
     var uri = '<%= at.urlApi %>/model.svc/{0}/import/{1}?url={2}'.format(
         storeKey, type, url);
-    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
-  }
-};
-BWL.Services.oAuthService = {
-  ListAuthProvidersAsync : function(successCallback, errorCallback) {
-    BWL.InvokeService('GET', '<%= at.urlApi %>/oauth.svc/providers', null,
-        successCallback, errorCallback);
-  },
-  BeginAuthAsync : function(providerName, clientKey, display, redirectURL,
-      successCallback, errorCallback) {
-    var uri = '<%= at.urlApi %>/oauth.svc/authorize?providerName={0}&clientKey={1}&display={2}&redirectURL={3}'
-        .format(providerName, clientKey, display, redirectURL);
-    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
-  },
-  GetSessionStateAsync : function(sessionKey, successCallback, errorCallback) {
-    var uri = '<%= at.urlApi %>/oauth.svc/sessionState/{0}'.format(sessionKey);
-    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
-  },
-  GetTokenStateAsync : function(successCallback, errorCallback) {
-    BWL.InvokeService('GET', '<%= at.urlApi %>/oauth.svc/tokenState', null,
-        successCallback, errorCallback);
-  },
-  GetTokenAsync : function(sessionKey, clientKey, clientSecret,
-      successCallback, errorCallback) {
-    var uri = '<%= at.urlApi %>/oauth.svc/getToken?sessionKey={0}&clientKey={1}&clientSecret={2}'
-        .format(sessionKey, clientKey, clientSecret);
-    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
-  },
-  CancelAuthAsync : function(sessionKey, successCallback, errorCallback) {
-    var uri = '<%= at.urlApi %>/oauth.svc/cancel?sessionKey={0}'
-        .format(sessionKey);
-    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
-  },
-  LogonAsync : function(providerName, clientKey, display, redirectURL,
-      successCallback, errorCallback) {
-    var uri = '<%= at.urlApi %>/oauth.svc/logon?providerName={0}&clientKey={1}&display={2}&redirectURL={3}'
-        .format(providerName, clientKey, display, redirectURL);
-    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
-  },
-  LogoffAsync : function(successCallback, errorCallback) {
-    BWL.InvokeService('GET', '<%= at.urlApi %>/oauth.svc/logoff', null,
-        successCallback, errorCallback);
-  },
-  AddLogonAsync : function(providerName, clientKey, display, redirectURL,
-      successCallback, errorCallback) {
-    var uri = '<%= at.urlApi %>/oauth.svc/addLogon?providerName={0}&clientKey={1}&display={2}&redirectURL={3}'
-        .format(providerName, clientKey, display, redirectURL);
-    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
-  },
-  RemoveLogonAsync : function(socialProfileKey, successCallback, errorCallback) {
-    var uri = '<%= at.urlApi %>/oauth.svc/removeLogon/{0}'
-        .format(socialProfileKey);
     BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
   }
 };
@@ -435,6 +535,12 @@ BWL.Services.SearchIndexService = {
         searchString, orderBy, page);
     BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
   },
+  SearchTypeAsync : function(type, searchString, orderBy, page,
+      successCallback, errorCallback) {
+    var uri = '<%= at.urlApi %>/searchindex.svc/search/{0}?q={1}&o={2}&p={3}'
+        .format(type, searchString, orderBy, page);
+    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
+  },
   SearchStoreAsync : function(storeKey, searchString, orderBy, page,
       successCallback, errorCallback) {
     var uri = '<%= at.urlApi %>/searchindex.svc/{0}/search?q={1}&o={2}&p={3}'
@@ -446,6 +552,12 @@ BWL.Services.SearchIndexService = {
     var uri = '<%= at.urlApi %>/searchindex.svc/{0}/tags?q={1}&o={2}&p={3}'
         .format(storeKey, searchString, orderBy, page);
     BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
+  },
+  SearchStoreTypeAsync : function(storeKey, type, searchString, orderBy, page,
+      successCallback, errorCallback) {
+    var uri = '<%= at.urlApi %>/searchindex.svc/{0}/search/{1}?q={2}&o={3}&p={4}'
+        .format(storeKey, type, searchString, orderBy, page);
+    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
   }
 };
 BWL.Services.StoreService = {
@@ -455,18 +567,18 @@ BWL.Services.StoreService = {
   },
   FindStoreKeyFromCustomURIAsync : function(customURI, successCallback,
       errorCallback) {
-    var uri = '<%= at.urlApi %>/store.svc/storeURL/{0}'.format(customURI);
+    var uri = '<%= at.urlApi %>/store.svc/storeurl/{0}'.format(customURI);
     BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
   },
   FindStoreKeyFromFacebookPageIdAsync : function(facebookPageId,
       successCallback, errorCallback) {
-    var uri = '<%= at.urlApi %>/store.svc/storeURL/facebookpage/{0}'
+    var uri = '<%= at.urlApi %>/store.svc/storeurl/facebookpage/{0}'
         .format(facebookPageId);
     BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
   },
   FindCustomURIInfoFromFullURLAsync : function(fullURL, successCallback,
       errorCallback) {
-    var uri = '<%= at.urlApi %>/store.svc/customURIInfo?fullURL={0}'
+    var uri = '<%= at.urlApi %>/store.svc/customuriinfo?fullurl={0}'
         .format(fullURL);
     BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
   },
@@ -480,12 +592,12 @@ BWL.Services.StoreService = {
 BWL.Services.StoreAdminService = {
   GetTicketTemplateListAsync : function(storeKey, successCallback,
       errorCallback) {
-    var uri = '<%= at.urlApi %>/storeadmin.svc/{0}/TicketTemplateList'
+    var uri = '<%= at.urlApi %>/storeadmin.svc/{0}/tickettemplatelist'
         .format(storeKey);
     BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
   },
   GetSystemFontListAsync : function(storeKey, successCallback, errorCallback) {
-    var uri = '<%= at.urlApi %>/storeadmin.svc/{0}/SystemFontList'
+    var uri = '<%= at.urlApi %>/storeadmin.svc/{0}/systemfontlist'
         .format(storeKey);
     BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
   },
@@ -497,91 +609,6 @@ BWL.Services.StoreAdminService = {
         .format(storeKey, ticketItemType, ticketItemKey, backgroundColorHex,
             fontColorHex, fontType, template, customImageKey, includeDetails,
             includeTerms, includeTicketImage, includeTicketName, horizontal);
-    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
-  }
-};
-BWL.Services.SystemProfileService = {
-  GetProfileAsync : function(levels, successCallback, errorCallback) {
-    var uri = '<%= at.urlApi %>/systemprofile.svc/{0}'.format(levels);
-    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
-  },
-  SignupAsync : function(successCallback, errorCallback) {
-    BWL.InvokeService('GET', '<%= at.urlApi %>/systemprofile.svc/signup', null,
-        successCallback, errorCallback);
-  },
-  RegisterAsync : function(requestedRole, objAccount, successCallback,
-      errorCallback) {
-    var uri = '<%= at.urlApi %>/systemprofile.svc/register/{0}'.format(
-        requestedRole, objAccount);
-    BWL.InvokeService('POST', uri, objAccount, successCallback, errorCallback);
-  },
-  ApproveRegisterAsync : function(email, approveToken, successCallback,
-      errorCallback) {
-    var uri = '<%= at.urlApi %>/systemprofile.svc/register/{1}?email={0}'
-        .format(email, approveToken);
-    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
-  },
-  VerifyEmailAsync : function(email, approveToken, successCallback,
-      errorCallback) {
-    var uri = '<%= at.urlApi %>/systemprofile.svc/verify/{1}?email={0}'.format(
-        email, approveToken);
-    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
-  },
-  LogonAsync : function(objAccount, successCallback, errorCallback) {
-    var uri = '<%= at.urlApi %>/systemprofile.svc/logon'.format(objAccount);
-    BWL.InvokeService('POST', uri, objAccount, successCallback, errorCallback);
-  },
-  LogoffAsync : function(successCallback, errorCallback) {
-    BWL.InvokeService('GET', '<%= at.urlApi %>/systemprofile.svc/logoff', null,
-        successCallback, errorCallback);
-  },
-  ChangePasswordAsync : function(newPasswordHash, objAccount, successCallback,
-      errorCallback) {
-    var uri = '<%= at.urlApi %>/systemprofile.svc/changepass/{0}'.format(
-        newPasswordHash, objAccount);
-    BWL.InvokeService('POST', uri, objAccount, successCallback, errorCallback);
-  },
-  ResetPasswordAsync : function(objAccount, successCallback, errorCallback) {
-    var uri = '<%= at.urlApi %>/systemprofile.svc/resetpass'.format(objAccount);
-    BWL.InvokeService('POST', uri, objAccount, successCallback, errorCallback);
-  },
-  ApproveResetPasswordAsync : function(email, approveToken, successCallback,
-      errorCallback) {
-    var uri = '<%= at.urlApi %>/systemprofile.svc/resetpass/{1}?email={0}'
-        .format(email, approveToken);
-    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
-  },
-  AccessRequestAsync : function(type, key, requestedAccess, successCallback,
-      errorCallback) {
-    var uri = '<%= at.urlApi %>/systemprofile.svc/access/request/{0}/{1}/{2}'
-        .format(type, key, requestedAccess);
-    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
-  },
-  AccessRequestForAsync : function(type, key, profileKey, requestedAccess,
-      successCallback, errorCallback) {
-    var uri = '<%= at.urlApi %>/systemprofile.svc/access/requestfor/{0}/{1}/{2}/{3}'
-        .format(type, key, profileKey, requestedAccess);
-    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
-  },
-  AccessAddAsync : function(type, key, profileKey, access, successCallback,
-      errorCallback) {
-    var uri = '<%= at.urlApi %>/systemprofile.svc/access/add/{0}/{1}/{2}/{3}'
-        .format(type, key, profileKey, access);
-    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
-  },
-  AccessPendingAsync : function(successCallback, errorCallback) {
-    BWL.InvokeService('GET',
-        '<%= at.urlApi %>/systemprofile.svc/access/pending', null,
-        successCallback, errorCallback);
-  },
-  AccessApproveAsync : function(key, successCallback, errorCallback) {
-    var uri = '<%= at.urlApi %>/systemprofile.svc/access/approve/{0}'
-        .format(key);
-    BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
-  },
-  AccessRejectAsync : function(key, successCallback, errorCallback) {
-    var uri = '<%= at.urlApi %>/systemprofile.svc/access/reject/{0}'
-        .format(key);
     BWL.InvokeService('GET', uri, null, successCallback, errorCallback);
   }
 };

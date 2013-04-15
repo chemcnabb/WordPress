@@ -78,7 +78,7 @@ azureTicketsApp
                 upgradeProfile : function() {
                   var def = $q.defer();
 
-                  BWL.Services.SystemProfileService.SignupAsync(function() {
+                  BWL.Services.AccountService.SignupAsync(function() {
                     $rootScope.$apply(def.resolve)
                   }, function(err) {
                     $rootScope.$apply(function() {
@@ -94,7 +94,7 @@ azureTicketsApp
                   BWL.ClientKey = clientKey;
                   _clientKey = clientKey;
 
-                  BWL.oAuth.LoadProfileAsync(function() {
+                  BWL.Auth.LoadProfileAsync(function() {
                     $rootScope.$apply(def.resolve)
                   }, function(err) {
                     $rootScope.$apply(function() {
@@ -107,16 +107,16 @@ azureTicketsApp
                 logonByProviderAsync : function(provider) {
                   var def = $q.defer();
 
-                  BWL.oAuth.ClientKey = _clientKey;
-                  BWL.oAuth.PopupHeight = configService.popupAuthHeight;
-                  BWL.oAuth.PopupWidth = configService.popupAuthWidth;
+                  BWL.Auth.ClientKey = _clientKey;
+                  BWL.Auth.PopupHeight = configService.popupAuthHeight;
+                  BWL.Auth.PopupWidth = configService.popupAuthWidth;
 
-                  BWL.Services.SystemProfileService.GetProfileAsync(5,
+                  BWL.Services.AccountService.GetProfileAsync(
                       function(profile) {
                         if (profile.DomainProfileId !== 0) {
                           $rootScope.$apply(def.resolve);
                         } else {
-                          BWL.oAuth.LogonAsync(provider, function() {
+                          BWL.Auth.LogonAsync(provider, function() {
                             $rootScope.$apply(def.resolve);
                           }, function(err) {
                             $rootScope.$apply(function() {
@@ -137,7 +137,7 @@ azureTicketsApp
 
                   // request level 20 perms, this is for
                   // store owners perms
-                  BWL.Services.SystemProfileService.RegisterAsync(20, account,
+                  BWL.Services.AccountService.RegisterAsync(20, account,
                       function() {
                         $rootScope.$apply(def.resolve);
                       }, function(err) {
@@ -151,14 +151,13 @@ azureTicketsApp
                 logonAsync : function(account) {
                   var def = $q.defer();
 
-                  BWL.Services.SystemProfileService.LogonAsync(account,
-                      function() {
-                        $rootScope.$apply(def.resolve);
-                      }, function(err) {
-                        $rootScope.$apply(function() {
-                          def.reject(err)
-                        })
-                      });
+                  BWL.Services.AccountService.LogonAsync(account, function() {
+                    $rootScope.$apply(def.resolve);
+                  }, function(err) {
+                    $rootScope.$apply(function() {
+                      def.reject(err)
+                    })
+                  });
 
                   return def.promise;
 
@@ -166,7 +165,7 @@ azureTicketsApp
                 logoffAsync : function() {
                   var def = $q.defer();
 
-                  BWL.Services.SystemProfileService.LogoffAsync(function() {
+                  BWL.Services.AccountService.LogoffAsync(function() {
                     $rootScope.$apply(def.resolve);
                   });
 
@@ -199,7 +198,7 @@ azureTicketsApp
                 loadAuthProviders : function(cbk, errCbk) {
                   var def = $q.defer();
 
-                  BWL.Services.oAuthService.ListAuthProvidersAsync(function(
+                  BWL.Services.AuthService.ListAuthProvidersAsync(function(
                       providers) {
                     $rootScope.$apply(function() {
                       def.resolve(providers)
