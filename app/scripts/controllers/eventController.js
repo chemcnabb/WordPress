@@ -25,8 +25,9 @@ function eventController($scope, $cookieStore, $filter) {
 
   $scope.create = function() {
     $scope.Event = $scope.model.getInstanceOf('Event');
-    $scope.Event.tmpVenues = $scope.venues.splice(0, 1),
-        $scope.Event._tmpVenues = angular.copy($scope.Event.tmpVenues);
+    $scope.Event.tmpVenues = $scope.venues.length > 1 ? $scope.venues.splice(0,
+        1) : $scope.venues;
+    $scope.Event._tmpVenues = angular.copy($scope.Event.tmpVenues);
     $scope.wizard.open = true;
     $scope.wizard.reset();
   }

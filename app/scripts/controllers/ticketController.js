@@ -93,7 +93,7 @@ function ticketController($scope, $cookieStore, $filter, $routeParams, $timeout)
                   Public : true,
                   Name : $scope.GeneralAdmissionTicketItemInfo.Name,
                   Policy : $scope.GeneralAdmissionTicketItemInfo.Policy,
-                  Price : $scope.GeneralAdmissionTicketItemInfo.Price,
+                  Price : $scope.GeneralAdmissionTicketItemInfo.Price.ItemPrice,
                   MaxPurchaseQuantity : $scope.GeneralAdmissionTicketItemInfo.MaxPurchaseQuantity,
                   OnSaleDateTimeStart : $scope.GeneralAdmissionTicketItemInfo.OnSaleDateTimeStart,
                   OnSaleDateTimeEnd : $scope.GeneralAdmissionTicketItemInfo.OnSaleDateTimeEnd

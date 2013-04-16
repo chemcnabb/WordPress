@@ -922,6 +922,12 @@ BWL.ModelMeta.PostalCode = {
   StoreKey : 'String',
   Type : 'String'
 };
+BWL.ModelMeta.Price = {
+  __cache : 0,
+  Currency : 'String',
+  ItemPrice : 'Double',
+  Type : 'String'
+};
 BWL.ModelMeta.Region = {
   __cache : 3600,
   __perms : {
