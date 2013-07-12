@@ -43,7 +43,7 @@ azureTicketsApp.config([
     '$routeProvider',
     function($routeProvider) {
       $routeProvider.when('/', {
-        templateUrl : 'views/admin.html',
+        templateUrl : 'views/admin/admin.html',
         controller : adminController,
         resolve : routeFilters
       }).when('/auth/login', {

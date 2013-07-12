@@ -1,0 +1,132 @@
+
+
+		<!--<ul class="nav" ng-show="DomainProfile && DomainProfile.Key || false">-->
+
+
+
+            <!--&lt;!&ndash; STORE DROP DOWN &ndash;&gt;-->
+			<!--<li class="dropdown" ui-route="#/store(?:\/[\w\d\-]+)?"-->
+				<!--ng-class="{active: $uiRoute}"><a class="dropdown-toggle"-->
+				<!--data-toggle="dropdown" href="#"> {{ 'Common.Text_Store' | t }} <span-->
+					<!--ui-if="Store && Store.Name || false">: {{Store.Name}}</span> <b-->
+					<!--class="caret"></b>-->
+			<!--</a>-->
+
+				<!--<ul class="dropdown-menu">-->
+					<!--<li ui-if="Store && !Store.IsOwner"><a href="#/store"-->
+						<!--ng-click="createStore()">{{ 'Common.Text_CreateStore' | t }}</a></li>-->
+
+					<!--<li ui-if="Store && !Store.IsOwner && stores && stores.length > 0"-->
+						<!--class="divider"></li>-->
+
+					<!--<li ng-repeat="s in stores"><a ui-if="!s.IsOwner"-->
+						<!--ng-href="#/store/{{ s.StoreURIs[0].URI }}">{{s.Name}}</a><a-->
+						<!--ui-if="s.IsOwner" ng-click="setStoreKey(s.Key)" href="#/store">{{s.Name}}</a></li>-->
+				<!--</ul></li>-->
+
+
+			<!--<li ui-if="Store && !Store.IsOwner || false"-->
+				<!--ui-route="#/(?:cart|checkout)" ng-class="{active: $uiRoute}"><a-->
+				<!--href="#/cart">{{ 'ShoppingCart.labelMyCart' | t }}</a></li>-->
+
+			<!--<li ui-if="Store && Store.Key != null && Store.IsOwner || false"-->
+				<!--ui-route="#/venue" ng-class="{active: $uiRoute}"><a-->
+				<!--href="#/venue">{{ 'Common.Text_VenueMenu_Venue' | t }}</a></li>-->
+
+			<!--<li-->
+				<!--ui-if="Store && Store.Key != null && Store.IsOwner && venues && venues.length > 0 || false"-->
+				<!--ui-route="#/(event|ticket).*" ng-class="{active: $uiRoute}"><a-->
+				<!--href="#/event">{{ 'Common.Text_EventMenu_Events' | t }}</a></li>-->
+
+
+			<!-- 			<li ui-if="events && events.length > 0 || false" -->
+			<!-- 				ui-route="#/admin/scanner" ng-class="{active: $uiRoute}"><a -->
+			<!-- 				href="#/admin/scanner">{{ 'Common.Text_ScannerMenu_Scanner' | t -->
+			<!-- 					}}</a></li> -->
+
+
+			<!--<li-->
+				<!--ui-if="Store && Store.Key != null && Store.IsOwner && events && events.length > 0 || false"-->
+				<!--ui-route="#/order" ng-class="{active: $uiRoute}"><a-->
+				<!--href="#/order">{{ 'Common.Text_OrdersMenu_Orders' | t }}</a></li>-->
+		<!--</ul>-->
+
+
+
+
+
+<div class="navbar navbar-fixed-top navbar-inverse">
+    <div class="navbar-inner">
+        <div class="container">
+            <!-- Menu button for smallar screens -->
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <!-- Site name for smallar screens -->
+            <a class="brand"
+               ng-href="#/{{ Store && !Store.IsOwner && 'store/' + Store.StoreURIs[0].URI || '' }}">{{config.appName}}</a>
+
+            <!-- Navigation starts -->
+            <div class="nav-collapse collapse">
+
+
+
+                <!-- Links -->
+                <ul class="nav pull-right">
+                    <li class="dropdown pull-right">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <img src="img/admin/user.jpg" alt="" class="nav-user-pic" /> Admin <b class="caret"></b>
+                        </a>
+
+                        <!-- Dropdown menu -->
+                        <ul class="dropdown-menu" ng-include src="'views/admin/partials/admin-drop-down.html'"></ul>
+                    </li>
+
+                </ul>
+
+                <!-- Notifications -->
+                <ul class="nav pull-right">
+
+
+
+
+
+                    <!-- Members button with number of latest members count -->
+                    <li class="dropdown dropdown-big">
+                        <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+                            <i class="icon-user"></i> Users <span   class="badge badge-success">6</span>
+                        </a>
+
+                        <ul class="dropdown-menu" ng-include src="'views/admin/partials/users-drop-down.html'"></ul>
+                    </li>
+
+                    <!-- Comment button with number of latest comments count -->
+                    <li class="dropdown dropdown-big">
+                        <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+                            <i class="icon-comments"></i> Orders <span   class="badge badge-info">6</span>
+                        </a>
+
+                        <ul class="dropdown-menu" ng-include src="'views/admin/partials/orders-drop-down.html'"></ul>
+                    </li>
+
+                    <!-- Message button with number of latest messages count-->
+                    <li class="dropdown dropdown-big">
+                        <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+                            <i class="icon-envelope-alt"></i> Inbox <span class="badge badge-important">6</span>
+                        </a>
+
+                        <ul class="dropdown-menu" ng-include src="'views/admin/partials/inbox-drop-down.html'"></ul>
+                    </li>
+
+
+
+                </ul>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>

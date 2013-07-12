@@ -12,8 +12,7 @@
 				<p>{{ 'Login.Page_Desc' | t }}</p>
 				<ul class="socialicons color">
 					<li ng-repeat="provider in authProviders"><a
-						ng-class="provider | lowercase" ng-click="login(provider)">{{
-							provider }}</a></li>
+						ng-class="provider | lowercase" ng-click="login(provider)">{{ provider }}</a></li>
 				</ul>
 			</div>
 		</div>

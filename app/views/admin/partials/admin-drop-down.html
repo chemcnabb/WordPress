@@ -1,0 +1,3 @@
+<li><a href="#"><i class="icon-user"></i> Profile</a></li>
+<li><a href="#"><i class="icon-cogs"></i> Settings</a></li>
+<li><a href="#/auth/logoff" ng-show="DomainProfile && DomainProfile.Key || false"><i class="icon-off"></i> {{ 'Login.labelLogOff' | t }}</a> <a href="#/auth/login" ng-hide="DomainProfile && DomainProfile.Key || false"><i class="icon-off"></i> {{ 'Login.labelLogin' | t }}</a>
