@@ -13,47 +13,47 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet"
-          href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="components/select2/select2.css">
-    <link rel="stylesheet"
-          href="components/jquery-timepicker-addon/jquery-ui-timepicker-addon.css">
-    <link rel="stylesheet" href="styles/main.css">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
 
+
+    <!-- Stylesheets -->
+    <link href="styles/bootstrap.css" rel="stylesheet">
+    <!-- Font awesome icon -->
+    <link rel="stylesheet" href="styles/font-awesome.css">
+    <!-- jQuery UI -->
+    <link rel="stylesheet" href="styles/jquery-ui.css">
+    <!-- Calendar -->
+    <link rel="stylesheet" href="styles/fullcalendar.css">
+    <!-- prettyPhoto -->
+    <link rel="stylesheet" href="styles/prettyPhoto.css">
+    <!-- Star rating -->
+    <link rel="stylesheet" href="styles/rateit.css">
+    <!-- Date picker -->
+    <link rel="stylesheet" href="styles/bootstrap-datetimepicker.min.css">
+    <!-- jQuery Gritter -->
+    <link rel="stylesheet" href="styles/jquery.gritter.css">
+    <!-- CLEditor -->
+    <link rel="stylesheet" href="styles/jquery.cleditor.css">
+    <!-- Bootstrap toggle -->
+    <link rel="stylesheet" href="styles/bootstrap-toggle-buttons.css">
+    <!-- Main stylesheet -->
+    <link href="styles/style.css" rel="stylesheet">
+    <!-- Widgets stylesheet -->
+    <link href="styles/widgets.css" rel="stylesheet">
+    <!-- Responsive style (from Bootstrap) -->
+    <link href="styles/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 Support for IE -->
     <!--[if lt IE 9]>
-    <script src="components/es5-shim/es5-shim.js"></script>
-    <script src="components/json3/lib/json3.min.js"></script>
+    <script src="components/html5shim.js"></script>
     <![endif]-->
-    <!--[if lte IE 8]>
-    <script src="components/angular-ui/build/angular-ui-ieshiv.min.js"></script>
-    <![endif]-->
-    <script src="components/easyXDM/easyXDM.min.js"></script>
-    <script src="components/jquery/jquery.js"></script>
-    <script
-            src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js"></script>
-    <script
-            src="components/responsiveiframe/dist/jquery.responsiveiframe.min.js"></script>
-    <script src="components/angular/angular.js"></script>
-    <script src="components/angular-ui/build/angular-ui.min.js"></script>
-    <script src="components/angular-resource/angular-resource.js"></script>
-    <script src="components/angular-cookies/angular-cookies.js"></script>
-    <script src="components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="components/select2/select2.min.js"></script>
-    <script src="components/bootstrap/js/bootstrap-modal.js"></script>
-    <script src="components/bootstrap/js/bootstrap-alert.js"></script>
-    <script src="components/bootstrap/js/bootstrap-dropdown.js"></script>
-    <script src="components/bootstrap/js/bootstrap-typeahead.js"></script>
-    <script src="components/datejs/build/date.js"></script>
-    <script
-            src="components/jquery-timepicker-addon/jquery-ui-timepicker-addon.js"></script>
-    <script src="scripts/main.js"></script>
 
-    <script type="text/javascript">
-        var ri = responsiveIframe();
-        ri.allowResponsiveEmbedding();
-    </script>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="img/favicon/favicon.png">
+
 </head>
 <body>
 <!--[if lt IE 7]>
@@ -62,9 +62,92 @@
     experience this site.</p>
 <![endif]-->
 
-<div class="container-fluid" ng-controller="storeController"
+<div ng-controller="storeController"
      ng-init="init()">
-    <div class="content" ng-cloak ng-view></div>
+    <div ng-cloak ng-view></div>
 </div>
+
+<!-- Scroll to top -->
+<span class="totop"><a href="#"><i class="icon-chevron-up"></i></a></span>
+
+
+<!-- JS -->
+<script src="components/jquery.js"></script> <!-- jQuery -->
+<script src="components/bootstrap.js"></script> <!-- Bootstrap -->
+<script
+        src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js"></script>
+<!--<script src="components/jquery-ui-1.10.2.custom.min.js"></script> &lt;!&ndash; jQuery UI &ndash;&gt;-->
+<script src="components/fullcalendar.min.js"></script> <!-- Full Google Calendar - Calendar -->
+<script src="components/jquery.rateit.min.js"></script> <!-- RateIt - Star rating -->
+<script src="components/jquery.prettyPhoto.js"></script> <!-- prettyPhoto -->
+
+
+<!-- jQuery Flot -->
+<script src="components/excanvas.min.js"></script>
+<script src="components/jquery.flot.js"></script>
+<script src="components/jquery.flot.resize.js"></script>
+<script src="components/jquery.flot.pie.js"></script>
+<script src="components/jquery.flot.stack.js"></script>
+
+<script src="components/jquery.gritter.min.js"></script> <!-- jQuery Gritter -->
+<script src="components/sparklines.js"></script> <!-- Sparklines -->
+<script src="components/jquery.cleditor.min.js"></script> <!-- CLEditor -->
+<script src="components/bootstrap-datetimepicker.min.js"></script> <!-- Date picker -->
+<script src="components/jquery.toggle.buttons.js"></script> <!-- Bootstrap Toggle -->
+<script src="components/filter.js"></script> <!-- Filter for support page -->
+
+<script src="components/charts.js"></script> <!-- Custom chart codes -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--[if lte IE 8]>
+<script src="components/angular-ui/build/angular-ui-ieshiv.min.js"></script>
+<![endif]-->
+
+
+<script src="components/easyXDM/easyXDM.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<!-- AngularJS -->
+<script src="components/angular/angular.js"></script>
+<script src="components/angular-ui/build/angular-ui.min.js"></script>
+<script src="components/angular-resource/angular-resource.js"></script>
+<script src="components/angular-cookies/angular-cookies.js"></script>
+<script src="components/angular-sanitize/angular-sanitize.js"></script>
+
+
+<script src="scripts/main.js"></script>
+<script src="components/custom.js"></script> <!-- Custom codes -->
+
 </body>
 </html>
