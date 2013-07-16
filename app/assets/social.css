@@ -16,8 +16,8 @@
 /* Super Massive CSS-Sprite Social Media Icon Set Start */
 ul.socialicons 						{ list-style-type: none; }
 ul.socialicons li					{ list-style-type: none; display: inline; float: left; padding: 0 5px 0 0; }
-ul.color li a 						{ background: url('../assets/img/supermassivecsspriteicons2.png') no-repeat 0 0; }
-ul.bw li a 							{ background: url('../assets/img/supermassivecsspriteicons.png') no-repeat 0 0; }
+ul.color li a 						{ background: url('img/supermassivecsspriteicons2.png') no-repeat 0 0; }
+ul.bw li a 							{ background: url('img/supermassivecsspriteicons.png') no-repeat 0 0; }
 ul.socialicons li a 				{ text-indent: -9999px; width: 32px; height: 33px; display: block; overflow: hidden; margin: 2px; }
 									
 									
