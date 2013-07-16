@@ -1,24 +1,39 @@
 {
-  "name": "AzureTickets",
-  "version": "1.0.0",
-  "dependencies": {
-    "angular": "~1.0.5",
-    "angular-ui": "~0.4.0",
-    "jquery": "~1.9.1",
-    "responsiveiframe": "*",
-    "bootstrap":"~2.3.1",
-    "json3": "~3.2.4",
-    "es5-shim": "~2.0.5",
-    "easyXDM" : "~2.4.17",
-    "select2" : "~3.3",
-    "angular-resource": "~1.0.5",
-    "angular-cookies": "~1.0.5",
-    "angular-sanitize": "~1.0.5",
-    "jquery-timepicker-addon" : "1.1.1",
-    "datejs" : "*"
-  },
-  "devDependencies": {
-    "angular-mocks": "~1.0.5",
-    "angular-scenario": "~1.0.5"
-  }
+    "name": "RevvlyAdmin",
+    "version": "1.0.0",
+    "dependencies": {
+        "jquery": "*",
+        "jquery-ui": "*",
+        "angular": "~1.0.5",
+        "angular-ui": "*",
+        "excanvas": "latest",
+        "fullcalendar": "*",
+        "html5shiv": "*",
+        "cleditor": "https://github.com/cleditor/cleditor.git",
+        "flot": "*",
+        "prettyPhoto": "https://github.com/scaron/prettyphoto.git",
+        "rateit": "https://github.com/dandv/meteor-jquery-rateit.git",
+        "gritter": "*",
+
+        "font-awesome" : "3.2.1",
+
+        "bootstrap": "~2.3.1",
+        "bootstrap-toggle-buttons": "https://github.com/nostalgiaz/bootstrap-toggle-buttons.git",
+        "bootstrap-datetimepicker": "*",
+
+
+        "json3": "~3.2.4",
+        "es5-shim": "~2.0.5",
+        "easyXDM": "~2.4.17",
+
+        "angular-resource": "~1.0.5",
+        "angular-cookies": "~1.0.5",
+        "angular-sanitize": "~1.0.5"
+
+
+    },
+    "devDependencies": {
+        "angular-mocks": "~1.0.5",
+        "angular-scenario": "~1.0.5"
+    }
 }
