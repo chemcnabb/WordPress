@@ -1,8 +1,13 @@
-<div class="atPanel" ng-controller="adminController" ng-cloak>
-	<!-- top menu -->
-	<div ng-include src="'views/admin/partials/topMenu.html'"></div>
-	<div ng-include src="'views/elements/error.html'"></div>
-	<!-- auth panel -->
+<div ng-controller="adminController" ng-cloak>
+    <!-- top menu -->
+    <div class="navbar navbar-fixed-top navbar-inverse" ng-include src="'views/admin/partials/topMenu.html'"></div>
+    <div ng-include src="'views/elements/error.html'"></div>
+    <!-- admin dashboard
+    <div class="row-fluid" style="min-height: 5em"></div>-->
+</div>
+
+
+<div class="content">
 	<div ng-hide="DomainProfile.Key || false" class="clearfix">
 		<div class="alert alert-error" ng-show="loginErr || false">{{loginErr}}</div>
 		<h4>{{ 'Login.Page_Title' | t }}</h4>
