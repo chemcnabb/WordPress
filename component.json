@@ -4,6 +4,7 @@
     "dependencies": {
         "jquery": "*",
         "jquery-ui": "*",
+        "jquery-migrate": "*",
         "angular": "~1.0.5",
         "angular-ui": "*",
         "excanvas": "latest",
@@ -15,7 +16,7 @@
         "rateit": "https://github.com/dandv/meteor-jquery-rateit.git",
         "gritter": "*",
 
-        "font-awesome" : "3.2.1",
+
 
         "bootstrap": "~2.3.1",
         "bootstrap-toggle-buttons": "https://github.com/nostalgiaz/bootstrap-toggle-buttons.git",

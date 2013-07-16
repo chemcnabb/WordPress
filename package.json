@@ -1,5 +1,5 @@
 {
-  "name": "AzureTickets",
+  "name": "RevvlyAdmin",
   "path" : {
 	"app" : "app",
 	"dist" : "dist",
@@ -34,7 +34,7 @@
     "grunt-open": "~0.1.0",
     "matchdep": "~0.1.1",
     "grunt-google-cdn": "~0.1.0",
-    "sparkline": "*",
+
     "grunt-ngmin": "~0.0.1"
   },
   "engines": {
