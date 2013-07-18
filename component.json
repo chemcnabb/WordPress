@@ -5,8 +5,8 @@
         "jquery": "*",
         "jquery-ui": "*",
         "jquery-migrate": "*",
-        "angular": "~1.0.5",
-        "angular-ui": "*",
+        "angular": "latest",
+        "angular-ui": "latest",
         "excanvas": "latest",
         "fullcalendar": "*",
         "html5shiv": "*",
@@ -27,14 +27,14 @@
         "es5-shim": "~2.0.5",
         "easyXDM": "~2.4.17",
 
-        "angular-resource": "~1.0.5",
-        "angular-cookies": "~1.0.5",
-        "angular-sanitize": "~1.0.5"
+        "angular-resource": "latest",
+        "angular-cookies": "latest",
+        "angular-sanitize": "latest"
 
 
     },
     "devDependencies": {
-        "angular-mocks": "~1.0.5",
-        "angular-scenario": "~1.0.5"
+        "angular-mocks": "latest",
+        "angular-scenario": "latest"
     }
 }

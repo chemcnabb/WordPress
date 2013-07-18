@@ -103,10 +103,10 @@
                 <!-- Widget -->
                 <div class="widget wlightblue">
                     <!-- Widget head -->
-                    <div class="widget-head">
+                    <div class="widget-head" ng-controller="widgetController">
                         <div class="pull-left">Dashboard</div>
                         <div class="widget-icons pull-right">
-                            <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
+                            <a href="#" class="wminimize" toggle-expand="toggleDashboard=!toggleDashboard"><i class="icon-chevron-up" ></i></a>
                             <a href="#" class="wclose"><i class="icon-remove"></i></a>
                         </div>
                         <div class="clearfix"></div>
@@ -134,7 +134,7 @@
                     <div class="widget-head">
                         <div class="pull-left">Today Status</div>
                         <div class="widget-icons pull-right">
-                            <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
+                            <a href="#" class="wminimize" toggle-expand="toggleTodayStatus=!toggleTodayStatus"><i class="icon-chevron-up"></i></a>
                             <a href="#" class="wclose"><i class="icon-remove"></i></a>
                         </div>
                         <div class="clearfix"></div>
@@ -188,7 +188,7 @@
                 <div class="widget-head">
                     <div class="pull-left">Chats</div>
                     <div class="widget-icons pull-right">
-                        <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
+                        <a href="#" class="wminimize" toggle-expand="toggleChats=!toggleChats"><i class="icon-chevron-up"></i></a>
                         <a href="#" class="wclose"><i class="icon-remove"></i></a>
                     </div>
                     <div class="clearfix"></div>
@@ -288,7 +288,7 @@
                 <div class="widget-head">
                     <div class="pull-left">File Upload</div>
                     <div class="widget-icons pull-right">
-                        <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
+                        <a href="#" class="wminimize" toggle-expand="toggleFileUpload=!toggleFileUpload"><i class="icon-chevron-up"></i></a>
                         <a href="#" class="wclose"><i class="icon-remove"></i></a>
                     </div>
                     <div class="clearfix"></div>
@@ -342,7 +342,7 @@
                 <div class="widget-head">
                     <div class="pull-left">Browsers</div>
                     <div class="widget-icons pull-right">
-                        <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
+                        <a href="#" class="wminimize" toggle-expand="toggleBrowsers=!toggleBrowsers"><i class="icon-chevron-up"></i></a>
                         <a href="#" class="wclose"><i class="icon-remove"></i></a>
                     </div>
                     <div class="clearfix"></div>
@@ -399,7 +399,7 @@
                 <div class="widget-head">
                     <div class="pull-left">Project</div>
                     <div class="widget-icons pull-right">
-                        <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
+                        <a href="#" class="wminimize" toggle-expand="toggleProject=!toggleProject"><i class="icon-chevron-up"></i></a>
                         <a href="#" class="wclose"><i class="icon-remove"></i></a>
                     </div>
                     <div class="clearfix"></div>
