@@ -34,7 +34,9 @@ $(document).ready(function(){
     }
   });
 
+});
 
+$(document).ready(function(){
 
   $(".has_submenu > a").click(function(e){
     e.preventDefault();
@@ -53,7 +55,9 @@ $(document).ready(function(){
     }
   });
 
+});
 
+$(document).ready(function(){
   $(".sidebar-dropdown a").on('click',function(e){
       e.preventDefault();
 
@@ -77,11 +81,11 @@ $(document).ready(function(){
 
 /* Widget close */
 
-//$('.wclose').click(function(e){
-//  e.preventDefault();
-//  var $wbox = $(this).parent().parent().parent();
-//  $wbox.hide(100);
-//});
+$('.wclose').click(function(e){
+  e.preventDefault();
+  var $wbox = $(this).parent().parent().parent();
+  $wbox.hide(100);
+});
 
 /* Widget minimize */
 
@@ -123,8 +127,7 @@ $(document).ready(function(){
 
 /* Calendar */
 
-  //$(document).ready(function() {
-$(function() {
+  $(document).ready(function() {
   
     var date = new Date();
     var d = date.getDate();
