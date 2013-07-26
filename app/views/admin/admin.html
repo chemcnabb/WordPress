@@ -7,108 +7,108 @@
 </div>
 
 <div class="content">
-<!-- side menu -->
-<div class="sidebar" ng-include src="'views/admin/common/side_menu.html'"></div>
+    <!-- side menu -->
+    <div class="sidebar" ng-include src="'views/admin/common/side_menu.html'"></div>
 
-<!-- Main bar -->
-<div class="mainbar">
+    <!-- Main bar -->
+    <div class="mainbar">
 
-    <!-- Page heading -->
-    <div class="page-head">
+        <!-- Page heading -->
+        <div class="page-head">
 
-        <div ng-include src="'views/admin/common/page_content_partials/page_heading.html'"></div>
-        <div ng-include src="'views/admin/common/page_content_partials/breadcrumbs.html'"></div>
+            <div ng-include src="'views/admin/common/page_content_partials/page_heading.html'"></div>
+            <div ng-include src="'views/admin/common/page_content_partials/breadcrumbs.html'"></div>
 
-    </div>
-    <!-- Page heading ends -->
-    <!-- Matter -->
+        </div>
+        <!-- Page heading ends -->
+        <!-- Matter -->
 
-    <div class="matter">
-        <div class="container-fluid">
+        <div class="matter">
+            <div class="container-fluid">
 
-            <!-- Today status. jQuery Sparkline plugin used. -->
+                <!-- Today status. jQuery Sparkline plugin used. -->
 
-            <div class="row-fluid">
-                <div class="span12">
-                    <!-- List starts -->
-                    <ul class="today-datas">
-                        <!-- List #1 -->
-                        <li class="bred" ng-include
-                            src="'views/admin/dashboard/metric_widgets/visitor_count.html'"></li>
-                        <li class="bgreen" ng-include
-                            src="'views/admin/dashboard/metric_widgets/member_count.html'"></li>
-                        <li class="blightblue" ng-include
-                            src="'views/admin/dashboard/metric_widgets/bounce_rate.html'"></li>
-                        <li class="bviolet" ng-include
-                            src="'views/admin/dashboard/metric_widgets/total_profit.html'"></li>
+                <div class="row-fluid">
+                    <div class="span12">
+                        <!-- List starts -->
+                        <ul class="today-datas">
+                            <!-- List #1 -->
+                            <li class="bred" ng-include ng-cloak
+                                src="'views/admin/dashboard/metric_widgets/visitor_count.html'"></li>
+                            <li class="bgreen" ng-include ng-cloak
+                                src="'views/admin/dashboard/metric_widgets/member_count.html'"></li>
+                            <li class="blightblue" ng-include ng-cloak
+                                src="'views/admin/dashboard/metric_widgets/bounce_rate.html'"></li>
+                            <li class="bviolet" ng-include ng-cloak
+                                src="'views/admin/dashboard/metric_widgets/total_profit.html'"></li>
 
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Today status ends -->
-
-            <!-- Dashboard Graph starts -->
-
-            <div class="row-fluid">
-                <div class="span8">
-
-                    <div class="widget wlightblue" ng-include
-                         src="'views/admin/dashboard/page_content_partials/bar_chart_widget.html'"></div>
-
-                </div>
-
-                <div class="span4">
-
-                    <div class="widget wblue" ng-include
-                         src="'views/admin/dashboard/page_content_partials/today_status_widget.html'"></div>
-
-                </div>
-            </div>
-            <!-- Dashboard graph ends -->
-
-            <!-- Chats, File upload and Recent Comments -->
-            <div class="row-fluid">
-
-                <div class="span4">
-
-                    <!-- Chat Widget -->
-                    <div class="widget wgreen" ng-include
-                         src="'views/admin/dashboard/page_content_partials/chats_widget.html'">
-
-
+                        </ul>
                     </div>
                 </div>
 
+                <!-- Today status ends -->
 
-                <!-- File Upload widget -->
-                <div class="span4">
+                <!-- Dashboard Graph starts -->
 
-                    <div class="widget wviolet" ng-include
-                         src="'views/admin/dashboard/page_content_partials/file_upload_widget.html'"></div>
+                <div class="row-fluid">
+                    <div class="span8">
 
-                    <div class="widget worange" ng-include
-                         src="'views/admin/dashboard/page_content_partials/browser_metrics_widget.html'"></div>
+                        <div class="widget wlightblue" ng-include ng-cloak
+                             src="'views/admin/dashboard/page_content_partials/bar_chart_widget.html'"></div>
+
+                    </div>
+
+                    <div class="span4">
+
+                        <div class="widget wblue" ng-include ng-cloak
+                             src="'views/admin/dashboard/page_content_partials/today_status_widget.html'"></div>
+
+                    </div>
+                </div>
+                <!-- Dashboard graph ends -->
+
+                <!-- Chats, File upload and Recent Comments -->
+                <div class="row-fluid">
+
+                    <div class="span4">
+
+                        <!-- Chat Widget -->
+                        <div class="widget wgreen" ng-include ng-cloak
+                             src="'views/admin/dashboard/page_content_partials/chats_widget.html'">
+
+
+                        </div>
+                    </div>
+
+
+                    <!-- File Upload widget -->
+                    <div class="span4">
+
+                        <div class="widget wviolet" ng-include
+                             src="'views/admin/dashboard/page_content_partials/file_upload_widget.html'"></div>
+
+                        <div class="widget worange" ng-include
+                             src="'views/admin/dashboard/page_content_partials/browser_metrics_widget.html'"></div>
+
+                    </div>
+
+
+                    <!-- Project widget -->
+                    <div class="span4">
+                        <div class="widget wred" ng-include
+                             src="'views/admin/dashboard/page_content_partials/project_list_widget.html'"></div>
+                    </div>
+
+
+                    <!-- Server Status -->
+                    <div class="span4">
+                        <div class="widget wlightblue" ng-include
+                             src="'views/admin/dashboard/page_content_partials/server_status_widget.html'"></div>
+
+
+                    </div>
 
                 </div>
-
-
-                <!-- Project widget -->
-                <div class="span4">
-                    <div class="widget wred" ng-include
-                         src="'views/admin/dashboard/page_content_partials/project_list_widget.html'"></div>
-                </div>
-
-
-                <!-- Server Status -->
-                <div class="span4">
-                    <div class="widget wlightblue" ng-include
-                         src="'views/admin/dashboard/page_content_partials/server_status_widget.html'"></div>
-
-
-                </div>
-
-
                 <div class="row-fluid">
                     <div class="span6">
                         <div class="widget wblue" ng-include
@@ -207,80 +207,8 @@
 </div>
 
 
-<!-- Notification box starts -->
-<div class="slide-box">
 
-    <!-- Notification box head -->
-    <div class="slide-box-head bred">
-        <!-- Title -->
-        <div class="pull-left">Notification Box</div>
-        <!-- Icon -->
-        <div class="slide-icons pull-right">
-            <a href="#" class="sminimize" toggle-expand="toggleNotification=!toggleNotification"><i
-                    class="icon-chevron-down"></i></a>
-            <a href="#" class="sclose" close-widget><i class="icon-remove"></i></a>
-        </div>
-        <div class="clearfix"></div>
-    </div>
 
-    <div class="slide-content">
 
-        <!-- It is default bootstrap nav tabs. See official bootstrap doc for doubts -->
-        <ul class="nav nav-tabs">
-            <!-- Tab links -->
-            <li class="active"><a href="#tab1" data-toggle="tab"><i class="icon-bar-chart"></i></a></li>
-            <li><a href="#tab2" data-toggle="tab"><i class="icon-phone"></i></a></li>
-            <li><a href="#tab3" data-toggle="tab"><i class="icon-comments"></i></a></li>
-        </ul>
 
-        <!-- Tab content -->
-
-        <div class="tab-content">
-
-            <div class="tab-pane active" id="tab1">
-
-                <!-- Graph #1 -->
-                <div class="slide-data">
-                    <div class="slide-data-text">Today Earnings</div>
-                    <div class="slide-data-result">$5,0000 <i class="icon-arrow-up red"></i></div>
-                    <div class="clearfix"></div>
-                    <hr/>
-                    <span id="todayspark4" class="spark"></span>
-                </div>
-
-                <!-- Graph #2 -->
-                <div class="slide-data">
-                    <div class="slide-data-text">Yesterday Earnings</div>
-                    <div class="slide-data-result">$4,6000 <i class="icon-arrow-down green"></i></div>
-                    <div class="clearfix"></div>
-                    <hr/>
-                    <span id="todayspark5" class="spark"></span>
-                </div>
-
-            </div>
-
-            <div class="tab-pane" id="tab2">
-                <h5>Have some content here.</h5>
-
-                <p>Aliquam dui libero, pharetra nec venenatis in, scelerisque quis odio. In hac habitasse platea
-                    dictumst. Etiam porta placerat turpis, eget fermentum neque egestas at. Vestibulum ullamcorper,
-                    augue a sollicitudin vestibulum, orci purus semper felis, lobortis consequat nisi nunc eu enim. </p>
-            </div>
-
-            <div class="tab-pane" id="tab3">
-                <h5>Have some content here.</h5>
-
-                <p>Aliquam dui libero, pharetra nec venenatis in, scelerisque quis odio. In hac habitasse platea
-                    dictumst. Etiam porta placerat turpis, eget fermentum neque egestas at. Vestibulum ullamcorper,
-                    augue a sollicitudin vestibulum, orci purus semper felis, lobortis consequat nisi nunc eu enim.</p>
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-</div>
-
-<!-- Notification box ends -->
 
