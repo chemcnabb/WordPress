@@ -90,7 +90,7 @@ azureTicketsApp.config([
             }).when('/admin', {
                 redirectTo: '/'
             }).when('/stores', {
-                templateUrl: 'views/admin/stores/store_list.html',
+                templateUrl: 'views/admin/stores/stores.html',
                 resolve: routeFilters
             }).when('/store/:storeURI', {
                 templateUrl: 'views/admin/stores/store.html',
@@ -100,16 +100,16 @@ azureTicketsApp.config([
                 templateUrl: 'views/admin/venues/venue.html',
                 controller: venueController,
                 resolve: routeFilters
-            }).when('/event', {
-                templateUrl: 'views/admin/events/event.html',
+            }).when('/events', {
+                templateUrl: 'views/admin/events/events.html',
                 controller: eventController,
                 resolve: routeFilters
             }).when('/ticket/:eventKey', {
-                templateUrl: 'views/ticket.html',
+                templateUrl: 'views/admin/events/tickets/ticket.html',
                 controller: ticketController,
                 resolve: routeFilters
             }).when('/scanner', {
-                templateUrl: 'views/scanner.html',
+                templateUrl: 'views/admin/scanners/scanner.html',
                 controller: scannerController,
                 resolve: routeFilters
             });

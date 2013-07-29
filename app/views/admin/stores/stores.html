@@ -1,0 +1,141 @@
+<div ng-controller="adminController" ng-cloak>
+    <!-- top menu -->
+    <div class="navbar navbar-fixed-top navbar-inverse" ng-include src="'views/admin/common/top_menu.html'"></div>
+    <div ng-include src="'views/elements/error.html'"></div>
+    <!-- admin dashboard
+    <div class="row-fluid" style="min-height: 5em"></div>-->
+</div>
+
+<div class="content">
+    <!-- side menu -->
+    <div class="sidebar" ng-include src="'views/admin/common/side_menu.html'"></div>
+
+    <!-- Main bar -->
+    <div class="mainbar">
+
+        <!-- Page heading -->
+        <div class="page-head">
+
+            <div ng-include src="'views/admin/stores/page_content_partials/page_heading.html'"></div>
+            <div ng-include src="'views/admin/stores/page_content_partials/breadcrumbs.html'"></div>
+
+        </div>
+        <!-- Page heading ends -->
+        <!-- Matter -->
+
+        <div class="matter">
+            <div class="container-fluid">
+
+                <!--<div class="btn-group pull-right">-->
+                    <!--<button class="btn btn-info" ng-click="showInfo()">{{-->
+                        <!--'Common.Text_Information' | t }}-->
+                    <!--</button>-->
+                <!--</div>-->
+
+
+
+                <div class="widget wviolet" ui-if="Store && Store.Key" ng-init="loadCurrencies()">
+
+                    <div class="widget-head">
+                        <div class="pull-left">Tables</div>
+                        <div class="widget-icons pull-right">
+                            <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
+                            <a href="#" class="wclose"><i class="icon-remove"></i></a>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class="widget-content">
+
+                        <table class="table  table-bordered ">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th>Control</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <tr ng-repeat="store in stores">
+                                <td>1</td>
+                                <td>{{ store.Name }}</td>
+                                <td>{{ store.Description }}</td>
+                                <td>{{ store.DateCreated }}</td>
+                                <td>Paid</td>
+                                <td><span class="label label-success">Active</span></td>
+                                <td>
+
+                                    <button class="btn btn-mini btn-success"><i class="icon-ok"></i> </button>
+                                    <button class="btn btn-mini btn-warning"><i class="icon-pencil"></i> </button>
+                                    <button class="btn btn-mini btn-danger"><i class="icon-remove"></i> </button>
+
+                                </td>
+                            </tr>
+                                <tr>
+                                    <td colspan=7><div ng-include src="'views/eventList.html'"></div></td>
+                                </tr>
+
+
+
+                            </tbody>
+                        </table>
+
+
+                    </div>
+
+                    <div class="widget-foot">
+
+                        <div class="pagination pull-right">
+                            <ul>
+                                <li><a href="#">Prev</a></li>
+                                <li><a href="#">1</a></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li><a href="#">4</a></li>
+                                <li><a href="#">Next</a></li>
+                            </ul>
+                        </div>
+                        <div class="clearfix"></div>
+
+                    </div>
+
+                </div>
+
+                <!--<div class="atPanel" ng-cloak ng-init="init()">-->
+                    <!--&lt;!&ndash; top menu &ndash;&gt;-->
+
+                    <!--&lt;!&ndash; store for visitors &ndash;&gt;-->
+                    <!--<div ui-if="Store && Store.Key" class="row-fluid" ng-init="loadCurrencies()">-->
+                        <!--<div class="btn-group pull-right">-->
+                            <!--<button class="btn btn-info" ng-click="showInfo()">{{-->
+                                <!--'Common.Text_Information' | t }}-->
+                            <!--</button>-->
+                        <!--</div>-->
+                        <!--&lt;!&ndash;<p class="lead">{{ 'Common.Text_UpcomingEvents' | t }}</p>&ndash;&gt;-->
+                        <!--&lt;!&ndash; events list&ndash;&gt;-->
+                        <!--<div ng-include src="'views/eventList.html'"></div>-->
+
+                        <!--&lt;!&ndash; store info&ndash;&gt;-->
+                        <!--<div ng-include src="'views/storeInfo.html'"></div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+
+
+
+
+
+
+
+            <!-- Mainbar ends -->
+            <div class="clearfix"></div>
+        </div>
+
+
+    </div>
+</div>

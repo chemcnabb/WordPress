@@ -1,8 +1,16 @@
-<div class="atPanel" ui-if="DomainProfile && DomainProfile.Key || false"
+<div ng-controller="adminController" ng-cloak>
+    <!-- top menu -->
+    <div class="navbar navbar-fixed-top navbar-inverse" ng-include src="'views/admin/common/top_menu.html'"></div>
+    <div ng-include src="'views/elements/error.html'"></div>
+    <!-- admin dashboard
+    <div class="row-fluid" style="min-height: 5em"></div>-->
+</div>
+
+  <div class="atPanel" ui-if="DomainProfile && DomainProfile.Key || false"
 	ng-controller="eventController" ng-cloak>
 	<!-- top menu -->
-	<div ng-include src="'views/elements/topMenu.html'"></div>
-	<div ng-include src="'views/elements/error.html'"></div>
+	<!--<div ng-include src="'views/elements/topMenu.html'"></div>-->
+	<!--<div ng-include src="'views/elements/error.html'"></div>-->
 	<!-- event info -->
 	<div ui-if="Store && Store.Key && venues && venues.length > 0 || false"
 		class="row-fluid">
