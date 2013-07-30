@@ -5,6 +5,7 @@
         "jquery": "*",
         "jquery-ui": "*",
         "jquery-migrate": "*",
+        "select2": "latest",
         "angular": "latest",
         "angular-ui": "latest",
         "excanvas": "latest",

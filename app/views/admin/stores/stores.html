@@ -23,15 +23,36 @@
         <!-- Page heading ends -->
         <!-- Matter -->
 
-        <div class="matter">
+        <div class="matter" >
             <div class="container-fluid">
 
-                <!--<div class="btn-group pull-right">-->
-                    <!--<button class="btn btn-info" ng-click="showInfo()">{{-->
-                        <!--'Common.Text_Information' | t }}-->
-                    <!--</button>-->
-                <!--</div>-->
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <!-- create venue button -->
+                <div class="widget pull-right">
+                    <button class="btn btn-info" ng-click="createStore()">{{
+                        'Common.Text_CreateStore' | t }}
+                    </button>
+
+                </div>
+                <div class="clearfix"></div>
 
 
                 <div class="widget wviolet" ui-if="Store && Store.Key" ng-init="loadCurrencies()">
@@ -54,8 +75,8 @@
                                 <th>Name</th>
                                 <th>Description</th>
                                 <th>Date</th>
-                                <th>Type</th>
-                                <th>Status</th>
+                                <!--<th>Type</th>-->
+                                <!--<th>Status</th>-->
                                 <th>Control</th>
                             </tr>
                             </thead>
@@ -63,11 +84,11 @@
 
                             <tr ng-repeat="store in stores">
                                 <td>1</td>
-                                <td>{{ store.Name }}</td>
+                                <td><a ng-href="#/store/:{{ store.URI }}">{{ store.Name }}</a></td>
                                 <td>{{ store.Description }}</td>
                                 <td>{{ store.DateCreated }}</td>
-                                <td>Paid</td>
-                                <td><span class="label label-success">Active</span></td>
+                                <!--<td>Paid</td>-->
+                                <!--<td><span class="label label-success">Active</span></td>-->
                                 <td>
 
                                     <button class="btn btn-mini btn-success"><i class="icon-ok"></i> </button>
@@ -76,9 +97,7 @@
 
                                 </td>
                             </tr>
-                                <tr>
-                                    <td colspan=7><div ng-include src="'views/eventList.html'"></div></td>
-                                </tr>
+
 
 
 
@@ -138,4 +157,5 @@
 
 
     </div>
+</div>
 </div>
