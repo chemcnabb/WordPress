@@ -25,10 +25,30 @@
 
         <div class="matter">
             <div class="container-fluid">
+
+
+                <div ng-include src="'views/admin/events/page_content_partials/create_edit_event_modal.html'"></div>
+
+                <!-- create store button -->
+                <div class="widget pull-right">
+                    <button class="btn btn-info" ng-click="create()">{{
+                        'Common.Text_EventMenu_CreateEvent' | t }}
+                    </button>
+
+                </div>
+                <div class="clearfix"></div>
+
+
+
+
+
                 <div class="clear row-fluid list">
+
                     <div ng-show="events.length == 0" class="alert alert-info">{{
                         'Event.Text_NoEvent_Msg' | t }}
                     </div>
+
+
                     <!-- event list -->
                     <ul class="thumbnails" ng-show="events.length > 0">
                         <li ng-repeat="event in events" class="span3">
@@ -58,6 +78,10 @@
                             </div>
                         </li>
                     </ul>
+
+
+
+
                 </div>
 
 

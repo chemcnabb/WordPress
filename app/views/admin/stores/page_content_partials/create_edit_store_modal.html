@@ -1,0 +1,218 @@
+<div class="atPanel" ng-cloak>
+
+<div ui-if="DomainProfile.Key && wizard.currentStep > 0 || false"
+     ng-include src="'views/elements/store/bcSettings.html'"></div>
+<!-- store info update -->
+<div ui-if="DomainProfile && DomainProfile.Key" class="row-fluid"
+     ng-init="loadCurrencies()">
+<span ui-if="Store && Store.isNew || Store && Store.IsOwner">
+			<p ng-show="wizard.currentStep>
+			0" class="lead">{{
+                'Common.Text_RegistrationStep1' | t }}</p>
+			<div ng-switch="wizard.currentStep">
+                <div ng-switch-when="1" ng-show="!Store.Key || false" class="alert">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{ 'Common.Text_StoreCreate' | t }}
+                </div>
+                <div class="alert alert-info" ng-switch-when="2">
+                    <strong>{{ 'Common.Text_LocationInfo' | t }}</strong>
+                </div>
+                <div class="alert alert-info" ng-switch-when="3">
+                    <strong>{{ 'Common.Text_StoreMenu_PaymentSettings' | t }}</strong>
+                </div>
+                <div class="alert alert-info" ng-switch-when="4">
+                    <strong>{{ 'Common.Text_Confirm' | t }}</strong>
+                </div>
+            </div>
+			<div class="alert alert-success"
+                 ui-if="wizard.saved && wizard.finished">
+                <strong>{{ 'Common.Text_Congrats' | t }}</strong> {{
+                'Common.Text_WizardComplete' | t }}
+            </div>
+		</span>
+
+<div id="serviceAgreement" class="modal hide fade">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"
+                aria-hidden="true">&times;</button>
+        <h3>
+            <p class="text-info">{{ 'Common.Text_Agreement' | t}}</p>
+        </h3>
+    </div>
+    <div class="modal-body modal-agreement">
+        <div ng-include src="'views/elements/agreement.html'"></div>
+    </div>
+    <div class="modal-footer">
+        <a href="#" data-dismiss="modal" class="btn">{{
+            'Common.Text_Cancel' | t }}</a> <a href="#" class="btn btn-info"
+                                               data-dismiss="modal" ng-click="upgradeProfile()">{{
+        'Common.Text_IAccept' | t }}</a>
+    </div>
+</div>
+
+
+<ng-form ui-if="Store && Store.isNew || Store && Store.IsOwner"
+         name="atStore" ng-submit="save()">
+    <form ng-show="wizard.currentStep == 1" name="atStore1"
+          ng-submit="URIAvailable && wizard.next('atStore1') || false">
+        <dl class="clearfix">
+            <dd>
+                <atfield at-required class="input-xlarge" ng-model="Store.Name"
+                         label="'Common.Text_StoreName' | t"></atfield>
+            </dd>
+            <dd>
+                <atfield data-provider="typeahead" data-source="suggestedURLs"
+                         at-required ng-readonly="Store.Key || false" class="input-xlarge"
+                         ng-model="Store.URI" at-copy="CustomURI"
+                         label="'Common.Text_CustomURI' | t"
+                         tip="'Common.Text_TipCustomURI' | t"></atfield>
+                <i
+                        ng-class="{'icon-ok': (!Store.Key && Store.URI.length > config.typeahead.minLength && URIAvailable), 'icon-ban-circle': !URIAvailable || Store.URI.length <= config.typeahead.minLength}">
+                </i><span ui-if="!URIAvailable" class="label label-important">
+						{{'Common.Text_CustomURIUnavailable' | t}}</span>
+            </dd>
+            <dd>
+                <atfield class="input-xlarge" ng-model="Store.Description"
+                         label="'Common.Text_Description' | t" rows="5"></atfield>
+            </dd>
+            <dd>
+                <input type="submit" class="btn btn-primary clear"
+                       value="{{
+							'Common.Text_Next' | t }}"/>
+            </dd>
+        </dl>
+    </form>
+    <form ui-if="Store.Address || false" ng-show="wizard.currentStep == 2"
+          name="atStore2" ng-submit="wizard.next('atStore2')">
+        <!-- location info -->
+        <div ng-include src="'views/address.html'" onload="modelName='Store'"></div>
+        <dl>
+            <dd class="pull-left">
+                <a ng-show="wizard.currentStep>1"
+                   ng-click="wizard.currentStep = wizard.currentStep-1"
+                   class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
+            </dd>
+            <dd class="pull-left">
+                <input type="submit" class="btn btn-primary clear"
+                       value="{{
+		 							'Common.Text_Next' | t }}"/>
+            </dd>
+        </dl>
+    </form>
+    <form ng-show="wizard.currentStep == 3" name="atStore3"
+          ng-submit="wizard.next('atStore3')">
+        <dl class="clearfix">
+            <dd>
+                <label>{{'Common.Text_StoreCurrency' | t}}</label> <select
+                    ui-select2="{containerCssClass:'input-xlarge'}" at-required
+                    name="Store_Currency"
+                    data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
+                    ng-model="Store.Currency"
+                    ng-change="loadPaymentProvidersByCurrency(Store.Currency)">
+                <option></option>
+                <option ng-selected="curr.ISO == Store.Currency"
+                        ng-repeat="curr in currencies" value="{{curr.ISO}}">{{curr.Name}}
+                </option>
+            </select>
+            </dd>
+            <dd ng-show="Store.Currency || false">
+                <label>{{'Common.Text_StoreMenu_PaymentProvider' | t}}</label> <select
+                    type="text" ui-select2="{containerCssClass:'input-xlarge'}"
+                    data-placeholder="{{ 'Common.Text_ChooseOption' | t}}" at-required
+                    name="Store_PaymentProvider"
+                    ng-model="Store.tmpPaymentProvider.ProviderType"
+                    ng-change="loadPaymentProviderInfo(Store.tmpPaymentProvider)">
+                <option></option>
+                <option ng-selected="Store.tmpPaymentProvider.ProviderType == p"
+                        ng-repeat="p in paymentProviders" value="{{p}}">{{'Common.Text_Paypro_'+p
+                    | t}}
+                </option>
+            </select>
+            </dd>
+            <dd
+                    ui-if="tmpPaymentProviderInfo && tmpPaymentProviderInfo.RequiresProviderId || false">
+                <atfield at-required class="input-xxlarge"
+                         ng-model="Store.tmpPaymentProvider.ProviderId"
+                         at-copy="PaymentProvider"
+                         label="tmpPaymentProviderInfo.ProviderIdText"></atfield>
+            </dd>
+            <dd
+                    ui-if="tmpPaymentProviderInfo && tmpPaymentProviderInfo.RequiresProviderToken || false">
+                <atfield class="input-xxlarge"
+                         ng-model="Store.tmpPaymentProvider.ProviderToken"
+                         at-copy="PaymentProvider"
+                         label="tmpPaymentProviderInfo.ProviderTokenText"></atfield>
+            </dd>
+            <dd ui-if="tmpPaymentProviderInfo || false">
+                <atfield class="input-xxlarge"
+                         ng-model="Store.tmpPaymentProvider.Policy" at-required
+                         at-copy="PaymentProvider" label="'Common.Text_Policy' | t"
+                         rows="5"></atfield>
+            </dd>
+        </dl>
+        <dl>
+            <dd class="pull-left">
+                <a ng-show="wizard.currentStep>1"
+                   ng-click="wizard.currentStep = wizard.currentStep-1"
+                   class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
+            </dd>
+            <dd class="pull-left">
+                <input type="submit" class="btn btn-primary clear"
+                       value="{{
+							'Common.Text_Next' | t }}"/>
+            </dd>
+        </dl>
+    </form>
+    <form ui-if="Store && wizard.currentStep == 4 && !wizard.saved"
+          name="atStore4" ng-submit="wizard.next('atStore4', true)">
+        <dl>
+            <dd class="clear row-fluid">
+                <div class="span6">
+                    <!-- store details -->
+                    <atmodel
+                            ui-if="geo.getLoadedCountries() != null && geo.getLoadedRegions() != null && currencies.length > 0"
+                            ng-model="Store" extra1="geo" extra2="currencies"></atmodel>
+                </div>
+            </dd>
+            <dd class="pull-left">
+                <a ng-show="wizard.currentStep>1"
+                   ng-click="wizard.currentStep = wizard.currentStep-1"
+                   class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
+            </dd>
+            <dd class="pull-left">
+                <input type="submit" class="btn btn-success clear"
+                       value="{{
+		 							'Common.Text_Save' | t }}"/>
+            </dd>
+        </dl>
+    </form>
+    <dl ui-if="wizard.finished" class="clearfix">
+        <dd class="clear">
+            <ul ui-if="!wizard.saved" class="wizardProgress">
+                <li><span
+                        ng-class="{'label-success': wizard.checkStep.store, 'label-important':!wizard.checkStep.store}"
+                        class="label">{{ 'Common.Text_Save' | t }} {{
+							'Common.Text_Store' | t }}</span></li>
+                <li><span
+                        ng-class="{'label-success': wizard.checkStep.uri, 'label-important':!wizard.checkStep.uri}"
+                        class="label">{{ 'Common.Text_Save' | t }} {{
+							'Common.Text_CustomURI' | t }}</span></li>
+                <li><span
+                        ng-class="{'label-success': wizard.checkStep.payment, 'label-important':!wizard.checkStep.payment}"
+                        class="label">{{ 'Common.Text_Save' | t }} {{
+							'Common.LabelStorePaymentProvider' | t }}</span></li>
+                <li><span
+                        ng-class="{'label-success': wizard.checkStep.address, 'label-important':!wizard.checkStep.address}"
+                        class="label">{{ 'Common.Text_Save' | t }} {{
+							'Common.Text_Location' | t }}</span></li>
+            </ul>
+        </dd>
+        <dd class="pull-left">
+            <a ng-show="wizard.currentStep>1 && wizard.saved"
+               ng-click="wizard.currentStep = wizard.currentStep-2; wizard.finished = false; wizard.saved = false"
+               class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
+        </dd>
+    </dl>
+</ng-form>
+
+</div>

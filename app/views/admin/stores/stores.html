@@ -44,8 +44,7 @@
 
 
 
-
-                <!-- create venue button -->
+                <!-- create store button -->
                 <div class="widget pull-right">
                     <button class="btn btn-info" ng-click="createStore()">{{
                         'Common.Text_CreateStore' | t }}
@@ -58,7 +57,7 @@
                 <div class="widget wviolet" ui-if="Store && Store.Key" ng-init="loadCurrencies()">
 
                     <div class="widget-head">
-                        <div class="pull-left">Tables</div>
+                        <div class="pull-left">Stores</div>
                         <div class="widget-icons pull-right">
                             <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                             <a href="#" class="wclose"><i class="icon-remove"></i></a>
@@ -84,7 +83,7 @@
 
                             <tr ng-repeat="store in stores">
                                 <td>1</td>
-                                <td><a ng-href="#/store/:{{ store.URI }}">{{ store.Name }}</a></td>
+                                <td><a ng-click="showInfo()">{{ store.Name }}</a></td>
                                 <td>{{ store.Description }}</td>
                                 <td>{{ store.DateCreated }}</td>
                                 <!--<td>Paid</td>-->

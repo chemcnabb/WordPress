@@ -57,9 +57,9 @@
             <tr>
                 <th>#</th>
                 <th>Name</th>
-                <th>Location</th>
-                <th>Description</th>
 
+                <th>Description</th>
+                <th>Location</th>
                 <th>Control</th>
             </tr>
             </thead>
@@ -70,10 +70,10 @@
             <tr ng-repeat="venue in venues">
                 <td>{{$index + 1}}</td>
                 <td>{{venue.Name}}</td>
+
+                <td>{{venue.Description}}</td>
                 <td><span ng-show="venue.Address" class="label">{{
 							venue.Address | address }}</span></td>
-                <td>{{venue.Description}}</td>
-
                 <td>
 
                     <!--<button class="btn btn-mini btn-success"><i class="icon-ok"></i></button>-->
