@@ -26,9 +26,11 @@ function adminController($scope, $location, $cookieStore) {
   $scope.login = function(provider) {
     if (angular.isDefined(provider) && angular.isString(provider)) {
       // login by provider
+        console.log("logging in by provider");
       $scope.auth.logonByProviderAsync(provider).then(function() {
         $scope.DomainProfile = $scope.auth.getDomainProfile();
         $location.path($cookieStore.get($scope.config.cookies.lastPath));
+          console.log("location: " + ($location.path()))  ;
         $cookieStore.put($scope.config.cookies.loggedStatus, true);
 
         $scope.init();
@@ -37,6 +39,7 @@ function adminController($scope, $location, $cookieStore) {
       });
     } else {
       // login by account
+        console.log("logging in by account");
       $scope.auth.logonAsync({
         Email : $scope.AccountProfile.Email,
         PasswordHash : BWL.oAuth.HashPassword($scope.AccountProfile.Password)

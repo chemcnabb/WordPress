@@ -25,11 +25,10 @@
 <!-- Matter -->
 
 <div class="matter">
-<div class="container-fluid" ui-if="Store && Store.Key || false">
+<div class="container-fluid" ui-if="DomainProfile && DomainProfile.Key || false"
+     ng-controller="venueController" ng-cloak>
 <!-- no venues alert -->
-<div ng-show="venues.length == 0" class="alert alert-info" ng-cloak>{{
-    'Common.Text_VenueEmpty' | t }}
-</div>
+
 <!-- create venue button -->
 <div class="widget pull-right">
     <button class="btn btn-info" ng-click="create()">{{
@@ -39,24 +38,31 @@
 </div>
 <div class="clearfix"></div>
 
-<div class="widget wviolet">
+
+
+<div class="widget wviolet" ng-init="init()">
 
     <div class="widget-head">
         <div class="pull-left"> {{ 'Common.Text_Venue' | t}}</div>
-        <div class="widget-icons pull-right">
-            <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
-            <a href="#" class="wclose"><i class="icon-remove"></i></a>
-        </div>
+        <!--<div class="widget-icons pull-right">-->
+            <!--<a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>-->
+            <!--<a href="#" class="wclose"><i class="icon-remove"></i></a>-->
+        <!--</div>-->
         <div class="clearfix"></div>
     </div>
 
     <div class="widget-content">
+
+        <div ng-show="venues.length == 0" class="alert alert-info" style="margin-bottom:0;" ng-cloak>{{
+            'Common.Text_VenueEmpty' | t }}
+        </div>
 
         <table class="table  table-bordered " ng-show="venues.length > 0">
             <thead>
             <tr>
                 <th>#</th>
                 <th>Name</th>
+                <th>StoreKey</th>
 
                 <th>Description</th>
                 <th>Location</th>
@@ -69,8 +75,9 @@
 
             <tr ng-repeat="venue in venues">
                 <td>{{$index + 1}}</td>
-                <td>{{venue.Name}}</td>
 
+                <td>{{venue.Name}}</td>
+                <td>{{ venue.StoreKey }}</td>
                 <td>{{venue.Description}}</td>
                 <td><span ng-show="venue.Address" class="label">{{
 							venue.Address | address }}</span></td>

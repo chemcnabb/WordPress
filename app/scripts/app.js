@@ -88,7 +88,8 @@ azureTicketsApp.config([
                     ]
                 }
             }).when('/admin', {
-                redirectTo: '/'
+                redirectTo: '/',
+                resolve: routeFilters
             }).when('/stores', {
                 templateUrl: 'views/admin/stores/stores.html',
                 resolve: routeFilters

@@ -18,9 +18,10 @@ azureTicketsApp
                  * @param {object}
                  *          $scope We're authenticating on the scope of a
                  *          controller.
-                 * @returns
+                 * @returns;
                  */
                 authenticate : function($scope) {
+                    console.log($scope.Email);
                   var _this = this, def = $q.defer();
 
                   if (!this.isDomainProfileReady()) {

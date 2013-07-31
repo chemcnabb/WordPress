@@ -35,51 +35,62 @@
                     </div>
 
                     <div class="widget-content">
-                        <div class="padd">
+                        <!--<div class="padd">-->
                             <div class="alert alert-error" ng-show="loginErr || false">{{loginErr}}</div>
                             <!-- Login form -->
 
 
 
                             <!-- TEMPORARY:  TODO - use *only* login form -->
-                            <div class="row-fluid" ng-init="loadAuthProviders()">
+                            <!--<div class="row-fluid" ng-init="loadAuthProviders()">-->
 
-                            <p>{{ 'Login.Page_Desc' | t }}</p>
-                            <ul class="socialicons color">
-                            <li ng-repeat="provider in authProviders"><a
-                            ng-class="provider | lowercase" ng-click="login(provider)">{{ provider }}</a></li>
-                            </ul>
+                            <!--<p>{{ 'Login.Page_Desc' | t }}</p>-->
+                            <!--<ul class="socialicons color">-->
+                            <!--<li ng-repeat="provider in authProviders"><a-->
+                            <!--ng-class="provider | lowercase" ng-click="login(provider)">{{ provider }}</a></li>-->
+                            <!--</ul>-->
 
-                            </div>
-                            <!--<form class="form-horizontal">-->
+                            <!--</div>-->
+
+
+                              <div ng-init="login('Accounts')"></div>
+
+
+
+                            <!--<form class="form-horizontal" ng-init="loadAuthProviders()">-->
                                 <!--&lt;!&ndash; Email &ndash;&gt;-->
                                 <!--<div class="control-group">-->
                                     <!--<label class="control-label" for="inputEmail">Email</label>-->
                                     <!--<div class="controls">-->
-                                        <!--<input type="text" id="inputEmail" placeholder="Email">-->
+                                        <!--<input type="text" id="inputEmail" placeholder="Email" name="Email" class="ng-scope">-->
                                     <!--</div>-->
                                 <!--</div>-->
                                 <!--&lt;!&ndash; Password &ndash;&gt;-->
                                 <!--<div class="control-group">-->
                                     <!--<label class="control-label" for="inputPassword">Password</label>-->
                                     <!--<div class="controls">-->
-                                        <!--<input type="password" id="inputPassword" placeholder="Password">-->
+                                        <!--<input type="password" id="inputPassword" placeholder="Password" name="Password">-->
                                     <!--</div>-->
                                 <!--</div>-->
                                 <!--&lt;!&ndash; Remember me checkbox and sign in button &ndash;&gt;-->
                                 <!--<div class="control-group">-->
                                     <!--<div class="controls">-->
-                                        <!--<label class="checkbox">-->
-                                            <!--<input type="checkbox"> Remember me-->
-                                        <!--</label>-->
-                                        <!--<br>-->
-                                        <!--<button type="submit" class="btn btn-danger">Sign in</button>-->
+                                        <!--&lt;!&ndash;<label class="checkbox">&ndash;&gt;-->
+                                            <!--&lt;!&ndash;<input type="checkbox"> Remember me&ndash;&gt;-->
+                                        <!--&lt;!&ndash;</label>&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<br>&ndash;&gt;-->
+                                        <!--<button type="submit" class="btn btn-danger" ng-click="login()">Sign in</button>-->
                                         <!--<button type="reset" class="btn">Reset</button>-->
                                     <!--</div>-->
                                 <!--</div>-->
                             <!--</form>-->
 
-                        </div>
+
+
+
+
+
+                        <!--</div>-->
                     </div>
                     <div class="widget-foot">
                         Not Registred? <a href="#">Register here</a>
