@@ -94,12 +94,12 @@
 
 
                     <!-- Members button with number of latest members count -->
-                    <li class="dropdown dropdown-big">
+                    <li class="dropdown dropdown-big" ng-controller="pendingController">
                         <a class="dropdown-toggle" href="#" data-toggle="dropdown">
                             <i class="icon-user"></i> Users <span   class="badge badge-success">6</span>
                         </a>
 
-                        <ul class="dropdown-menu" ng-include src="'views/admin/common/top_menu_partials/users-drop-down.html'"></ul>
+                        <ul class="dropdown-menu" ng-include src="'views/admin/common/top_menu_partials/users-drop-down.html'" ng-init="init()"></ul>
                     </li>
 
                     <!-- Comment button with number of latest comments count -->
