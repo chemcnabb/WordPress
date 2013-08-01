@@ -23,8 +23,8 @@
         <!-- Page heading ends -->
         <!-- Matter -->
 
-        <div class="matter">
-            <div class="container-fluid">
+        <div class="matter" ng-controller="eventController" ng-init="init()">
+            <div class="container-fluid"  ui-if="Event">
 
 
                 <div ng-include src="'views/admin/events/page_content_partials/create_edit_event_modal.html'"></div>
@@ -39,7 +39,7 @@
                 <div class="clearfix"></div>
 
 
-
+                    {{ events }}  {{ Event }}
 
 
                 <div class="clear row-fluid list">

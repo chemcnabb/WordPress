@@ -43,77 +43,81 @@ azureTicketsApp.config([
     '$routeProvider',
     function ($routeProvider) {
         $routeProvider.when('/', {
-            templateUrl: 'views/admin/admin.html',
+            templateUrl: 'views/admin/stores/stores.html',
             controller: adminController,
             resolve: routeFilters
         }).when('/auth/login', {
-                controller: adminController,
-                templateUrl: 'views/admin/common/auth.html',
-                resolve: routeFilters
-            }).when(
-            '/auth/logoff',
-            {
-                controller: adminController,
-                templateUrl: 'views/admin/common/auth.html',
-                resolve: {
-                    logoff: [
-                        'authService',
-                        '$rootScope',
-                        '$timeout',
-                        '$location',
-                        '$cookieStore',
-                        'configService',
-                        function (authService, $rootScope, $timeout, $location, $cookieStore, configService) {
-                            authService.logoffAsync().then(
-                                function () {
-                                    // clear cookies
-                                    $cookieStore
-                                        .remove(configService.cookies.loggedStatus);
-                                    $cookieStore.remove(configService.cookies.lastPath);
-                                    $cookieStore
-                                        .remove(configService.cookies.paymentSessionKey);
+            controller: adminController,
+            templateUrl: 'views/admin/common/auth.html',
+            resolve: routeFilters
+        }).when(
+            '/auth/logoff',{
+            controller: adminController,
+            templateUrl: 'views/admin/common/auth.html',
+            resolve: {
+                logoff: [
+                    'authService',
+                    '$rootScope',
+                    '$timeout',
+                    '$location',
+                    '$cookieStore',
+                    'configService',
+                    function (authService, $rootScope, $timeout, $location, $cookieStore, configService) {
+                        authService.logoffAsync().then(
+                            function () {
+                                // clear cookies
+                                $cookieStore
+                                    .remove(configService.cookies.loggedStatus);
+                                $cookieStore.remove(configService.cookies.lastPath);
+                                $cookieStore
+                                    .remove(configService.cookies.paymentSessionKey);
 
-                                    // reset store & profile
-                                    authService.setDomainProfile(null);
-                                    $rootScope.$broadcast('initStore', null);
-                                    $rootScope.$broadcast('resetDomainProfile');
+                                // reset store & profile
+                                authService.setDomainProfile(null);
+                                $rootScope.$broadcast('initStore', null);
+                                $rootScope.$broadcast('resetDomainProfile');
 
-                                    $timeout(function () {
-                                        $rootScope.$apply(function () {
-                                            $location.path('/');
-                                        })
-                                    }, 250)
-                                });
-                        }
-                    ]
-                }
-            }).when('/admin', {
-                redirectTo: '/',
-                resolve: routeFilters
-            }).when('/stores', {
-                templateUrl: 'views/admin/stores/stores.html',
-                resolve: routeFilters
-            }).when('/store/:storeURI', {
-                templateUrl: 'views/admin/stores/store.html',
-                controller : storeController,
-                resolve: routeFilters
-            }).when('/venues', {
-                templateUrl: 'views/admin/venues/venues.html',
-                controller: venueController,
-                resolve: routeFilters
-            }).when('/events', {
-                templateUrl: 'views/admin/events/events.html',
-                controller: eventController,
-                resolve: routeFilters
-            }).when('/ticket/:eventKey', {
-                templateUrl: 'views/admin/events/tickets/ticket.html',
-                controller: ticketController,
-                resolve: routeFilters
-            }).when('/scanner', {
-                templateUrl: 'views/admin/scanners/scanner.html',
-                controller: scannerController,
-                resolve: routeFilters
-            });
+                                $timeout(function () {
+                                    $rootScope.$apply(function () {
+                                        $location.path('/');
+                                    })
+                                }, 250)
+                            });
+                    }
+                ]
+            }
+        }).when('/admin', {
+            redirectTo: '/',
+            resolve: routeFilters
+        }).when('/stores', {
+            templateUrl: 'views/admin/stores/stores.html',
+            resolve: routeFilters
+        }).when('/store/:storeURI', {
+            templateUrl: 'views/admin/stores/store.html',
+            controller : storeController,
+            resolve: routeFilters
+        }).when('/venues', {
+            templateUrl: 'views/admin/venues/venues.html',
+            controller: venueController,
+            resolve: routeFilters
+        }).when('/events', {
+            templateUrl: 'views/admin/events/events.html',
+            controller: eventController,
+            resolve: routeFilters
+
+        }).when('/event', {
+            templateUrl: 'views/event.html',
+            controller: eventController,
+            resolve: routeFilters
+        }).when('/ticket/:eventKey', {
+            templateUrl: 'views/admin/events/tickets/ticket.html',
+            controller: ticketController,
+            resolve: routeFilters
+        }).when('/scanner', {
+            templateUrl: 'views/admin/scanners/scanner.html',
+            controller: scannerController,
+            resolve: routeFilters
+        });
 
 
 

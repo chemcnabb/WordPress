@@ -7,50 +7,124 @@
 </div>
 
 <div class="content">
-<!-- side menu -->
-<div class="sidebar" ng-include src="'views/admin/common/side_menu.html'"></div>
+    <!-- side menu -->
+    <div class="sidebar" ng-include src="'views/admin/common/side_menu.html'"></div>
 
-<!-- Main bar -->
-<div class="mainbar">
+    <!-- Main bar -->
+    <div class="mainbar">
+        <!-- Page heading -->
+        <div class="page-head">
+            <div ng-include src="'views/admin/stores/page_content_partials/page_heading.html'"></div>
+            <div ng-include src="'views/admin/stores/page_content_partials/breadcrumbs.html'"></div>
 
-<!-- Page heading -->
-<div class="page-head">
-    <div ng-include src="'views/admin/stores/page_content_partials/page_heading.html'"></div>
-    <div ng-include src="'views/admin/stores/page_content_partials/breadcrumbs.html'"></div>
+        </div>
+        <!-- Page heading ends -->
+        <!-- Matter -->
 
-</div>
-<!-- Page heading ends -->
-<!-- Matter -->
+        <div class="matter">
+            <div class="container-fluid">
+            <!-- top menu -->
+                <div class="row-fluid"  ui-if="Store && Store.isNew || Store && Store.IsOwner">
 
-<div class="matter">
-<div class="container-fluid">
+                    <div class="span12">
+
+                        <div class="widget wviolet">
+                            <div class="widget-head">
+                                <div class="pull-left">{{ Store.Name }}</div>
+                                <!--<div class="widget-icons pull-right">-->
+                                    <!--<a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>-->
+                                    <!--<a href="#" class="wclose"><i class="icon-remove"></i></a>-->
+                                <!--</div>-->
+                                <div class="clearfix"></div>
+                            </div>
+
+                            <div class="widget-content">
+                                <div class="padd invoice">
+
+                                    <div class="row-fluid">
+                                        <div class="span2">
+
+                                             <img src='assets/img/placehold.gif' />
+                                        </div>
+
+                                        <div class="span4">
+
+                                            <p>
+                                                {{ Store.Address.AddressLine1 }}<br>
+                                                {{ Store.Address.City }} - {{ Store.Address.PostalCode }}<br>
+                                                {{ Store.Address.Country }}
+                                            </p>
+                                        </div>
+
+                                        <div class="span4 pull-right">
+                                            <h4>{{ Store.Description }}</h4>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row-fluid">
 
 
 
-<!-- top menu -->
-
-    <div ng-include src="'views/admin/stores/page_content_partials/create_edit_store_modal.html'"></div>
 
 
+                                        <div class="span12" ng-controller="eventController">
 
+                                            <hr />
+                                            <table class="table   table-bordered" ng-init="init()">
 
+                                                <caption>Events</caption>
+                                                <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Name</th>
+                                                    <th>Type</th>
+                                                    <th>URI</th>
+                                                    <th>Address</th>
+                                                    <!--<th>Total</th>-->
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr ng-repeat="venue in venues">
+                                                    <td>{{ $index+1 }}</td>
+                                                    <td>{{ event.Name }}</td>
+                                                    <td>{{ venue.Type }}</td>
+                                                    <td>{{ venue.CustomURI.URI }}</td>
+                                                    <td>{{ venue.Address }}</td>
 
+                                                </tr>
 
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td><strong>Total</strong></td>
+                                                    <td><strong>$2405</strong></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
 
+                                        </div>
 
+                                    </div>
 
+                                </div>
+                            </div>
+                            <div class="widget-foot">
+                                <button class="btn btn-danger pull-right">Send Invoice</button>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
 
+                    </div>
 
+                </div>
+                <!--<div ng-include src="'views/admin/stores/page_content_partials/create_edit_store_modal.html'" ></div>-->
+            </div>
+        </div>
 
-</div>
-
-
-</div>
-
-<!-- Mainbar ends -->
-<div class="clearfix"></div>
-</div>
-
-
-</div>
+        <!-- Mainbar ends -->
+        <div class="clearfix"></div>
+    </div>
 </div>

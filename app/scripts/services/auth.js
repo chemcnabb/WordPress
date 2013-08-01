@@ -21,7 +21,7 @@ azureTicketsApp
                  * @returns;
                  */
                 authenticate : function($scope) {
-                    console.log($scope.Email);
+                    //console.log($scope.Email);
                   var _this = this, def = $q.defer();
 
                   if (!this.isDomainProfileReady()) {

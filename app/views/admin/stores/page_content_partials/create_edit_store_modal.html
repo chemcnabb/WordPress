@@ -1,4 +1,4 @@
-<div class="atPanel" ng-cloak>
+<div class="atPanel" ng-cloak ng-init='initStore("{{ storeURI }}")'>
 
 <div ui-if="DomainProfile.Key && wizard.currentStep > 0 || false"
      ng-include src="'views/elements/store/bcSettings.html'"></div>

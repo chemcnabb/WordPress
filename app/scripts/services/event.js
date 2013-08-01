@@ -330,7 +330,7 @@ azureTicketsApp
                  * 
                  * @param $scope
                  *          Scope to refresh
-                 * @returns
+                 * @returns;
                  */
                 loadEvents : function($scope) {
                   if (!_isEventsLoading) {
