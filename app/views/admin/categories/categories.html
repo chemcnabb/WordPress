@@ -33,7 +33,7 @@
 <!-- create venue button -->
 <div class="widget pull-right">
     <button class="btn btn-info" ng-click="create()">{{
-        'Common.Text_CreateVenue' | t }}
+        ' Create Category' | t }}
     </button>
 
 </div>
@@ -42,7 +42,7 @@
 <div class="widget wviolet">
 
     <div class="widget-head">
-        <div class="pull-left"><span> {{ 'Common.Text_Venue' | t}}</span></div>
+        <div class="pull-left"><span> {{ 'Categories' | t}}</span></div>
         <div class="widget-icons pull-right">
             <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
             <a href="#" class="wclose"><i class="icon-remove"></i></a>
@@ -57,21 +57,19 @@
             <tr>
                 <th>#</th>
                 <th>Name</th>
-                <th>Location</th>
-                <th>Description</th>
-
                 <th>Control</th>
+
             </tr>
             </thead>
 
 
             <tbody>
                   {{ categories }}
-            <tr ng-repeat="category in categories">
+            <tr ng-repeat="category in Store.Categories">
                 <td>{{$index + 1}}</td>
-                <td>{{category}}</td>
-                <td><span ng-show="venue.Address" class="label">{{ venue.Address | address }}</span></td>
-                <td>{{venue.Description}}</td>
+                <td>{{category.Name}}</td>
+
+
                 <td>
 
                     <!--<button class="btn btn-mini btn-success"><i class="icon-ok"></i></button>-->
