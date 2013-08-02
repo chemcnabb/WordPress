@@ -47,36 +47,113 @@
                         'Event.Text_NoEvent_Msg' | t }}
                     </div>
 
+                    <div class="widget wviolet" ui-if="events.length>0">
 
-                    <!-- event list -->
-                    <ul class="thumbnails" ng-show="events.length > 0">
-                        <li ng-repeat="event in events" class="span3">
-                            <div class="thumbnail">
-                                <h4 class="pull-left">{{event.Name}}</h4>
-
-                                <div class="btn-group pull-right">
-                                    <button ui-if="Store.IsOwner" class="btn btn-mini btn-success"
-                                            ng-click="update(event)">{{ 'Common.Text_Update' | t }}
-                                    </button>
-                                    <a ng-href="/#/ticket/{{event.Key}}"
-                                       class="btn btn-mini btn-primary"
-                                       ng-bind="!Store.IsOwner && ('ShoppingCart.labelBuyTickets' | t) || 'Common.Text_TicketMenu_Tickets' | t"></a>
-                                    <button ui-if="Store.IsOwner" ng-click="deleteEvent(event)"
-                                            class="btn btn-mini btn-danger">{{ 'Common.Text_Remove' |
-                                        t }}
-                                    </button>
-                                </div>
-                                <p class="text clear" ng-bind-html-unsafe="event.Description"></p>
-                                <span class="label">Starts on {{ event.StartTime |
-                                    date:'MM/dd/yyyy @ h:mma' }}</span> <span class="label">Ends on {{
-                                    event.EndTime | date:'MM/dd/yyyy @ h:mma' }}</span><br/> <span
-                                                    class="label label-inverse">Sales Start on {{
-                                    event.OnSaleDateTimeStart | date:'MM/dd/yyyy @ h:mma' }}</span> <span
-                                                    class="label label-inverse">Sales End on {{
-                                    event.OnSaleDateTimeEnd | date:'MM/dd/yyyy @ h:mma' }}</span>
+                        <div class="widget-head">
+                            <div class="pull-left">Events for Store: '{{ Store.Name }}'</div>
+                            <div class="widget-icons pull-right">
+                                <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
+                                <a href="#" class="wclose"><i class="icon-remove"></i></a>
                             </div>
-                        </li>
-                    </ul>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="widget-content">
+
+                            <table class="table  table-bordered ">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+
+                                    <th>Event Start</th>
+                                    <th>Event End</th>
+                                    <th>Sale Start</th>
+                                    <th>Sale End</th>
+                                    <th>Control</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+
+
+                                <tr ng-repeat="event in events">
+                                    <td>{{ $index+1 }}</td>
+                                    <td>{{ event.Name }}</td>
+
+                                    <td>{{ event.StartTime |
+                                        date:'MM/dd/yyyy @ h:mma' }}</td>
+                                    <td>{{
+                                    event.EndTime | date:'MM/dd/yyyy @ h:mma' }}</td>
+
+                                    <td>{{
+                                        event.OnSaleDateTimeStart | date:'MM/dd/yyyy @ h:mma' }}</td>
+                                    <td>{{
+                                        event.OnSaleDateTimeEnd | date:'MM/dd/yyyy @ h:mma' }}</td>
+
+                                    <td>
+
+                                        <div class="btn-group1" ui-if="Store.IsOwner" >
+                                            <!--<button class="btn btn-mini btn-success"><i class="icon-ok"></i> </button>-->
+                                            <button ui-if="Store.IsOwner" ng-click="update(ticket)" class="btn btn-mini btn-warning"><i class="icon-pencil"></i> </button>
+                                            <button ui-if="Store.IsOwner" ng-click="deleteTicket(ticket)" class="btn btn-mini btn-danger"><i class="icon-remove"></i> </button>
+                                        </div>
+
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+
+
+                        </div>
+
+                        <!--<div class="widget-foot">-->
+
+                        <!--<div class="pagination pull-right">-->
+                        <!--<ul>-->
+                        <!--<li><a href="#">Prev</a></li>-->
+                        <!--<li><a href="#">1</a></li>-->
+                        <!--<li><a href="#">2</a></li>-->
+                        <!--<li><a href="#">3</a></li>-->
+                        <!--<li><a href="#">4</a></li>-->
+                        <!--<li><a href="#">Next</a></li>-->
+                        <!--</ul>-->
+                        <!--</div>-->
+                        <!--<div class="clearfix"></div>-->
+
+                        <!--</div>-->
+
+                    </div>
+                    <!-- event list -->
+                    <!--<ul class="thumbnails" ng-show="events.length > 0">-->
+                        <!--<li ng-repeat="event in events" class="span3">-->
+                            <!--<div class="thumbnail">-->
+                                <!--<h4 class="pull-left">{{event.Name}}</h4>-->
+
+                                <!--<div class="btn-group pull-right">-->
+                                    <!--<button ui-if="Store.IsOwner" class="btn btn-mini btn-success"-->
+                                            <!--ng-click="update(event)">{{ 'Common.Text_Update' | t }}-->
+                                    <!--</button>-->
+                                    <!--<a ng-href="/#/ticket/{{event.Key}}"-->
+                                       <!--class="btn btn-mini btn-primary"-->
+                                       <!--ng-bind="!Store.IsOwner && ('ShoppingCart.labelBuyTickets' | t) || 'Common.Text_TicketMenu_Tickets' | t"></a>-->
+                                    <!--<button ui-if="Store.IsOwner" ng-click="deleteEvent(event)"-->
+                                            <!--class="btn btn-mini btn-danger">{{ 'Common.Text_Remove' |-->
+                                        <!--t }}-->
+                                    <!--</button>-->
+                                <!--</div>-->
+                                <!--<p class="text clear" ng-bind-html-unsafe="event.Description"></p>-->
+                                <!--<span class="label">Starts on {{ event.StartTime |-->
+                                    <!--date:'MM/dd/yyyy @ h:mma' }}</span> <span class="label">Ends on {{-->
+                                    <!--event.EndTime | date:'MM/dd/yyyy @ h:mma' }}</span><br/> <span-->
+                                                    <!--class="label label-inverse">Sales Start on {{-->
+                                    <!--event.OnSaleDateTimeStart | date:'MM/dd/yyyy @ h:mma' }}</span> <span-->
+                                                    <!--class="label label-inverse">Sales End on {{-->
+                                    <!--event.OnSaleDateTimeEnd | date:'MM/dd/yyyy @ h:mma' }}</span>-->
+                            <!--</div>-->
+                        <!--</li>-->
+                    <!--</ul>-->
 
 
 
