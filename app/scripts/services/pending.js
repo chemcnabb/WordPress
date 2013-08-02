@@ -3,20 +3,17 @@ azureTicketsApp
     .factory(
         'pendingService',
         [
-            'configService',
+
             '$q',
             '$rootScope',
-            //'modelService',
-            '$cookieStore',
-            function(configService, $q, $rootScope, $cookieStore) {
+
+            function($q, $rootScope) {
                 //var _clientKey = null, _domainProfile = null;
                 var _pending = [];
                 return {
                     loadAccessPending : function() {
                         var def = $q.defer();
                         BWL.Services.AccountService.AccessPendingAsync(function(request_list) {
-                            console.log('request list');
-                            console.log(request_list);
                             _pending = angular.isArray(request_list) ? request_list : [];
                             $rootScope.$apply(function() {
                                 def.resolve();

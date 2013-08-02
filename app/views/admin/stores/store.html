@@ -85,12 +85,12 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr ng-repeat="venue in venues">
+                                                <tr ng-repeat="event in events">
                                                     <td>{{ $index+1 }}</td>
                                                     <td>{{ event.Name }}</td>
-                                                    <td>{{ venue.Type }}</td>
-                                                    <td>{{ venue.CustomURI.URI }}</td>
-                                                    <td>{{ venue.Address }}</td>
+                                                    <td >{{ event.Description }}</td>
+                                                    <td>{{ event.CustomURI.URI }}</td>
+                                                    <td>{{ event.Venue }}</td>
 
                                                 </tr>
 

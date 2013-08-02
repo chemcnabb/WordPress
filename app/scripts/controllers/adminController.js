@@ -1,5 +1,5 @@
-function adminController($scope, $location, $cookieStore) {
-  $scope.authProviders = [], $scope.name = 'admin', $scope.loginErr = null,
+function adminController($scope, $location, $cookieStore, pendingService) {
+  $scope.authProviders = [], $scope.name = 'admin', $scope.pending = pendingService, $scope.loginErr = null,
       $scope.registerErr = null, $scope.registerOk = false,
       $scope.passwdOk = true;
 
@@ -11,9 +11,18 @@ function adminController($scope, $location, $cookieStore) {
   $scope.AccountProfile = $scope.auth.getAccountProfile();
   $scope.RegisterAccountProfile = angular.copy($scope.AccountProfile);
 
+
   $scope.$on('resetDomainProfile', function() {
     delete $scope.DomainProfile;
   });
+
+  $scope.loadAccessPending = function(){
+     $scope.pending.loadAccessPending().then(function() {
+         $scope.accessPendingList = $scope.pending.getAccessPending();
+     }, function(err) {
+         $scope.error.log(err);
+     });
+  }
 
   $scope.loadAuthProviders = function() {
     $scope.auth.loadAuthProviders().then(function(providers) {
@@ -74,5 +83,5 @@ function adminController($scope, $location, $cookieStore) {
 }
 
 adminController.$inject = [
-    '$scope', '$location', '$cookieStore'
+    '$scope', '$location', '$cookieStore', 'pendingService'
 ];

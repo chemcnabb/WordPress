@@ -4,26 +4,25 @@
     <!-- Use hr tag to add border -->
     <hr />
 </li>
-<li>
+<li ng-repeat="pending in accessPendingList">
     <!-- List item heading h6-->
-    <a href="#">Ravi Kumar</a> <span class="label label-warning pull-right">Free</span>
+    <a href="#">{{ pending.RequestedByName }}<span class="label label-warning pull-right">{{ pending.RequestedItem.City }}, {{ pending.RequestedItem.Country }}</span></a>
     <div class="clearfix"></div>
     <hr />
 </li>
-<li>
-    <a href="#">Balaji</a> <span class="label label-important pull-right">Premium</span>
+
+<li ui-if="accessPendingList.length==0">
+    <p>No access requests pending...</p>
     <div class="clearfix"></div>
     <hr />
 </li>
-<li>
-    <a href="#">Kumarasamy</a> <span class="label label-warning pull-right">Free</span>
-    <div class="clearfix"></div>
-    <hr />
-</li>
-<li>
+<!--<li>-->
+    <!--<a href="#">Kumarasamy</a> <span class="label label-warning pull-right">Free</span>-->
+    <!--<div class="clearfix"></div>-->
+    <!--<hr />-->
+<!--</li>-->
+<li ui-if="accessPendingList.length>0">
     <div class="drop-foot">
         <a href="#">View All</a>
     </div>
 </li>
-        <li>=============</li>
-        <li>{{ access_pending_list }}</li>

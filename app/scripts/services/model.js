@@ -13,7 +13,7 @@ azureTicketsApp.factory('modelService', [
          *          Alias used in BWL, used to retrieve loaded instance.
          * @param force
          *          Force to load a new & clean copy of the model.
-         * @returns
+         * @returns;
          */
         getInstanceOf : function(modelName, tmpAttrs, alias, force) {
           var o = {}, force = angular.isDefined(force) ? force : false;
