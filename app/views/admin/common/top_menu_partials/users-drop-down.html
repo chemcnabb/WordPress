@@ -6,7 +6,7 @@
 </li>
 <li ng-repeat="pending in accessPendingList">
     <!-- List item heading h6-->
-    <a href="#">{{ pending.RequestedByName }}<span class="label label-warning pull-right">{{ pending.RequestedItem.City }}, {{ pending.RequestedItem.Country }}</span></a>
+    <a href="#/approval/{{ pending.Key }}">{{ pending.RequestedByName }}<span class="label label-warning pull-right">{{ pending.RequestedItem.City }}, {{ pending.RequestedItem.Country }}</span></a>
     <div class="clearfix"></div>
     <hr />
 </li>

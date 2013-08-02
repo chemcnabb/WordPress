@@ -21,7 +21,7 @@
         <!-- Page heading ends -->
         <!-- Matter -->
 
-        <div class="matter">
+        <div class="matter" ui-if="DomainProfile && DomainProfile.Key || false">
             <div class="container-fluid">
             <!-- top menu -->
                 <div class="row-fluid"  ui-if="Store && Store.isNew || Store && Store.IsOwner">

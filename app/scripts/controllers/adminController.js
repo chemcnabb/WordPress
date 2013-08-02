@@ -16,13 +16,7 @@ function adminController($scope, $location, $cookieStore, pendingService) {
     delete $scope.DomainProfile;
   });
 
-  $scope.loadAccessPending = function(){
-     $scope.pending.loadAccessPending().then(function() {
-         $scope.accessPendingList = $scope.pending.getAccessPending();
-     }, function(err) {
-         $scope.error.log(err);
-     });
-  }
+
 
   $scope.loadAuthProviders = function() {
     $scope.auth.loadAuthProviders().then(function(providers) {

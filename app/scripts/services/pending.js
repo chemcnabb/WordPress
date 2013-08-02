@@ -7,19 +7,20 @@ azureTicketsApp
             '$q',
             '$rootScope',
 
-            function($q, $rootScope) {
+
+            function ($q, $rootScope) {
                 //var _clientKey = null, _domainProfile = null;
                 var _pending = [];
                 return {
-                    loadAccessPending : function() {
+                    loadAccessPending: function () {
                         var def = $q.defer();
-                        BWL.Services.AccountService.AccessPendingAsync(function(request_list) {
+                        BWL.Services.AccountService.AccessPendingAsync(function (request_list) {
                             _pending = angular.isArray(request_list) ? request_list : [];
-                            $rootScope.$apply(function() {
+                            $rootScope.$apply(function () {
                                 def.resolve();
                             });
-                        }, function(err) {
-                            $rootScope.$apply(function() {
+                        }, function (err) {
+                            $rootScope.$apply(function () {
                                 def.reject(err)
                             })
                         });
@@ -27,7 +28,7 @@ azureTicketsApp
                         return def.promise;
                     },
 
-                    getAccessPending : function(){
+                    getAccessPending: function () {
                         return _pending;
                     }
 

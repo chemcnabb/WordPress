@@ -27,7 +27,7 @@
 <div class="matter">
 <div class="container-fluid" ui-if="Store && Store.Key || false">
 <!-- no venues alert -->
-<div ng-show="venues.length == 0" class="alert alert-info" ng-cloak>{{
+<div ng-show="categories.length == 0" class="alert alert-info" ng-cloak>{{
     'Common.Text_VenueEmpty' | t }}
 </div>
 <!-- create venue button -->
@@ -42,7 +42,7 @@
 <div class="widget wviolet">
 
     <div class="widget-head">
-        <div class="pull-left"><span ng-pluralize=""> {{ 'Common.Text_Venue' | t}}</span></div>
+        <div class="pull-left"><span> {{ 'Common.Text_Venue' | t}}</span></div>
         <div class="widget-icons pull-right">
             <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
             <a href="#" class="wclose"><i class="icon-remove"></i></a>
@@ -52,7 +52,7 @@
 
     <div class="widget-content">
 
-        <table class="table  table-bordered " ng-show="venues.length > 0">
+        <table class="table  table-bordered " ng-controller="categoryController" >
             <thead>
             <tr>
                 <th>#</th>
@@ -66,10 +66,10 @@
 
 
             <tbody>
-
-            <tr ng-repeat="venue in venues">
+                  {{ categories }}
+            <tr ng-repeat="category in categories">
                 <td>{{$index + 1}}</td>
-                <td>{{venue.Name}}</td>
+                <td>{{category}}</td>
                 <td><span ng-show="venue.Address" class="label">{{ venue.Address | address }}</span></td>
                 <td>{{venue.Description}}</td>
                 <td>

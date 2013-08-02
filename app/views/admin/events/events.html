@@ -24,7 +24,7 @@
         <!-- Matter -->
 
         <div class="matter" ng-controller="eventController" ng-init="init()">
-            <div class="container-fluid"  ui-if="Event">
+            <div class="container-fluid"  ui-if="events.length>0">
 
 
                 <div ng-include src="'views/admin/events/page_content_partials/create_edit_event_modal.html'"></div>
@@ -39,7 +39,6 @@
                 <div class="clearfix"></div>
 
 
-                    {{ events }}  {{ Event }}
 
 
                 <div class="clear row-fluid list">
@@ -67,7 +66,7 @@
                                         t }}
                                     </button>
                                 </div>
-                                <p class="text clear">{{event.Description}}</p>
+                                <p class="text clear" ng-bind-html-unsafe="event.Description"></p>
                                 <span class="label">Starts on {{ event.StartTime |
                                     date:'MM/dd/yyyy @ h:mma' }}</span> <span class="label">Ends on {{
                                     event.EndTime | date:'MM/dd/yyyy @ h:mma' }}</span><br/> <span

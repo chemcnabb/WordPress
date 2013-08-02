@@ -8,128 +8,155 @@
 
 <div class="content" ui-if="DomainProfile && DomainProfile.Key || false"
      ng-controller="venueController" ng-cloak>
-<!-- side menu -->
-<div class="sidebar" ng-include src="'views/admin/common/side_menu.html'"></div>
+    <!-- side menu -->
+    <div class="sidebar" ng-include src="'views/admin/common/side_menu.html'"></div>
 
-<!-- Main bar -->
-<div class="mainbar">
+    <!-- Main bar -->
+    <div class="mainbar">
 
-<!-- Page heading -->
-<div class="page-head">
+        <!-- Page heading -->
+        <div class="page-head">
 
-    <div ng-include src="'views/admin/venues/page_content_partials/page_heading.html'"></div>
-    <div ng-include src="'views/admin/venues/page_content_partials/breadcrumbs.html'"></div>
+            <div ng-include src="'views/admin/venues/page_content_partials/page_heading.html'"></div>
+            <div ng-include src="'views/admin/venues/page_content_partials/breadcrumbs.html'"></div>
 
-</div>
-<!-- Page heading ends -->
-<!-- Matter -->
-
-<div class="matter">
-<div class="container-fluid" ui-if="DomainProfile && DomainProfile.Key || false"
-     ng-controller="venueController" ng-cloak>
-<!-- no venues alert -->
-
-<!-- create venue button -->
-<div class="widget pull-right">
-    <button class="btn btn-info" ng-click="create()">{{
-        'Common.Text_CreateVenue' | t }}
-    </button>
-
-</div>
-<div class="clearfix"></div>
-
-
-
-<div class="widget wviolet" ng-init="init()">
-
-    <div class="widget-head">
-        <div class="pull-left"> {{ 'Common.Text_Venue' | t}}</div>
-        <!--<div class="widget-icons pull-right">-->
-            <!--<a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>-->
-            <!--<a href="#" class="wclose"><i class="icon-remove"></i></a>-->
-        <!--</div>-->
-        <div class="clearfix"></div>
-    </div>
-
-    <div class="widget-content">
-
-        <div ng-show="venues.length == 0" class="alert alert-info" style="margin-bottom:0;" ng-cloak>{{
-            'Common.Text_VenueEmpty' | t }}
         </div>
+        <!-- Page heading ends -->
+        <!-- Matter -->
 
-        <table class="table  table-bordered " ng-show="venues.length > 0">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>Name</th>
+        <div class="matter">
+            <div class="container-fluid" ui-if="DomainProfile && DomainProfile.Key || false"
+                 ng-controller="venueController" ng-cloak>
+                <!-- no venues alert -->
+
+                <!-- create venue button -->
+                <div class="widget pull-right">
+                    <button class="btn btn-info" ng-click="create()">{{
+                        'Common.Text_CreateVenue' | t }}
+                    </button>
+
+                </div>
+                <div class="clearfix"></div>
+
+                <div class="navbar">
+                    <div class="navbar-inner">
+                        <ul class="nav" ng-show="DomainProfile && DomainProfile.Key || false">
+
+                            <!-- STORE DROPDOWN -->
+                            <li class="dropdown" ui-route="#/store(?:\/[\w\d\-]+)?"
+                                ng-class="{active: $uiRoute}">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"> {{
+                                    'Common.Text_Store' | t }}
+                                    <span ui-if="Store && Store.Name || false">: {{Store.Name}}</span> <b
+                                            class="caret"></b>
+                                </a>
+                                <!-- SUB LIST -->
+                                <ul class="dropdown-menu">
+                                    <!-- STORE DROP DOWN LIST -->
+                                    <li ng-repeat="s in stores"><a href="#/venues" ng-click="setStoreKey(s.Key)" >{{s.Name}}</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                {{ Store.Key }}
+
+                <div class="widget wviolet" ng-init="init()">
+
+                    <div class="widget-head">
+                        <div class="pull-left"> {{ 'Common.Text_Venue' | t}}</div>
+                        <!--<div class="widget-icons pull-right">-->
+                        <!--<a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>-->
+                        <!--<a href="#" class="wclose"><i class="icon-remove"></i></a>-->
+                        <!--</div>-->
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class="widget-content">
+
+                        <div ng-show="(venues | filter:{StoreKey : Store.Key}).length == 0" class="alert alert-info" style="margin-bottom:0;" ng-cloak>{{
+                            'Common.Text_VenueEmpty' | t }}
+                        </div>
 
 
-                <th>Description</th>
-                <th>Location</th>
-                <th>Control</th>
-            </tr>
-            </thead>
+
+                        <table class="table  table-bordered " ng-show="venues.length > 0">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
 
 
-            <tbody>
+                                <th>Description</th>
+                                <th>Location</th>
+                                <th>Control</th>
+                            </tr>
+                            </thead>
 
-            <tr ng-repeat="venue in venues">
-                <td>{{$index + 1}}</td>
-                <td>{{venue.Name}}</td>
-                <td>{{venue.Description}}</td>
-                <td><span ng-show="venue.Address" class="label">{{
+
+                            <tbody>
+                               {{ venues }}
+                            <tr ng-repeat="venue in venues | filter:{StoreKey : Store.Key}">
+                                <td>{{$index + 1}}</td>
+                                <td>{{venue.Name}}</td>
+                                <td>{{venue.Description}}</td>
+                                <td><span ng-show="venue.Address" class="label">{{
 							venue.Address | address }}</span></td>
-                <td>
+                                <td>
 
-                    <!--<button class="btn btn-mini btn-success"><i class="icon-ok"></i></button>-->
-                    <button class="btn btn-mini btn-warning" ng-click="update(venue)"><i class="icon-pencil"></i>
-                    </button>
-                    <button class="btn btn-mini btn-danger" ng-click="deleteVenue(venue)"><i class="icon-remove"></i>
-                    </button>
+                                    <!--<button class="btn btn-mini btn-success"><i class="icon-ok"></i></button>-->
+                                    <button class="btn btn-mini btn-warning" ng-click="update(venue)"><i
+                                            class="icon-pencil"></i>
+                                    </button>
+                                    <button class="btn btn-mini btn-danger" ng-click="deleteVenue(venue)"><i
+                                            class="icon-remove"></i>
+                                    </button>
 
-                </td>
-            </tr>
-
-
-
-
-            </tbody>
-        </table>
+                                </td>
+                            </tr>
 
 
-    </div>
+                            </tbody>
+                        </table>
 
-    <div class="widget-foot">
 
-        <div ng-controller="pagingController" class="pagination pull-right" ui-if="(venues | filter: {IsOwner:true}).length > 0" >
-            <ul>
-                <li ><a href="#" ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">Prev</a></li>
-                <!--<li><a href="#">1</a></li>-->
-                <!--<li><a href="#">2</a></li>-->
-                <!--<li><a href="#">3</a></li>-->
-                <!--<li><a href="#">4</a></li>-->
-                <li ><a href="#" ng-disabled="currentPage >= stores.length/pageSize - 1" ng-click="currentPage=currentPage+1">Next</a></li>
-            </ul>
+                    </div>
+
+                    <div class="widget-foot">
+
+                        <div ng-controller="pagingController" class="pagination pull-right"
+                             ui-if="(venues | filter: {IsOwner:true}).length > 0">
+                            <ul>
+                                <li><a href="#" ng-disabled="currentPage == 0"
+                                       ng-click="currentPage=currentPage-1">Prev</a></li>
+                                <!--<li><a href="#">1</a></li>-->
+                                <!--<li><a href="#">2</a></li>-->
+                                <!--<li><a href="#">3</a></li>-->
+                                <!--<li><a href="#">4</a></li>-->
+                                <li><a href="#" ng-disabled="currentPage >= stores.length/pageSize - 1"
+                                       ng-click="currentPage=currentPage+1">Next</a></li>
+                            </ul>
+                        </div>
+                        <div class="clearfix"></div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- venue info -->
+                <!-- goes into page content partials -->
+                <!--<p class="lead pull-left">{{ 'Common.Text_VenueMenu_Venue' | t}}</p>-->
+
+                <div ng-include="'views/admin/venues/page_content_partials/create_edit_venue_modal.html'"></div>
+
+            </div>
         </div>
+
+        <!-- Mainbar ends -->
         <div class="clearfix"></div>
-
     </div>
-
-</div>
-
-
-<!-- venue info -->
-<!-- goes into page content partials -->
-<!--<p class="lead pull-left">{{ 'Common.Text_VenueMenu_Venue' | t}}</p>-->
-
-   <div ng-include="'views/admin/venues/page_content_partials/create_edit_venue_modal.html'"></div>
-
-</div>
-</div>
-
-<!-- Mainbar ends -->
-<div class="clearfix"></div>
-</div>
 
 
 </div>
