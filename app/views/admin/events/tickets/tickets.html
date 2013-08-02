@@ -14,40 +14,40 @@
 <div class="mainbar">
 <!-- Page heading -->
 <div class="page-head">
-    <div ng-include src="'views/admin/stores/page_content_partials/page_heading.html'"></div>
-    <div ng-include src="'views/admin/stores/page_content_partials/breadcrumbs.html'"></div>
+    <div ng-include src="'views/admin/events/tickets/page_content_partials/page_heading.html'"></div>
+    <div ng-include src="'views/admin/events/tickets/page_content_partials/breadcrumbs.html'"></div>
 
 </div>
 <!-- Page heading ends -->
 <!-- Matter -->
 
-<div class="matter" ui-if="DomainProfile && DomainProfile.Key || false">
+<div class="matter" ui-if="DomainProfile && DomainProfile.Key || false" ng-controller="ticketController" ng-init="init()">
 <div class="container-fluid">
-<div class="atPanel" ui-if="DomainProfile && DomainProfile.Key || false"
-     ng-controller="ticketController" ng-cloak>
-<!-- top menu -->
-<!--<div ng-include src="'views/elements/topMenu.html'"></div>-->
-<!--<div ng-include src="'views/elements/error.html'"></div>-->
+<div class="atPanel"  ng-cloak>
+
+
 <!-- ticket info -->
-<div ui-if="Store && Store.Key && events && events.length > 0 || false"
-     class="row-fluid" ng-init="init()">
-    <ul class="breadcrumb">
-        <li><a
-                ng-href="/#/{{Store.IsOwner && 'event' || 'store/' + storeURI}}">{{
-            'Common.Text_EventMenu_Events' | t}}</a> <span class="divider">/</span></li>
-        <li class="active">{{ Event.Name }}</li>
-    </ul>
+<div ui-if="Store && Store.Key || false" class="row-fluid">
+    <!--<ul class="breadcrumb">-->
+        <!--<li><a-->
+                <!--ng-href="/#/{{Store.IsOwner && 'event' || 'store/' + storeURI}}">{{-->
+            <!--'Common.Text_EventMenu_Events' | t}}</a> <span class="divider">/</span></li>-->
+        <!--<li class="active">{{ Event.Name }}</li>-->
+    <!--</ul>-->
 
-    <p class="lead pull-left">{{ 'Common.Text_TicketMenu_Tickets' |
-        t}}</p>
 
-    <div class="btn-group pull-right">
-        <button ui-if="Store.IsOwner" class="btn btn-info"
-                ng-click="create()">{{
+
+
+    <!-- create Ticket button -->
+    <div class="widget pull-right">
+        <button class="btn btn-info" ui-if="Store.IsOwner" ng-click="create()">{{
             'Common.Text_TicketMenu_CreateTicket' | t }}
         </button>
     </div>
-    <div id="formTicket" class="modal form hide fade">
+    <div class="clearfix"></div>
+
+
+    <div id="formTicket" style="width:auto" class="modal form hide fade">
         <div class="modal-header">
             <button type="button" ng-click="wizard.open = false" class="close"
                     data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -203,44 +203,132 @@
         </div>
         <div class="modal-footer"></div>
     </div>
+
+
+
+
     <div class="clear row-fluid list">
         <div ng-show="tickets.length == 0" class="alert alert-info">{{
             'Common.Text_TicketEmpty' | t }}
         </div>
-        <!-- ticket list -->
-        <ul class="thumbnails" ui-if="tickets.length>0">
-            <li ng-repeat="ticket in tickets | filter:filterByEvent"
-                class="span4">
-                <div class="thumbnail">
-                    <h4 class="pull-left">{{ticket.Name}}</h4>
 
-                    <div class="btn-group pull-right">
-                        <button ui-if="Store.IsOwner" class="btn btn-mini btn-success"
-                                ng-click="update(ticket)">{{ 'Common.Text_Update' | t
-                            }}
-                        </button>
-                        <button ng-controller="cartController" ui-if="!Store.IsOwner"
-                                class="btn btn-mini btn-success" ng-click="addToCart(ticket)">
-                            <i style="margin-top: 3px" class="icon-ok pull-left"
-                               ui-if="ticket.added && ticket.added == true" ui-jq="fadeOut"
-                               ui-options="{duration: 1000, complete:evAddItem(ticket)}"></i>{{
-                            'ShoppingCart.labelAddToCart' | t }}
-                        </button>
-                        <button ui-if="Store.IsOwner" ng-click="deleteTicket(ticket)"
-                                class="btn btn-mini btn-danger">{{ 'Common.Text_Remove'
-                            | t }}
-                        </button>
-                    </div>
-                    <p class="text clear">{{ticket.Policy}}</p>
-						<span class="label label-inverse">Sales Start on {{
-							ticket.OnSaleDateTimeStart | date:'MM/dd/yyyy @ h:mma' }}</span> <span
-                        class="label label-inverse">Sales End on {{
-							ticket.OnSaleDateTimeEnd | date:'MM/dd/yyyy @ h:mma' }}</span> <span
-                        class="pull-right label label-info">{{
-							ticket.Price.ItemPrice | currency }}</span>
+
+
+
+        <div class="widget wviolet" ui-if="tickets.length>0">
+
+            <div class="widget-head">
+                <div class="pull-left">Tickets for Store: '{{ Store.Name }}'</div>
+                <div class="widget-icons pull-right">
+                    <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
+                    <a href="#" class="wclose"><i class="icon-remove"></i></a>
                 </div>
-            </li>
-        </ul>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="widget-content">
+
+                <table class="table  table-bordered ">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Sale Start</th>
+                        <th>Sale End</th>
+                        <th>Policy</th>
+                        <th>Price</th>
+                        <th>Control</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+
+
+                    <tr ng-repeat="ticket in tickets">
+                        <td>{{ $index+1 }}</td>
+                        <td>{{ ticket.Name }}</td>
+                        <td>{{
+                            ticket.OnSaleDateTimeStart | date:'MM/dd/yyyy @ h:mma' }}</td>
+                        <td>{{
+                            ticket.OnSaleDateTimeEnd | date:'MM/dd/yyyy @ h:mma' }}</td>
+                        <td>{{ticket.Policy}}</td>
+                        <td><span class="label label-success">{{
+							ticket.Price.ItemPrice | currency }}</span></td>
+                        <td>
+
+                            <div class="btn-group1" ui-if="Store.IsOwner" >
+                                <!--<button class="btn btn-mini btn-success"><i class="icon-ok"></i> </button>-->
+                                <button ui-if="Store.IsOwner" ng-click="update(ticket)" class="btn btn-mini btn-warning"><i class="icon-pencil"></i> </button>
+                                <button ui-if="Store.IsOwner" ng-click="deleteTicket(ticket)" class="btn btn-mini btn-danger"><i class="icon-remove"></i> </button>
+                            </div>
+
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+
+            </div>
+
+            <!--<div class="widget-foot">-->
+
+                <!--<div class="pagination pull-right">-->
+                    <!--<ul>-->
+                        <!--<li><a href="#">Prev</a></li>-->
+                        <!--<li><a href="#">1</a></li>-->
+                        <!--<li><a href="#">2</a></li>-->
+                        <!--<li><a href="#">3</a></li>-->
+                        <!--<li><a href="#">4</a></li>-->
+                        <!--<li><a href="#">Next</a></li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+                <!--<div class="clearfix"></div>-->
+
+            <!--</div>-->
+
+        </div>
+
+
+
+        <!-- ticket list -->
+        <!--<ul class="thumbnails" ui-if="tickets.length>0">-->
+            <!--<li ng-repeat="ticket in tickets"-->
+                <!--class="span4">-->
+                <!--<div class="thumbnail">-->
+                    <!--<h4 class="pull-left">{{ticket.Name}}</h4>-->
+
+                    <!--<div class="btn-group pull-right">-->
+                        <!--<button ui-if="Store.IsOwner" class="btn btn-mini btn-success"-->
+                                <!--ng-click="update(ticket)">{{ 'Common.Text_Update' | t-->
+                            <!--}}-->
+                        <!--</button>-->
+                        <!--<button ng-controller="cartController" ui-if="!Store.IsOwner"-->
+                                <!--class="btn btn-mini btn-success" ng-click="addToCart(ticket)">-->
+                            <!--<i style="margin-top: 3px" class="icon-ok pull-left"-->
+                               <!--ui-if="ticket.added && ticket.added == true" ui-jq="fadeOut"-->
+                               <!--ui-options="{duration: 1000, complete:evAddItem(ticket)}"></i>{{-->
+                            <!--'ShoppingCart.labelAddToCart' | t }}-->
+                        <!--</button>-->
+                        <!--<button ui-if="Store.IsOwner" ng-click="deleteTicket(ticket)"-->
+                                <!--class="btn btn-mini btn-danger">{{ 'Common.Text_Remove'-->
+                            <!--| t }}-->
+                        <!--</button>-->
+                    <!--</div>-->
+                    <!--<p class="text clear">{{ticket.Policy}}</p>-->
+						<!--<span class="label label-inverse">Sales Start on {{-->
+							<!--ticket.OnSaleDateTimeStart | date:'MM/dd/yyyy @ h:mma' }}</span> <span-->
+                        <!--class="label label-inverse">Sales End on {{-->
+							<!--ticket.OnSaleDateTimeEnd | date:'MM/dd/yyyy @ h:mma' }}</span> <span-->
+                        <!--class="pull-right label label-info">{{-->
+							<!--ticket.Price.ItemPrice | currency }}</span>-->
+                <!--</div>-->
+            <!--</li>-->
+        <!--</ul>-->
+
+
+
+
     </div>
 </div>
 </div>

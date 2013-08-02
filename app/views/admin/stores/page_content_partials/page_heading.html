@@ -1,5 +1,5 @@
 <!-- Page heading -->
-<h2 class="pull-left">Store
+<h2 class="pull-left">{{ (Store - Store.Name) || 'Store' }}
     <!-- page meta -->
-    <span class="page-meta">Detailed info about your store</span>
+    <span class="page-meta">{{ (Store.Name + ' is selected') || 'A list of Stores' }}</span>
 </h2>

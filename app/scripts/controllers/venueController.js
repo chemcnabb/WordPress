@@ -25,6 +25,7 @@ function venueController($scope, $timeout, $cookieStore, $filter) {
   }
 
   $scope.update = function(venue) {
+      console.log("update: " + venue);
     $scope.Place = venue;
     $scope.wizard.open = true;
     $scope.wizard.reset();

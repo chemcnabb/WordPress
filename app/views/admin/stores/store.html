@@ -1,4 +1,4 @@
-<div ng-controller="adminController" ng-cloak>
+<div ng-controller="adminController" ng-cloak ui-if="DomainProfile && DomainProfile.Key || false">
     <!-- top menu -->
     <div class="navbar navbar-fixed-top navbar-inverse" ng-include src="'views/admin/common/top_menu.html'"></div>
     <div ng-include src="'views/elements/error.html'"></div>
@@ -21,7 +21,7 @@
         <!-- Page heading ends -->
         <!-- Matter -->
 
-        <div class="matter" ui-if="DomainProfile && DomainProfile.Key || false">
+        <div class="matter">
             <div class="container-fluid">
             <!-- top menu -->
                 <div class="row-fluid"  ui-if="Store && Store.isNew || Store && Store.IsOwner">
@@ -111,10 +111,10 @@
 
                                 </div>
                             </div>
-                            <div class="widget-foot">
-                                <button class="btn btn-danger pull-right">Send Invoice</button>
-                                <div class="clearfix"></div>
-                            </div>
+                            <!--<div class="widget-foot">-->
+                                <!--<button class="btn btn-danger pull-right">Send Invoice</button>-->
+                                <!--<div class="clearfix"></div>-->
+                            <!--</div>-->
                         </div>
 
                     </div>

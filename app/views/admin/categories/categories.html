@@ -32,7 +32,7 @@
 </div>
 <!-- create venue button -->
 <div class="widget pull-right">
-    <button class="btn btn-info" ng-click="create()">{{
+    <button class="btn btn-info" ng-click="create()" ng-disabled="true">{{
         ' Create Category' | t }}
     </button>
 
@@ -73,9 +73,9 @@
                 <td>
 
                     <!--<button class="btn btn-mini btn-success"><i class="icon-ok"></i></button>-->
-                    <button class="btn btn-mini btn-warning" ng-click="update(venue)"><i class="icon-pencil"></i>
+                    <button class="btn btn-mini btn-warning" ng-click="update(category)"><i class="icon-pencil"></i>
                     </button>
-                    <button class="btn btn-mini btn-danger" ng-click="deleteVenue(venue)"><i class="icon-remove"></i>
+                    <button class="btn btn-mini btn-danger" ng-click="deleteCategory(category)"><i class="icon-remove"></i>
                     </button>
 
                 </td>
@@ -90,22 +90,22 @@
 
     </div>
 
-    <div class="widget-foot">
-          <!-- TODO: replace with *actual* pagination -->
-        <!-- http://plnkr.co/edit/UgOQo7?p=preview -->
-        <div class="pagination pull-right">
-            <ul>
-                <li><a href="#">Prev</a></li>
-                <li><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">Next</a></li>
-            </ul>
-        </div>
-        <div class="clearfix"></div>
+    <!--<div class="widget-foot">-->
+          <!--&lt;!&ndash; TODO: replace with *actual* pagination &ndash;&gt;-->
+        <!--&lt;!&ndash; http://plnkr.co/edit/UgOQo7?p=preview &ndash;&gt;-->
+        <!--<div class="pagination pull-right">-->
+            <!--<ul>-->
+                <!--<li><a href="#">Prev</a></li>-->
+                <!--<li><a href="#">1</a></li>-->
+                <!--<li><a href="#">2</a></li>-->
+                <!--<li><a href="#">3</a></li>-->
+                <!--<li><a href="#">4</a></li>-->
+                <!--<li><a href="#">Next</a></li>-->
+            <!--</ul>-->
+        <!--</div>-->
+        <!--<div class="clearfix"></div>-->
 
-    </div>
+    <!--</div>-->
 
 </div>
 
@@ -116,7 +116,7 @@
 
 
 <!-- EDIT VENUE MODAL -->
-<div id="formVenue" class="modal form hide fade">
+<div id="formVenue" class="modal form hide fade" style="width:auto" >
     <div class="modal-header">
         <button type="button" ng-click="wizard.open = false" class="close"
                 data-dismiss="modal" aria-hidden="true">&times;</button>
