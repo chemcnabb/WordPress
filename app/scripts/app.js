@@ -98,7 +98,7 @@ azureTicketsApp.config([
                 resolve: routeFilters
             }).when('/venues', {
                 templateUrl: 'views/admin/venues/venues.html',
-                controller: venueController,
+
                 resolve: routeFilters
             }).when('/events', {
                 templateUrl: 'views/admin/events/events.html',
@@ -109,7 +109,7 @@ azureTicketsApp.config([
                 controller: eventController,
                 resolve: routeFilters
             }).when('/tickets', {
-                templateUrl: 'views/admin/events/tickets/ticket.html',
+                templateUrl: 'views/admin/events/tickets/tickets.html',
                 controller: ticketController,
                 resolve: routeFilters
             }).when('/ticket/:eventKey', {

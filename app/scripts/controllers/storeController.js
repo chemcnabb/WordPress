@@ -215,6 +215,8 @@ function storeController($scope, $cookieStore, $location, $timeout,
                 $scope.initStoreURI();
 
                 // init venues, events
+
+
                 if ($scope.venues.length === 0
                     && $scope.auth.isDomainProfileReady()
                     && $scope.Store.IsOwner) {

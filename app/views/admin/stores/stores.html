@@ -53,7 +53,7 @@
                         <div ng-show="(stores | filter: {IsOwner:true}).length == 0" class="alert alert-info" style="margin-bottom:0;" ng-cloak>{{
                             'Common.Text_StoreEmpty' | t }}
                         </div>
-                        <table class="table  table-bordered " ui-if="stores" ng-cloak>
+                        <table class="table  table-bordered " ui-if="(stores | filter: {IsOwner:true}).length > 0" ng-cloak>
                             <thead>
                             <tr>
                                 <th>#</th>
