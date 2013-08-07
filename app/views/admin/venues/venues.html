@@ -25,8 +25,7 @@
         <!-- Matter -->
 
         <div class="matter">
-            <div class="container-fluid" ui-if="Store && DomainProfile && DomainProfile.Key || false"
-                  ng-cloak>
+            <div class="container-fluid"  ng-cloak>
                 <!-- no venues alert -->
 
                 <!-- create venue button -->
@@ -41,11 +40,11 @@
 
 
                         <!--<ul class="nav" ng-show="DomainProfile && DomainProfile.Key || false">-->
-                <div class="btn-group" >
+                <div class="btn-group">
                     <button class="btn dropdown-toggle" data-toggle="dropdown">{{
                         'Common.Text_Store' | t }} <span class="caret"></span></button>
                     <ul class="dropdown-menu">
-                        <li ng-repeat="store in stores"><a ng-href="#/venues" href="#/venues" ng-click="setStoreKey(store.Key)" >{{store.Name}}</a></li>
+                        <li ng-repeat="store in stores"><a ng-href="#/venues" href="#/venues" ng-click="setStoreKey(store.Key)" ng-model="Store" ng-change="init()">{{store.Name}}</a></li>
 
                     </ul>
                 </div>
@@ -86,7 +85,7 @@
 
 
 
-                <div class="widget wviolet" ng-init="init()">
+                <div class="widget wviolet">
 
                     <div class="widget-head">
                         <div class="pull-left"> {{ 'Common.Text_Venue' | t}}</div>

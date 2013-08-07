@@ -177,6 +177,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
         $scope.initStore($scope.storeKey, true);
       })
     }, 500);
+
   }
 
   $scope.initStore = function(storeKey, resetWizard) {
