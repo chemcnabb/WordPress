@@ -1,100 +1,141 @@
-<!-- EDIT VENUE MODAL -->
-<div id="formVenue" class="modal form hide fade" style="width:auto" ng-controller="venueController">
-    <div class="modal-header">
-        <button type="button" ng-click="wizard.open = false" class="close"
-                data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3>
-            <p class="text-info">{{ venue.Name }}{{ 'Common.Text_Venue' | t}}</p>
-        </h3>
-    </div>
-    <div class="modal-body">
-        <!-- messages -->
-        <div ng-switch="wizard.currentStep">
-            <div class="alert alert-info" ng-switch-when="2">
-                <strong>{{ 'Common.Text_LocationInfo' | t }}</strong>
-            </div>
-            <div class="alert alert-info" ng-switch-when="3">
-                <strong>{{ 'Common.Text_Confirm' | t }}</strong>
-            </div>
-        </div>
-        <div class="alert alert-success"
-             ui-if="wizard.saved && wizard.finished">
-            <strong>{{ 'Common.Text_Congrats' | t }}</strong> {{
-            'Common.Text_WizardComplete' | t }}
-        </div>
+<div class="atPanel" ui-if="DomainProfile && DomainProfile.Key || false"
+     ng-controller="venueController" ng-cloak>
+    <!-- top menu -->
 
-        <!-- form -->
-        <ng-form ui-if="Place" name="atVenue" ng-submit="save()">
-            <form ng-show="wizard.currentStep == 1" name="atVenue1"
-                  ng-submit="wizard.next('atVenue1')">
-                <dl class="clearfix">
-                    <dd>
-                        <atfield at-required class="input-xxlarge" ng-model="Place.Name"
-                                 label="'Common.Text_VenueName' | t"/>
-                    </dd>
-                    <dd>
-                        <atfield class="input-xxlarge" ng-model="Place.Description"
-                                 label="'Common.Text_Description' | t" rows="5"/>
-                    </dd>
-                    <dd>
-                        <input type="submit" class="btn btn-primary clear"
-                               value="{{
+    <div ng-include src="'views/elements/error.html'"></div>
+    <!-- venue info -->
+    <div ui-if="Store && Store.Key || false" class="row-fluid">
+
+        <div id="formVenue" class="modal form hide fade" style="width:auto">
+            <div class="modal-header">
+                <button type="button" ng-click="wizard.open = false" class="close"
+                        data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3>
+                    <p class="text-info">{{ 'Common.Text_Venue' | t}}</p>
+                </h3>
+            </div>
+            <div class="modal-body">
+                <!-- messages -->
+                <div ng-switch="wizard.currentStep">
+                    <div class="alert alert-info" ng-switch-when="2">
+                        <strong>{{ 'Common.Text_LocationInfo' | t }}</strong>
+                    </div>
+                    <div class="alert alert-info" ng-switch-when="3">
+                        <strong>{{ 'Common.Text_Confirm' | t }}</strong>
+                    </div>
+                </div>
+                <div class="alert alert-success"
+                     ui-if="wizard.saved && wizard.finished">
+                    <strong>{{ 'Common.Text_Congrats' | t }}</strong> {{
+                    'Common.Text_WizardComplete' | t }}
+                </div>
+
+                <!-- form -->
+                <ng-form ui-if="Place" name="atVenue" ng-submit="save()">
+                    <form ng-show="wizard.currentStep == 1" name="atVenue1"
+                          ng-submit="wizard.next('atVenue1')">
+                        <dl class="clearfix">
+                            <dd>
+                                <atfield at-required class="input-xxlarge" ng-model="Place.Name"
+                                         label="'Common.Text_VenueName' | t"/>
+                            </dd>
+                            <dd>
+                                <atfield class="input-xxlarge" ng-model="Place.Description"
+                                         label="'Common.Text_Description' | t" rows="5"/>
+                            </dd>
+                            <dd>
+                                <input type="submit" class="btn btn-primary clear"
+                                       value="{{
 							'Common.Text_Next' | t }}"/>
-                    </dd>
-                </dl>
-            </form>
-            <form ng-show="wizard.currentStep == 2" name="atVenue2"
-                  ng-submit="wizard.next('atVenue2')">
-                <!-- location info -->
-                <div ui-if="Place.Address || false" ng-include
-                     src="'views/address.html'" onload="modelName='Place'"></div>
-                <dl>
-                    <dd class="pull-left">
-                        <a ng-show="wizard.currentStep>1"
-                           ng-click="wizard.currentStep = wizard.currentStep-1"
-                           class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
-                    </dd>
-                    <dd class="pull-left">
-                        <input type="submit" class="btn btn-primary clear"
-                               value="{{
+                            </dd>
+                        </dl>
+                    </form>
+                    <form ng-show="wizard.currentStep == 2" name="atVenue2"
+                          ng-submit="wizard.next('atVenue2')">
+                        <!-- location info -->
+                        <div ui-if="Place.Address || false" ng-include
+                             src="'views/address.html'" onload="modelName='Place'"></div>
+                        <dl>
+                            <dd class="pull-left">
+                                <a ng-show="wizard.currentStep>1"
+                                   ng-click="wizard.currentStep = wizard.currentStep-1"
+                                   class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
+                            </dd>
+                            <dd class="pull-left">
+                                <input type="submit" class="btn btn-primary clear"
+                                       value="{{
 		 							'Common.Text_Next' | t }}"/>
-                    </dd>
-                </dl>
-            </form>
-            <form ui-if="wizard.currentStep == 3 && !wizard.saved"
-                  name="atVenue3" ng-submit="wizard.next('atVenue3', true)">
-                <dl>
-                    <dd class="clear row-fluid">
-                        <!-- venue details -->
-                        <atmodel
-                                ui-if="Place && geo.getLoadedCountries() != null && geo.getLoadedRegions() != null"
-                                ng-model="Place" extra1="geo"></atmodel>
-                    </dd>
-                    <dd class="pull-left">
-                        <a ng-show="wizard.currentStep>1"
-                           ng-click="wizard.currentStep = wizard.currentStep-1"
-                           class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
-                    </dd>
-                    <dd class="pull-left">
-                        <input type="submit" class="btn btn-success clear"
-                               value="{{
+                            </dd>
+                        </dl>
+                    </form>
+                    <form ui-if="wizard.currentStep == 3 && !wizard.saved"
+                          name="atVenue3" ng-submit="wizard.next('atVenue3', true)">
+                        <dl>
+                            <dd class="clear row-fluid">
+                                <!-- venue details -->
+                                <atmodel
+                                        ui-if="Place && geo.getLoadedCountries() != null && geo.getLoadedRegions() != null"
+                                        ng-model="Place" extra1="geo"></atmodel>
+                            </dd>
+                            <dd class="pull-left">
+                                <a ng-show="wizard.currentStep>1"
+                                   ng-click="wizard.currentStep = wizard.currentStep-1"
+                                   class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
+                            </dd>
+                            <dd class="pull-left">
+                                <input type="submit" class="btn btn-success clear"
+                                       value="{{
 		 							'Common.Text_Save' | t }}"/>
-                    </dd>
-                </dl>
-            </form>
-            <dl ui-if="wizard.finished" class="clearfix">
-                <dd class="pull-left">
-                    <a ng-show="wizard.currentStep>1 && wizard.saved"
-                       ng-click="wizard.currentStep = wizard.currentStep-2; wizard.finished = false; wizard.saved = false"
-                       class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
-                </dd>
-                <dd class="pull-left">
-                    <a ng-show="wizard.currentStep>1 && wizard.saved"
-                       data-dismiss="modal" ng-click="wizard.open = false"
-                       class="btn btn-primary clear">{{ 'Common.Text_Close' | t }}</a>
-                </dd>
-            </dl>
-        </ng-form>
+                            </dd>
+                        </dl>
+                    </form>
+                    <dl ui-if="wizard.finished" class="clearfix">
+                        <dd class="pull-left">
+                            <a ng-show="wizard.currentStep>1 && wizard.saved"
+                               ng-click="wizard.currentStep = wizard.currentStep-2; wizard.finished = false; wizard.saved = false"
+                               class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
+                        </dd>
+                        <dd class="pull-left">
+                            <a ng-show="wizard.currentStep>1 && wizard.saved"
+                               data-dismiss="modal" ng-click="wizard.open = false"
+                               class="btn btn-primary clear">{{ 'Common.Text_Close' | t }}</a>
+                        </dd>
+                    </dl>
+                </ng-form>
+            </div>
+            <div class="modal-footer"></div>
+        </div>
+        <!-- venue list -->
+        <div class="widget-content">
+            <div ng-show="venues.length == 0" class="alert alert-info">{{
+                'Common.Text_VenueEmpty' | t }}
+            </div>
+            <table class="table  table-bordered " ng-show="venues.length > 0">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Address</th>
+                    <th>Control</th>
+                </tr>
+                </thead>
+                <tr ng-repeat="venue in venues">
+                    <td>{{$index + 1}}</td>
+                    <td>{{venue.Name}}</td>
+                    <td>{{venue.Description}}</td>
+                    <td><span ng-show="venue.Address" class="label">{{	venue.Address | address }}</span></td>
+                    <td>
+                        <button class="btn btn-mini btn-success" ng-click="update(venue)">{{
+                            'Common.Text_Update' | t }}
+                        </button>
+                        <button ng-click="deleteVenue(venue)"
+                                class="btn btn-mini btn-danger">{{ 'Common.Text_Remove'
+                            | t }}
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
-    <div class="modal-footer"></div>
 </div>

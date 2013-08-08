@@ -1,5 +1,5 @@
 <!-- Page heading -->
-<h2 class="pull-left"> {{ Store.Name }} {{ 'Common.Text_Venue' | t}}s
+<h2 class="pull-left"> {{ Store.Name }} {{ 'Common.Text_VenueMenu_Venue' | t}}
     <!-- page meta -->
-    <span class="page-meta">A list of venues for {{ Store.Name }}</span>
+    <span class="page-meta">{{ Store.Name && 'A list of venues for ' + Store.Name || 'Please select a store from the dropdown'}}</span>
 </h2>
