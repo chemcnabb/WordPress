@@ -27,12 +27,13 @@
             <!-- Menu with sub menu -->
             <li class="nlightblue"><a ng-href="#/stores"><i class="icon-money"></i> Stores</a></li>
 
-            <li class="ngreen"><a href="#/categories"><i class="icon-reorder"></i> Categories</a></li>
+            <li class="ngreen"><a href="#/categories"><i class="icon-sitemap"></i> Categories</a></li>
 
-            <li class="norange"><a ng-href="#/venues"><i class="icon-beer"></i> Venues</a></li>
+            <li class="norange"><a ng-href="#/venues"><i class="icon-map-marker"></i> Venues</a></li>
 
-            <li class="nviolet"><a ng-href="#/events"><i class="icon-ticket"></i> Events</a></li>
+            <li class="nviolet"><a ng-href="#/events"><i class="icon-calendar"></i> Events</a></li>
             <li class="nviolet"><a ng-href="#/tickets"><i class="icon-ticket"></i> Tickets</a></li>
+            <li class="nviolet"><a ng-href="#/scanners"><i class="icon-qrcode"></i> Scanners</a></li>
 
             <!--<li class="nblue"><a href="#/reports"><i class="icon-tasks"></i> Reports</a></li>-->
 
@@ -45,7 +46,7 @@
             <!-- SUPER USER -->
 
             <li class="nred"><a href="#/approvals"><i class="icon-thumbs-up"></i> Approvals</a></li>
-            <li class="nviolet"><a href="#"><i class="icon-tasks"></i> Reports</a></li>
+            <li class="nviolet"><a href="#"><i class="icon-bar-chart"></i> Reports</a></li>
             <li class="nav_divider">&nbsp;</li>
             <li class="nav_divider">&nbsp;</li>
 
@@ -75,69 +76,69 @@
         <script>
             /* Calendar */
 
-            $(document).ready(function () {
-
-                var date = new Date();
-                var d = date.getDate();
-                var m = date.getMonth();
-                var y = date.getFullYear();
-
-                $('#calendar').fullCalendar({
-                    header: {
-                        left: 'prev',
-                        center: 'title',
-                        right: 'month,agendaWeek,agendaDay,next'
-                    },
-                    editable: true,
-                    events: [
-                        {
-                            title: 'All Day Event',
-                            start: new Date(y, m, 1)
-                        },
-                        {
-                            title: 'Long Event',
-                            start: new Date(y, m, d - 5),
-                            end: new Date(y, m, d - 2)
-                        },
-                        {
-                            id: 999,
-                            title: 'Repeating Event',
-                            start: new Date(y, m, d - 3, 16, 0),
-                            allDay: false
-                        },
-                        {
-                            id: 999,
-                            title: 'Repeating Event',
-                            start: new Date(y, m, d + 4, 16, 0),
-                            allDay: false
-                        },
-                        {
-                            title: 'Meeting',
-                            start: new Date(y, m, d, 10, 30),
-                            allDay: false
-                        },
-                        {
-                            title: 'Lunch',
-                            start: new Date(y, m, d, 12, 0),
-                            end: new Date(y, m, d, 14, 0),
-                            allDay: false
-                        },
-                        {
-                            title: 'Birthday Party',
-                            start: new Date(y, m, d + 1, 19, 0),
-                            end: new Date(y, m, d + 1, 22, 30),
-                            allDay: false
-                        },
-                        {
-                            title: 'Click for Google',
-                            start: new Date(y, m, 28),
-                            end: new Date(y, m, 29),
-                            url: 'http://google.com/'
-                        }
-                    ]
-                });
-
-            });
+//            $(document).ready(function () {
+//
+//                var date = new Date();
+//                var d = date.getDate();
+//                var m = date.getMonth();
+//                var y = date.getFullYear();
+//
+//                $('#calendar').fullCalendar({
+//                    header: {
+//                        left: 'prev',
+//                        center: 'title',
+//                        right: 'month,agendaWeek,agendaDay,next'
+//                    },
+//                    editable: true,
+//                    events: [
+//                        {
+//                            title: 'All Day Event',
+//                            start: new Date(y, m, 1)
+//                        },
+//                        {
+//                            title: 'Long Event',
+//                            start: new Date(y, m, d - 5),
+//                            end: new Date(y, m, d - 2)
+//                        },
+//                        {
+//                            id: 999,
+//                            title: 'Repeating Event',
+//                            start: new Date(y, m, d - 3, 16, 0),
+//                            allDay: false
+//                        },
+//                        {
+//                            id: 999,
+//                            title: 'Repeating Event',
+//                            start: new Date(y, m, d + 4, 16, 0),
+//                            allDay: false
+//                        },
+//                        {
+//                            title: 'Meeting',
+//                            start: new Date(y, m, d, 10, 30),
+//                            allDay: false
+//                        },
+//                        {
+//                            title: 'Lunch',
+//                            start: new Date(y, m, d, 12, 0),
+//                            end: new Date(y, m, d, 14, 0),
+//                            allDay: false
+//                        },
+//                        {
+//                            title: 'Birthday Party',
+//                            start: new Date(y, m, d + 1, 19, 0),
+//                            end: new Date(y, m, d + 1, 22, 30),
+//                            allDay: false
+//                        },
+//                        {
+//                            title: 'Click for Google',
+//                            start: new Date(y, m, 28),
+//                            end: new Date(y, m, 29),
+//                            url: 'http://google.com/'
+//                        }
+//                    ]
+//                });
+//
+//            });
 
             /* Navigation */
 

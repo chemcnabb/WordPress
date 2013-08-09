@@ -35,7 +35,15 @@
         <!--<li class="active">{{ Event.Name }}</li>-->
     <!--</ul>-->
 
-
+    <div class="btn-group">
+        <button class="btn dropdown-toggle" data-toggle="dropdown">{{
+            'Common.Text_Store' | t }} <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+            <li ng-repeat="store in stores"><a ng-href="#/tickets" href="#/tickets"
+                                               ng-click="setStoreKey(store.Key)" ng-model="Store"
+                                               ng-change="init()">{{store.Name}}</a></li>
+        </ul>
+    </div>
 
 
     <!-- create Ticket button -->

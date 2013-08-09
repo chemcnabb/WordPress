@@ -1,5 +1,5 @@
 {
-    "name": "RevvlyAdmin",
+    "name": "revvly Admin Beta",
     "version": "1.0.0",
     "dependencies": {
         "jquery": "*",
@@ -16,12 +16,13 @@
         "prettyPhoto": "https://github.com/scaron/prettyphoto.git",
         "rateit": "https://github.com/dandv/meteor-jquery-rateit.git",
         "gritter": "*",
+        "datejs": "*",
 
 
 
         "bootstrap": "~2.3.1",
         "bootstrap-toggle-buttons": "https://github.com/nostalgiaz/bootstrap-toggle-buttons.git",
-        "bootstrap-datetimepicker": "*",
+        "jquery-timepicker-addon": "https://github.com/trentrichardson/jQuery-Timepicker-Addon.git",
 
 
         "json3": "~3.2.4",

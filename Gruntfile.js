@@ -56,7 +56,8 @@ module.exports = function(grunt) {
             '<%= at.app %>/images/{,*/}*.{png,jpg,jpeg}'
         ],
         tasks : [
-            '_internal', 'livereload'
+            '_internal',
+            'livereload'
         ]
       }
     },
@@ -303,7 +304,12 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('_internal', [
-      'useminPrepare', 'htmlmin', 'concat', 'cdnify', 'usemin', 'ngmin'
+      'useminPrepare',
+      'htmlmin',
+      'concat',
+      'cdnify',
+      'usemin',
+      'ngmin'
   ]);
 
   grunt.registerTask('wp', [

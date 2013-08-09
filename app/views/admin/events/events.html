@@ -23,7 +23,7 @@
         <!-- Page heading ends -->
         <!-- Matter -->
 
-        <div class="matter" ng-controller="eventController" ng-init="init()">
+        <div class="matter" class="atPanel" ui-if="DomainProfile && DomainProfile.Key || false" ng-controller="eventController">
             <div class="container-fluid"  ui-if="events.length>0">
 
 
@@ -38,7 +38,15 @@
                 </div>
                 <div class="clearfix"></div>
 
-
+                <div class="btn-group">
+                    <button class="btn dropdown-toggle" data-toggle="dropdown">{{
+                        'Common.Text_Store' | t }} <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li ng-repeat="store in stores"><a ng-href="#/events" href="#/events"
+                                                           ng-click="setStoreKey(store.Key)" ng-model="Store"
+                                                           ng-change="init()">{{store.Name}}</a></li>
+                    </ul>
+                </div>
 
 
                 <div class="clear row-fluid list">
@@ -95,8 +103,16 @@
 
                                         <div class="btn-group1" ui-if="Store.IsOwner" >
                                             <!--<button class="btn btn-mini btn-success"><i class="icon-ok"></i> </button>-->
-                                            <button ui-if="Store.IsOwner" ng-click="update(ticket)" class="btn btn-mini btn-warning"><i class="icon-pencil"></i> </button>
-                                            <button ui-if="Store.IsOwner" ng-click="deleteTicket(ticket)" class="btn btn-mini btn-danger"><i class="icon-remove"></i> </button>
+                                            <button ui-if="Store.IsOwner" class="btn btn-mini btn-success"
+                                                    ng-click="update(event)">{{ 'Common.Text_Update' | t }}</button>
+                                            <a ng-href="/#/ticket/{{event.Key}}"
+                                               class="btn btn-mini btn-primary"
+                                               ng-bind="!Store.IsOwner && ('ShoppingCart.labelBuyTickets' | t) || 'Common.Text_TicketMenu_Tickets' | t"></a>
+                                            <button ui-if="Store.IsOwner" ng-click="deleteEvent(event)"
+                                                    class="btn btn-mini btn-danger">{{ 'Common.Text_Remove' |
+                                                t }}</button>
+                                            <!--<button ui-if="Store.IsOwner" ng-click="update(ticket)" class="btn btn-mini btn-warning"><i class="icon-pencil"></i> </button>-->
+                                            <!--<button ui-if="Store.IsOwner" ng-click="deleteTicket(ticket)" class="btn btn-mini btn-danger"><i class="icon-remove"></i> </button>-->
                                         </div>
 
                                     </td>
