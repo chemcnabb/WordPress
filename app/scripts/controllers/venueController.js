@@ -114,7 +114,14 @@ function venueController($scope, $timeout, $cookieStore, $filter) {
             });
       }
     }
-  }
+  },
+      $scope.loadVenues = function(){
+          console.log("load venues called");
+          $scope.venues = $scope.place.loadPlaces($scope).then(
+              console.log($scope.venues)
+          );
+
+      }
 }
 
 venueController.$inject = [

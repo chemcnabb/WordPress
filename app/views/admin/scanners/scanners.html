@@ -5,6 +5,8 @@
     <!-- admin dashboard
     <div class="row-fluid" style="min-height: 5em"></div>-->
 </div>
+
+
 <div class="content">
     <!-- side menu -->
     <div class="sidebar" ng-include src="'views/admin/common/side_menu.html'"></div>
@@ -15,27 +17,19 @@
         <!-- Page heading -->
         <div class="page-head">
 
-            <div ng-include src="'views/admin/approvals/page_content_partials/page_heading.html'"></div>
-            <div ng-include src="'views/admin/approvals/page_content_partials/breadcrumbs.html'"></div>
+            <div ng-include src="'views/admin/scanners/page_content_partials/page_heading.html'"></div>
+            <div ng-include src="'views/admin/scanners/page_content_partials/breadcrumbs.html'"></div>
 
         </div>
         <!-- Page heading ends -->
         <!-- Matter -->
 
-        <div class="matter" ui-if="DomainProfile && DomainProfile.Key || false">
-            <div class="container-fluid" ng-controller="approvalController" ng-init="loadAccessPending()">
+        <div class="matter">
+            <div class="container-fluid">
 
+                <div ng-include src="'views/admin/scanners/page_content_partials/library.html'"></div>
 
-                <div ng-include src="'views/admin/approvals/page_content_partials/approval_list.html'"></div>
-
-
-
-
-                <!-- Mainbar ends -->
-                <div class="clearfix"></div>
             </div>
-
-
         </div>
     </div>
 </div>

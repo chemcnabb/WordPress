@@ -1,5 +1,5 @@
 {
-  "name": "revvly Admin Beta",
+  "name": "revvlyAdmin",
   "path" : {
 	"app" : "app",
 	"dist" : "dist",

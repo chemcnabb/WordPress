@@ -1,0 +1,137 @@
+<div class="clear row-fluid list">
+    <div ng-show="events.length == 0" class="alert alert-info">{{
+        'Event.Text_NoEvent_Msg' | t }}</div>
+    <!-- event list -->
+    <ul class="thumbnails" ng-show="events.length > 0">
+        <li ng-repeat="event in events" class="span3">
+            <div class="thumbnail">
+                <h4 class="pull-left">{{event.Name}}</h4>
+                <div class="btn-group pull-right">
+                    <button ui-if="Store.IsOwner" class="btn btn-mini btn-success"
+                            ng-click="update(event)">{{ 'Common.Text_Update' | t }}</button>
+                    <a ng-href="/#/ticket/{{event.Key}}"
+                       class="btn btn-mini btn-primary"
+                       ng-bind="!Store.IsOwner && ('ShoppingCart.labelBuyTickets' | t) || 'Common.Text_TicketMenu_Tickets' | t"></a>
+                    <button ui-if="Store.IsOwner" ng-click="deleteEvent(event)"
+                            class="btn btn-mini btn-danger">{{ 'Common.Text_Remove' |
+                        t }}</button>
+                </div>
+                <p class="text clear">{{event.Description}}</p>
+				<span class="label">Starts on {{ event.StartTime |
+					date:'MM/dd/yyyy @ h:mma' }}</span> <span class="label">Ends on {{
+					event.EndTime | date:'MM/dd/yyyy @ h:mma' }}</span><br /> <span
+                    class="label label-inverse">Sales Start on {{
+					event.OnSaleDateTimeStart | date:'MM/dd/yyyy @ h:mma' }}</span> <span
+                    class="label label-inverse">Sales End on {{
+					event.OnSaleDateTimeEnd | date:'MM/dd/yyyy @ h:mma' }}</span>
+            </div>
+        </li>
+    </ul>
+</div>
+
+
+
+
+
+<!-- create store button -->
+<div class="widget pull-right">
+    <button class="btn btn-info" ng-click="create()">{{
+        'Common.Text_EventMenu_CreateEvent' | t }}
+    </button>
+
+</div>
+<div class="clearfix"></div>
+
+<div class="btn-group">
+    <button class="btn dropdown-toggle" data-toggle="dropdown">{{
+        'Common.Text_Store' | t }} <span class="caret"></span></button>
+    <ul class="dropdown-menu">
+        <li ng-repeat="store in stores"><a ng-href="#/events" href="#/events"
+                                           ng-click="setStoreKey(store.Key)" ng-model="Store"
+                                           ng-change="init()">{{store.Name}}</a></li>
+    </ul>
+</div>
+
+ <!--
+<div class="clear row-fluid list">
+
+    <div ng-show="events.length == 0" class="alert alert-info">{{
+        'Event.Text_NoEvent_Msg' | t }}
+    </div>
+
+    <div class="widget wviolet" ui-if="events.length>0">
+
+        <div class="widget-head">
+            <div class="pull-left">Events for Store: '{{ Store.Name }}'</div>
+            <div class="widget-icons pull-right">
+                <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
+                <a href="#" class="wclose"><i class="icon-remove"></i></a>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="widget-content">
+
+            <table class="table  table-bordered ">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+
+                    <th>Event Start</th>
+                    <th>Event End</th>
+                    <th>Sale Start</th>
+                    <th>Sale End</th>
+                    <th>Control</th>
+                </tr>
+                </thead>
+                <tbody>
+
+
+
+                <tr ng-repeat="event in events">
+                    <td>{{ $index+1 }}</td>
+                    <td>{{ event.Name }}</td>
+
+                    <td>{{ event.StartTime |
+                        date:'MM/dd/yyyy @ h:mma' }}</td>
+                    <td>{{
+                        event.EndTime | date:'MM/dd/yyyy @ h:mma' }}</td>
+
+                    <td>{{
+                        event.OnSaleDateTimeStart | date:'MM/dd/yyyy @ h:mma' }}</td>
+                    <td>{{
+                        event.OnSaleDateTimeEnd | date:'MM/dd/yyyy @ h:mma' }}</td>
+
+                    <td>
+
+                        <div class="btn-group1" ui-if="Store.IsOwner" >
+
+                            <button ui-if="Store.IsOwner" class="btn btn-mini btn-success"
+                                    ng-click="update(event)">{{ 'Common.Text_Update' | t }}</button>
+                            <a ng-href="/#/ticket/{{event.Key}}"
+                               class="btn btn-mini btn-primary"
+                               ng-bind="!Store.IsOwner && ('ShoppingCart.labelBuyTickets' | t) || 'Common.Text_TicketMenu_Tickets' | t"></a>
+                            <button ui-if="Store.IsOwner" ng-click="deleteEvent(event)"
+                                    class="btn btn-mini btn-danger">{{ 'Common.Text_Remove' |
+                                t }}</button>
+
+                        </div>
+
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+</div>     -->

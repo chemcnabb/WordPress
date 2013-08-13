@@ -1,0 +1,81 @@
+<!-- create store button -->
+<div class="widget pull-right">
+    <button class="btn btn-info" ng-click="createStore()">{{
+        'Common.Text_CreateStore' | t }}
+    </button>
+
+</div>
+<div class="clearfix"></div>
+
+<div class="widget wviolet"  ng-init="loadCurrencies()">
+
+    <div class="widget-head">
+        <div class="pull-left">Stores</div>
+        <!--<div class="widget-icons pull-right">-->
+        <!--<a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>-->
+        <!--<a href="#" class="wclose"><i class="icon-remove"></i></a>-->
+        <!--</div>-->
+        <div class="clearfix"></div>
+    </div>
+
+    <div class="widget-content" ng-cloak>
+        <div ng-show="(stores | filter: {IsOwner:true}).length == 0" class="alert alert-info" style="margin-bottom:0;" ng-cloak>{{
+            'Common.Text_StoreEmpty' | t }}
+        </div>
+        <table class="table  table-bordered " ui-if="(stores | filter: {IsOwner:true}).length > 0" ng-cloak>
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Date</th>
+                <th>Currency</th>
+                <!--<th>Status</th>-->
+                <th>Control</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr ng-repeat="store in stores">
+                <td>{{$index+1}}</td>
+                <td><a ng-href="#/store/{{ store.StoreURIs[0].URI }}" ng-click="setStoreKey(store.Key)" href="#/store">{{ store.Name }}</a></td>
+                <td>{{ store.Description }}</td>
+                <td>{{ store.DateCreated }}</td>
+                <td>{{ store.Currency }}</td>
+                <!--<td><span class="label label-success">Active</span></td>-->
+
+                <td>
+
+                    <button ui-if="store.Address || false" class="btn btn-mini btn-success" ng-click="showInfo()"><i class="icon-ok"></i> </button>
+                    <button class="btn btn-mini btn-warning"><i class="icon-pencil"></i> </button>
+                    <button class="btn btn-mini btn-danger"><i class="icon-remove"></i> </button>
+
+                </td>
+            </tr>
+
+
+
+
+            </tbody>
+        </table>
+
+
+    </div>
+
+    <div class="widget-foot" ui-if="stores.length>10">
+
+        <div ng-controller="pagingController" class="pagination pull-right" ui-if="(stores | filter: {IsOwner:true}).length > 0" >
+            <ul>
+                <li ><a href="#" ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">Prev</a></li>
+                <!--<li><a href="#">1</a></li>-->
+                <!--<li><a href="#">2</a></li>-->
+                <!--<li><a href="#">3</a></li>-->
+                <!--<li><a href="#">4</a></li>-->
+                <li ><a href="#" ng-disabled="currentPage >= stores.length/pageSize - 1" ng-click="currentPage=currentPage+1">Next</a></li>
+            </ul>
+        </div>
+        <div class="clearfix"></div>
+
+    </div>
+
+</div>

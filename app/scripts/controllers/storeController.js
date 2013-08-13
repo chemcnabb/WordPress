@@ -101,6 +101,16 @@ function storeController($scope, $cookieStore, $location, $timeout,
         });
   }
 
+    $scope.listAllStores = function(){
+        if ($scope.auth.hasStoreAccess()) {
+            // check if user has access to a store and populate list if so
+            $scope.store.listStoresAsync(1).then(
+                function() {
+                    $scope.stores = $scope.store.getStores();
+                });
+        }
+    }
+
   $scope.createStore = function() {
     $scope.wizard.reset(0);
     // initialize props
