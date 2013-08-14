@@ -1,8 +1,4 @@
-<!-- no venues alert -->
-<div ng-show="categories.length == 0" class="alert alert-info" ng-cloak>{{
-    'Common.Text_VenueEmpty' | t }}
-</div>
-<!-- create venue button -->
+<!-- create category button -->
 <div class="widget pull-right">
     <button class="btn btn-info" ng-click="create()" ng-disabled="true">{{
         ' Create Category' | t }}
@@ -23,8 +19,11 @@
     </div>
 
     <div class="widget-content">
-
-        <table class="table  table-bordered " ng-controller="categoryController">
+        <!-- no category alert -->
+        <div ng-show="!categories || categories.length == 0" class="alert alert-info">{{
+            'Common.Text_CategoryEmpty' | t }}
+        </div>
+        <table class="table  table-bordered " ng-show="!categories || categories.length == 0">
             <thead>
             <tr>
                 <th>#</th>

@@ -110,6 +110,7 @@ var CommonResources = {
   Text_StoreMenu_StoreDetailBt : 'Store Details',
   Text_StoreMenu_Categories : 'Categories',
   Text_StoreMenu_CreateCate : 'Create Category',
+  Text_CategoryEmpty : 'No categories were found.',
   Text_StoreMenu_CreateSubCate : 'Create Sub Category',
   Text_StoreMenu_PaymentSettings : 'Payment Settings',
   Text_StoreMenu_Provider : 'Social Network Providers',
