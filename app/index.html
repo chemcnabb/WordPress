@@ -1,4 +1,5 @@
 <!doctype html>
+
 <!--[if lt IE 7]>
 <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>
@@ -14,45 +15,32 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <title></title>
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
-
-
-    <link rel="stylesheet"
-          href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="components/select2/select2.css">
-    <link rel="stylesheet"
-          href="components/jquery-timepicker/jquery.ui.timepicker.css">
-    <!--<link rel="stylesheet" href="styles/main.css">-->
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Stylesheets -->
     <link href="components/bootstrap/docs/assets/css/bootstrap.css" rel="stylesheet">
     <!-- Font awesome icon -->
-    <link rel="stylesheet" href="components/font-awesome/font-awesome.css">
-    <!-- jQuery UI -->
-    <!--<link rel="stylesheet" href="assets/jquery-ui.css">-->
-    <!-- Calendar -->
+    <link rel="stylesheet" href="assets/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="assets/jquery-ui.css">
+    <link rel="stylesheet" href="components/select2/select2.css">
+    <link rel="stylesheet"
+          href="components/jquery-timepicker/jquery.ui.timepicker.css">
+    <!--<link rel="stylesheet" href="styles/main.css">-->
     <link rel="stylesheet" href="components/fullcalendar/fullcalendar.css">
-    <!-- prettyPhoto -->
     <link rel="stylesheet" href="components/prettyPhoto/css/prettyPhoto.css">
-    <!-- Star rating -->
     <link rel="stylesheet" href="components/rateit/lib/rateit.css">
-    <!-- Date picker -->
-    <!--<link rel="stylesheet" href="assets/bootstrap-datetimepicker.min.css">-->
-    <!-- jQuery Gritter -->
     <link rel="stylesheet" href="components/gritter/css/jquery.gritter.css">
-    <!-- CLEditor -->
     <link rel="stylesheet" href="components/cleditor/jquery.cleditor.css">
-    <!-- Bootstrap toggle -->
     <link rel="stylesheet" href="components/bootstrap-toggle-buttons/static/stylesheets/bootstrap-toggle-buttons.css">
-    <!-- Main stylesheet -->
-    <link href="assets/style.css" rel="stylesheet">
-    <!-- Widgets stylesheet -->
     <link href="assets/widgets.css" rel="stylesheet">
-    <!-- Responsive style (from Bootstrap) -->
-    <!--<link href="assets/bootstrap-responsive.css" rel="stylesheet">-->
-
-
+    <link href="assets/social.css" rel="stylesheet">
+    <link href="components/bootstrap/docs/assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="components/angular-ui/build/angular-ui.css" rel="stylesheet">
+    <link href="assets/style.css" rel="stylesheet">
+    <!-- HTML5 Support for IE -->
+    <!--[if lt IE 9]>
+    <script src="components/html5shiv/dist/html5shiv.js"></script>
+    <![endif]-->
     <!--[if lt IE 9]>
     <script src="components/es5-shim/es5-shim.js"></script>
     <script src="components/json3/lib/json3.min.js"></script>
@@ -60,15 +48,10 @@
     <!--[if lte IE 8]>
     <script src="components/angular-ui/build/angular-ui-ieshiv.min.js"></script>
     <![endif]-->
-
-
     <script src="components/easyXDM/easyXDM.min.js"></script>
     <script src="components/jquery/jquery.js"></script>
-
-
-
-    <script
-            src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js"></script>
+    <!--<script-->
+            <!--src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js"></script>-->
     <script
             src="components/responsiveiframe/dist/jquery.responsiveiframe.min.js"></script>
     <script src="components/angular/angular.js"></script>
@@ -84,8 +67,30 @@
     <script src="components/datejs/build/date.js"></script>
     <script
             src="components/jquery-timepicker/jquery.ui.timepicker.js"></script>
+    <!-- JS -->
+    <!--<script src="assets/jquery.js"></script> &lt;!&ndash; jQuery &ndash;&gt;-->
+    <!--<script src="assets/bootstrap.js"></script> &lt;!&ndash; Bootstrap &ndash;&gt;-->
+    <script src="assets/jquery-ui-1.10.2.custom.min.js"></script> <!-- jQuery UI -->
+    <script src="components/jquery-migrate/jquery-migrate.min.js"></script>
+    <script src="components/fullcalendar/fullcalendar.min.js"></script>
+    <script src="components/rateit/lib/jquery.rateit.js"></script>
+    <script src="components/prettyPhoto/js/jquery.prettyPhoto.js"></script>
+    <script src="components/excanvas/silverlight/excanvas.js"></script>
+    <script src="components/flot/jquery.flot.js"></script>
+    <script src="components/flot/jquery.flot.resize.js"></script>
+    <script src="components/flot/jquery.flot.pie.js"></script>
+    <script src="components/flot/jquery.flot.stack.js"></script>
+    <script src="components/gritter/js/jquery.gritter.min.js"></script>
+    <script src="assets/sparklines.js"></script>
 
+    <script src="components/cleditor/jquery.cleditor.js"></script>
 
+    <!--<script src="components/jquery-timepicker/.min.js"></script> &lt;!&ndash; Date picker &ndash;&gt;-->
+    <script src="components/bootstrap-toggle-buttons/static/js/jquery.toggle.buttons.js"></script>
+    <script src="assets/filter.js"></script>
+    <script src="assets/charts.js"></script>
+    <script src="assets/custom.js"></script>
+    <script src="scripts/main.js"></script>
 
     <script type="text/javascript">
         var ri = responsiveIframe();
@@ -115,7 +120,6 @@
             <!-- Navigation starts -->
             <div class="nav-collapse collapse">
 
-
                 <!--topnav -->
                 <div ng-include src="'views/elements/top_menu.html'"></div>
 
@@ -132,32 +136,10 @@
 
     <div ng-include src="'views/elements/side_menu.html'"></div>
 
-
     <!-- Main bar -->
     <div class="mainbar">
 
-        <!-- Page heading -->
-        <div class="page-head">
-            <!-- Page heading -->
-            <h2 class="pull-left">Page Heading
-                <!-- page meta -->
-                <span class="page-meta">Something Goes Here</span>
-            </h2>
-
-
-            <!-- Breadcrumb -->
-            <div class="bread-crumb pull-right">
-                <a href="index.html"><i class="icon-home"></i> Home</a>
-                <!-- Divider -->
-                <span class="divider">/</span>
-                <a href="#" class="bread-current">Dashboard</a>
-            </div>
-
-            <div class="clearfix"></div>
-
-        </div>
-        <!-- Page heading ends -->
-
+        <div ng-include src="'views/elements/page_header.html'"></div>
 
         <!-- Matter -->
 
@@ -185,43 +167,7 @@
 <!-- Scroll to top -->
 <span class="totop"><a href="#"><i class="icon-chevron-up"></i></a></span>
 
-<!-- JS -->
-<!--<script src="assets/jquery.js"></script> &lt;!&ndash; jQuery &ndash;&gt;-->
-<!--<script src="assets/bootstrap.js"></script> &lt;!&ndash; Bootstrap &ndash;&gt;-->
-<!--<script src="assets/jquery-ui-1.10.2.custom.min.js"></script> &lt;!&ndash; jQuery UI &ndash;&gt;-->
-<script src="components/jquery-migrate/jquery-migrate.min.js"></script> <!-- jQuery -->
-<script src="components/fullcalendar/fullcalendar.min.js"></script>
-<!-- Full Google Calendar - Calendar -->
-<script src="components/rateit/lib/jquery.rateit.js"></script>
-<!-- RateIt - Star rating -->
-<script src="components/prettyPhoto/js/jquery.prettyPhoto.js"></script>
-<!-- prettyPhoto -->
-
-<!-- jQuery Flot -->
-<script src="components/excanvas/silverlight/excanvas.js"></script>
-<script src="components/flot/jquery.flot.js"></script>
-<script src="components/flot/jquery.flot.resize.js"></script>
-<script src="components/flot/jquery.flot.pie.js"></script>
-<script src="components/flot/jquery.flot.stack.js"></script>
-
-<script src="components/gritter/js/jquery.gritter.min.js"></script>
-<!-- jQuery Gritter -->
-<script src="assets/sparklines.js"></script>
-<!-- Sparklines -->
-<script src="components/cleditor/jquery.cleditor.js"></script>
-<!-- CLEditor -->
-<!--<script src="components/jquery-timepicker/.min.js"></script> &lt;!&ndash; Date picker &ndash;&gt;-->
-<script src="components/bootstrap-toggle-buttons/static/js/jquery.toggle.buttons.js"></script>
-<!-- Bootstrap Toggle -->
-<script src="assets/filter.js"></script>
-<!-- Filter for support page -->
-
-<!-- Custom codes -->
-<script src="assets/charts.js"></script>
-<!-- Custom chart codes -->
 
 
-<script src="scripts/main.js"></script>
-<script src="assets/custom.js"></script>
 </body>
 </html>
