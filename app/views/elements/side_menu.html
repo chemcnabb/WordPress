@@ -28,8 +28,7 @@
                 ng-class="{active: $uiRoute}">
                 <a href="#">
                     <!-- Menu name with icon -->
-                    <i class="icon-th"></i> {{ 'Common.Text_Store' | t }} <b
-                        class="caret"></b>
+                    <i class="icon-th"></i> {{ 'Common.Text_Store' | t }}
                     <!-- Icon for dropdown -->
                     <span class="pull-right"><i class="icon-angle-right"></i></span>
                 </a>
@@ -106,18 +105,7 @@
 
 </div>
 <script>
-    $(document).ready(function () {
 
-        $(window).resize(function () {
-            if ($(window).width() >= 765) {
-                $(".sidebar .sidebar-inner").slideDown(350);
-            }
-            else {
-                $(".sidebar .sidebar-inner").slideUp(350);
-            }
-        });
-
-    });
 
     $(document).ready(function () {
 

@@ -43,7 +43,7 @@ azureTicketsApp.config([
     '$routeProvider',
     function($routeProvider) {
       $routeProvider.when('/', {
-        templateUrl : 'views/admin.html',
+        templateUrl : 'views/dashboard.html',
         controller : adminController,
         resolve : routeFilters
       }).when('/auth/login', {
@@ -129,6 +129,8 @@ azureTicketsApp.config([
         templateUrl : 'views/order.html',
         controller : orderController,
         resolve : routeFilters
+      }).when('/dashboard', {
+        redirectTo : '/'
       });
     }
 ]);
