@@ -97,7 +97,7 @@
         ri.allowResponsiveEmbedding();
     </script>
 </head>
-<body>
+<body ng-controller="storeController" ng-init="init()">
 <!--[if lt IE 7]>
 <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser
     today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better
@@ -144,8 +144,7 @@
         <!-- Matter -->
 
         <div class="matter">
-            <div class="container-fluid" ng-controller="storeController"
-                 ng-init="init()">
+            <div class="container-fluid">
 
                 <div class="content" ng-cloak ng-view></div>
 
