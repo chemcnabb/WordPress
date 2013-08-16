@@ -5,8 +5,10 @@
     "angular": "~1.0.5",
     "angular-ui": "~0.4.0",
     "jquery": "~1.9.1",
+      "jquery-migrate": "*",
     "responsiveiframe": "*",
     "bootstrap":"~2.3.1",
+    "bootstrap-responsive":"*",
     "json3": "~3.2.4",
     "es5-shim": "~2.0.5",
     "easyXDM" : "~2.4.17",
@@ -15,7 +17,18 @@
     "angular-cookies": "~1.0.5",
     "angular-sanitize": "~1.0.5",
     "jquery-timepicker" : "*",
-    "datejs" : "*"
+    "datejs" : "*",
+
+      "font-awesome": "*",
+      "excanvas": "latest",
+      "fullcalendar": "*",
+      "html5shiv": "*",
+      "cleditor": "https://github.com/cleditor/cleditor.git",
+      "flot": "*",
+      "prettyPhoto": "https://github.com/scaron/prettyphoto.git",
+      "rateit": "https://github.com/dandv/meteor-jquery-rateit.git",
+      "gritter": "*"
+
   },
   "devDependencies": {
     "angular-mocks": "~1.0.5",
