@@ -274,7 +274,7 @@ $(document).ready(function(){
                 // (string | mandatory) the text inside the notification
                 text: 'Today you got some messages and new members. Please check it out!',
                 // (string | optional) the image to display on the left
-                image: './img/user-big.jpg',
+                image: 'assets/img/user-big.jpg',
                 // (bool | optional) if you want it to fade out on its own or just sit there
                 sticky: false,
                 // (int | optional) the time you want it to be alive for before fading out
@@ -306,7 +306,7 @@ $(document).ready(function(){
                 // (string | mandatory) the text inside the notification
                 text: 'Today you got some messages and new members. Please check it out!',
                 // (string | optional) the image to display on the left
-                image: './img/user-big.jpg',
+                image: 'assets/img/user-big.jpg',
                 // (bool | optional) if you want it to fade out on its own or just sit there
                 sticky: false,
                 // (int | optional) the time you want it to be alive for before fading out
@@ -335,7 +335,7 @@ $(document).ready(function(){
                 // (string | mandatory) the text inside the notification
                 text: 'Today you got some messages and new members. Please check it out!',
                 // (string | optional) the image to display on the left
-                image: './img/user-big.jpg',
+                image: 'assets/img/user-big.jpg',
                 // (bool | optional) if you want it to fade out on its own or just sit there
                 sticky: false,
                 // (int | optional) the time you want it to be alive for before fading out
@@ -379,20 +379,20 @@ $(document).ready(function(){
 
 
 /* Date picker */
-
-  $(function() {
-    $('#datetimepicker1').datetimepicker({
-      pickTime: false
-    });
-  });
-
-
-
-   $(function() {
-    $('#datetimepicker2').datetimepicker({
-      pickDate: false
-    });
-  });
+//
+//  $(function() {
+//    $('#datetimepicker1').datetimepicker({
+//      pickTime: false
+//    });
+//  });
+//
+//
+//
+//   $(function() {
+//    $('#datetimepicker2').datetimepicker({
+//      pickDate: false
+//    });
+//  });
 
 
   $(function() {
@@ -447,7 +447,7 @@ $(".cleditor").cleditor({
 
 /* Modal fix */
 
-//$('.modal').appendTo($('body'));
+$('.modal').appendTo($('body'));
 
 /* Pretty Photo for Gallery*/
 

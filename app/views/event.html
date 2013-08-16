@@ -6,11 +6,20 @@
 	<!-- event info -->
 	<div ui-if="Store && Store.Key && venues && venues.length > 0 || false"
 		class="row-fluid">
-		<p class="lead pull-left">{{ 'Common.Text_EventMenu_Events' | t}}</p>
+
+
+		<!--<p class="lead pull-left">{{ 'Common.Text_EventMenu_Events' | t}}</p>-->
+        <h3 class="pull-left">{{ 'Common.Text_EventMenu_Events' | t}}</h3>
+
+
 		<div class="btn-group pull-right">
 			<button class="btn btn-info" ng-click="create()">{{
 				'Common.Text_EventMenu_CreateEvent' | t }}</button>
 		</div>
+        <div class="clearfix"></div>
+
+
+
 		<div id="formEvent" class="modal form hide fade">
 			<div class="modal-header">
 				<button type="button" ng-click="wizard.open = false" class="close"

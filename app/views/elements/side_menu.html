@@ -52,7 +52,10 @@
                     ui-if="Store && Store.Key != null && Store.IsOwner && venues && venues.length > 0 || false"
                     ui-route="#/(event|ticket).*" ng-class="{active: $uiRoute}"><a
                     href="#/event">{{ 'Common.Text_EventMenu_Events' | t }}</a></li>
-
+            <li
+                    ui-if="Store && Store.Key != null && Store.IsOwner && events && events.length > 0 || false"
+                    ui-route="#/order" ng-class="{active: $uiRoute}"><a
+                    href="#/order">{{ 'Common.Text_OrdersMenu_Orders' | t }}</a></li>
 
             <!--<li class="has_submenu nviolet">-->
                 <!--<a href="#">-->
