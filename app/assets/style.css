@@ -1552,6 +1552,10 @@ border:1px solid #eee;
 	}
 }
 
+atfield > small {
+    display:block;
+}
+
 
 
 

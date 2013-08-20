@@ -16,5 +16,7 @@
     Text_Hardware: "Hardware",
     Text_OSVersion: "OS Version",
     Text_LastSyncDate: "Last Sync Date",
-    Text_ATsVersion: "ATs Version"    
+    Text_ATsVersion: "ATs Version",
+    Text_NoEventScanner_Msg : 'Currently there are no scanners for this event.',
+    Text_NoScanner_Msg : 'Currently there are no scanners registered.'
 }

@@ -56,6 +56,10 @@
                     ui-if="Store && Store.Key != null && Store.IsOwner && events && events.length > 0 || false"
                     ui-route="#/order" ng-class="{active: $uiRoute}"><a
                     href="#/order">{{ 'Common.Text_OrdersMenu_Orders' | t }}</a></li>
+            <li
+                    ui-if="Store && Store.Key != null && Store.IsOwner || false"
+                    ui-route="#/scanners" ng-class="{active: $uiRoute}"><a
+                    href="#/scanners">{{ 'Common.Text_ScannerMenu_Scanner' | t }}</a></li>
 
             <!--<li class="has_submenu nviolet">-->
                 <!--<a href="#">-->
